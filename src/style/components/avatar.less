@@ -1,0 +1,66 @@
+@vui-avatar: ~"@{vui}-avatar";
+
+.@{vui-avatar} {
+	position:relative;
+	display:inline-block;
+	box-sizing:border-box;
+	overflow:hidden;
+	vertical-align:middle;
+	color:@avatar-font-color;
+	text-align:center;
+	white-space:nowrap;
+
+	& &-image {
+		display:block;
+		width:100%;
+		height:100%;
+		object-fit:cover;
+	}
+	& &-icon {
+		display:block;
+		line-height:inherit;
+	}
+	& &-children {
+		position:absolute;
+		left:50%;
+		transform-origin:0 center;
+		transform:scale(1) translateX(-50%);
+		line-height:inherit;
+	}
+
+	&-with-image {
+		background-color:transparent;
+	}
+	&-with-icon {
+		background-color:@avatar-background-color;
+	}
+	&-with-children {
+		background-color:@avatar-background-color;
+	}
+
+	&-circle {
+		border-radius:@avatar-shape-circle;
+	}
+	&-square {
+		border-radius:@avatar-shape-square;
+	}
+
+	&-small {
+		width:@avatar-size-sm;
+		height:@avatar-size-sm;
+		font-size:@avatar-font-size-sm;
+		line-height:@avatar-size-sm;
+	}
+	&-medium {
+		width:@avatar-size-md;
+		height:@avatar-size-md;
+		font-size:@avatar-font-size-md;
+		line-height:@avatar-size-md;
+	}
+	&-large {
+		width:@avatar-size-lg;
+		height:@avatar-size-lg;
+		font-size:@avatar-font-size-lg;
+		line-height:@avatar-size-lg;
+	}
+}

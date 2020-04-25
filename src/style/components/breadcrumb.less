@@ -1,0 +1,22 @@
+@vui-breadcrumb: ~"@{vui}-breadcrumb";
+
+
+.vui-breadcrumb { box-sizing:border-box; font-size:14px; line-height:@line-height; }
+.vui-breadcrumb:before, .vui-breadcrumb:after { content:""; display:block; width:100%; height:0; overflow:hidden; visibility:hidden; clear:both; }
+
+
+.vui-breadcrumb-item { float:left; display:inline-block; box-sizing:border-box; }
+.vui-breadcrumb-item .vui-breadcrumb-item-link, .vui-breadcrumb-item a { float:left; cursor:pointer; outline:none; color:@font-secondary-color; text-decoration:none; transition:color 0.2s; }
+.vui-breadcrumb-item .vui-breadcrumb-item-link:hover, .vui-breadcrumb-item a:hover { color:tint(#2d8cf0, 10%); }
+.vui-breadcrumb-item .vui-breadcrumb-item-link:active, .vui-breadcrumb-item a:active { color:shade(#2d8cf0, 10%); }
+.vui-breadcrumb-item .vui-breadcrumb-item-label { float:left; color:@font-secondary-color; }
+.vui-breadcrumb-item .vui-breadcrumb-item-separator { float:left; margin:0 8px; color:#e0e0e0; }
+
+
+.vui-breadcrumb-item:last-child {  }
+.vui-breadcrumb-item:last-child .vui-breadcrumb-item-link, .vui-breadcrumb-item:last-child a { color:@font-color; }
+.vui-breadcrumb-item:last-child .vui-breadcrumb-item-link:hover, .vui-breadcrumb-item:last-child a:hover { color:tint(#2d8cf0, 10%); }
+.vui-breadcrumb-item:last-child .vui-breadcrumb-item-link:active, .vui-breadcrumb-item:last-child a:active { color:shade(#2d8cf0, 10%); }
+.vui-breadcrumb-item:last-child .vui-breadcrumb-item-label { color:@font-color; }
+.vui-breadcrumb-item:last-child .vui-breadcrumb-item-separator { display:none; }
+

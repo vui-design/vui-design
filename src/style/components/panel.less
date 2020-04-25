@@ -1,0 +1,46 @@
+@vui-panel: ~"@{vui}-panel";
+
+
+.vui-panel {  }
+.vui-panel > .vui-panel-header { display:flex; align-items:center; cursor:pointer; padding:12px 15px; color:#262626; font-size:14px; line-height:1.5; }
+.vui-panel > .vui-panel-header > .vui-panel-arrow { transform:rotate(0deg); transition:all 0.2s; }
+.vui-panel > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-left { margin-right:10px; }
+.vui-panel > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-right { margin-left:10px; }
+.vui-panel > .vui-panel-header > .vui-panel-arrow > .vui-icon { display:block; font-size:12px; line-height:1; }
+.vui-panel > .vui-panel-header > .vui-panel-title { flex:1; width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.vui-panel > .vui-panel-header > .vui-panel-extra { margin-left:10px; }
+.vui-panel > .vui-panel-body-wrapper {  }
+.vui-panel > .vui-panel-body-wrapper > .vui-panel-body {  }
+
+
+.vui-panel-active {  }
+.vui-panel-active > .vui-panel-header {  }
+.vui-panel-active > .vui-panel-header > .vui-panel-arrow { transform:rotate(90deg); }
+.vui-panel-active > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-left {  }
+.vui-panel-active > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-right {  }
+.vui-panel-active > .vui-panel-header > .vui-panel-arrow > .vui-icon {  }
+.vui-panel-active > .vui-panel-header > .vui-panel-title {  }
+.vui-panel-active > .vui-panel-header > .vui-panel-extra {  }
+.vui-panel-active > .vui-panel-body-wrapper {  }
+.vui-panel-active > .vui-panel-body-wrapper > .vui-panel-body {  }
+
+
+.vui-panel-disabled {  }
+.vui-panel-disabled > .vui-panel-header { cursor:not-allowed; color:#bfbfbf; }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-arrow {  }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-left {  }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-arrow.vui-panel-arrow-right {  }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-arrow > .vui-icon {  }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-title {  }
+.vui-panel-disabled > .vui-panel-header > .vui-panel-extra {  }
+.vui-panel-disabled > .vui-panel-body-wrapper {  }
+.vui-panel-disabled > .vui-panel-body-wrapper > .vui-panel-body {  }
+
+
+.vui-panel-collapse-enter { height:0 !important; }
+.vui-panel-collapse-enter-to {  }
+.vui-panel-collapse-enter-active { overflow:hidden; transition:height 0.2s ease-in-out; }
+.vui-panel-collapse-leave {  }
+.vui-panel-collapse-leave-to { height:0 !important; }
+.vui-panel-collapse-leave-active { overflow:hidden; transition:height 0.2s ease-in-out; }
+

@@ -1,0 +1,198 @@
+@vui-modal: ~"@{vui}-modal";
+@vui-modal-notice: ~"@{vui}-modal-notice";
+
+
+.@{vui-modal} {
+	&-backdrop {
+		.backdrop;
+	}
+
+
+	&-wrapper {
+		position:fixed;
+		z-index:2000;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		overflow:hidden;
+		pointer-events:none;
+
+		&-centered {
+			text-align:center;
+
+			&:before, &:after {
+				content:"";
+				display:inline-block;
+				width:0;
+				height:100%;
+				overflow:hidden;
+				vertical-align:middle;
+			}
+		}
+	}
+
+
+	& {
+		position:relative;
+		display:block;
+		border-radius:@modal-border-radius;
+		background-color:@modal-background-color;
+		box-shadow:@modal-box-shadow;
+		margin:0 auto;
+		pointer-events:all;
+
+		&-centered {
+			display:inline-block;
+			vertical-align:middle;
+		}
+	}
+
+	&-header {
+		border-bottom:@modal-header-border-bottom;
+		padding:@modal-header-padding;
+	}
+
+	&-title {
+		padding-right:20px;
+		color:@font-primary-color;
+		font-size:@font-size-lg;
+		text-align:left;
+		line-height:@line-height;
+		white-space:normal;
+		word-break:break-all;
+		word-wrap:break-word;
+	}
+
+	&-body {
+		padding:@modal-body-padding;
+		color:@font-color;
+		font-size:@font-size;
+		text-align:left;
+		line-height:@line-height;
+		white-space:normal;
+		word-break:break-all;
+		word-wrap:break-word;
+	}
+
+	&-footer {
+		border-top:@modal-footer-border-top;
+		padding:@modal-footer-padding;
+		text-align:right;
+	}
+	&-footer button + button {
+		margin-left:10px;
+	}
+
+	&-btn-close {
+		position:absolute;
+		top:15px;
+		right:15px;
+		cursor:pointer;
+		color:@font-secondary-color;
+		font-size:@font-size-sm;
+		line-height:1;
+		transition:color @transition-duration @transition-timing-function;
+
+		&:hover {
+			color:@font-color;
+		}
+	}
+	&-with-header &-btn-close {
+		top:25px;
+		right:20px;
+	}
+
+
+	@media (max-width: @screen-sm-max) {
+		& {
+			width:auto !important;
+			margin-left:10px;
+			margin-right:10px;
+		}
+	}
+
+
+	&-backdrop-fade-enter-active {
+		animation:vuiModalBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-backdrop-fade-leave-active {
+		animation:vuiModalBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
+	}
+
+
+	&-zoom-enter-active {
+		animation:vuiModalZoomIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-zoom-leave-active { 
+		animation:vuiModalZoomOut @animation-out-duration @animation-out-timing-function both;
+	}
+}
+
+
+.@{vui-modal-notice} {
+	position:relative;
+	margin:10px 0;
+	padding-left:round(@font-size-lg * @line-height) + 10px;
+	color:@font-color;
+	font-size:@font-size;
+	line-height:@line-height;
+
+	&-title {
+		color:@font-primary-color;
+		font-size:@font-size-lg;
+	}
+	
+	&-description {
+		margin-top:8px;
+	}
+	
+	&-icon {
+		position:absolute;
+		top:0;
+		left:0;
+		font-size:round(@font-size-lg * @line-height);
+		line-height:1;
+
+		.@{vui}-icon {
+			display:block;
+		}
+	}
+	&-info &-icon {
+		color:@primary-color;
+	}
+	&-warning &-icon {
+		color:@warning-color;
+	}
+	&-success &-icon {
+		color:@success-color;
+	}
+	&-error &-icon {
+		color:@error-color;
+	}
+	&-confirm &-icon {
+		color:@warning-color;
+	}
+}
+
+
+@keyframes vuiModalBackdropFadeIn {
+	0% { opacity:0; }
+	100% { opacity:1; }
+}
+@keyframes vuiModalBackdropFadeOut {
+	0% { opacity:1; }
+	30% { opacity:1; }
+	100% { opacity:0; }
+}
+
+
+@keyframes vuiModalZoomIn {
+	0% { transform:scale(0.8); }
+	100% { transform:scale(1); }
+}
+@keyframes vuiModalZoomOut {
+	0% { transform:scale(1); }
+	30% { transform:scale(1); }
+	100% { transform:scale(0.8); }
+}

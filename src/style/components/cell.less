@@ -1,0 +1,54 @@
+@vui-cell: ~"@{vui}-cell";
+
+
+.vui-cell { position:relative; display:flex; align-items:center; border-top:1px solid #f3f3f3; border-bottom:1px solid #f3f3f3; padding:10px 15px; font-size:14px; line-height:1.42857143; transition:all 0.2s; }
+.vui-cell > .vui-cell-header { display:flex; align-items:center; margin-right:10px; }
+.vui-cell > .vui-cell-body { flex:1; width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.vui-cell > .vui-cell-footer { display:flex; align-items:center; margin-left:10px; }
+.vui-cell > .vui-cell-footer > .vui-cell-extra {  }
+.vui-cell > .vui-cell-footer > .vui-icon { margin-left:5px; vertical-align:middle; font-size:12px; }
+
+
+// basic
+.vui-cell { cursor:default; background-color:#fff; color:#595959; }
+.vui-cell > .vui-cell-footer { color:#8c8c8c; }
+.vui-cell > .vui-cell-footer > .vui-icon { color:#8c8c8c; }
+
+.vui-cell:hover {  }
+.vui-cell:hover > .vui-cell-footer {  }
+.vui-cell:hover > .vui-cell-footer > .vui-icon {  }
+
+.vui-cell:active {  }
+.vui-cell:active > .vui-cell-footer {  }
+.vui-cell:active > .vui-cell-footer > .vui-icon {  }
+
+.vui-cell.vui-cell-selected {  }
+.vui-cell.vui-cell-selected > .vui-cell-footer {  }
+.vui-cell.vui-cell-selected > .vui-cell-footer > .vui-icon { color:#2d8cf0; }
+
+.vui-cell.vui-cell-disabled { pointer-events:none; cursor:not-allowed; color:#bfbfbf; }
+.vui-cell.vui-cell-disabled > .vui-cell-footer { color:#bfbfbf; }
+.vui-cell.vui-cell-disabled > .vui-cell-footer > .vui-icon { color:#bfbfbf; }
+
+
+// link
+a.vui-cell { cursor:pointer; background-color:#fff; color:#595959; }
+a.vui-cell > .vui-cell-footer { color:#8c8c8c; }
+a.vui-cell > .vui-cell-footer > .vui-cell-icon { color:#8c8c8c; }
+
+a.vui-cell:hover { background-color:#f9f9f9; }
+a.vui-cell:hover > .vui-cell-footer {  }
+a.vui-cell:hover > .vui-cell-footer > .vui-cell-icon {  }
+
+a.vui-cell:active { background-color:#f4f4f4; }
+a.vui-cell:active > .vui-cell-footer {  }
+a.vui-cell:active > .vui-cell-footer > .vui-cell-icon {  }
+
+a.vui-cell.vui-cell-selected {  }
+a.vui-cell.vui-cell-selected > .vui-cell-footer {  }
+a.vui-cell.vui-cell-selected > .vui-cell-footer > .vui-cell-icon { color:#2d8cf0; }
+
+a.vui-cell.vui-cell-disabled { pointer-events:none; cursor:not-allowed; color:#bfbfbf; }
+a.vui-cell.vui-cell-disabled > .vui-cell-footer { color:#bfbfbf; }
+a.vui-cell.vui-cell-disabled > .vui-cell-footer > .vui-cell-icon { color:#bfbfbf; }
+

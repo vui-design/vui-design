@@ -1,0 +1,41 @@
+// layout
+.vui-layout { flex:auto; display:flex; box-sizing:border-box; background-color:#f0f2f4; }
+
+.vui-layout-horizontal { flex-direction:row; }
+.vui-layout-vertical { flex-direction:column; }
+
+
+// header
+.vui-header { flex:0 0 auto; box-sizing:border-box; height:64px; padding:0 50px; line-height:64px; }
+
+.vui-header-light { background-color:#fff; }
+.vui-header-dark { background-color:#09192a; }
+
+
+// sider
+.vui-sider { position:relative; box-sizing:border-box; transition:all 0.2s; }
+.vui-sider .vui-sider-children { box-sizing:border-box; height:100%; overflow:hidden; }
+.vui-sider .vui-sider-children .vui-sider-children-scrollbar { box-sizing:border-box; height:100%; overflow-x:hidden; overflow-y:scroll; }
+.vui-sider .vui-sider-trigger { position:absolute; top:12px; right:-30px; cursor:pointer; box-sizing:border-box; width:30px; height:40px; border-top-right-radius:2px; border-bottom-right-radius:2px; text-align:center; line-height:40px; transition:all 0.2s; }
+.vui-sider .vui-sider-trigger:hover {  }
+.vui-sider .vui-sider-trigger:active {  }
+
+.vui-sider-light { background-color:#fff; }
+.vui-sider-light .vui-sider-children {  }
+.vui-sider-light .vui-sider-trigger { background-color:#fff; box-shadow:0 0 0 1px #e6e6e6; color:#595959; }
+.vui-sider-light .vui-sider-trigger:hover { color:#4298f2; }
+.vui-sider-light .vui-sider-trigger:active { color:#297ed8; }
+.vui-sider-dark { background-color:#09192a; }
+.vui-sider-dark .vui-sider-children {  }
+.vui-sider-dark .vui-sider-trigger { background-color:#09192a; box-shadow:none; color:#b3b3b3; }
+.vui-sider-dark .vui-sider-trigger:hover { color:#fff; }
+.vui-sider-dark .vui-sider-trigger:active { color:#fff; }
+
+
+// content
+.vui-content { flex:auto; box-sizing:border-box; }
+
+
+// footer
+.vui-footer { flex:0 0 auto; box-sizing:border-box; padding:25px 50px; }
+

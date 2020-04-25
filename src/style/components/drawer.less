@@ -1,0 +1,208 @@
+@vui-drawer: ~"@{vui}-drawer";
+
+.@{vui-drawer} {
+	&-backdrop {
+		.backdrop;
+	}
+
+
+	&-wrapper {
+		position:fixed;
+		z-index:2000;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		overflow:hidden;
+		pointer-events:none;
+	}
+
+
+	& {
+		position:fixed;
+		display:flex;
+		flex-direction:column;
+		background-color:@drawer-background-color;
+		box-shadow:@drawer-box-shadow;
+		margin:0 auto;
+		pointer-events:all;
+	}
+
+	&-header {
+		border-bottom:@drawer-header-border-bottom;
+		padding:@drawer-header-padding;
+	}
+
+	&-title {
+		padding-right:20px;
+		color:@font-primary-color;
+		font-size:@font-size-lg;
+		text-align:left;
+		line-height:@line-height;
+		white-space:normal;
+		word-break:break-all;
+		word-wrap:break-word;
+	}
+
+	&-body {
+		flex:1;
+		height:0;
+		padding:@drawer-body-padding;
+		overflow:auto;
+		color:@font-color;
+		font-size:@font-size;
+		text-align:left;
+		line-height:@line-height;
+		white-space:normal;
+		word-break:break-all;
+		word-wrap:break-word;
+	}
+
+	&-footer {
+		border-top:@drawer-footer-border-top;
+		padding:@drawer-footer-padding;
+		text-align:right;
+	}
+	&-footer button + button {
+		margin-left:10px;
+	}
+
+	&-btn-close {
+		position:absolute;
+		top:15px;
+		right:15px;
+		cursor:pointer;
+		color:@font-secondary-color;
+		font-size:@font-size-sm;
+		line-height:1;
+		transition:color @transition-duration @transition-timing-function;
+
+		&:hover {
+			color:@font-color;
+		}
+	}
+	&-with-header &-btn-close {
+		top:25px;
+		right:20px;
+	}
+
+
+	&-top, &-bottom {
+		left:0;
+		right:0;
+		width:100%;
+	}
+	&-top {
+		top:0;
+	}
+	&-bottom {
+		bottom:0;
+	}
+	&-left, &-right {
+		top:0;
+		bottom:0;
+		height:100%;
+	}
+	&-left {
+		left:0;
+	}
+	&-right {
+		right:0;
+	}
+
+
+	&-backdrop-fade-enter-active {
+		animation:vuiDrawerBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-backdrop-fade-leave-active {
+		animation:vuiDrawerBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
+	}
+
+
+	&-top&-slide-enter-active {
+		animation:vuiDrawerSlideTopIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-top&-slide-leave-active { 
+		animation:vuiDrawerSlideTopOut @animation-out-duration @animation-out-timing-function both;
+	}
+
+
+	&-bottom&-slide-enter-active {
+		animation:vuiDrawerSlideBottomIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-bottom&-slide-leave-active { 
+		animation:vuiDrawerSlideBottomOut @animation-out-duration @animation-out-timing-function both;
+	}
+
+
+	&-left&-slide-enter-active {
+		animation:vuiDrawerSlideLeftIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-left&-slide-leave-active { 
+		animation:vuiDrawerSlideLeftOut @animation-out-duration @animation-out-timing-function both;
+	}
+
+
+	&-right&-slide-enter-active {
+		animation:vuiDrawerSlideRightIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-right&-slide-leave-active { 
+		animation:vuiDrawerSlideRightOut @animation-out-duration @animation-out-timing-function both;
+	}
+}
+
+
+@keyframes vuiDrawerBackdropFadeIn {
+	0% { opacity:0; }
+	100% { opacity:1; }
+}
+@keyframes vuiDrawerBackdropFadeOut {
+	0% { opacity:1; }
+	30% { opacity:1; }
+	100% { opacity:0; }
+}
+
+
+@keyframes vuiDrawerSlideTopIn {
+	0% { transform:translateY(-100%); }
+	100% { transform:translateY(0%); }
+}
+@keyframes vuiDrawerSlideTopOut {
+	0% { transform:translateY(0%); }
+	30% { transform:translateY(0%); }
+	100% { transform:translateY(-100%); }
+}
+
+
+@keyframes vuiDrawerSlideBottomIn {
+	0% { transform:translateY(100%); }
+	100% { transform:translateY(0%); }
+}
+@keyframes vuiDrawerSlideBottomOut {
+	0% { transform:translateY(0%); }
+	30% { transform:translateY(0%); }
+	100% { transform:translateY(100%); }
+}
+
+
+@keyframes vuiDrawerSlideLeftIn {
+	0% { transform:translateX(-100%); }
+	100% { transform:translateX(0%); }
+}
+@keyframes vuiDrawerSlideLeftOut {
+	0% { transform:translateX(0%); }
+	30% { transform:translateX(0%); }
+	100% { transform:translateX(-100%); }
+}
+
+
+@keyframes vuiDrawerSlideRightIn {
+	0% { transform:translateX(100%); }
+	100% { transform:translateX(0%); }
+}
+@keyframes vuiDrawerSlideRightOut {
+	0% { transform:translateX(0%); }
+	30% { transform:translateX(0%); }
+	100% { transform:translateX(100%); }
+}
+

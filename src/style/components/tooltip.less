@@ -1,0 +1,68 @@
+@vui-tooltip: ~"@{vui}-tooltip";
+
+
+// tooltip
+.vui-tooltip { display:inline-block; vertical-align:middle; }
+
+
+// tooltip trigger
+.vui-tooltip-trigger { cursor:pointer; }
+
+
+// tooltip content
+.vui-tooltip-content { max-width:250px; border-radius:2px; box-shadow:0 0 3px rgba(0, 0, 0, 0.2); padding:10px 12px; font-size:12px; text-align:justify; line-height:1.5; }
+.vui-tooltip-content .vui-tooltip-arrow { position:absolute; box-sizing:border-box; width:8px; height:8px; transform:rotate(45deg); transform-origin:center center; }
+
+.vui-tooltip-content.vui-tooltip-content-dark { background-color:#09192a; color:#fff; }
+.vui-tooltip-content.vui-tooltip-content-dark .vui-tooltip-arrow { background-color:#09192a; }
+
+.vui-tooltip-content.vui-tooltip-content-light { background-color:#fff; color:#595959; }
+.vui-tooltip-content.vui-tooltip-content-light .vui-tooltip-arrow { background-color:#fff; }
+
+.vui-tooltip-content[data-placement^="top"] { margin:8px 0; }
+.vui-tooltip-content[data-placement^="top"] .vui-tooltip-arrow { bottom:-4px; box-shadow:1px 1px 2px rgba(0, 0, 0, 0.1); }
+.vui-tooltip-content[data-placement="top-start"] .vui-tooltip-arrow { left:10px; }
+.vui-tooltip-content[data-placement="top"] .vui-tooltip-arrow { left:50%; margin-left:-4px; }
+.vui-tooltip-content[data-placement="top-end"] .vui-tooltip-arrow { right:10px; }
+
+.vui-tooltip-content[data-placement^="bottom"] { margin:8px 0; }
+.vui-tooltip-content[data-placement^="bottom"] .vui-tooltip-arrow { top:-4px; box-shadow:-1px -1px 2px rgba(0, 0, 0, 0.1); }
+.vui-tooltip-content[data-placement="bottom-start"] .vui-tooltip-arrow { left:10px; }
+.vui-tooltip-content[data-placement="bottom"] .vui-tooltip-arrow { left:50%; margin-left:-4px; }
+.vui-tooltip-content[data-placement="bottom-end"] .vui-tooltip-arrow { right:10px; }
+
+.vui-tooltip-content[data-placement^="left"] { margin:0 8px; }
+.vui-tooltip-content[data-placement^="left"] .vui-tooltip-arrow { right:-4px; box-shadow:1px -1px 2px rgba(0, 0, 0, 0.1); }
+.vui-tooltip-content[data-placement="left-start"] .vui-tooltip-arrow { top:10px; }
+.vui-tooltip-content[data-placement="left"] .vui-tooltip-arrow { top:50%; margin-top:-4px; }
+.vui-tooltip-content[data-placement="left-end"] .vui-tooltip-arrow { bottom:10px; }
+
+.vui-tooltip-content[data-placement^="right"] { margin:0 8px; }
+.vui-tooltip-content[data-placement^="right"] .vui-tooltip-arrow { left:-4px; box-shadow:-1px 1px 2px rgba(0, 0, 0, 0.1); }
+.vui-tooltip-content[data-placement="right-start"] .vui-tooltip-arrow { top:10px; }
+.vui-tooltip-content[data-placement="right"] .vui-tooltip-arrow { top:50%; margin-top:-4px; }
+.vui-tooltip-content[data-placement="right-end"] .vui-tooltip-arrow { bottom:10px; }
+
+
+// animation
+@keyframes vuiTooltipFadeIn {
+	0% {
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
+}
+
+@keyframes vuiTooltipFadeOut {
+	0% {
+		opacity:1;
+	}
+	100% {
+		opacity:0;
+	}
+}
+
+.vui-tooltip-fade-enter-active { animation:vuiTooltipFadeIn 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both; }
+.vui-tooltip-fade-leave-active { animation:vuiTooltipFadeOut 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both; }
+

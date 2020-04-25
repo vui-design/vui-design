@@ -1,0 +1,524 @@
+// 通用变量 --------------------------------------------------------------------------------
+
+// 前缀
+@vui: vui;
+
+
+// 色彩
+@default-color: #e0e0e0;
+@primary-color: #2d8cf0;
+@info-color: #5bc0de;
+@warning-color: #f0ad4e;
+@success-color: #5cb85c;
+@error-color: #ed5565;
+
+@processing-color: #2d8cf0;
+
+@link-color: #2d8cf0;
+@link-hover-color: tint(@link-color, 20%);
+@link-active-color: shade(@link-color, 5%);
+
+@white: #fff;
+@black: #000;
+
+
+// 字体颜色
+@font-primary-color: tint(#000000, 15%);
+@font-color: tint(#000000, 35%);
+@font-secondary-color: tint(#000000, 55%);
+@font-disabled-color: tint(#000000, 75%);
+@font-reverse-color: #fff;
+
+
+// 字体大小
+@font-size : 14px;
+@font-size-lg: 16px;
+@font-size-sm: 12px;
+
+
+// 字体粗细
+@font-weight: 400;
+@font-weight-bold: 600;
+
+
+// 字体
+// @font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+
+// 行高
+@line-height: 1.42857143;
+
+// Body 背景色
+@body-background-color: #fff;
+// 组件背景色
+@component-background-color: #fff;
+
+
+// 边框
+@border-width: 1px;
+@border-style: solid;
+@border-color: #e0e0e0;
+@border: @border-width @border-style @border-color;
+
+
+// 圆角
+@border-radius: 2px;
+
+
+// 背景色
+@background-color: #fff;
+
+
+// 阴影
+@box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+
+
+// 属性过度
+@transition-duration: 0.2s;
+@transition-timing-function: cubic-bezier(.645, .045, .355, 1);
+
+
+// 动画
+@animation-in-duration: 0.2s;
+@animation-in-timing-function: cubic-bezier(.645, .045, .355, 1);
+
+@animation-out-duration: 0.2s;
+@animation-out-timing-function: cubic-bezier(.645, .045, .355, 1);
+
+
+// 媒体查询
+@screen-xs: 480px;
+@screen-sm: 576px;
+@screen-md: 768px;
+@screen-lg: 992px;
+@screen-xl: 1200px;
+@screen-xxl: 1600px;
+
+@screen-xs-min: @screen-xs;
+@screen-sm-min: @screen-sm;
+@screen-md-min: @screen-md;
+@screen-lg-min: @screen-lg;
+@screen-xl-min: @screen-xl;
+@screen-xxl-min: @screen-xxl;
+
+@screen-xs-max: (@screen-sm-min - 1px);
+@screen-sm-max: (@screen-md-min - 1px);
+@screen-md-max: (@screen-lg-min - 1px);
+@screen-lg-max: (@screen-xl-min - 1px);
+@screen-xl-max: (@screen-xxl-min - 1px);
+
+
+// 基础组件 --------------------------------------------------------------------------------
+
+// Button
+@vui-button-size-sm: 24px;
+@vui-button-size-md: 34px;
+@vui-button-size-lg: 44px;
+
+@vui-button-font-size-sm: 12px;
+@vui-button-font-size-md: 14px;
+@vui-button-font-size-lg: 16px;
+
+@vui-button-default-border-color: #e0e0e0;
+@vui-button-default-background-color: #fff;
+@vui-button-default-font-color: #595959;
+@vui-button-default-hover-border-color: tint(#2d8cf0, 10%);
+@vui-button-default-hover-background-color: #fff;
+@vui-button-default-hover-font-color: tint(#2d8cf0, 10%);
+@vui-button-default-active-border-color: shade(#2d8cf0, 10%);
+@vui-button-default-active-background-color: #fff;
+@vui-button-default-active-font-color: shade(#2d8cf0, 10%);
+@vui-button-default-disabled-border-color: #e0e0e0;
+@vui-button-default-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-default-disabled-font-color: tint(#000, 75%);
+
+@vui-button-primary-border-color: #2d8cf0;
+@vui-button-primary-background-color: #2d8cf0;
+@vui-button-primary-font-color: #fff;
+@vui-button-primary-hover-border-color: tint(#2d8cf0, 10%);
+@vui-button-primary-hover-background-color: tint(#2d8cf0, 10%);
+@vui-button-primary-hover-font-color: #fff;
+@vui-button-primary-active-border-color: shade(#2d8cf0, 10%);
+@vui-button-primary-active-background-color: shade(#2d8cf0, 10%);
+@vui-button-primary-active-font-color: #fff;
+@vui-button-primary-disabled-border-color: #e0e0e0;
+@vui-button-primary-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-primary-disabled-font-color: tint(#000, 75%);
+
+@vui-button-info-border-color: #5bc0de;
+@vui-button-info-background-color: #5bc0de;
+@vui-button-info-font-color: #fff;
+@vui-button-info-hover-border-color: tint(#5bc0de, 10%);
+@vui-button-info-hover-background-color: tint(#5bc0de, 10%);
+@vui-button-info-hover-font-color: #fff;
+@vui-button-info-active-border-color: shade(#5bc0de, 10%);
+@vui-button-info-active-background-color: shade(#5bc0de, 10%);
+@vui-button-info-active-font-color: #fff;
+@vui-button-info-disabled-border-color: #e0e0e0;
+@vui-button-info-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-info-disabled-font-color: tint(#000, 75%);
+
+@vui-button-warning-border-color: #f0ad4e;
+@vui-button-warning-background-color: #f0ad4e;
+@vui-button-warning-font-color: #fff;
+@vui-button-warning-hover-border-color: tint(#f0ad4e, 10%);
+@vui-button-warning-hover-background-color: tint(#f0ad4e, 10%);
+@vui-button-warning-hover-font-color: #fff;
+@vui-button-warning-active-border-color: shade(#f0ad4e, 10%);
+@vui-button-warning-active-background-color: shade(#f0ad4e, 10%);
+@vui-button-warning-active-font-color: #fff;
+@vui-button-warning-disabled-border-color: #e0e0e0;
+@vui-button-warning-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-warning-disabled-font-color: tint(#000, 75%);
+
+@vui-button-success-border-color: #5cb85c;
+@vui-button-success-background-color: #5cb85c;
+@vui-button-success-font-color: #fff;
+@vui-button-success-hover-border-color: tint(#5cb85c, 10%);
+@vui-button-success-hover-background-color: tint(#5cb85c, 10%);
+@vui-button-success-hover-font-color: #fff;
+@vui-button-success-active-border-color: shade(#5cb85c, 10%);
+@vui-button-success-active-background-color: shade(#5cb85c, 10%);
+@vui-button-success-active-font-color: #fff;
+@vui-button-success-disabled-border-color: #e0e0e0;
+@vui-button-success-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-success-disabled-font-color: tint(#000, 75%);
+
+@vui-button-error-border-color: #ed5565;
+@vui-button-error-background-color: #ed5565;
+@vui-button-error-font-color: #fff;
+@vui-button-error-hover-border-color: tint(#ed5565, 10%);
+@vui-button-error-hover-background-color: tint(#ed5565, 10%);
+@vui-button-error-hover-font-color: #fff;
+@vui-button-error-active-border-color: shade(#ed5565, 10%);
+@vui-button-error-active-background-color: shade(#ed5565, 10%);
+@vui-button-error-active-font-color: #fff;
+@vui-button-error-disabled-border-color: #e0e0e0;
+@vui-button-error-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-error-disabled-font-color: tint(#000, 75%);
+
+@vui-button-dashed-border-color: #e0e0e0;
+@vui-button-dashed-background-color: #fff;
+@vui-button-dashed-font-color: #666;
+@vui-button-dashed-hover-border-color: tint(#2d8cf0, 10%);
+@vui-button-dashed-hover-background-color: #fff;
+@vui-button-dashed-hover-font-color: tint(#2d8cf0, 10%);
+@vui-button-dashed-active-border-color: shade(#2d8cf0, 10%);
+@vui-button-dashed-active-background-color: #fff;
+@vui-button-dashed-active-font-color: shade(#2d8cf0, 10%);
+@vui-button-dashed-disabled-border-color: #e0e0e0;
+@vui-button-dashed-disabled-background-color: shade(#fff, 3.5%);
+@vui-button-dashed-disabled-font-color: tint(#000, 75%);
+
+@vui-button-text-border-color: transparent;
+@vui-button-text-background-color: transparent;
+@vui-button-text-font-color: #666;
+@vui-button-text-hover-border-color: transparent;
+@vui-button-text-hover-background-color: transparent;
+@vui-button-text-hover-font-color: tint(#2d8cf0, 10%);
+@vui-button-text-active-border-color: transparent;
+@vui-button-text-active-background-color: transparent;
+@vui-button-text-active-font-color: shade(#2d8cf0, 10%);
+@vui-button-text-disabled-border-color: transparent;
+@vui-button-text-disabled-background-color: transparent;
+@vui-button-text-disabled-font-color: tint(#000, 75%);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 数据录入 --------------------------------------------------------------------------------
+
+
+// Radio
+@vui-radio-size-sm: 14px;
+@vui-radio-size-md: 16px;
+@vui-radio-size-lg: 18px;
+
+@vui-radio-font-size-sm: 12px;
+@vui-radio-font-size-md: 14px;
+@vui-radio-font-size-lg: 16px;
+
+@vui-radio-border-color: #e0e0e0;
+@vui-radio-background-color: #fff;
+@vui-radio-input-color: #2d8cf0;
+@vui-radio-font-color: #666;
+
+@vui-radio-hover-border-color: tint(#2d8cf0, 10%);
+
+@vui-radio-checked-border-color: #2d8cf0;
+
+@vui-radio-disabled-border-color: #e0e0e0;
+@vui-radio-disabled-background-color: shade(#fff, 3.5%);
+@vui-radio-disabled-input-color: shade(#e0e0e0, 10%);
+@vui-radio-disabled-font-color: tint(#000, 75%);
+
+// Radio Button
+@vui-radio-button-size-sm: 24px;
+@vui-radio-button-size-md: 34px;
+@vui-radio-button-size-lg: 44px;
+
+@vui-radio-button-font-size-sm: 12px;
+@vui-radio-button-font-size-md: 14px;
+@vui-radio-button-font-size-lg: 16px;
+
+@vui-radio-button-border-color: #e0e0e0;
+@vui-radio-button-background-color: #fff;
+@vui-radio-button-font-color: #595959;
+
+@vui-radio-button-hover-font-color: tint(#2d8cf0, 10%);
+
+@vui-radio-button-checked-border-color: #2d8cf0;
+@vui-radio-button-checked-font-color: #2d8cf0;
+
+@vui-radio-button-disabled-border-color: #e0e0e0;
+@vui-radio-button-disabled-background-color: shade(#fff, 3.5%);
+@vui-radio-button-disabled-font-color: tint(#000, 75%);
+
+
+// Checkbox
+@vui-checkbox-size-sm: 14px;
+@vui-checkbox-size-md: 16px;
+@vui-checkbox-size-lg: 18px;
+
+@vui-checkbox-font-size-sm: 12px;
+@vui-checkbox-font-size-md: 14px;
+@vui-checkbox-font-size-lg: 16px;
+
+@vui-checkbox-border-color: #e0e0e0;
+@vui-checkbox-background-color: #fff;
+@vui-checkbox-indeterminate-color: #2d8cf0;
+@vui-checkbox-input-color: #fff;
+@vui-checkbox-font-color: #595959;
+
+@vui-checkbox-hover-border-color: tint(#2d8cf0, 10%);
+
+@vui-checkbox-checked-border-color: #2d8cf0;
+@vui-checkbox-checked-background-color: #2d8cf0;
+
+@vui-checkbox-disabled-border-color: #e0e0e0;
+@vui-checkbox-disabled-background-color: shade(#fff, 3.5%);
+@vui-checkbox-disabled-indeterminate-color: shade(#e0e0e0, 10%);
+@vui-checkbox-disabled-input-color: shade(#e0e0e0, 10%);
+@vui-checkbox-disabled-font-color: tint(#000, 75%);
+
+// Checkbox Button
+@vui-checkbox-button-size-sm: 24px;
+@vui-checkbox-button-size-md: 34px;
+@vui-checkbox-button-size-lg: 44px;
+
+@vui-checkbox-button-font-size-sm: 12px;
+@vui-checkbox-button-font-size-md: 14px;
+@vui-checkbox-button-font-size-lg: 16px;
+
+@vui-checkbox-button-border-color: #e0e0e0;
+@vui-checkbox-button-background-color: #fff;
+@vui-checkbox-button-font-color: #595959;
+
+@vui-checkbox-button-hover-font-color: tint(#2d8cf0, 10%);
+
+@vui-checkbox-button-checked-border-color: #2d8cf0;
+@vui-checkbox-button-checked-font-color: #2d8cf0;
+
+@vui-checkbox-button-disabled-border-color: #e0e0e0;
+@vui-checkbox-button-disabled-background-color: shade(#fff, 3.5%);
+@vui-checkbox-button-disabled-font-color: tint(#000, 75%);
+
+
+// Switch
+@vui-switch-size-sm: 16px;
+@vui-switch-size-md: 22px;
+@vui-switch-size-lg: 28px;
+
+@vui-switch-font-size-sm: 10px;
+@vui-switch-font-size-md: 12px;
+@vui-switch-font-size-lg: 14px;
+
+@vui-switch-input-shadow-sm: 0 0 2px 0 fade(#000, 20);
+@vui-switch-input-shadow-md: 0 0 4px 0 fade(#000, 20);
+@vui-switch-input-shadow-lg: 0 0 6px 0 fade(#000, 20);
+
+@vui-switch-color: #ccc;
+
+@vui-switch-checked-color: #2d8cf0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Input 输入框
+@input-size                        : 34px;
+@input-size-lg                     : 44px;
+@input-size-sm                     : 24px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 数据展示 --------------------------------------------------------------------------------
+
+// Avatar
+@avatar-size-sm: 24px;
+@avatar-size-md: 32px;
+@avatar-size-lg: 40px;
+@avatar-background-color: #ccc;
+@avatar-font-color: #fff;
+@avatar-shape-circle: 50%;
+@avatar-shape-square: 2px;
+@avatar-font-size-sm: 12px;
+@avatar-font-size-md: 16px;
+@avatar-font-size-lg: 20px;
+
+// Badge
+@badge-dot-size: 6px;
+@badge-dot-shadow: 0 0 0 1px #fff;
+@badge-count-size: 20px;
+@badge-count-shadow: 0 0 0 1px #fff;
+@badge-count-font-size: @font-size-sm;
+
+@badge-default-color: @default-color;
+@badge-default-font-color: #595959;
+@badge-primary-color: @primary-color;
+@badge-primary-font-color: #fff;
+@badge-info-color: @info-color;
+@badge-info-font-color: #fff;
+@badge-warning-color: @warning-color;
+@badge-warning-font-color: #fff;
+@badge-success-color: @success-color;
+@badge-success-font-color: #fff;
+@badge-error-color: @error-color;
+@badge-error-font-color: #fff;
+
+@badge-status-dot-size: 6px;
+@badge-status-dot-shadow: 0 0 0 1px #fff;
+@badge-status-text-font-size: @font-size-sm;
+
+@badge-status-default-color: @default-color;
+@badge-status-default-font-color: #595959;
+@badge-status-processing-color: @processing-color;
+@badge-status-processing-font-color: #595959;
+@badge-status-warning-color: @warning-color;
+@badge-status-warning-font-color: #595959;
+@badge-status-success-color: @success-color;
+@badge-status-success-font-color: #595959;
+@badge-status-error-color: @error-color;
+@badge-status-error-font-color: #595959;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 反馈组件 --------------------------------------------------------------------------------
+
+// Drawer
+@drawer-background-color: #fff;
+@drawer-box-shadow: @box-shadow;
+@drawer-header-border-bottom: @border-width @border-style tint(@border-color, 40%);
+@drawer-header-padding: 20px;
+@drawer-body-padding: 20px;
+@drawer-footer-border-top: @border-width @border-style tint(@border-color, 40%);
+@drawer-footer-padding: 20px;
+
+// Modal
+@modal-border-radius: @border-radius;
+@modal-background-color: #fff;
+@modal-box-shadow: @box-shadow;
+@modal-header-border-bottom: @border-width @border-style tint(@border-color, 40%);
+@modal-header-padding: 20px;
+@modal-body-padding: 20px;
+@modal-footer-border-top: @border-width @border-style tint(@border-color, 40%);
+@modal-footer-padding: 20px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

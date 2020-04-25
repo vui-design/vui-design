@@ -1,0 +1,117 @@
+@vui-notice: ~"@{vui}-notice";
+
+
+@keyframes vuiNoticeLeftFadeIn {
+	0% {
+		opacity:0;
+		transform:translate(-100%, 0);
+	}
+	100% {
+		opacity:1;
+		transform:translate(0,0);
+	}
+}
+
+@keyframes vuiNoticeLeftFadeOut {
+	0% {
+		opacity:1;
+	}
+	30% {
+		opacity:1;
+	}
+	100% {
+		opacity:0;
+	}
+}
+
+@keyframes vuiNoticeRightFadeIn {
+	0% {
+		opacity:0;
+		transform:translate(100%, 0);
+	}
+	100% {
+		opacity:1;
+		transform:translate(0,0);
+	}
+}
+
+@keyframes vuiNoticeRightFadeOut {
+	0% {
+		opacity:1;
+	}
+	30% {
+		opacity:1;
+	}
+	100% {
+		opacity:0;
+	}
+}
+
+
+.vui-notice { position:fixed; box-sizing:border-box; max-width:360px; border-radius:@border-radius; background-color:@background-color; box-shadow:@box-shadow; padding:10px 15px; color:@font-color; font-size:@font-size; line-height:@line-height; transition:top @transition-duration @transition-timing-function, bottom @transition-duration @transition-timing-function; }
+.vui-notice .vui-notice-title {  }
+.vui-notice .vui-notice-description { margin-top:8px; }
+.vui-notice .vui-notice-icon { position:absolute; top:13.5px; left:15px; font-size:@font-size; line-height:1; }
+.vui-notice .vui-notice-btn-close { position:absolute; top:14.5px; right:15px; cursor:pointer; color:@font-secondary-color; font-size:@font-size-sm; line-height:1; transition:color @transition-duration @transition-timing-function; }
+.vui-notice .vui-notice-btn-close:hover { color:@font-color; }
+.vui-notice.vui-notice-with-icon { padding-left:@font-size + 25px; }
+.vui-notice.vui-notice-closable { padding-right:@font-size-sm + 25px; }
+
+
+.vui-notice-with-description { padding:15px 15px; }
+.vui-notice-with-description .vui-notice-title { color:@font-primary-color; font-size:@font-size-lg; }
+.vui-notice-with-description .vui-notice-description {  }
+.vui-notice-with-description .vui-notice-icon { top:15px; left:15px; font-size:round(@font-size-lg * @line-height) - 2px; }
+.vui-notice-with-description .vui-notice-btn-close { top:21px; right:15px; }
+.vui-notice-with-description .vui-notice-btn-close:hover {  }
+.vui-notice-with-description.vui-notice-with-icon { padding-left:round(@font-size-lg * @line-height) + 25px; }
+.vui-notice-with-description.vui-notice-closable { padding-right:@font-size-sm + 25px; }
+
+
+.vui-notice-info {  }
+.vui-notice-info .vui-notice-title {  }
+.vui-notice-info .vui-notice-description {  }
+.vui-notice-info .vui-notice-icon { color:@primary-color; }
+.vui-notice-info .vui-notice-btn-close {  }
+.vui-notice-info .vui-notice-btn-close:hover {  }
+
+.vui-notice-warning {  }
+.vui-notice-warning .vui-notice-title {  }
+.vui-notice-warning .vui-notice-description {  }
+.vui-notice-warning .vui-notice-icon { color:@warning-color; }
+.vui-notice-warning .vui-notice-btn-close {  }
+.vui-notice-warning .vui-notice-btn-close:hover {  }
+
+.vui-notice-success {  }
+.vui-notice-success .vui-notice-title {  }
+.vui-notice-success .vui-notice-description {  }
+.vui-notice-success .vui-notice-icon { color:@success-color; }
+.vui-notice-success .vui-notice-btn-close {  }
+.vui-notice-success .vui-notice-btn-close:hover {  }
+
+.vui-notice-error {  }
+.vui-notice-error .vui-notice-title {  }
+.vui-notice-error .vui-notice-description {  }
+.vui-notice-error .vui-notice-icon { color:@error-color; }
+.vui-notice-error .vui-notice-btn-close {  }
+.vui-notice-error .vui-notice-btn-close:hover {  }
+
+
+.vui-notice-top-left { top:20px; left:20px; }
+.vui-notice-top-right { top:20px; right:20px; }
+.vui-notice-bottom-left { bottom:20px; left:20px; }
+.vui-notice-bottom-right { bottom:20px; right:20px; }
+
+
+.vui-notice-fade-enter-active { animation:@animation-in-duration @animation-in-timing-function both; }
+.vui-notice-fade-leave-active { animation:@animation-out-duration @animation-out-timing-function both; }
+
+.vui-notice-top-left.vui-notice-fade-enter-active { animation-name:vuiNoticeLeftFadeIn; }
+.vui-notice-top-left.vui-notice-fade-leave-active { animation-name:vuiNoticeLeftFadeOut; }
+.vui-notice-top-right.vui-notice-fade-enter-active { animation-name:vuiNoticeRightFadeIn; }
+.vui-notice-top-right.vui-notice-fade-leave-active { animation-name:vuiNoticeRightFadeOut; }
+.vui-notice-bottom-left.vui-notice-fade-enter-active { animation-name:vuiNoticeLeftFadeIn; }
+.vui-notice-bottom-left.vui-notice-fade-leave-active { animation-name:vuiNoticeLeftFadeOut; }
+.vui-notice-bottom-right.vui-notice-fade-enter-active { animation-name:vuiNoticeRightFadeIn; }
+.vui-notice-bottom-right.vui-notice-fade-leave-active { animation-name:vuiNoticeRightFadeOut; }
+

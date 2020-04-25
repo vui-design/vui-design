@@ -1,0 +1,102 @@
+@vui-button: ~"@{vui}-button";
+
+
+@keyframes vuiButtonLoading {
+	0% { transform:rotate(0deg); }
+	50% { transform:rotate(180deg); }
+	100% { transform:rotate(360deg); }
+}
+
+
+.vui-button { position:relative; appearance:none; outline:none; cursor:pointer; display:inline-block; box-sizing:border-box; border-width:1px; border-radius:2px; margin:0; overflow:hidden; vertical-align:middle; user-select:none; white-space:nowrap; text-align:center; transition:all 0.2s; }
+.vui-button span { display:inline-block; }
+.vui-button .vui-icon { transition:margin 0.2s; }
+.vui-button .vui-icon:first-child { margin-left:0; }
+.vui-button .vui-icon:last-child { margin-right:0; }
+.vui-button:hover { z-index:1; }
+.vui-button:focus { z-index:2; }
+.vui-button:active { z-index:3; }
+.vui-button.vui-button-loading { z-index:0; pointer-events:none; }
+.vui-button.vui-button-disabled { z-index:0; cursor:not-allowed; }
+
+
+// type
+.vui-button-default { border-style:solid; border-color:@vui-button-default-border-color; background-color:@vui-button-default-background-color; color:@vui-button-default-font-color; }
+.vui-button-default:hover { border-color:@vui-button-default-hover-border-color; background-color:@vui-button-default-hover-background-color; color:@vui-button-default-hover-font-color; }
+.vui-button-default:focus { border-color:@vui-button-default-hover-border-color; background-color:@vui-button-default-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-default-hover-border-color, 15); color:@vui-button-default-hover-font-color; }
+.vui-button-default:active { border-color:@vui-button-default-active-border-color; background-color:@vui-button-default-active-background-color; color:@vui-button-default-active-font-color; }
+.vui-button-default.vui-button-loading { border-color:tint(@vui-button-default-border-color, 40%); background-color:tint(@vui-button-default-background-color, 40%); color:tint(@vui-button-default-font-color, 40%); }
+.vui-button-default.vui-button-disabled { border-color:@vui-button-default-disabled-border-color; background-color:@vui-button-default-disabled-background-color; color:@vui-button-default-disabled-font-color; }
+
+.vui-button-primary { border-style:solid; border-color:@vui-button-primary-border-color; background-color:@vui-button-primary-background-color; color:@vui-button-primary-font-color; }
+.vui-button-primary:hover { border-color:@vui-button-primary-hover-border-color; background-color:@vui-button-primary-hover-background-color; color:@vui-button-primary-hover-font-color; }
+.vui-button-primary:focus { border-color:@vui-button-primary-hover-border-color; background-color:@vui-button-primary-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-primary-hover-border-color, 15); color:@vui-button-primary-hover-font-color; }
+.vui-button-primary:active { border-color:@vui-button-primary-active-border-color; background-color:@vui-button-primary-active-background-color; color:@vui-button-primary-active-font-color; }
+.vui-button-primary.vui-button-loading { border-color:tint(@vui-button-primary-border-color, 40%); background-color:tint(@vui-button-primary-background-color, 40%); color:tint(@vui-button-primary-font-color, 40%); }
+.vui-button-primary.vui-button-disabled { border-color:@vui-button-primary-disabled-border-color; background-color:@vui-button-primary-disabled-background-color; color:@vui-button-primary-disabled-font-color; }
+
+.vui-button-info { border-style:solid; border-color:@vui-button-info-border-color; background-color:@vui-button-info-background-color; color:@vui-button-info-font-color; }
+.vui-button-info:hover { border-color:@vui-button-info-hover-border-color; background-color:@vui-button-info-hover-background-color; color:@vui-button-info-hover-font-color; }
+.vui-button-info:focus { border-color:@vui-button-info-hover-border-color; background-color:@vui-button-info-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-info-hover-border-color, 15); color:@vui-button-info-hover-font-color; }
+.vui-button-info:active { border-color:@vui-button-info-active-border-color; background-color:@vui-button-info-active-background-color; color:@vui-button-info-active-font-color; }
+.vui-button-info.vui-button-loading { border-color:tint(@vui-button-info-border-color, 40%); background-color:tint(@vui-button-info-background-color, 40%); color:tint(@vui-button-info-font-color, 40%); }
+.vui-button-info.vui-button-disabled { border-color:@vui-button-info-disabled-border-color; background-color:@vui-button-info-disabled-background-color; color:@vui-button-info-disabled-font-color; }
+
+.vui-button-warning { border-style:solid; border-color:@vui-button-warning-border-color; background-color:@vui-button-warning-background-color; color:@vui-button-warning-font-color; }
+.vui-button-warning:hover { border-color:@vui-button-warning-hover-border-color; background-color:@vui-button-warning-hover-background-color; color:@vui-button-warning-hover-font-color; }
+.vui-button-warning:focus { border-color:@vui-button-warning-hover-border-color; background-color:@vui-button-warning-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-warning-hover-border-color, 15); color:@vui-button-warning-hover-font-color; }
+.vui-button-warning:active { border-color:@vui-button-warning-active-border-color; background-color:@vui-button-warning-active-background-color; color:@vui-button-warning-active-font-color; }
+.vui-button-warning.vui-button-loading { border-color:tint(@vui-button-warning-border-color, 40%); background-color:tint(@vui-button-warning-background-color, 40%); color:tint(@vui-button-warning-font-color, 40%); }
+.vui-button-warning.vui-button-disabled { border-color:@vui-button-warning-disabled-border-color; background-color:@vui-button-warning-disabled-background-color; color:@vui-button-warning-disabled-font-color; }
+
+.vui-button-success { border-style:solid; border-color:@vui-button-success-border-color; background-color:@vui-button-success-background-color; color:@vui-button-success-font-color; }
+.vui-button-success:hover { border-color:@vui-button-success-hover-border-color; background-color:@vui-button-success-hover-background-color; color:@vui-button-success-hover-font-color; }
+.vui-button-success:focus { border-color:@vui-button-success-hover-border-color; background-color:@vui-button-success-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-success-hover-border-color, 15); color:@vui-button-success-hover-font-color; }
+.vui-button-success:active { border-color:@vui-button-success-active-border-color; background-color:@vui-button-success-active-background-color; color:@vui-button-success-active-font-color; }
+.vui-button-success.vui-button-loading { border-color:tint(@vui-button-success-border-color, 40%); background-color:tint(@vui-button-success-background-color, 40%); color:tint(@vui-button-success-font-color, 40%); }
+.vui-button-success.vui-button-disabled { border-color:@vui-button-success-disabled-border-color; background-color:@vui-button-success-disabled-background-color; color:@vui-button-success-disabled-font-color; }
+
+.vui-button-error { border-style:solid; border-color:@vui-button-error-border-color; background-color:@vui-button-error-background-color; color:@vui-button-error-font-color; }
+.vui-button-error:hover { border-color:@vui-button-error-hover-border-color; background-color:@vui-button-error-hover-background-color; color:@vui-button-error-hover-font-color; }
+.vui-button-error:focus { border-color:@vui-button-error-hover-border-color; background-color:@vui-button-error-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-error-hover-border-color, 15); color:@vui-button-error-hover-font-color; }
+.vui-button-error:active { border-color:@vui-button-error-active-border-color; background-color:@vui-button-error-active-background-color; color:@vui-button-error-active-font-color; }
+.vui-button-error.vui-button-loading { border-color:tint(@vui-button-error-border-color, 40%); background-color:tint(@vui-button-error-background-color, 40%); color:tint(@vui-button-error-font-color, 40%); }
+.vui-button-error.vui-button-disabled { border-color:@vui-button-error-disabled-border-color; background-color:@vui-button-error-disabled-background-color; color:@vui-button-error-disabled-font-color; }
+
+.vui-button-dashed { border-style:dashed; border-color:@vui-button-dashed-border-color; background-color:@vui-button-dashed-background-color; color:@vui-button-dashed-font-color; }
+.vui-button-dashed:hover { border-color:@vui-button-dashed-hover-border-color; background-color:@vui-button-dashed-hover-background-color; color:@vui-button-dashed-hover-font-color; }
+.vui-button-dashed:focus { border-color:@vui-button-dashed-hover-border-color; background-color:@vui-button-dashed-hover-background-color; box-shadow:0 0 0 2px fade(@vui-button-dashed-hover-border-color, 15); color:@vui-button-dashed-hover-font-color; }
+.vui-button-dashed:active { border-color:@vui-button-dashed-active-border-color; background-color:@vui-button-dashed-active-background-color; color:@vui-button-dashed-active-font-color; }
+.vui-button-dashed.vui-button-loading { border-color:tint(@vui-button-dashed-border-color, 40%); background-color:tint(@vui-button-dashed-background-color, 40%); color:tint(@vui-button-dashed-font-color, 40%); }
+.vui-button-dashed.vui-button-disabled { border-color:@vui-button-dashed-disabled-border-color; background-color:@vui-button-dashed-disabled-background-color; color:@vui-button-dashed-disabled-font-color; }
+
+.vui-button-text { border-style:solid; border-color:@vui-button-text-border-color; background-color:@vui-button-text-background-color; color:@vui-button-text-font-color; }
+.vui-button-text:hover { border-color:@vui-button-text-hover-border-color; background-color:@vui-button-text-hover-background-color; color:@vui-button-text-hover-font-color; }
+.vui-button-text:focus { border-color:@vui-button-text-hover-border-color; background-color:@vui-button-text-hover-background-color; box-shadow:none; color:@vui-button-text-hover-font-color; }
+.vui-button-text:active { border-color:@vui-button-text-active-border-color; background-color:@vui-button-text-active-background-color; color:@vui-button-text-active-font-color; }
+.vui-button-text.vui-button-loading { border-color:tint(@vui-button-text-border-color, 40%); background-color:tint(@vui-button-text-background-color, 40%); color:tint(@vui-button-text-font-color, 40%); }
+.vui-button-text.vui-button-disabled { border-color:@vui-button-text-disabled-border-color; background-color:@vui-button-text-disabled-background-color; color:@vui-button-text-disabled-font-color; }
+
+
+// shape & size
+.vui-button-small { height:@vui-button-size-sm; padding:0 8px; font-size:@vui-button-font-size-sm; line-height:@vui-button-size-sm - 2px; }
+.vui-button-small .vui-icon { margin:0 6px; }
+.vui-button-medium { height:@vui-button-size-md; padding:0 14px; font-size:@vui-button-font-size-md; line-height:@vui-button-size-md - 2px; }
+.vui-button-medium .vui-icon { margin:0 8px; }
+.vui-button-large { height:@vui-button-size-lg; padding:0 20px; font-size:@vui-button-font-size-lg; line-height:@vui-button-size-lg - 2px; }
+.vui-button-large .vui-icon { margin:0 10px; }
+
+.vui-button-round.vui-button-small { border-radius:@vui-button-size-sm; }
+.vui-button-round.vui-button-small .vui-icon {  }
+.vui-button-round.vui-button-medium { border-radius:@vui-button-size-md; }
+.vui-button-round.vui-button-medium .vui-icon {  }
+.vui-button-round.vui-button-large { border-radius:@vui-button-size-lg; }
+.vui-button-round.vui-button-large .vui-icon {  }
+
+.vui-button-circle.vui-button-small { width:@vui-button-size-sm; border-radius:@vui-button-size-sm; padding:0; }
+.vui-button-circle.vui-button-small .vui-icon {  }
+.vui-button-circle.vui-button-medium { width:@vui-button-size-md; border-radius:@vui-button-size-md; padding:0; }
+.vui-button-circle.vui-button-medium .vui-icon {  }
+.vui-button-circle.vui-button-large { width:@vui-button-size-lg; border-radius:@vui-button-size-lg; padding:0; }
+.vui-button-circle.vui-button-large .vui-icon {  }
+

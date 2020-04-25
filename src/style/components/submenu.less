@@ -1,0 +1,186 @@
+@vui-submenu: ~"@{vui}-submenu";
+
+
+.vui-submenu {  }
+.vui-submenu > .vui-submenu-header { position:relative; cursor:pointer; box-sizing:border-box; display:flex; padding:0 40px 0 20px; overflow:hidden; font-size:14px; transition:border-color 0.2s,background-color 0.2s,color 0.2s; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-icon { display:inline-block; margin-right:10px; vertical-align:middle; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-title { flex:1; display:inline-block; vertical-align:middle; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical { position:absolute; top:50%; right:20px; width:10px; height:2px; margin-top:-1px; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:before { content:""; top:0; left:0; position:absolute; width:6px; height:2px; transform:rotate(45deg) scaleY(0.6); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:after { content:""; top:0; right:0; position:absolute; width:6px; height:2px; transform:rotate(-45deg) scaleY(0.6); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal { position:absolute; top:50%; right:20px; width:2px; height:10px; margin-top:-5px; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { content:""; left:0; top:0; position:absolute; width:2px; height:6px; transform:rotate(-45deg) scaleX(0.6); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+.vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { content:""; left:0; bottom:0; position:absolute; width:2px; height:6px; transform:rotate(45deg) scaleX(0.6); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+
+.vui-submenu.vui-submenu-open {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-icon {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-title {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:before { transform:rotate(-45deg) scaleY(0.6); }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:after { transform:rotate(45deg) scaleY(0.6); }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal {  }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { transform:rotate(45deg) scaleX(0.6); }
+.vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { transform:rotate(-45deg) scaleX(0.6); }
+
+
+// horizontal && light
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header { border-bottom:2px solid transparent; color:#595959; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#595959; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#595959; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#595959; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#595959; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:hover { color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:active { color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header { color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header { border-bottom-color:#2d8cf0; color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header { cursor:not-allowed; pointer-events:none; border-bottom-color:transparent; color:#bfbfbf; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#bfbfbf; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#bfbfbf; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#bfbfbf; }
+.vui-menu-horizontal.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#bfbfbf; }
+
+// horizontal && dark
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header { color:rgba(255,255,255,0.7); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,0.7); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,0.7); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,0.7); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,0.7); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover { color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:active { color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header { color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header { color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#2d8cf0; }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header { cursor:not-allowed; pointer-events:none; color:rgba(255,255,255,0.3); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,0.3); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,0.3); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,0.3); }
+.vui-menu-horizontal.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,0.3); }
+
+
+// vertical && light
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header { color:#595959; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#595959; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#595959; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#595959; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#595959; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:hover { color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:active { color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header { color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#262626; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header { color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header { cursor:not-allowed; color:#bfbfbf; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#bfbfbf; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#bfbfbf; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#bfbfbf; }
+.vui-menu-vertical.vui-menu-light > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#bfbfbf; }
+
+// vertical && dark
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header { color:rgba(255,255,255,0.7); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,0.7); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,0.7); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,0.7); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,0.7); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover { color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:hover > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:active { color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu > .vui-submenu-header:active > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header { color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-open > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,1.0); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header { color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-selected > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:#2d8cf0; }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header { cursor:not-allowed; color:rgba(255,255,255,0.3); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:before { background-color:rgba(255,255,255,0.3); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-vertical:after { background-color:rgba(255,255,255,0.3); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:before { background-color:rgba(255,255,255,0.3); }
+.vui-menu-vertical.vui-menu-dark > .vui-submenu.vui-submenu-disabled > .vui-submenu-header > .vui-submenu-arrow-horizontal:after { background-color:rgba(255,255,255,0.3); }
+
+
+// collapsed
+.vui-menu-collapsed > .vui-submenu > .vui-submenu-header { padding:0 33px; }
+.vui-menu-collapsed > .vui-submenu > .vui-submenu-header > .vui-submenu-icon { margin-right:0; }
+.vui-menu-collapsed > .vui-submenu > .vui-submenu-header > .vui-submenu-title { width:0; visibility:hidden; }
+.vui-menu-collapsed > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-vertical { display:none; }
+.vui-menu-collapsed > .vui-submenu > .vui-submenu-header > .vui-submenu-arrow-horizontal { display:none; }
+
+
+// 子菜单动画基点
+.vui-submenu-body[data-placement="top-start"] { margin:5px 0; transform-origin:bottom left; }
+.vui-submenu-body[data-placement="bottom-start"] { margin:5px 0; transform-origin:top left; }
+.vui-submenu-body[data-placement="left-start"] { margin:0 5px; transform-origin:top right; }
+.vui-submenu-body[data-placement="right-start"] { margin:0 5px; transform-origin:top left; }
+
+// 子菜单纵向折叠动画
+.vui-submenu-body-collapse-enter { height:0 !important; }
+.vui-submenu-body-collapse-enter-to {  }
+.vui-submenu-body-collapse-enter-active { overflow:hidden; transition:height 0.15s ease-in-out; }
+.vui-submenu-body-collapse-leave {  }
+.vui-submenu-body-collapse-leave-to { height:0 !important; }
+.vui-submenu-body-collapse-leave-active { overflow:hidden; transition:height 0.15s ease-in-out; }
+
+// 子菜单右侧展开动画
+.vui-submenu-body-zoom-left-enter-active, .vui-submenu-body-zoom-left-leave-active { opacity:1; transform:scale(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+.vui-submenu-body-zoom-left-enter, .vui-submenu-body-zoom-left-leave-active { opacity:0; transform:scale(0.45); }
+
+// 子菜单下侧展开动画
+.vui-submenu-body-zoom-top-enter-active, .vui-submenu-body-zoom-top-leave-active { opacity:1; transform:scaleY(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+.vui-submenu-body-zoom-top-enter, .vui-submenu-body-zoom-top-leave-active { opacity:0; transform:scaleY(0.8); }
+

@@ -1,0 +1,55 @@
+@vui-input: ~"@{vui}-input";
+
+
+.vui-input { display:inline-table; border-collapse:separate; border-spacing:0; width:100%; vertical-align:middle; line-height:normal; }
+.vui-input .vui-input-prepend { display:table-cell; box-sizing:border-box; width:1px; border:@border-width @border-style @border-color; border-right-width:0; border-top-left-radius:@border-radius; border-bottom-left-radius:@border-radius; background-color:shade(@component-background-color, 3.5%); margin:0; vertical-align:middle; color:@font-color; font-family:@font-family; text-align:center; line-height:normal; white-space:nowrap; transition:all @transition-duration; }
+.vui-input .vui-input-append { display:table-cell; box-sizing:border-box; width:1px; border:@border-width @border-style @border-color; border-left-width:0; border-top-right-radius:@border-radius; border-bottom-right-radius:@border-radius; background-color:shade(@component-background-color, 3.5%); margin:0; vertical-align:middle; color:@font-color; font-family:@font-family; text-align:center; line-height:normal; white-space:nowrap; transition:all @transition-duration; }
+.vui-input .vui-input-main { position:relative; display:table-cell; box-sizing:border-box; width:100%; }
+.vui-input .vui-input-main input { position:relative; appearance:none; outline:none; display:block; box-sizing:border-box; width:100%; border:@border-width @border-style @border-color; border-radius:@border-radius; background-color:@component-background-color; margin:0; color:@font-color; font-family:@font-family; line-height:normal; transition:all @transition-duration; }
+.vui-input .vui-input-main input::-webkit-input-placeholder { color:tint(@font-color, 60%); }
+.vui-input .vui-input-main input:-moz-placeholder { color:tint(@font-color, 60%); }
+.vui-input .vui-input-main input::-moz-placeholder { color:tint(@font-color, 60%); }
+.vui-input .vui-input-main input:-ms-input-placeholder { color:tint(@font-color, 60%); }
+.vui-input .vui-input-main input:hover { z-index:1; border-color:tint(#2d8cf0, 10%); }
+.vui-input .vui-input-main input:focus { z-index:2; border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 15); }
+.vui-input .vui-input-main input:disabled { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 3.5%); color:@font-disabled-color; }
+.vui-input .vui-input-main:not(:first-child) input { border-top-left-radius:0; border-bottom-left-radius:0; }
+.vui-input .vui-input-main:not(:last-child) input { border-top-right-radius:0; border-bottom-right-radius:0; }
+.vui-input .vui-input-main .vui-input-main-prefix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-input .vui-input-main .vui-input-main-prefix .vui-icon { display:block; }
+.vui-input .vui-input-main .vui-input-main-suffix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-input .vui-input-main .vui-input-main-suffix .vui-icon { display:block; }
+
+
+.vui-input-small {  }
+.vui-input-small .vui-input-prepend { height:@input-size-sm; padding:0 6px; font-size:@font-size-sm; }
+.vui-input-small .vui-input-append { height:@input-size-sm; padding:0 6px; font-size:@font-size-sm; }
+.vui-input-small .vui-input-main {  }
+.vui-input-small .vui-input-main input { height:@input-size-sm; padding:0 6px; font-size:@font-size-sm; }
+.vui-input-small .vui-input-main input:not(:first-child) { padding-left:24px; }
+.vui-input-small .vui-input-main input:not(:last-child) { padding-right:24px; }
+.vui-input-small .vui-input-main .vui-input-main-prefix { left:7px; font-size:@font-size-sm; }
+.vui-input-small .vui-input-main .vui-input-main-suffix { right:7px; font-size:@font-size-sm; }
+
+
+.vui-input-medium {  }
+.vui-input-medium .vui-input-prepend { height:@input-size; padding:0 8px; font-size:@font-size; }
+.vui-input-medium .vui-input-append { height:@input-size; padding:0 8px; font-size:@font-size; }
+.vui-input-medium .vui-input-main {  }
+.vui-input-medium .vui-input-main input { height:@input-size; padding:0 8px; font-size:@font-size; }
+.vui-input-medium .vui-input-main input:not(:first-child) { padding-left:30px; }
+.vui-input-medium .vui-input-main input:not(:last-child) { padding-right:30px; }
+.vui-input-medium .vui-input-main .vui-input-main-prefix { left:9px; font-size:@font-size; }
+.vui-input-medium .vui-input-main .vui-input-main-suffix { right:9px; font-size:@font-size; }
+
+
+.vui-input-large {  }
+.vui-input-large .vui-input-prepend { height:@input-size-lg; padding:0 10px; font-size:@font-size-lg; }
+.vui-input-large .vui-input-append { height:@input-size-lg; padding:0 10px; font-size:@font-size-lg; }
+.vui-input-large .vui-input-main {  }
+.vui-input-large .vui-input-main input { height:@input-size-lg; padding:0 10px; font-size:@font-size-lg; }
+.vui-input-large .vui-input-main input:not(:first-child) { padding-left:36px; }
+.vui-input-large .vui-input-main input:not(:last-child) { padding-right:36px; }
+.vui-input-large .vui-input-main .vui-input-main-prefix { left:11px; font-size:@font-size-lg; }
+.vui-input-large .vui-input-main .vui-input-main-suffix { right:11px; font-size:@font-size-lg; }
+

@@ -1,0 +1,21 @@
+@vui-radio-group: ~"@{vui}-radio-group";
+
+.vui-radio-group { display:inline-block; vertical-align:middle; font-size:0; }
+
+// normal
+.vui-radio-group .vui-radio { margin-left:15px; }
+.vui-radio-group .vui-radio:first-child { margin-left:0; }
+
+.vui-radio-group .vui-radio-button { margin-left:-1px; margin-top:0; }
+.vui-radio-group .vui-radio-button:first-child { margin-left:0; border-radius:2px 0 0 2px; }
+.vui-radio-group .vui-radio-button:last-child { border-radius:0 2px 2px 0; }
+.vui-radio-group .vui-radio-button:not(:first-child):not(:last-child) { border-radius:0; }
+
+// vertical
+.vui-radio-group-vertical .vui-radio { display:block; margin-left:0; margin-top:15px; }
+.vui-radio-group-vertical .vui-radio:first-child { margin-top:0; }
+
+.vui-radio-group-vertical .vui-radio-button { display:block; margin-left:0; margin-top:-1px; }
+.vui-radio-group-vertical .vui-radio-button:first-child { margin-top:0; border-radius:2px 2px 0 0; }
+.vui-radio-group-vertical .vui-radio-button:last-child { border-radius:0 0 2px 2px; }
+.vui-radio-group-vertical .vui-radio-button:not(:first-child):not(:last-child) { border-radius:0; }

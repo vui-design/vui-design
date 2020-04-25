@@ -1,0 +1,116 @@
+@vui-progress: ~"@{vui}-progress";
+
+
+@keyframes vuiProgressActive {
+	0% { background-position:0 0; }
+	100% { background-position:40px 0; }
+}
+
+
+// line
+.vui-progress-line { position:relative; display:block; white-space:nowrap; font-size:0; }
+.vui-progress-line .vui-progress-main { display:inline-block; box-sizing:border-box; width:100%; vertical-align:middle; }
+.vui-progress-line .vui-progress-main-track { width:100%; border-radius:100px; background-color:transparent; overflow:hidden; }
+.vui-progress-line .vui-progress-main-thumb { position:relative; width:0%; border-radius:100px; background-color:transparent; transition:all 0.2s; }
+.vui-progress-line .vui-progress-info { display:inline-block; margin-left:-40px; vertical-align:middle; line-height:1; color:#676a6c; font-size:14px; }
+
+.vui-progress-line.vui-progress-small .vui-progress-main {  }
+.vui-progress-line.vui-progress-small .vui-progress-main-track { height:6px; }
+.vui-progress-line.vui-progress-small .vui-progress-main-thumb { height:6px; }
+.vui-progress-line.vui-progress-small .vui-progress-info { font-size:12px; }
+.vui-progress-line.vui-progress-medium .vui-progress-main {  }
+.vui-progress-line.vui-progress-medium .vui-progress-main-track { height:8px; }
+.vui-progress-line.vui-progress-medium .vui-progress-main-thumb { height:8px; }
+.vui-progress-line.vui-progress-medium .vui-progress-info { font-size:14px; }
+.vui-progress-line.vui-progress-large .vui-progress-main {  }
+.vui-progress-line.vui-progress-large .vui-progress-main-track { height:10px; }
+.vui-progress-line.vui-progress-large .vui-progress-main-thumb { height:10px; }
+.vui-progress-line.vui-progress-large .vui-progress-info { font-size:16px; }
+
+.vui-progress-line.vui-progress-status-normal .vui-progress-main {  }
+.vui-progress-line.vui-progress-status-normal .vui-progress-main-track { background-color:#f5f5f5; }
+.vui-progress-line.vui-progress-status-normal .vui-progress-main-thumb { background-color:#2d8cf0; }
+.vui-progress-line.vui-progress-status-normal .vui-progress-info { color:#595959; }
+.vui-progress-line.vui-progress-status-active .vui-progress-main {  }
+.vui-progress-line.vui-progress-status-active .vui-progress-main-track { background-color:#f5f5f5; }
+.vui-progress-line.vui-progress-status-active .vui-progress-main-thumb { background-color:#2d8cf0; background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent 100%); background-size:40px 40px; animation:vuiProgressActive 2s linear infinite; }
+.vui-progress-line.vui-progress-status-active .vui-progress-info { color:#595959; }
+.vui-progress-line.vui-progress-status-exception .vui-progress-main {  }
+.vui-progress-line.vui-progress-status-exception .vui-progress-main-track { background-color:#f5f5f5; }
+.vui-progress-line.vui-progress-status-exception .vui-progress-main-thumb { background-color:#ed5565; }
+.vui-progress-line.vui-progress-status-exception .vui-progress-info { color:#ed5565; }
+.vui-progress-line.vui-progress-status-success .vui-progress-main {  }
+.vui-progress-line.vui-progress-status-success .vui-progress-main-track { background-color:#f5f5f5; }
+.vui-progress-line.vui-progress-status-success .vui-progress-main-thumb { background-color:#5cb85c; }
+.vui-progress-line.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
+
+.vui-progress-line.vui-progress-with-info .vui-progress-main { padding-right:50px; }
+
+
+// circle
+.vui-progress-circle { position:relative; display:inline-block; vertical-align:middle; font-size:0; }
+.vui-progress-circle .vui-progress-main { display:block; width:100%; height:100%; }
+.vui-progress-circle .vui-progress-main-track { fill:none; fill-opacity:0; stroke:transparent; }
+.vui-progress-circle .vui-progress-main-thumb { fill:none; fill-opacity:0; stroke:transparent; transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s; }
+.vui-progress-circle .vui-progress-info { position:absolute; top:50%; left:0; right:0; width:100%; text-align:center; line-height:1; transform:translateY(-50%); }
+
+.vui-progress-circle.vui-progress-small .vui-progress-main {  }
+.vui-progress-circle.vui-progress-small .vui-progress-main-track {  }
+.vui-progress-circle.vui-progress-small .vui-progress-main-thumb {  }
+.vui-progress-circle.vui-progress-small .vui-progress-info { font-size:16px; }
+.vui-progress-circle.vui-progress-medium .vui-progress-main {  }
+.vui-progress-circle.vui-progress-medium .vui-progress-main-track {  }
+.vui-progress-circle.vui-progress-medium .vui-progress-main-thumb {  }
+.vui-progress-circle.vui-progress-medium .vui-progress-info { font-size:20px; }
+.vui-progress-circle.vui-progress-large .vui-progress-main {  }
+.vui-progress-circle.vui-progress-large .vui-progress-main-track {  }
+.vui-progress-circle.vui-progress-large .vui-progress-main-thumb {  }
+.vui-progress-circle.vui-progress-large .vui-progress-info { font-size:24px; }
+
+.vui-progress-circle.vui-progress-status-normal .vui-progress-main {  }
+.vui-progress-circle.vui-progress-status-normal .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-circle.vui-progress-status-normal .vui-progress-main-thumb { stroke:#2d8cf0; }
+.vui-progress-circle.vui-progress-status-normal .vui-progress-info { color:#595959; }
+.vui-progress-circle.vui-progress-status-exception .vui-progress-main {  }
+.vui-progress-circle.vui-progress-status-exception .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-circle.vui-progress-status-exception .vui-progress-main-thumb { stroke:#ed5565; }
+.vui-progress-circle.vui-progress-status-exception .vui-progress-info { color:#ed5565; }
+.vui-progress-circle.vui-progress-status-success .vui-progress-main {  }
+.vui-progress-circle.vui-progress-status-success .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-circle.vui-progress-status-success .vui-progress-main-thumb { stroke:#5cb85c; }
+.vui-progress-circle.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
+
+
+// dashboard
+.vui-progress-dashboard { position:relative; display:inline-block; vertical-align:middle; font-size:0; }
+.vui-progress-dashboard .vui-progress-main { display:block; width:100%; height:100%; }
+.vui-progress-dashboard .vui-progress-main-track { fill:none; fill-opacity:0; stroke:transparent; }
+.vui-progress-dashboard .vui-progress-main-thumb { fill:none; fill-opacity:0; stroke:transparent; transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s; }
+.vui-progress-dashboard .vui-progress-info { position:absolute; top:50%; left:0; right:0; width:100%; text-align:center; line-height:1; transform:translateY(-50%); }
+
+.vui-progress-dashboard.vui-progress-small .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-small .vui-progress-main-track {  }
+.vui-progress-dashboard.vui-progress-small .vui-progress-main-thumb {  }
+.vui-progress-dashboard.vui-progress-small .vui-progress-info { font-size:16px; }
+.vui-progress-dashboard.vui-progress-medium .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-medium .vui-progress-main-track {  }
+.vui-progress-dashboard.vui-progress-medium .vui-progress-main-thumb {  }
+.vui-progress-dashboard.vui-progress-medium .vui-progress-info { font-size:20px; }
+.vui-progress-dashboard.vui-progress-large .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-large .vui-progress-main-track {  }
+.vui-progress-dashboard.vui-progress-large .vui-progress-main-thumb {  }
+.vui-progress-dashboard.vui-progress-large .vui-progress-info { font-size:24px; }
+
+.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main-thumb { stroke:#2d8cf0; }
+.vui-progress-dashboard.vui-progress-status-normal .vui-progress-info { color:#595959; }
+.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main-thumb { stroke:#ed5565; }
+.vui-progress-dashboard.vui-progress-status-exception .vui-progress-info { color:#ed5565; }
+.vui-progress-dashboard.vui-progress-status-success .vui-progress-main {  }
+.vui-progress-dashboard.vui-progress-status-success .vui-progress-main-track { stroke:#f5f5f5; }
+.vui-progress-dashboard.vui-progress-status-success .vui-progress-main-thumb { stroke:#5cb85c; }
+.vui-progress-dashboard.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
+

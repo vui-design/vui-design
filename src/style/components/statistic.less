@@ -1,0 +1,75 @@
+@vui-statistic: ~"@{vui}-statistic";
+
+.@{vui-statistic} {
+	box-sizing:border-box;
+
+	&-header {
+		display:flex;
+		align-items:center; 
+		margin-bottom:15px;
+		line-height:1;
+	}
+
+	&-title {
+		flex:1;
+		width:0;
+		overflow:hidden;
+		color:@font-secondary-color;
+		font-size:@font-size;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+	}
+
+	&-extra {
+		margin-left:10px;
+		color:@font-secondary-color;
+		font-size:@font-size;
+	}
+
+	&-main {
+		color:@font-primary-color;
+		font-size:@font-size + 10px;
+		font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		line-height:1;
+	}
+
+	&-prefix {
+		cursor:inherit;
+		display:inline-block;
+		margin-right:5px;
+		vertical-align:bottom;
+
+		.@{vui}-icon {
+			display:block;
+		}
+	}
+
+	&-suffix {
+		cursor:inherit;
+		display:inline-block;
+		margin-left:5px;
+		vertical-align:bottom;
+		font-size:@font-size + 2px;
+
+		.@{vui}-icon {
+			display:block;
+		}
+	}
+
+	&-value {
+		cursor:inherit;
+		display:inline-block;
+		vertical-align:bottom;
+
+		big {
+			display:inline-block;
+			vertical-align:bottom;
+			font-size:inherit;
+		}
+		small {
+			display:inline-block;
+			vertical-align:bottom;
+			font-size:@font-size + 2px;
+		}
+	}
+}

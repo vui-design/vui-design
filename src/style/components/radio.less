@@ -1,0 +1,86 @@
+@vui-radio: ~"@{vui}-radio";
+
+
+
+
+
+.vui-radio { cursor:pointer; display:inline-block; vertical-align:middle; color:@vui-radio-font-color; line-height:1; user-select:none; white-space:nowrap; }
+.vui-radio .vui-radio-input { position:relative; cursor:inherit; display:inline-block; box-sizing:border-box; border:1px solid @vui-radio-border-color; border-radius:50%; background-color:@vui-radio-background-color; vertical-align:middle; transition:all 0.2s; }
+.vui-radio .vui-radio-input svg { position:absolute; top:50%; left:50%; opacity:0; transform:scale(0); fill:@vui-radio-input-color; transition:all 0.2s; }
+.vui-radio .vui-radio-input input[type="radio"] { position:absolute; top:0; bottom:0; left:0; right:0; cursor:inherit; width:100%; height:100%; margin:0; padding:0; opacity:0; appearance:none; }
+.vui-radio .vui-radio-label { cursor:inherit; display:inline-block; vertical-align:middle; }
+
+// size
+.vui-radio.vui-radio-small { font-size:@vui-radio-font-size-sm; }
+.vui-radio.vui-radio-small .vui-radio-input { width:@vui-radio-size-sm; height:@vui-radio-size-sm; }
+.vui-radio.vui-radio-small .vui-radio-input svg { width:@vui-radio-size-sm - 8px; height:@vui-radio-size-sm - 8px; margin-top:-((@vui-radio-size-sm - 8px) / 2); margin-left:-((@vui-radio-size-sm - 8px) / 2); }
+.vui-radio.vui-radio-small .vui-radio-label { padding-left:@vui-radio-size-sm - 8px; }
+.vui-radio.vui-radio-medium { font-size:@vui-radio-font-size-md; }
+.vui-radio.vui-radio-medium .vui-radio-input { width:@vui-radio-size-md; height:@vui-radio-size-md; }
+.vui-radio.vui-radio-medium .vui-radio-input svg { width:@vui-radio-size-md - 8px; height:@vui-radio-size-md - 8px; margin-top:-((@vui-radio-size-md - 8px) / 2); margin-left:-((@vui-radio-size-md - 8px) / 2); }
+.vui-radio.vui-radio-medium .vui-radio-label { padding-left:@vui-radio-size-md - 8px; }
+.vui-radio.vui-radio-large { font-size:@vui-radio-font-size-lg; }
+.vui-radio.vui-radio-large .vui-radio-input { width:@vui-radio-size-lg; height:@vui-radio-size-lg; }
+.vui-radio.vui-radio-large .vui-radio-input svg { width:@vui-radio-size-lg - 8px; height:@vui-radio-size-lg - 8px; margin-top:-((@vui-radio-size-lg - 8px) / 2); margin-left:-((@vui-radio-size-lg - 8px) / 2); }
+.vui-radio.vui-radio-large .vui-radio-label { padding-left:@vui-radio-size-lg - 8px; }
+
+// hovered
+.vui-radio:hover {  }
+.vui-radio:hover .vui-radio-input { border-color:@vui-radio-hover-border-color; }
+.vui-radio:hover .vui-radio-input svg {  }
+
+// focused
+.vui-radio.vui-radio-focused {  }
+.vui-radio.vui-radio-focused .vui-radio-input { border-color:@vui-radio-hover-border-color; box-shadow:0 0 0 2px fade(@vui-radio-hover-border-color, 15); }
+.vui-radio.vui-radio-focused .vui-radio-input svg {  }
+
+// checked
+.vui-radio.vui-radio-checked {  }
+.vui-radio.vui-radio-checked .vui-radio-input { border-color:@vui-radio-checked-border-color; }
+.vui-radio.vui-radio-checked .vui-radio-input svg { opacity:1; transform:scale(1); }
+
+// disabled
+.vui-radio.vui-radio-disabled { cursor:not-allowed; color:@vui-radio-disabled-font-color; }
+.vui-radio.vui-radio-disabled .vui-radio-input { border-color:@vui-radio-disabled-border-color; background-color:@vui-radio-disabled-background-color; }
+.vui-radio.vui-radio-disabled .vui-radio-input svg { fill:@vui-radio-disabled-input-color; }
+
+// checked & disabled
+.vui-radio.vui-radio-checked.vui-radio-disabled {  }
+.vui-radio.vui-radio-checked.vui-radio-disabled .vui-radio-input {  }
+.vui-radio.vui-radio-checked.vui-radio-disabled .vui-radio-input svg {  }
+
+
+
+
+
+.vui-radio-button { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; border:1px solid @vui-radio-button-border-color; border-radius:2px; background-color:@vui-radio-button-background-color; margin:0; vertical-align:middle; color:@vui-radio-button-font-color; font-weight:400; user-select:none; white-space:nowrap; text-align:center; transition:all 0.2s; }
+.vui-radio-button .vui-radio-input { position:absolute; top:0; bottom:0; left:0; right:0; cursor:inherit; width:100%; height:100%; margin:0; padding:0; opacity:0; }
+.vui-radio-button .vui-radio-input input[type="radio"] { position:absolute; top:0; bottom:0; left:0; right:0; cursor:inherit; width:100%; height:100%; margin:0; padding:0; opacity:0; appearance:none; }
+.vui-radio-button .vui-radio-label { cursor:inherit; display:block; }
+
+// size
+.vui-radio-button.vui-radio-small { height:@vui-radio-button-size-sm; padding:0 8px; font-size:@vui-radio-button-font-size-sm; line-height:@vui-radio-button-size-sm - 2px; }
+.vui-radio-button.vui-radio-medium { height:@vui-radio-button-size-md; padding:0 14px; font-size:@vui-radio-button-font-size-md; line-height:@vui-radio-button-size-md - 2px; }
+.vui-radio-button.vui-radio-large { height:@vui-radio-button-size-lg; padding:0 20px; font-size:@vui-radio-button-font-size-lg; line-height:@vui-radio-button-size-lg - 2px; }
+
+// hovered
+.vui-radio-button:hover { z-index:1; color:@vui-radio-button-hover-font-color; }
+
+// focused
+.vui-radio-button.vui-radio-focused { z-index:2; color:@vui-radio-button-hover-font-color; }
+
+// checked
+.vui-radio-button.vui-radio-checked { z-index:3; border-color:@vui-radio-button-checked-border-color; color:@vui-radio-button-checked-font-color; }
+
+// focused & checked
+.vui-radio-button.vui-radio-focused.vui-radio-checked { z-index:4; box-shadow:0 0 0 2px fade(@vui-radio-button-checked-border-color, 10); }
+
+// disabled
+.vui-radio-button.vui-radio-disabled { z-index:0; cursor:not-allowed; border-color:@vui-radio-button-disabled-border-color; background-color:@vui-radio-button-disabled-background-color; color:@vui-radio-button-disabled-font-color; }
+
+// checked & disabled
+.vui-radio-button.vui-radio-checked.vui-radio-disabled { background-color:shade(@vui-radio-button-disabled-background-color, 5%); }
+
+
+
+

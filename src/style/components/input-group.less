@@ -1,0 +1,28 @@
+@vui-input-group: ~"@{vui}-input-group";
+@vui-input-group-compact: ~"@{vui}-input-group-compact";
+
+
+.vui-input-group {  }
+.vui-input-group:before,
+.vui-input-group:after { content:""; display:block; width:100%; height:0; overflow:hidden; visibility:hidden; clear:both; }
+
+
+.vui-input-group .vui-button { float:left; }
+.vui-input-group .vui-button:not(:last-child) { margin-right:10px; }
+
+
+.vui-input-group .vui-input { float:left; width:auto; }
+.vui-input-group .vui-input:not(:last-child) { margin-right:10px; }
+
+
+.vui-input-group-compact .vui-button:not(:last-child) { margin-right:-1px; }
+.vui-input-group-compact .vui-button:first-child { border-top-right-radius:0; border-bottom-right-radius:0; }
+.vui-input-group-compact .vui-button:last-child { border-top-left-radius:0; border-bottom-left-radius:0; }
+.vui-input-group-compact .vui-button:not(:first-child):not(:last-child) { border-radius:0; }
+
+
+.vui-input-group-compact .vui-input:not(:last-child) { margin-right:-1px; }
+.vui-input-group-compact .vui-input:first-child .vui-input-main input { border-top-right-radius:0; border-bottom-right-radius:0; }
+.vui-input-group-compact .vui-input:last-child .vui-input-main input { border-top-left-radius:0; border-bottom-left-radius:0; }
+.vui-input-group-compact .vui-input:not(:first-child):not(:last-child) .vui-input-main input { border-radius:0; }
+
