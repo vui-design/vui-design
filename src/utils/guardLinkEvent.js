@@ -31,5 +31,5 @@ export default function guardLinkEvent(e) {
 		e.preventDefault();
 	}
 
-	return true
+	return true;
 };

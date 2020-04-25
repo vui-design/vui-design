@@ -1,6 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
 import Portal from "vui-design/directives/portal";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import Popup from "vui-design/utils/popup";
 
 const VuiMessage = {
@@ -22,7 +23,7 @@ const VuiMessage = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-message"
+			default: undefined
 		},
 		type: {
 			type: String,
@@ -32,7 +33,7 @@ const VuiMessage = {
 			}
 		},
 		content: {
-			type: [String, Function],
+			type: [String, Object, Function],
 			default: undefined
 		},
 		icon: {
@@ -49,7 +50,7 @@ const VuiMessage = {
 		},
 		top: {
 			type: [String, Number],
-			default: "20px"
+			default: 20
 		},
 		visible: {
 			type: Boolean,
@@ -92,11 +93,11 @@ const VuiMessage = {
 	methods: {
 		open() {
 			this.defaultVisible = true;
-			this.$emit("change", true);
+			this.$emit("change", this.defaultVisible);
 		},
 		close() {
 			this.defaultVisible = false;
-			this.$emit("change", false);
+			this.$emit("change", this.defaultVisible);
 		},
 
 		handleBtnCloseClick() {
@@ -117,26 +118,24 @@ const VuiMessage = {
 		}
 	},
 
-	render() {
-		let { $slots, classNamePrefix, type, closable, closeText, zIndex, top, defaultVisible, animation, getPopupContainer } = this;
+	render(h) {
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, type, closable, closeText, top, zIndex, defaultVisible, animation, getPopupContainer } = this;
 		let { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
 		let portal = getPopupContainer();
 
-		// content
 		let content;
 
-		if ($slots.default) {
-			content = $slots.default;
+		if (slots.default) {
+			content = slots.default;
 		}
 		else if (this.content) {
 			content = is.function(this.content) ? this.content(h) : this.content;
 		}
 
-		// icon
 		let icon;
 
-		if ($slots.icon) {
-			icon = $slots.icon;
+		if (slots.icon) {
+			icon = slots.icon;
 		}
 		else if (this.icon) {
 			icon = (
@@ -144,7 +143,6 @@ const VuiMessage = {
 			);
 		}
 
-		// btnClose
 		let btnClose;
 
 		if (closable) {
@@ -158,7 +156,7 @@ const VuiMessage = {
 			}
 		}
 
-		// classes
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "message");
 		let classes = {};
 
 		classes.el = {
@@ -167,36 +165,32 @@ const VuiMessage = {
 			[`${classNamePrefix}-with-icon`]: icon,
 			[`${classNamePrefix}-closable`]: closable
 		};
-		classes.content = `${classNamePrefix}-content`;
-		classes.icon = `${classNamePrefix}-icon`;
-		classes.btnClose = `${classNamePrefix}-btn-close`;
+		classes.elContent = `${classNamePrefix}-content`;
+		classes.elIcon = `${classNamePrefix}-icon`;
+		classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
-		// styles
 		let styles = {};
 
 		styles.el = {
-			zIndex,
-			top: is.string(top) ? top : `${top}px`
+			top: `${top}px`,
+			zIndex
 		};
 
-		// render
 		let children = [];
 
 		children.push(
-			<div class={classes.content}>
-				{content}
-			</div>
+			<div class={classes.elContent}>{content}</div>
 		);
 
 		if (icon) {
 			children.push(
-				<div class={classes.icon}>{icon}</div>
+				<div class={classes.elIcon}>{icon}</div>
 			);
 		}
 
 		if (closable) {
 			children.push(
-				<div class={classes.btnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
+				<div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
 			);
 		}
 

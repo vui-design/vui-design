@@ -1,0 +1,38 @@
+@vui-tree: ~"@{vui}-tree";
+
+
+// --------------------------------------------------
+// tree
+.vui-tree {  }
+
+
+// --------------------------------------------------
+// tree-node
+.vui-tree-node { line-height:1; }
+.vui-tree-node .vui-tree-node-switch { display:inline-block; width:24px; height:28px; vertical-align:middle; text-align:center; line-height:28px; }
+.vui-tree-node .vui-tree-node-checkbox { display:inline-block; height:28px; padding:0 4px; vertical-align:middle; font-size:0; text-align:center; line-height:28px; }
+.vui-tree-node .vui-tree-node-icon { display:inline-block; height:28px; padding:0 4px; vertical-align:middle; text-align:center; line-height:28px; }
+.vui-tree-node .vui-tree-node-title { cursor:pointer; display:inline-block; height:24px; border-radius:2px; padding:0 4px; vertical-align:middle; text-align:center; line-height:24px; transition:all 0.2s; }
+.vui-tree-node .vui-tree-node-children { display:block; padding-left:24px; }
+.vui-tree-node .vui-tree-node-children-enter { height:0 !important; }
+.vui-tree-node .vui-tree-node-children-enter-to {  }
+.vui-tree-node .vui-tree-node-children-enter-active { overflow:hidden; transition:height 0.15s ease-in-out; }
+.vui-tree-node .vui-tree-node-children-leave {  }
+.vui-tree-node .vui-tree-node-children-leave-to { height:0 !important; }
+.vui-tree-node .vui-tree-node-children-leave-active { overflow:hidden; transition:height 0.15s ease-in-out; }
+
+
+.vui-tree-node { background:url("./images/tree/line.png") repeat-y 0 0; }
+.vui-tree-node:last-child { background:none; }
+
+
+.vui-tree-node > .vui-tree-node-switch { cursor:default; background:url("./images/tree/leaf.png") no-repeat 50% 50%; }
+.vui-tree-node-open > .vui-tree-node-switch { cursor:pointer; background:url("./images/tree/fork-open.png") no-repeat 50% 50%; }
+.vui-tree-node-close > .vui-tree-node-switch { cursor:pointer; background:url("./images/tree/fork-close.png") no-repeat 50% 50%; }
+
+
+.vui-tree-node-title:hover { background-color:#f9f9f9; }
+.vui-tree-node-title.vui-tree-node-title-selected { background-color:#e6f7ff; }
+
+
+

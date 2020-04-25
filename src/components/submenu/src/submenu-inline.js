@@ -101,7 +101,7 @@ const VuiSubmenuInline = {
 					onAfterLeave={handleBodyAfterLeave}
 				>
 					<div ref="body" v-show={open} class={`${classNamePrefix}-body`}>
-						<div class={[`vui-menu`, `vui-menu-inline`, `vui-menu-vertical`, `vui-menu-${theme}`]}>{$slots.default}</div>
+						{$slots.default}
 					</div>
 				</transition>
 			</div>

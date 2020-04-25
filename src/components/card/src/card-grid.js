@@ -1,19 +1,24 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiCardGrid = {
 	name: "vui-card-grid",
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-card-grid"
+			default: undefined
 		}
 	},
 
+	isCardGrid: true,
+
 	render(h) {
-		let { $slots, classNamePrefix } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "card-grid");
 
 		return (
 			<div class={`${classNamePrefix}`}>
-				{$slots.default}
+				{slots.default}
 			</div>
 		);
 	}

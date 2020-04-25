@@ -1,5 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
+import is from "vui-design/utils/is";
 import getScrollBarSize from "vui-design/utils/getScrollBarSize";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 if (typeof window !== "undefined") {
 	const matchMediaPolyfill = mediaQuery => {
@@ -38,21 +40,21 @@ const VuiSider = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-sider"
+			default: undefined
 		},
 		theme: {
 			type: String,
 			default: "light",
-			validator(value) {
-				return ["light", "dark"].indexOf(value) > -1;
-			}
+			validator: value => ["light", "dark"].indexOf(value) > -1
 		},
 		breakpoint: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["xs", "sm", "md", "lg", "xl", "xxl"].indexOf(value) > -1;
-			}
+			validator: value => ["xs", "sm", "md", "lg", "xl", "xxl"].indexOf(value) > -1
+		},
+		width: {
+			type: [String, Number],
+			default: 200
 		},
 		collapsible: {
 			type: Boolean,
@@ -62,10 +64,6 @@ const VuiSider = {
 			type: Boolean,
 			default: false
 		},
-		width: {
-			type: [String, Number],
-			default: 200
-		},
 		collapsedWidth: {
 			type: [String, Number],
 			default: 80
@@ -73,6 +71,10 @@ const VuiSider = {
 		showTrigger: {
 			type: Boolean,
 			default: true
+		},
+		trigger: {
+			type: String,
+			default: undefined
 		}
 	},
 
@@ -100,9 +102,6 @@ const VuiSider = {
 	watch: {
 		collapsed(value) {
 			this.defaultCollapsed = value;
-		},
-		defaultCollapsed(value) {
-			this.$emit("collapse", value);
 		}
 	},
 
@@ -110,9 +109,11 @@ const VuiSider = {
 		responsive() {
 			this.matches = this.mediaQueryList.matches;
 			this.defaultCollapsed = this.defaultCollapsed !== this.matches ? this.matches : this.defaultCollapsed;
+			this.$emit("collapse", this.defaultCollapsed);
 		},
 		toggle() {
 			this.defaultCollapsed = !this.defaultCollapsed;
+			this.$emit("collapse", this.defaultCollapsed);
 		},
 		handleTriggerClick() {
 			this.toggle();
@@ -133,37 +134,39 @@ const VuiSider = {
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, theme, collapsible, defaultCollapsed, showTrigger, matches, handleTriggerClick } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, theme, collapsible, defaultCollapsed, showTrigger, matches, handleTriggerClick } = this;
 
 		// width
 		let width;
 
 		if (defaultCollapsed) {
-			width = this.collapsedWidth;
+			width = is.string(this.collapsedWidth) ? this.collapsedWidth : `${this.collapsedWidth}px`;
 		}
 		else {
-			width = this.width;
+			width = is.string(this.width) ? this.width : `${this.width}px`;
 		}
 
-		// classes
+		// class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "sider");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
+			[`${classNamePrefix}-with-trigger`]: showTrigger,
 			[`${classNamePrefix}-${theme}`]: theme
 		};
 		classes.elChildren = `${classNamePrefix}-children`;
 		classes.elChildrenScrollbar = `${classNamePrefix}-children-scrollbar`;
 		classes.elTrigger = `${classNamePrefix}-trigger`;
 
-		// styles
+		// style
 		let styles = {};
 
 		styles.el = {
-			flex: `0 0 ${width}px`,
-			width: `${width}px`,
-			minWidth: `${width}px`,
-			maxWidth: `${width}px`
+			flex: `0 0 ${width}`,
+			width: `${width}`,
+			minWidth: `${width}`,
+			maxWidth: `${width}`
 		};
 		styles.elChildrenScrollbar = {
 			marginRight: `-${getScrollBarSize()}px`
@@ -175,7 +178,7 @@ const VuiSider = {
 		children.push(
 			<div class={classes.elChildren}>
 				<div class={classes.elChildrenScrollbar} style={styles.elChildrenScrollbar}>
-					{$slots.default}
+					{slots.default}
 				</div>
 			</div>
 		);

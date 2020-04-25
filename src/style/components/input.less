@@ -6,19 +6,19 @@
 .vui-input .vui-input-append { display:table-cell; box-sizing:border-box; width:1px; border:@border-width @border-style @border-color; border-left-width:0; border-top-right-radius:@border-radius; border-bottom-right-radius:@border-radius; background-color:shade(@component-background-color, 3.5%); margin:0; vertical-align:middle; color:@font-color; font-family:@font-family; text-align:center; line-height:normal; white-space:nowrap; transition:all @transition-duration; }
 .vui-input .vui-input-main { position:relative; display:table-cell; box-sizing:border-box; width:100%; }
 .vui-input .vui-input-main input { position:relative; appearance:none; outline:none; display:block; box-sizing:border-box; width:100%; border:@border-width @border-style @border-color; border-radius:@border-radius; background-color:@component-background-color; margin:0; color:@font-color; font-family:@font-family; line-height:normal; transition:all @transition-duration; }
-.vui-input .vui-input-main input::-webkit-input-placeholder { color:tint(@font-color, 60%); }
-.vui-input .vui-input-main input:-moz-placeholder { color:tint(@font-color, 60%); }
-.vui-input .vui-input-main input::-moz-placeholder { color:tint(@font-color, 60%); }
-.vui-input .vui-input-main input:-ms-input-placeholder { color:tint(@font-color, 60%); }
-.vui-input .vui-input-main input:hover { z-index:1; border-color:tint(#2d8cf0, 10%); }
+.vui-input .vui-input-main input:hover, .vui-input .vui-input-main:hover input { z-index:1; border-color:tint(#2d8cf0, 10%); }
 .vui-input .vui-input-main input:focus { z-index:2; border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 15); }
 .vui-input .vui-input-main input:disabled { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 3.5%); color:@font-disabled-color; }
 .vui-input .vui-input-main:not(:first-child) input { border-top-left-radius:0; border-bottom-left-radius:0; }
 .vui-input .vui-input-main:not(:last-child) input { border-top-right-radius:0; border-bottom-right-radius:0; }
-.vui-input .vui-input-main .vui-input-main-prefix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-input .vui-input-main .vui-input-main-prefix { position:absolute; top:50%; z-index:3; display:block; color:@font-disabled-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
 .vui-input .vui-input-main .vui-input-main-prefix .vui-icon { display:block; }
-.vui-input .vui-input-main .vui-input-main-suffix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-input .vui-input-main .vui-input-main-suffix { position:absolute; top:50%; z-index:3; display:block; color:@font-disabled-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
 .vui-input .vui-input-main .vui-input-main-suffix .vui-icon { display:block; }
+.vui-input .vui-input-btn-toggle { cursor:pointer; transition:all 0.2s; }
+.vui-input .vui-input-btn-toggle:hover { color:@font-color; }
+.vui-input .vui-input-btn-clear { cursor:pointer; transition:all 0.2s; }
+.vui-input .vui-input-btn-clear:hover { color:@font-color; }
 
 
 .vui-input-small {  }

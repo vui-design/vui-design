@@ -1,0 +1,124 @@
+@vui-page-header: ~"@{vui}-page-header";
+
+.@{vui-page-header} {
+	background-color:#fff;
+	padding:20px;
+
+	&&-with-footer {
+		padding-bottom:0;
+	}
+	&&-ghost {
+		background-color:transparent;
+	}
+
+	&-breadcrumb {
+		margin-bottom:16px;
+	}
+
+	&-header {
+		.clearfix;
+	}
+
+	&-back {
+		float:left;
+		cursor:pointer;
+		margin:9px 16px 9px 0;
+		color:@font-color;
+		font-size:16px;
+		transition:color 0.2s;
+
+		.vui-icon {
+			display:block;
+		}
+
+		&:hover {
+			color:@link-hover-color;
+		}
+		&:active {
+			color:@link-active-color;
+		}
+	}
+
+	&-avatar {
+		float:left;
+		margin:1px 16px 1px 0;
+	}
+
+	&-title {
+		float:left;
+		height:34px;
+		margin-right:16px;
+		color:@font-primary-color;
+		font-size:20px;
+		font-weight:600;
+		font-family:-webkit-pictograph;
+		line-height:34px;
+	}
+
+	&-sub-title {
+		float:left;
+		height:34px;
+		margin-right:16px;
+		color:@font-disabled-color;
+		font-size:14px;
+		line-height:34px;
+	}
+
+	&-tags { 
+		float:left;
+		margin:5px 0;
+
+		.vui-tag {
+			float:left;
+		}
+		.vui-tag + .vui-tag {
+			margin-left:8px;
+		}
+	}
+
+	&-extra {
+		float:right;
+	}
+
+	&-body {
+		margin-top:16px;
+
+		.clearfix;
+	}
+
+	&-footer {
+		margin-top:16px;
+
+		.clearfix;
+
+		.@{vui}-menu {
+			line-height:40px;
+		}
+
+		.@{vui}-tabs {
+
+		}
+		.@{vui}-tabs-header {
+			border-bottom:none;
+			margin-bottom:0;
+		}
+		.@{vui}-tabs-header-content {
+			margin-bottom:0;
+		}
+		.@{vui}-tabs-small > .@{vui}-tabs-header .@{vui}-tab-trigger {
+			margin-right:14px;
+			padding:0;
+			height:30px;
+		}
+		.@{vui}-tabs-medium > .@{vui}-tabs-header .@{vui}-tab-trigger {
+			margin-right:18px;
+			padding:0;
+			height:40px;
+		}
+		.@{vui}-tabs-large > .@{vui}-tabs-header .@{vui}-tab-trigger {
+			margin-right:22px;
+			padding:0;
+			height:50px;
+		}
+	}
+}

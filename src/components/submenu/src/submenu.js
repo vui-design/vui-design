@@ -2,6 +2,7 @@ import VuiIcon from "vui-design/components/icon";
 import VuiSubmenuInline from "./submenu-inline";
 import VuiSubmenuPopup from "./submenu-popup";
 import guid from "vui-design/utils/guid";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiSubmenu = {
 	name: "vui-submenu",
@@ -30,7 +31,7 @@ const VuiSubmenu = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-submenu"
+			default: undefined
 		},
 		name: {
 			type: [String, Number],
@@ -224,14 +225,14 @@ const VuiSubmenu = {
 	},
 
 	render(h) {
-		let { vuiMenu, $parent, $slots, classNamePrefix, level, indent, isInline, isPopup, isOpen, isSelected, isDisabled, animations, getPopupContainer } = this;
-		let { handleInlineToggle, handlePopupToggle } = this;
+		const { vuiMenu, $slots: slots, classNamePrefix: customizedClassNamePrefix, level, indent, isInline, isPopup, isOpen, isSelected, isDisabled, animations, getPopupContainer } = this;
+		const { handleInlineToggle, handlePopupToggle } = this;
 
-		// 图标
+		// Icon
 		let icon;
 
-		if ($slots.icon) {
-			icon = $slots.icon;
+		if (slots.icon) {
+			icon = slots.icon;
 		}
 		else if (this.icon) {
 			icon = (
@@ -239,12 +240,16 @@ const VuiSubmenu = {
 			);
 		}
 
-		// 标题
-		let title = $slots.title || this.title;
+		// Title
+		let title = slots.title || this.title;
 
-		// 返回渲染结构
+		// Class
+		const menuClassNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "menu");
+		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "submenu");
+
+		// Render
 		if (isInline) {
-			let animation = animations[0];
+			const animation = animations[0];
 
 			return (
 				<VuiSubmenuInline
@@ -261,12 +266,12 @@ const VuiSubmenu = {
 				>
 					{icon && <template slot="icon">{icon}</template>}
 					{title && <template slot="title">{title}</template>}
-					{$slots.default}
+					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-inline`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme}`]}>{slots.default}</div>
 				</VuiSubmenuInline>
 			);
 		}
 		else if (isPopup) {
-			let animation = vuiMenu.mode === "horizontal" ? animations[1] : animations[2];
+			const animation = vuiMenu.mode === "horizontal" ? animations[1] : animations[2];
 
 			return (
 				<VuiSubmenuPopup
@@ -284,7 +289,7 @@ const VuiSubmenu = {
 				>
 					{icon && <template slot="icon">{icon}</template>}
 					{title && <template slot="title">{title}</template>}
-					{$slots.default}
+					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-popup`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme}`]}>{slots.default}</div>
 				</VuiSubmenuPopup>
 			);
 		}

@@ -1,9 +1,17 @@
 import VuiRadio from "vui-design/components/radio";
+import Emitter from "vui-design/mixins/emitter";
 import is from "vui-design/utils/is";
 import guid from "vui-design/utils/guid";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiRadioGroup = {
 	name: "vui-radio-group",
+
+	inject: {
+		vuiForm: {
+			default: undefined
+		}
+	},
 
 	provide() {
 		return {
@@ -15,6 +23,10 @@ const VuiRadioGroup = {
 		VuiRadio
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	model: {
 		prop: "value",
 		event: "input"
@@ -23,21 +35,17 @@ const VuiRadioGroup = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-radio-group"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return value === "button";
-			}
+			validator: value => value === "button"
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		vertical: {
 			type: Boolean,
@@ -45,9 +53,7 @@ const VuiRadioGroup = {
 		},
 		name: {
 			type: String,
-			default() {
-				return guid();
-			}
+			default: () => guid()
 		},
 		options: {
 			type: Array,
@@ -65,15 +71,18 @@ const VuiRadioGroup = {
 
 	data() {
 		return {
-			state: {
-				value: this.value
-			}
+			defaultValue: this.value
 		};
 	},
 
 	watch: {
 		value(value) {
-			this.state.value = value;
+			if (this.defaultValue === value) {
+				return;
+			}
+
+			this.defaultValue = value;
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		}
 	},
 
@@ -81,14 +90,16 @@ const VuiRadioGroup = {
 		handleChange(data) {
 			let value = data.value;
 
-			this.state.value = value;
-			this.$emit("input", value);
-			this.$emit('change', value);
+			this.defaultValue = value;
+			this.$emit("input", this.defaultValue);
+			this.$emit('change', this.defaultValue);
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		}
 	},
 
 	render() {
-		let { $slots, classNamePrefix, options, vertical } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, options, vertical } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "radio-group");
 		let classes = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-vertical`]: vertical
@@ -96,17 +107,17 @@ const VuiRadioGroup = {
 		let children;
 
 		if (options && options.length > 0) {
-			children = options.map((option, index) => {
-				if (is.string(option)) {
+			children = options.map(option => {
+				if (is.string(option) || is.number(option)) {
 					return (
-						<VuiRadio key={index} value={option}>
+						<VuiRadio key={option} value={option}>
 							{option}
 						</VuiRadio>
 					);
 				}
-				else {
+				else if (is.object(option)) {
 					return (
-						<VuiRadio key={index} value={option.value} disabled={option.disabled}>
+						<VuiRadio key={option.value} value={option.value} disabled={option.disabled}>
 							{option.label}
 						</VuiRadio>
 					);
@@ -114,7 +125,7 @@ const VuiRadioGroup = {
 			});
 		}
 		else {
-			children = $slots.default;
+			children = slots.default;
 		}
 
 		return (

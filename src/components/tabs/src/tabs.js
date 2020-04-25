@@ -71,10 +71,10 @@ const VuiTabs = {
 
 	methods: {
 		update() {
-			let { $children, closable, editable } = this;
+			let { $children: children, closable, editable } = this;
 			let list = [];
 
-			$children.forEach(child => {
+			children.forEach(child => {
 				if (child.$options.name !== "vui-tab-panel") {
 					return;
 				}
@@ -116,15 +116,17 @@ const VuiTabs = {
 		},
 
 		drawTabsHeader(h) {
-			let { $slots, classNamePrefix, addable, closable, editable, list, currentValue } = this;
+			let { $slots: slots, classNamePrefix, addable, closable, editable, list, currentValue } = this;
 			let { handleChange, handleAdd, handleClose } = this;
+
 			let classes = {};
-			let children = [];
 
 			classes.header = `${classNamePrefix}-header`;
 			classes.headerContent = `${classNamePrefix}-header-content`;
 			classes.extra = `${classNamePrefix}-extra`;
 			classes.btnAdd = `${classNamePrefix}-btn-add`;
+
+			let children = [];
 
 			children.push(
 				<div class={classes.headerContent}>
@@ -151,10 +153,10 @@ const VuiTabs = {
 				</div>
 			);
 
-			if ($slots.extra) {
+			if (slots.extra) {
 				children.push(
 					<div class={classes.extra}>
-						{$slots.extra}
+						{slots.extra}
 					</div>
 				);
 			}
@@ -178,16 +180,28 @@ const VuiTabs = {
 		},
 
 		drawTabsBody(h) {
-			let { $slots, classNamePrefix, animated, currentValue } = this;
+			let { $slots: slots, classNamePrefix, animated, list, currentValue } = this;
+
 			let classes = {};
 
 			classes.body = `${classNamePrefix}-body`;
 			classes.bodyContent = `${classNamePrefix}-body-content`;
 
+			let styles = {};
+			let x = list.findIndex(item => item.name === currentValue);
+
+			if (x > -1) {
+				x = x === 0 ? `0%` : `-${x * 100}%`;
+
+				styles.bodyContent = {
+					transform: `translateX(${x}) translateZ(0px)`
+				};
+			}
+
 			return (
 				<div class={classes.body}>
-					<div class={classes.bodyContent}>
-						{$slots.default}
+					<div class={classes.bodyContent} style={styles.bodyContent}>
+						{slots.default}
 					</div>
 				</div>
 			);

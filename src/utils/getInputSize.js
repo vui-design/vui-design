@@ -29,7 +29,7 @@ const hiddenStyle = `
 `;
 
 let computedStyleCache = {};
-let hiddenTextarea = null;
+let hiddenInput = null;
 
 export function calculateNodeStyle(node, useCache = false) {
 	const reference = node.getAttribute("id") || node.getAttribute("name");
@@ -59,17 +59,10 @@ export function calculateNodeStyle(node, useCache = false) {
 	return data;
 };
 
-export default function calculateNodeHeight(targetElement, minRows = 2, maxRows = null, useCache = false) {
-	if (!hiddenTextarea) {
-		hiddenTextarea = document.createElement("textarea");
-		document.body.appendChild(hiddenTextarea);
-	}
-
-	if (targetElement.getAttribute("wrap")) {
-		hiddenTextarea.setAttribute("wrap", targetElement.getAttribute("wrap"));
-	}
-	else {
-		hiddenTextarea.removeAttribute('wrap');
+export default function getInputSize(targetElement, useCache = false) {
+	if (!hiddenInput) {
+		hiddenInput = document.createElement("input");
+		document.body.appendChild(hiddenInput);
 	}
 
 	let {
@@ -79,59 +72,22 @@ export default function calculateNodeHeight(targetElement, minRows = 2, maxRows 
 		contextStyle
 	} = calculateNodeStyle(targetElement, useCache);
 
-	hiddenTextarea.setAttribute("style", `${contextStyle}; ${hiddenStyle}`);
-	hiddenTextarea.value = targetElement.value || targetElement.placeholder || "";
+	hiddenInput.setAttribute("style", `${contextStyle}; ${hiddenStyle}`);
+	hiddenInput.value = targetElement.value || targetElement.placeholder || "";
 
-	let height = hiddenTextarea.scrollHeight;
-	let minHeight = 0;
-	let maxHeight = Number.MAX_SAFE_INTEGER;
-	let overflowY = "";
+	let width = hiddenInput.scrollWidth;
 
 	if (boxSizing === "border-box") {
-		height = height + border;
+		width = width + border;
 	}
 	else if (boxSizing === "content-box") {
-		height = height - padding;
+		width = width - padding;
 	}
 
-	if (minRows !== null || maxRows !== null) {
-		hiddenTextarea.value = "";
-
-		let singleRowHeight = hiddenTextarea.scrollHeight - padding;
-
-		if (minRows !== null) {
-			minHeight = singleRowHeight * minRows;
-
-			if (boxSizing === "border-box") {
-				minHeight = minHeight + border + padding;
-			}
-
-			height = Math.max(minHeight, height);
-		}
-
-		if (maxRows !== null) {
-			maxHeight = singleRowHeight * maxRows;
-
-			if (boxSizing === "border-box") {
-				maxHeight = maxHeight + border + padding;
-			}
-
-			overflowY = height > maxHeight ? "auto" : "hidden";
-			height = Math.min(maxHeight, height);
-		}
-	}
-
-	if (!maxRows) {
-		overflowY = "hidden";
-	}
-
-	document.body.removeChild(hiddenTextarea);
-	hiddenTextarea = null;
+	document.body.removeChild(hiddenInput);
+	hiddenInput = null;
 
 	return {
-		height: `${height}px`,
-		minHeight: `${minHeight}px`,
-		maxHeight: `${maxHeight}px`,
-		overflowY
+		width: `${width}px`
 	};
 };

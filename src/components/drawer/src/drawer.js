@@ -2,12 +2,27 @@ import VuiIcon from "vui-design/components/icon";
 import VuiButton from "vui-design/components/button";
 import Portal from "vui-design/directives/portal";
 import Locale from "vui-design/mixins/locale";
-import is from "vui-design/utils/is";
-import merge from "vui-design/utils/merge";
 import Popup from "vui-design/utils/popup";
+import merge from "vui-design/utils/merge";
+import is from "vui-design/utils/is";
+import getStyle from "vui-design/utils/getStyle";
+import css from "vui-design/utils/css";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDrawer = {
 	name: "vui-drawer",
+
+	provide() {
+		return {
+			vuiDrawer: this
+		};
+	},
+
+	inject: {
+		vuiDrawer: {
+			default: undefined
+		}
+	},
 
 	components: {
 		VuiIcon,
@@ -30,7 +45,7 @@ const VuiDrawer = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-drawer"
+			default: undefined
 		},
 		visible: {
 			type: Boolean,
@@ -108,8 +123,13 @@ const VuiDrawer = {
 			default: true
 		},
 		animations: {
-			type: Array,
-			default: () => ["vui-drawer-backdrop-fade", "vui-drawer-slide"]
+			type: Object,
+			default: () => {
+				return {
+					backdrop: "vui-drawer-backdrop-fade",
+					drawer: "vui-drawer-slide"
+				};
+			}
 		},
 		getPopupContainer: {
 			type: Function,
@@ -151,6 +171,25 @@ const VuiDrawer = {
 		close() {
 			this.defaultVisible = false;
 			this.$emit("change", false);
+		},
+
+		push() {
+			const reference = this.$refs.drawer;
+			const placement = this.placement;
+			const distance = parseInt(getStyle(reference, placement)) + 250;
+
+			css(reference, placement, distance + "px");
+
+			this.vuiDrawer && this.vuiDrawer.push();
+		},
+		pull() {
+			const reference = this.$refs.drawer;
+			const placement = this.placement;
+			const distance = parseInt(getStyle(reference, placement)) - 250;
+
+			css(reference, placement, distance + "px");
+
+			this.vuiDrawer && this.vuiDrawer.pull();
 		},
 
 		handleCancel() {
@@ -198,12 +237,14 @@ const VuiDrawer = {
 
 		handleEnter() {
 			this.$emit("open");
+			this.vuiDrawer && this.vuiDrawer.push();
 		},
 		handleAfterEnter() {
 			this.$emit("afterOpen");
 		},
 		handleLeave() {
 			this.$emit("close");
+			this.vuiDrawer && this.vuiDrawer.pull();
 		},
 		handleAfterLeave() {
 			this.$emit("afterClose");
@@ -211,12 +252,13 @@ const VuiDrawer = {
 	},
 
 	render() {
-		let { $slots, classNamePrefix, defaultVisible, title, showFooter, showCancelButton, cancelButtonProps, cancelText, cancelAsync, cancelLoading, showOkButton, okButtonProps, okText, okAsync, okLoading, closable, placement, zIndex, width, height, className, backdrop, backdropClassName, clickBackdropToClose, animations, getPopupContainer } = this;
-		let { handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let showHeader = $slots.title || title;
-		let portal = getPopupContainer();
+		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible, title, showFooter, showCancelButton, cancelButtonProps, cancelText, cancelAsync, cancelLoading, showOkButton, okButtonProps, okText, okAsync, okLoading, closable, placement, zIndex, width, height, className, backdrop, backdropClassName, clickBackdropToClose, animations, getPopupContainer } = this;
+		const { handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+		const showHeader = slots.title || title;
+		const portal = getPopupContainer();
 
 		// classes
+		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "drawer");
 		let classes = {};
 
 		classes.backdrop = {
@@ -249,12 +291,12 @@ const VuiDrawer = {
 
 		if (["top", "bottom"].indexOf(placement) > -1) {
 			styles.drawer = {
-				height: `${height}px`
+				height: is.string(height) ? height : `${height}px`
 			};
 		}
 		else {
 			styles.drawer = {
-				width: `${width}px`
+				width: is.string(width) ? width : `${width}px`
 			};
 		}
 
@@ -274,7 +316,7 @@ const VuiDrawer = {
 			}
 
 			children.push(
-				<transition name={animations[0]}>
+				<transition name={animations.backdrop}>
 					<div v-show={defaultVisible} {...backdropProps}></div>
 				</transition>
 			);
@@ -285,7 +327,7 @@ const VuiDrawer = {
 		if (showHeader) {
 			header = (
 				<div class={classes.header}>
-					<div class={classes.title}>{$slots.title || title}</div>
+					<div class={classes.title}>{slots.title || title}</div>
 				</div>
 			);
 		}
@@ -293,22 +335,22 @@ const VuiDrawer = {
 		let body;
 
 		body = (
-			<div class={classes.body}>{$slots.default}</div>
+			<div class={classes.body}>{slots.default}</div>
 		);
 
 		let footer;
 
 		if (showFooter) {
-			if ($slots.footer) {
+			if (slots.footer) {
 				footer = (
-					<div class={classes.footer}>{$slots.footer}</div>
+					<div class={classes.footer}>{slots.footer}</div>
 				);
 			}
 			else {
 				let buttons = [];
 
 				if (showCancelButton) {
-					let defaultCancelButtonProps = {
+					const defaultCancelButtonProps = {
 						props: {
 							loading: cancelLoading
 						},
@@ -316,7 +358,7 @@ const VuiDrawer = {
 							click: handleCancel
 						}
 					};
-					let mergedCancelButtonProps = merge(true, defaultCancelButtonProps, cancelButtonProps);
+					const mergedCancelButtonProps = merge(true, defaultCancelButtonProps, cancelButtonProps);
 
 					buttons.push(
 						<VuiButton {...mergedCancelButtonProps}>{cancelText || this.t("vui.drawer.cancelText")}</VuiButton>
@@ -324,7 +366,7 @@ const VuiDrawer = {
 				}
 
 				if (showOkButton) {
-					let defaultOkButtonProps = {
+					const defaultOkButtonProps = {
 						props: {
 							type: "primary",
 							loading: okLoading
@@ -333,7 +375,7 @@ const VuiDrawer = {
 							click: handleOk
 						}
 					};
-					let mergedOkButtonProps = merge(true, defaultOkButtonProps, okButtonProps);
+					const mergedOkButtonProps = merge(true, defaultOkButtonProps, okButtonProps);
 
 					buttons.push(
 						<VuiButton {...mergedOkButtonProps}>{okText || this.t("vui.drawer.okText")}</VuiButton>
@@ -357,10 +399,10 @@ const VuiDrawer = {
 		}
 
 		children.push(
-			<transition name={animations[0]}>
+			<transition name={animations.backdrop}>
 				<div v-show={defaultVisible} class={classes.wrapper} style={styles.wrapper}>
-					<transition name={animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
-						<div v-show={defaultVisible} class={classes.drawer} style={styles.drawer}>
+					<transition name={animations.drawer} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
+						<div v-show={defaultVisible} ref="drawer" class={classes.drawer} style={styles.drawer}>
 							{header}
 							{body}
 							{footer}

@@ -1,10 +1,12 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiCardMeta = {
 	name: "vui-card-meta",
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-card-meta"
+			default: undefined
 		},
 		title: {
 			type: String,
@@ -16,28 +18,25 @@ const VuiCardMeta = {
 		}
 	},
 
+	isCardMeta: true,
+
 	render(h) {
-		let { $slots, classNamePrefix, title, description } = this;
-		let children = [];
-
-		if ($slots.avatar) {
-			children.push(
-				<div class={`${classNamePrefix}-avatar`}>
-					{$slots.avatar}
-				</div>
-			);
-		}
-
-		children.push(
-			<div class={`${classNamePrefix}-detail`}>
-				<div class={`${classNamePrefix}-title`}>{$slots.title || title}</div>
-				<div class={`${classNamePrefix}-description`}>{$slots.description || description}</div>
-			</div>
-		);
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, title, description } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "card-meta");
 
 		return (
 			<div class={`${classNamePrefix}`}>
-				{children}
+				{
+					slots.avatar && (
+						<div class={`${classNamePrefix}-avatar`}>
+							{slots.avatar}
+						</div>
+					)
+				}
+				<div class={`${classNamePrefix}-detail`}>
+					<div class={`${classNamePrefix}-title`}>{slots.title || title}</div>
+					<div class={`${classNamePrefix}-description`}>{slots.description || description}</div>
+				</div>
 			</div>
 		);
 	}

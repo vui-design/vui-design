@@ -602,8 +602,28 @@ var modifiers = {
   offset: {
     order: 200,
     enabled: true,
-    offset: 0,
+    offset: [0, 0],
     fn: function(data, modifierOptions) {
+      var offset = modifierOptions.offset;
+      var target  = data.offsets.target;
+
+      if (data.placement.indexOf("top") > -1) {
+        target.top -= offset[1];
+        target.left += offset[0];
+      }
+      else if (data.placement.indexOf("bottom") > -1) {
+        target.top += offset[1];
+        target.left += offset[0];
+      }
+      else if (data.placement.indexOf("left") > -1) {
+        target.top += offset[1];
+        target.left -= offset[0];
+      }
+      else if (data.placement.indexOf("right") > -1) {
+        target.top += offset[1];
+        target.left += offset[0];
+      }
+
       return data;
     }
   },

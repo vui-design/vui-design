@@ -42,9 +42,9 @@ const VuiTable = {
 			type: Object,
 			default: undefined
 		},
-		headless: {
+		showHeader: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		bordered: {
 			type: Boolean,
@@ -585,7 +585,7 @@ const VuiTable = {
 			};
 
 			// 是否显示表头
-			if (!this.headless) {
+			if (this.showHeader) {
 				header = (
 					<div ref="fixedLeftHeader" class={classes.tableHeader}>
 						<div ref="fixedLeftHeaderScrollbar" class={classes.tableHeaderScrollbar}>
@@ -663,7 +663,7 @@ const VuiTable = {
 			};
 
 			// 是否显示表头
-			if (!this.headless) {
+			if (this.showHeader) {
 				header = (
 					<div ref="fixedMiddleHeader" class={classes.tableHeader}>
 						<div ref="fixedMiddleHeaderScrollbar" style={styles.tableHeaderScrollbar} class={classes.tableHeaderScrollbar}>
@@ -753,7 +753,7 @@ const VuiTable = {
 			};
 
 			// 是否显示表头
-			if (!this.headless) {
+			if (this.showHeader) {
 				header = (
 					<div ref="fixedRightHeader" class={classes.tableHeader}>
 						<div ref="fixedRightHeaderScrollbar" class={classes.tableHeaderScrollbar}>

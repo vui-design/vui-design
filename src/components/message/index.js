@@ -18,7 +18,7 @@ const defaults = {
 const storage = {
 	value: [],
 	addItem(item) {
-		let index = this.value.indexOf(item);
+		const index = this.value.indexOf(item);
 
 		if (index > -1) {
 			return;
@@ -33,13 +33,13 @@ const storage = {
 			return;
 		}
 
-		let length = this.value.length;
-		let distance = item.$el.offsetHeight + 15;
+		const length = this.value.length;
+		const distance = item.$el.offsetHeight + 15;
 
 		this.value.splice(index, 1);
 
 		while (index < length - 1) {
-			let next = this.value[index];
+			const next = this.value[index];
 
 			next.top = next.top - distance;
 			index++;
@@ -53,8 +53,8 @@ const storage = {
 */
 const createMessageInstance = options => {
 	// 创建 Message 挂载的 html 根节点
-	let container = options.getPopupContainer();
-	let el = document.createElement("div");
+	const container = options.getPopupContainer();
+	const el = document.createElement("div");
 
 	container.appendChild(el);
 
@@ -134,15 +134,15 @@ const createMessageInstance = options => {
 			}
 		},
 		render(h) {
-			let { type, content, icon, closable, closeText, top, visible, animation, getPopupContainer } = this;
-			let { onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
+			const { type, content, icon, closable, closeText, top, visible, animation, getPopupContainer } = this;
+			const { onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
 
-			let open = createChainedFunction(handleOpen.bind(this), onOpen);
-			let afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
-			let close = createChainedFunction(handleClose.bind(this), onClose);
-			let afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+			const open = createChainedFunction(handleOpen.bind(this), onOpen);
+			const afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
+			const close = createChainedFunction(handleClose.bind(this), onClose);
+			const afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
 
-			let attrs = {
+			const attrs = {
 				props: {
 					type,
 					content,
@@ -193,7 +193,7 @@ VuiMessage.open = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 
@@ -226,7 +226,7 @@ VuiMessage.info = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 
@@ -259,7 +259,7 @@ VuiMessage.warning = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 
@@ -292,7 +292,7 @@ VuiMessage.success = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 
@@ -325,7 +325,7 @@ VuiMessage.error = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 
@@ -358,7 +358,7 @@ VuiMessage.loading = options => {
 		...options
 	};
 
-	let instance = createMessageInstance(options);
+	const instance = createMessageInstance(options);
 
 	instance.open();
 

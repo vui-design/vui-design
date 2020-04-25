@@ -1,6 +1,9 @@
 @vui-upload: ~"@{vui}-upload";
 
 
+.vui-upload { box-sizing:border-box; width:100%; line-height:1; }
+
+
 // listType="text"
 .vui-upload-text .vui-upload-trigger { display:inline-block; vertical-align:middle; }
 .vui-upload-text .vui-upload-trigger input[type="file"] { display:none; }
@@ -166,7 +169,7 @@
 
 
 // listType="picture-card"
-.vui-upload-picture-card .vui-upload-trigger { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:108px; height:108px; border:1px dashed #e0e0e0; border-radius:2px; background-color:#f9f9f9; margin:0 10px 10px 0; vertical-align:top; transition:all 0.2s; }
+.vui-upload-picture-card .vui-upload-trigger { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:108px; height:108px; border:1px dashed #e0e0e0; border-radius:2px; background-color:#f9f9f9; margin:0; vertical-align:top; transition:all 0.2s; }
 .vui-upload-picture-card .vui-upload-trigger input[type="file"] { display:none; }
 .vui-upload-picture-card .vui-upload-trigger .vui-upload-trigger-main { position:absolute; top:50%; left:50%; text-align:center; transform:translate(-50%,-50%); }
 .vui-upload-picture-card .vui-upload-trigger:hover { border-color:#2d8cf0; }
@@ -177,8 +180,9 @@
 .vui-upload-picture-card .vui-upload-trigger.vui-upload-trigger-disabled .vui-upload-trigger-main {  }
 
 .vui-upload-picture-card .vui-upload-list { display:inline; margin:0; padding:0; list-style:none; vertical-align:top; font-size:0; }
+.vui-upload-picture-card .vui-upload-list .vui-upload-item { margin:0 10px 10px 0; }
 
-.vui-upload-picture-card .vui-upload-item { position:relative; display:inline-block; box-sizing:border-box; width:108px; height:108px; border-width:1px; border-radius:2px; background-color:#fff; margin:0 10px 10px 0; padding:8px; list-style:none; vertical-align:top; transition:all 0.2s; }
+.vui-upload-picture-card .vui-upload-item { position:relative; display:inline-block; box-sizing:border-box; width:108px; height:108px; border-width:1px; border-radius:2px; background-color:#fff; margin:0; padding:8px; list-style:none; vertical-align:top; transition:all 0.2s; }
 .vui-upload-picture-card .vui-upload-item .vui-upload-item-thumbnail { display:block; width:100%; height:100%; border-radius:2px; background-color:#f9f9f9; transition:all 0.2s; }
 .vui-upload-picture-card .vui-upload-item .vui-upload-item-thumbnail img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
 .vui-upload-picture-card .vui-upload-item .vui-upload-item-percentage { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); }

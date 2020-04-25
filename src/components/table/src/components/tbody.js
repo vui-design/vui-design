@@ -3,22 +3,22 @@ import VuiRadio from "vui-design/components/radio";
 import VuiEmpty from "vui-design/components/empty";
 import Locale from "vui-design/mixins/locale";
 import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
 import noop from "vui-design/utils/noop";
+import clone from "vui-design/utils/clone";
 
 const VuiTableTbody = {
 	name: "vui-table-tbody",
-
-	provide() {
-		return {
-			vuiTableTbody: this
-		};
-	},
 
 	inject: {
 		vuiTable: {
 			default: undefined
 		}
+	},
+
+	provide() {
+		return {
+			vuiTableTbody: this
+		};
 	},
 
 	components: {
@@ -286,7 +286,7 @@ const VuiTableTbody = {
 			return children;
 		},
 		drawTbodyChildren(h) {
-			let { rowCollapsion, rowSelection, locale, store, classes, emptyText, isRowCollapsed, isRowSelected, getTrKey, getTrClasses, getCollapsionTrClasses, getTdKey, getTdClasses, getCollapsionTdClasses, getSelectionTdClasses } = this;
+			let { vuiTable, rowCollapsion, rowSelection, locale, store, classes, emptyText, isRowCollapsed, isRowSelected, getTrKey, getTrClasses, getCollapsionTrClasses, getTdKey, getTdClasses, getCollapsionTdClasses, getSelectionTdClasses } = this;
 			let { handleRowMouseenter, handleRowMouseleave, handleRowClick, handleRowCollapse, handleRowSelect } = this;
 			let children = [];
 
@@ -358,8 +358,21 @@ const VuiTableTbody = {
 					let columnKey = getTdKey(column, columnIndex);
 					let content;
 
-					if (column.render) {
-						content = column.render(h, clone(column), clone(row));
+					if (column.slot) {
+						let scopedSlot = vuiTable.$scopedSlots[column.slot];
+
+						content = scopedSlot && scopedSlot({
+							column: clone(column),
+							row: clone(row),
+							index: rowIndex
+						});
+					}
+					else if (column.render) {
+						content = column.render(h, {
+							column: clone(column),
+							row: clone(row),
+							index: rowIndex
+						});
 					}
 					else {
 						content = row[column.dataIndex];

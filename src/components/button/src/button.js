@@ -1,6 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
-import MixinLink from "vui-design/mixins/link";
+import Link from "vui-design/mixins/link";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiButton = {
 	name: "vui-button",
@@ -22,7 +23,7 @@ const VuiButton = {
 	},
 
 	mixins: [
-		MixinLink
+		Link
 	],
 
 	inheritAttrs: false,
@@ -30,14 +31,12 @@ const VuiButton = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-button"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "default",
-			validator(value) {
-				return ["default", "primary", "info", "warning", "success", "error", "dashed", "text"].indexOf(value) > -1;
-			}
+			validator: value => ["default", "primary", "info", "warning", "success", "error", "dashed", "text"].indexOf(value) > -1
 		},
 		icon: {
 			type: String,
@@ -46,16 +45,12 @@ const VuiButton = {
 		shape: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["round", "circle"].indexOf(value) > -1;
-			}
+			validator: value => ["round", "circle"].indexOf(value) > -1
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		loading: {
 			type: Boolean,
@@ -68,21 +63,19 @@ const VuiButton = {
 		htmlType: {
 			type: String,
 			default: "button",
-			validator(value) {
-				return ["button", "submit", "reset"].indexOf(value) > -1;
-			}
+			validator: value => ["button", "submit", "reset"].indexOf(value) > -1
 		}
 	},
 
 	methods: {
-		insertTextIntoSpan(child) {
-			if (is.string(child.text)) {
+		insertTextIntoSpan(element) {
+			if (is.string(element.text)) {
 				return (
-					<span>{child.text.trim()}</span>
+					<span>{element.text.trim()}</span>
 				);
 			}
 			else {
-				return child;
+				return element;
 			}
 		},
 		handleButtonClick(e) {
@@ -91,35 +84,35 @@ const VuiButton = {
 	},
 
 	render() {
-		let { $vui, vuiForm, vuiInputGroup, vuiButtonGroup, $slots, $attrs, $listeners, classNamePrefix, icon, loading, htmlType, href, to, target } = this;
-		let { insertTextIntoSpan, getNextRoute } = this;
-		let { handleButtonClick, handleLinkClick } = this;
+		let { $vui: vui, vuiForm, vuiInputGroup, vuiButtonGroup } = this;
+		let { $slots: slots, $props: props, $attrs: attrs, $listeners: listeners } = this;
+		let { insertTextIntoSpan, getNextRoute, handleButtonClick, handleLinkClick } = this;
 
-		// 属性 type 优先级：vuiButtonGroup > self
+		// type: vuiButtonGroup > self
 		let type;
 
 		if (vuiButtonGroup) {
 			type = vuiButtonGroup.type;
 		}
 		else {
-			type = this.type;
+			type = props.type;
 		}
 
-		// 属性 shape 优先级：vuiButtonGroup > self
+		// shape: vuiButtonGroup > self
 		let shape;
 
 		if (vuiButtonGroup) {
 			shape = vuiButtonGroup.shape;
 		}
 		else {
-			shape = this.shape;
+			shape = props.shape;
 		}
 
-		// 属性 size 优先级：self > vuiButtonGroup > vuiInputGroup > vuiForm > $vui
+		// size: self > vuiButtonGroup > vuiInputGroup > vuiForm > vui
 		let size;
 
-		if (this.size) {
-			size = this.size;
+		if (props.size) {
+			size = props.size;
 		}
 		else if (vuiButtonGroup && vuiButtonGroup.size) {
 			size = vuiButtonGroup.size;
@@ -130,14 +123,14 @@ const VuiButton = {
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
+		else if (vui && vui.size) {
+			size = vui.size;
 		}
 		else {
 			size = "medium";
 		}
 
-		// 属性 disabled 优先级：vuiForm > vuiInputGroup > vuiButtonGroup > self
+		// disabled: vuiForm > vuiInputGroup > vuiButtonGroup > self
 		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
@@ -150,77 +143,74 @@ const VuiButton = {
 			disabled = vuiButtonGroup.disabled;
 		}
 		else {
-			disabled = this.disabled;
+			disabled = props.disabled;
 		}
 
-		// classes
-		let classes = {
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "button");
+		let classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${type}`]: type,
 			[`${classNamePrefix}-${shape}`]: shape,
 			[`${classNamePrefix}-${size}`]: size,
-			[`${classNamePrefix}-loading`]: loading,
+			[`${classNamePrefix}-loading`]: props.loading,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
 
 		// render
 		let children = [];
 
-		if (loading) {
+		if (props.loading) {
 			children.push(
-				<vui-icon type="loading" />
+				<VuiIcon type="loading" />
 			);
 		}
-		else if (icon) {
+		else if (props.icon) {
 			children.push(
-				<vui-icon type={icon} />
+				<VuiIcon type={props.icon} />
 			);
 		}
 
-		if ($slots.default) {
-			$slots.default.forEach(child => {
-				children.push(insertTextIntoSpan(child));
-			});
+		if (slots.default) {
+			slots.default.forEach(element => children.push(insertTextIntoSpan(element)));
 		}
 
-		let props = {
+		let attributes = {
 			attrs: {
-				...$attrs,
+				...attrs,
 				disabled
 			},
-			class: classes,
+			class: classes.el,
 			on: {
-				...$listeners
+				...listeners
 			}
 		};
 
-		if (!href && !to) {
-			props.attrs.type = htmlType;
-			props.on.click = handleButtonClick;
+		if (props.href || props.to) {
+			if (props.href) {
+				attributes.attrs.href = props.href;
+			}
+			else {
+				let route = getNextRoute();
+
+				attributes.attrs.href = route.href;
+			}
+
+			attributes.attrs.target = props.target;
+			attributes.on.click = handleLinkClick;
 
 			return (
-				<button {...props}>
-					{children}
-				</button>
+				<a {...attributes}>{children}</a>
 			);
 		}
 		else {
-			if (href) {
-				props.attrs.href = href;
-			}
-			else {
-				let next = getNextRoute();
-
-				props.attrs.href = next.href;
-			}
-
-			props.attrs.target = target;
-			props.on.click = handleLinkClick;
+			attributes.attrs.type = props.htmlType;
+			attributes.on.click = handleButtonClick;
 
 			return (
-				<a {...props}>
-					{children}
-				</a>
+				<button {...attributes}>{children}</button>
 			);
 		}
 	}

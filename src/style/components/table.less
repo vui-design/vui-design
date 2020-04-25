@@ -17,12 +17,12 @@
 .vui-table-wrapper.vui-table-wrapper-bordered:after { border-left:1px solid #e8e8e8; border-right:1px solid #e8e8e8; }
 
 /* table */
-.vui-table { position:relative; z-index:1; width:100%; background-color:#fff; }
+.vui-table { position:relative; z-index:1; width:100%; line-height:1.42857143; }
 
-.vui-table-header { position:relative; background-color:#f9f9f9; overflow:hidden; }
+.vui-table-header { position:relative; overflow:hidden; }
 .vui-table-header .vui-table-header-scrollbar { width:100%; height:100%; overflow:hidden; }
 .vui-table-header table { table-layout:fixed; min-width:100%; border-collapse:separate; }
-.vui-table-header th { box-sizing:border-box; padding:10px 10px; font-weight:400; text-align:left; white-space:normal; word-break:break-all; word-wrap:break-word; hyphens:auto; transition:background-color 0.2s; }
+.vui-table-header th { box-sizing:border-box; padding:12px 15px; white-space:normal; word-break:break-all; word-wrap:break-word; transition:background-color 0.2s; }
 .vui-table-header th.vui-table-column-align-left { text-align:left; }
 .vui-table-header th.vui-table-column-align-center { text-align:center; }
 .vui-table-header th.vui-table-column-align-right { text-align:right; }
@@ -36,7 +36,7 @@
 .vui-table-body { position:relative; background-color:#fff; overflow:hidden; }
 .vui-table-body .vui-table-body-scrollbar { width:100%; height:100%; overflow:hidden; }
 .vui-table-body table { table-layout:fixed; min-width:100%; border-collapse:separate; }
-.vui-table-body td { box-sizing:border-box; padding:10px 10px; font-weight:400; text-align:left; white-space:normal; word-break:break-all; word-wrap:break-word; hyphens:auto; transition:background-color 0.2s; }
+.vui-table-body td { box-sizing:border-box; padding:12px 15px; white-space:normal; word-break:break-all; word-wrap:break-word; transition:background-color 0.2s; }
 .vui-table-body td.vui-table-column-align-left { text-align:left; }
 .vui-table-body td.vui-table-column-align-center { text-align:center; }
 .vui-table-body td.vui-table-column-align-right { text-align:right; }
@@ -47,12 +47,12 @@
 .vui-table-body td.vui-table-column-with-filter {  }
 .vui-table-body td.vui-table-column-hidden { visibility:hidden; }
 
-.vui-table-column-title { display:inline-block; vertical-align:middle; color:#333; }
+.vui-table-column-title { display:inline-block; color:#333; }
 
-.vui-table-column-collapsion { cursor:pointer; display:inline-block; box-sizing:border-box; width:16px; height:16px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; vertical-align:middle; color:#666; font-size:14px; text-align:center; line-height:14px; user-select:none; transition:border-color 0.2s, color 0.2s; }
+.vui-table-column-collapsion { cursor:pointer; display:inline-block; box-sizing:border-box; width:16px; height:16px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; color:#666; font-size:14px; text-align:center; line-height:14px; user-select:none; transition:border-color 0.2s, color 0.2s; }
 .vui-table-column-collapsion:hover { border-color:#cacaca; }
 
-.vui-table-column-sorter { display:inline-block; width:8px; height:10px; margin-left:10px; vertical-align:middle; }
+.vui-table-column-sorter { display:inline-block; width:8px; height:10px; margin-left:10px; }
 .vui-table-column-sorter-caret { cursor:pointer; display:block; width:0; height:0; border-style:solid; }
 .vui-table-column-sorter-caret.vui-table-column-sorter-caret-asc { border-width:0 4px 4px 4px; border-color:transparent; margin-bottom:2px; transition:border-color 0.2s; }
 .vui-table-column-sorter-caret.vui-table-column-sorter-caret-asc.on { border-bottom-color:#2d8cf0; }
@@ -78,20 +78,20 @@
 .vui-table-column-filter-dropdown .vui-table-column-filter-dropdown-footer a { cursor:pointer; display:inline-block; margin-left:10px; vertical-align:middle; color:#666; transition:color 0.2s; }
 .vui-table-column-filter-dropdown .vui-table-column-filter-dropdown-footer a:hover { color:#2d8cf0; }
 .vui-table-column-filter-dropdown .vui-checkbox-group { display:block; }
-.vui-table-column-filter-dropdown .vui-checkbox { cursor:pointer; display:block; height:34px; margin:0; padding:0 10px; line-height:34px; transition:background-color 0.2s, color 0.2s; }
+.vui-table-column-filter-dropdown .vui-checkbox { cursor:pointer; display:flex; align-items:center; height:34px; margin:0; padding:0 10px; line-height:34px; transition:background-color 0.2s, color 0.2s; }
 .vui-table-column-filter-dropdown .vui-checkbox:hover { background-color:#ecf5ff; }
-.vui-table-column-filter-dropdown .vui-checkbox.is-checked { background-color:#ecf5ff; color:#2d8cf0 !important; }
+.vui-table-column-filter-dropdown .vui-checkbox.vui-checkbox-checked { background-color:#ecf5ff; color:#2d8cf0 !important; }
 .vui-table-column-filter-dropdown .vui-radio-group { display:block; }
-.vui-table-column-filter-dropdown .vui-radio { cursor:pointer; display:block; height:34px; margin:0; padding:0 10px; line-height:34px; transition:background-color 0.2s, color 0.2s; }
+.vui-table-column-filter-dropdown .vui-radio { cursor:pointer; display:flex; align-items:center; height:34px; margin:0; padding:0 10px; line-height:34px; transition:background-color 0.2s, color 0.2s; }
 .vui-table-column-filter-dropdown .vui-radio:hover { background-color:#ecf5ff; }
-.vui-table-column-filter-dropdown .vui-radio.is-checked { background-color:#ecf5ff; color:#2d8cf0 !important; }
+.vui-table-column-filter-dropdown .vui-radio.vui-radio-checked { background-color:#ecf5ff; color:#2d8cf0 !important; }
 
 .vui-table-column-filter-dropdown-slide-enter-active { animation:vuiTableColumnFilterDropdownSlideIn @animation-in-duration @animation-in-timing-function both; }
 .vui-table-column-filter-dropdown-slide-leave-active { animation:vuiTableColumnFilterDropdownSlideOut @animation-out-duration @animation-out-timing-function both; }
 
 /* fixed table */
 .vui-table-left { position:absolute; top:0; left:0; z-index:1; width:0; }
-.vui-table-left:after { content:""; position:absolute; right:0; top:0; bottom:0; z-index:1; width:1px; background:linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0.1)); background:#e8e8e8; transition:right 0.2s, width 0.2s; }
+.vui-table-left:after { content:""; position:absolute; right:0; top:0; bottom:0; z-index:1; width:1px; background:linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0.1)); background:#f3f3f3; transition:right 0.2s, width 0.2s; }
 .vui-table-left .vui-table-header table { float:left; }
 .vui-table-left .vui-table-body table { float:left; }
 
@@ -100,22 +100,22 @@
 .vui-table-middle .vui-table-body table { float:none; }
 
 .vui-table-right { position:absolute; top:0; right:0; z-index:1; width:0; }
-.vui-table-right:before { content:""; position:absolute; left:-1px; top:0; bottom:0; z-index:1; width:1px; background:linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.1)); background:#e8e8e8; transition:left 0.2s, width 0.2s; }
+.vui-table-right:before { content:""; position:absolute; left:-1px; top:0; bottom:0; z-index:1; width:1px; background:linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.1)); background:#f3f3f3; transition:left 0.2s, width 0.2s; }
 .vui-table-right .vui-table-header table { float:right; }
 .vui-table-right .vui-table-body table { float:right; }
 
 /* bordered table */
 .vui-table {  }
-.vui-table .vui-table-header { border-bottom:1px solid #e8e8e8; }
+.vui-table .vui-table-header { border-bottom:1px solid #e6e6e6; background-color:#fff; }
 .vui-table .vui-table-header th {  }
 .vui-table .vui-table-body {  }
-.vui-table .vui-table-body td { border-bottom:1px solid #e8e8e8; }
+.vui-table .vui-table-body td { border-bottom:1px solid #ececec; }
 
 .vui-table-bordered {  }
-.vui-table-bordered .vui-table-header { border-bottom:none; }
-.vui-table-bordered .vui-table-header th { border-right:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; }
+.vui-table-bordered .vui-table-header { border-bottom:none; background-color:#f9f9f9; }
+.vui-table-bordered .vui-table-header th { border-right:1px solid #e6e6e6; border-bottom:1px solid #e6e6e6; }
 .vui-table-bordered .vui-table-body {  }
-.vui-table-bordered .vui-table-body td { border-right:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; }
+.vui-table-bordered .vui-table-body td { border-right:1px solid #ececec; border-bottom:1px solid #ececec; }
 
 /* striped table */
 .vui-table-striped .vui-table-body tr.vui-table-row-even td {  }

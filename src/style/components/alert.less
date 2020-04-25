@@ -54,32 +54,32 @@
 
 
 	&-info {
-		border-color:tint(@primary-color, 40%);
-		background-color:tint(@primary-color, 90%);
+		border-color:tint(@primary-color, 50%);
+		background-color:tint(@primary-color, 92.5%);
 	}
 	&-info &-icon {
 		color:@primary-color;
 	}
 
 	&-warning {
-		border-color:tint(@warning-color, 40%);
-		background-color:tint(@warning-color, 90%);
+		border-color:tint(@warning-color, 50%);
+		background-color:tint(@warning-color, 92.5%);
 	}
 	&-warning &-icon {
 		color:@warning-color;
 	}
 
 	&-success {
-		border-color:tint(@success-color, 40%);
-		background-color:tint(@success-color, 90%);
+		border-color:tint(@success-color, 50%);
+		background-color:tint(@success-color, 92.5%);
 	}
 	&-success &-icon {
 		color:@success-color;
 	}
 
 	&-error {
-		border-color:tint(@error-color, 40%);
-		background-color:tint(@error-color, 90%);
+		border-color:tint(@error-color, 50%);
+		background-color:tint(@error-color, 92.5%);
 	}
 	&-error &-icon {
 		color:@error-color;
@@ -97,7 +97,7 @@
 	}
 
 	& &-icon {
-		top:13.5px;
+		top:13px;
 		left:15px;
 		font-size:@font-size;
 	}
@@ -108,7 +108,7 @@
 	}
 
 	& &-btn-close {
-		top:14.5px;
+		top:14px;
 		right:15px;
 		font-size:@font-size-sm;
 	}
@@ -118,7 +118,7 @@
 		padding:15px 15px;
 	}
 	&-with-description&-with-icon {
-		padding-left:round(@font-size-lg * @line-height) + 25px;
+		padding-left:floor(@font-size-lg * @line-height) + 25px;
 	}
 	&-with-description&-closable {
 		padding-right:@font-size-sm + 25px;
@@ -127,7 +127,7 @@
 	&-with-description &-icon {
 		top:15px;
 		left:15px;
-		font-size:round(@font-size-lg * @line-height);
+		font-size:floor(@font-size-lg * @line-height);
 	}
 
 	&-with-description &-message {
@@ -136,7 +136,7 @@
 	}
 
 	&-with-description &-btn-close {
-		top:21px;
+		top:20px;
 		right:15px;
 		font-size:@font-size-sm;
 	}
@@ -150,37 +150,21 @@
 
 
 	&-slide-enter-active {
-		animation:vuiAlertSlideIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiAlertSlideIn @transition-duration @transition-timing-function both;
 	}
 	&-slide-leave-active {
-		animation:vuiAlertSlideOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiAlertSlideOut @transition-duration @transition-timing-function both;
 	}
 }
 
 
 @keyframes vuiAlertSlideIn {
-	0% {
-		opacity:0;
-		transform-origin:0% 0%;
-		transform:scaleY(0);
-	}
-	100% {
-		opacity:1;
-		transform-origin:0% 0%;
-		transform:scaleY(1);
-	}
+	0% { opacity:0; transform-origin:50% 0%; transform:scaleY(0); }
+	100% { opacity:1; transform-origin:50% 0%; transform:scaleY(1); }
 }
 
 @keyframes vuiAlertSlideOut {
-	0% {
-		opacity:1;
-		transform-origin:0% 0%;
-		transform:scaleY(1);
-	}
-	100% {
-		opacity:0;
-		transform-origin:0% 0%;
-		transform:scaleY(0);
-	}
+	0% { opacity:1; transform-origin:50% 0%; transform:scaleY(1); }
+	100% { opacity:0; transform-origin:50% 0%; transform:scaleY(0); }
 }
 

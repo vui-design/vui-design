@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "title": "Vui Design",
   "description": "A high quality UI Toolkit based on Vue.js",
-  "author": "kiwi",
+  "author": "kiwi <vui.design@aliyun.com>",
   "main": "dist/vui-design.js",
   "homepage": "https://vui-design.github.io/vui-design-doc/",
   "keywords": [

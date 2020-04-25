@@ -2,8 +2,10 @@ import VuiIcon from "vui-design/components/icon";
 import VuiButton from "vui-design/components/button";
 import Portal from "vui-design/directives/portal";
 import Locale from "vui-design/mixins/locale";
+import Scrollbar from "vui-design/mixins/scrollbar";
 import is from "vui-design/utils/is";
 import merge from "vui-design/utils/merge";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import Popup from "vui-design/utils/popup";
 
 const VuiModal = {
@@ -19,7 +21,8 @@ const VuiModal = {
 	},
 
 	mixins: [
-		Locale
+		Locale,
+		Scrollbar
 	],
 
 	model: {
@@ -30,7 +33,7 @@ const VuiModal = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-modal"
+			default: undefined
 		},
 		visible: {
 			type: Boolean,
@@ -152,6 +155,22 @@ const VuiModal = {
 			this.$emit("change", false);
 		},
 
+		handleBackdropClick() {
+			let { backdrop, clickBackdropToClose } = this;
+
+			if (!backdrop || !clickBackdropToClose) {
+				return;
+			}
+
+			this.handleCancel();
+		},
+		handleWrapperClick(e) {
+			if (e.target !== this.$refs.wrapper) {
+				return;
+			}
+
+			this.handleBackdropClick();
+		},
 		handleCancel() {
 			if (this.cancelAsync) {
 				new Promise(resolve => {
@@ -196,6 +215,7 @@ const VuiModal = {
 		},
 
 		handleEnter() {
+			this.addScrollbarEffect();
 			this.$emit("open");
 		},
 		handleAfterEnter() {
@@ -205,17 +225,19 @@ const VuiModal = {
 			this.$emit("close");
 		},
 		handleAfterLeave() {
+			this.removeScrollbarEffect();
 			this.$emit("afterClose");
 		}
 	},
 
 	render() {
-		let { $slots, classNamePrefix, defaultVisible, title, showFooter, showCancelButton, cancelButtonProps, cancelText, cancelAsync, cancelLoading, showOkButton, okButtonProps, okText, okAsync, okLoading, closable, zIndex, top, centered, width, className, backdrop, backdropClassName, clickBackdropToClose, animations, getPopupContainer } = this;
-		let { handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let showHeader = $slots.title || title;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible, title, showFooter, showCancelButton, cancelButtonProps, cancelText, cancelAsync, cancelLoading, showOkButton, okButtonProps, okText, okAsync, okLoading, closable, zIndex, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
+		let { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+		let showHeader = slots.title || title;
 		let portal = getPopupContainer();
 
-		// classes
+		// class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "modal");
 		let classes = {};
 
 		classes.backdrop = {
@@ -239,42 +261,33 @@ const VuiModal = {
 		classes.footer = `${classNamePrefix}-footer`;
 		classes.btnClose = `${classNamePrefix}-btn-close`;
 
-		// styles
+		// style
 		let styles = {};
 
 		styles.backdrop = {
 			zIndex
 		};
 		styles.wrapper = {
-			zIndex
+			zIndex,
+			paddingTop: is.string(top) ? top : `${top}px`,
+			paddingBottom: is.string(top) ? top : `${top}px`
 		};
 		styles.modal = {
-			top: `${top}px`,
-			width: `${width}px`
+			width: is.string(width) ? width : `${width}px`
 		};
 
 		if (centered) {
-			delete styles.modal.top;
+			delete styles.wrapper.paddingTop;
+			delete styles.wrapper.paddingBottom;
 		}
 
 		// render
 		let children = [];
 
 		if (backdrop) {
-			let backdropProps = {
-				class: classes.backdrop,
-				style: styles.backdrop
-			};
-
-			if (clickBackdropToClose) {
-				backdropProps.on = {
-					click: handleCancel
-				};
-			}
-
 			children.push(
 				<transition name={animations[0]}>
-					<div v-show={defaultVisible} {...backdropProps}></div>
+					<div ref="backdrop" v-show={defaultVisible} class={classes.backdrop} style={styles.backdrop} onClick={handleBackdropClick}></div>
 				</transition>
 			);
 		}
@@ -284,7 +297,7 @@ const VuiModal = {
 		if (showHeader) {
 			header = (
 				<div class={classes.header}>
-					<div class={classes.title}>{$slots.title || title}</div>
+					<div class={classes.title}>{slots.title || title}</div>
 				</div>
 			);
 		}
@@ -292,15 +305,15 @@ const VuiModal = {
 		let body;
 
 		body = (
-			<div class={classes.body}>{$slots.default}</div>
+			<div class={classes.body}>{slots.default}</div>
 		);
 
 		let footer;
 
 		if (showFooter) {
-			if ($slots.footer) {
+			if (slots.footer) {
 				footer = (
-					<div class={classes.footer}>{$slots.footer}</div>
+					<div class={classes.footer}>{slots.footer}</div>
 				);
 			}
 			else {
@@ -357,7 +370,7 @@ const VuiModal = {
 
 		children.push(
 			<transition name={animations[0]}>
-				<div v-show={defaultVisible} class={classes.wrapper} style={styles.wrapper}>
+				<div ref="wrapper" v-show={defaultVisible} class={classes.wrapper} style={styles.wrapper} onClick={handleWrapperClick}>
 					<transition name={animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
 						<div v-show={defaultVisible} class={classes.modal} style={styles.modal}>
 							{header}

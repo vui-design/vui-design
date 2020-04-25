@@ -1,5 +1,7 @@
 import VuiCheckboxInput from "./components/input";
 import VuiCheckboxLabel from "./components/label";
+import Emitter from "vui-design/mixins/emitter";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCheckbox = {
 	name: "vui-checkbox",
@@ -18,6 +20,10 @@ const VuiCheckbox = {
 		VuiCheckboxLabel
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	inheritAttrs: false,
 
 	model: {
@@ -28,21 +34,17 @@ const VuiCheckbox = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-checkbox"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return value === "button";
-			}
+			validator: value => value === "button"
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		name: {
 			type: String,
@@ -72,44 +74,47 @@ const VuiCheckbox = {
 
 	data() {
 		return {
-			state: {
-				focused: false,
-				checked: this.checked
-			}
+			defaultFocused: false,
+			defaultChecked: this.checked
 		};
 	},
 
 	watch: {
 		checked(value) {
-			this.state.checked = value;
+			if (this.defaultChecked === value) {
+				return;
+			}
+
+			this.defaultChecked = value;
+			this.dispatch("vui-form-item", "change", this.defaultChecked);
 		}
 	},
 
 	methods: {
 		handleFocus(e) {
-			this.state.focused = true;
+			this.defaultFocused = true;
 		},
 		handleBlur(e) {
-			this.state.focused = false;
+			this.defaultFocused = false;
 		},
 		handleChange(data) {
 			if (this.disabled) {
 				return;
 			}
 
-			let checked = data.checked;
-
-			this.state.checked = checked;
-			this.$emit("input", checked);
-			this.$emit('change', checked);
+			this.defaultChecked = data.checked;
+			this.$emit("input", this.defaultChecked);
+			this.$emit('change', this.defaultChecked);
+			this.dispatch("vui-form-item", "change", this.defaultChecked);
 		}
 	},
 
 	render() {
-		let { $vui, vuiForm, vuiCheckboxGroup, $slots, $attrs, classNamePrefix, label, value, indeterminate, state } = this;
+		let { $vui: vui, vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, classNamePrefix: customizedClassNamePrefix, label, value, indeterminate, defaultFocused, defaultChecked } = this;
 		let { handleFocus, handleBlur } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "checkbox");
 
-		// 属性 type 优先级：vuiCheckboxGroup > self
+		// type: vuiCheckboxGroup > self
 		let type;
 
 		if (vuiCheckboxGroup) {
@@ -119,7 +124,7 @@ const VuiCheckbox = {
 			type = this.type;
 		}
 
-		// 属性 size 优先级：self > vuiCheckboxGroup > vuiForm > $vui
+		// size: self > vuiCheckboxGroup > vuiForm > vui
 		let size;
 
 		if (this.size) {
@@ -131,14 +136,14 @@ const VuiCheckbox = {
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
+		else if (vui && vui.size) {
+			size = vui.size;
 		}
 		else {
 			size = "medium";
 		}
 
-		// 属性 name 优先级：vuiCheckboxGroup > self
+		// name: vuiCheckboxGroup > self
 		let name;
 
 		if (vuiCheckboxGroup) {
@@ -148,20 +153,20 @@ const VuiCheckbox = {
 			name = this.name;
 		}
 
-		// 属性 focused
-		let focused = state.focused;
+		// focused
+		let focused = defaultFocused;
 
-		// 属性 checked 优先级：vuiCheckboxGroup > self
+		// checked: vuiCheckboxGroup > self
 		let checked;
 
 		if (vuiCheckboxGroup) {
-			checked = vuiCheckboxGroup.state.value.indexOf(value) > -1;
+			checked = vuiCheckboxGroup.defaultValue.indexOf(value) > -1;
 		}
 		else {
-			checked = state.checked;
+			checked = defaultChecked;
 		}
 
-		// 属性 disabled 优先级：vuiForm > vuiCheckboxGroup > self
+		// disabled: vuiForm > vuiCheckboxGroup > self
 		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
@@ -174,7 +179,7 @@ const VuiCheckbox = {
 			disabled = this.disabled;
 		}
 
-		// 事件 handleChange
+		// handleChange
 		let handleChange;
 
 		if (vuiCheckboxGroup) {
@@ -196,7 +201,7 @@ const VuiCheckbox = {
 				disabled
 			},
 			attrs: {
-				...$attrs
+				...attrs
 			},
 			on: {
 				focus: handleFocus,
@@ -228,7 +233,7 @@ const VuiCheckbox = {
 			<label class={classes}>
 				<VuiCheckboxInput {...theCheckboxInputOptions} />
 				<VuiCheckboxLabel {...theCheckboxLabelOptions}>
-					{$slots.default || label}
+					{slots.default || label}
 				</VuiCheckboxLabel>
 			</label>
 		);

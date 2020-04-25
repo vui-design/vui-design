@@ -26,6 +26,7 @@
 		box-shadow:@drawer-box-shadow;
 		margin:0 auto;
 		pointer-events:all;
+		transition:all @transition-duration @transition-timing-function;
 	}
 
 	&-header {
@@ -112,42 +113,42 @@
 
 
 	&-backdrop-fade-enter-active {
-		animation:vuiDrawerBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiDrawerBackdropFadeIn @transition-duration @transition-timing-function both;
 	}
 	&-backdrop-fade-leave-active {
-		animation:vuiDrawerBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiDrawerBackdropFadeOut @transition-duration @transition-timing-function both;
 	}
 
 
 	&-top&-slide-enter-active {
-		animation:vuiDrawerSlideTopIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiDrawerSlideTopIn @transition-duration @transition-timing-function both;
 	}
 	&-top&-slide-leave-active { 
-		animation:vuiDrawerSlideTopOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiDrawerSlideTopOut @transition-duration @transition-timing-function both;
 	}
 
 
 	&-bottom&-slide-enter-active {
-		animation:vuiDrawerSlideBottomIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiDrawerSlideBottomIn @transition-duration @transition-timing-function both;
 	}
 	&-bottom&-slide-leave-active { 
-		animation:vuiDrawerSlideBottomOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiDrawerSlideBottomOut @transition-duration @transition-timing-function both;
 	}
 
 
 	&-left&-slide-enter-active {
-		animation:vuiDrawerSlideLeftIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiDrawerSlideLeftIn @transition-duration @transition-timing-function both;
 	}
 	&-left&-slide-leave-active { 
-		animation:vuiDrawerSlideLeftOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiDrawerSlideLeftOut @transition-duration @transition-timing-function both;
 	}
 
 
 	&-right&-slide-enter-active {
-		animation:vuiDrawerSlideRightIn @animation-in-duration @animation-in-timing-function both;
+		animation:vuiDrawerSlideRightIn @transition-duration @transition-timing-function both;
 	}
 	&-right&-slide-leave-active { 
-		animation:vuiDrawerSlideRightOut @animation-out-duration @animation-out-timing-function both;
+		animation:vuiDrawerSlideRightOut @transition-duration @transition-timing-function both;
 	}
 }
 
@@ -158,7 +159,6 @@
 }
 @keyframes vuiDrawerBackdropFadeOut {
 	0% { opacity:1; }
-	30% { opacity:1; }
 	100% { opacity:0; }
 }
 
@@ -169,7 +169,6 @@
 }
 @keyframes vuiDrawerSlideTopOut {
 	0% { transform:translateY(0%); }
-	30% { transform:translateY(0%); }
 	100% { transform:translateY(-100%); }
 }
 
@@ -180,7 +179,6 @@
 }
 @keyframes vuiDrawerSlideBottomOut {
 	0% { transform:translateY(0%); }
-	30% { transform:translateY(0%); }
 	100% { transform:translateY(100%); }
 }
 
@@ -191,7 +189,6 @@
 }
 @keyframes vuiDrawerSlideLeftOut {
 	0% { transform:translateX(0%); }
-	30% { transform:translateX(0%); }
 	100% { transform:translateX(-100%); }
 }
 
@@ -202,7 +199,6 @@
 }
 @keyframes vuiDrawerSlideRightOut {
 	0% { transform:translateX(0%); }
-	30% { transform:translateX(0%); }
 	100% { transform:translateX(100%); }
 }
 

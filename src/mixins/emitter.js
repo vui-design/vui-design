@@ -1,8 +1,8 @@
-function dispatch(componentName, eventName, params) {
+function dispatch(component, event, params) {
 	let parent = this.$parent || this.$root;
 	let name = parent.$options.name;
 
-	while (parent && (!name || name !== componentName)) {
+	while (parent && (!name || name !== component)) {
 		parent = parent.$parent;
 
 		if (parent) {
@@ -11,30 +11,30 @@ function dispatch(componentName, eventName, params) {
 	}
 
 	if (parent) {
-		parent.$emit.apply(parent, [eventName].concat(params));
+		parent.$emit.apply(parent, [event].concat(params));
 	}
 }
 
-function broadcast(componentName, eventName, params) {
+function broadcast(component, event, params) {
 	this.$children.forEach(child => {
-		var name = child.$options.name;
+		let name = child.$options.name;
 
-		if (name === componentName) {
-			child.$emit.apply(child, [eventName].concat(params));
+		if (name === component) {
+			child.$emit.apply(child, [event].concat(params));
 		}
 		else {
-			broadcast.apply(child, [componentName, eventName].concat([params]));
+			broadcast.apply(child, [component, event].concat([params]));
 		}
 	});
 }
 
 export default {
 	methods: {
-		dispatch(componentName, eventName, params) {
-			dispatch.call(this, componentName, eventName, params);
+		dispatch(component, event, params) {
+			dispatch.call(this, component, event, params);
 		},
-		broadcast(componentName, eventName, params) {
-			broadcast.call(this, componentName, eventName, params);
+		broadcast(component, event, params) {
+			broadcast.call(this, component, event, params);
 		}
 	}
 };

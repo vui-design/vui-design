@@ -3,6 +3,8 @@ import VuiRow from "vui-design/components/row";
 import VuiCol from "vui-design/components/col";
 import VuiDivider from "vui-design/components/divider";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import getElementWithoutBlankspace from "vui-design/utils/getElementWithoutBlankspace";
 
 const VuiCard = {
 	name: "vui-card",
@@ -17,7 +19,7 @@ const VuiCard = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-card"
+			default: undefined
 		},
 		icon: {
 			type: String,
@@ -31,18 +33,30 @@ const VuiCard = {
 			type: String,
 			default: undefined
 		},
+		cover: {
+			type: String,
+			default: undefined
+		},
 		bordered: {
 			type: Boolean,
 			default: true
-		},
-		padding: {
-			type: [String, Number],
-			default: 20
 		},
 		shadow: {
 			type: String,
 			default: "never",
 			validator: value => ["never", "always", "hover"].indexOf(value) > -1
+		},
+		headerStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		bodyStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		footerStyle: {
+			type: [String, Object],
+			default: undefined
 		},
 		loading: {
 			type: Boolean,
@@ -50,14 +64,39 @@ const VuiCard = {
 		}
 	},
 
+	methods: {
+		hasCardGrids(children = []) {
+			let bool = false;
+
+			children.forEach(vNode => {
+				if (!vNode) {
+					return;
+				}
+
+				const component = vNode.componentOptions;
+
+				if (!component || !component.Ctor || !component.Ctor.options) {
+					return;
+				}
+
+				if (component.Ctor.options.isCardGrid) {
+					bool = true;
+				}
+			});
+
+			return bool;
+		}
+	},
+
 	render(h) {
-		let { $slots, classNamePrefix, bordered, padding, shadow, loading } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, bordered, shadow, headerStyle, bodyStyle, footerStyle, loading } = this;
+		let hasCardGrids = this.hasCardGrids(slots.default);
 
 		// icon
 		let icon;
 
-		if ($slots.icon) {
-			icon = $slots.icon;
+		if (slots.icon) {
+			icon = slots.icon;
 		}
 		else if (this.icon) {
 			icon = (
@@ -66,100 +105,124 @@ const VuiCard = {
 		}
 
 		// title
-		let title = $slots.title || this.title;
+		let title = slots.title || this.title;
 
 		// extra
-		let extra = $slots.extra || this.extra;
+		let extra = slots.extra || this.extra;
 
-		// classes
+		// cover
+		let cover;
+
+		if (slots.cover) {
+			cover = slots.cover;
+		}
+		else if (this.cover) {
+			cover = (
+				<img src={this.cover} />
+			);
+		}
+
+		// class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "card");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-bordered`]: bordered,
-			[`${classNamePrefix}-shadow-${shadow}`]: shadow
+			[`${classNamePrefix}-shadow-${shadow}`]: shadow,
+			[`${classNamePrefix}-with-grid`]: hasCardGrids
 		};
+		classes.elHeader = `${classNamePrefix}-header`;
+		classes.elIcon = `${classNamePrefix}-icon`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elExtra = `${classNamePrefix}-extra`;
+		classes.elCover = `${classNamePrefix}-cover`;
+		classes.elBody = `${classNamePrefix}-body`;
+		classes.elLoading = `${classNamePrefix}-loading`;
+		classes.elLoadingBlock = `${classNamePrefix}-loading-block`;
+		classes.elActions = `${classNamePrefix}-actions`;
+		classes.elAction = `${classNamePrefix}-action`;
+		classes.elFooter = `${classNamePrefix}-footer`;
 
-		// styles
-		let styles = {};
-
-		if (padding) {
-			styles.body = {
-				padding: `${padding}px`
-			};
-		}
-
-		// children
+		// render
 		let children = [];
 
 		if (icon || title || extra) {
 			children.push(
-				<div class={`${classNamePrefix}-header`}>
-					{icon && <div class={`${classNamePrefix}-icon`}>{icon}</div>}
-					{title && <div class={`${classNamePrefix}-title`}>{title}</div>}
-					{extra && <div class={`${classNamePrefix}-extra`}>{extra}</div>}
+				<div class={classes.elHeader} style={headerStyle}>
+					{
+						icon && (
+							<div class={classes.elIcon}>{icon}</div>
+						)
+					}
+					{
+						title && (
+							<div class={classes.elTitle}>{title}</div>
+						)
+					}
+					{
+						extra && (
+							<div class={classes.elExtra}>{extra}</div>
+						)
+					}
 				</div>
 			);
 		}
 
-		if ($slots.cover) {
+		if (cover) {
 			children.push(
-				<div class={`${classNamePrefix}-cover`}>
-					{$slots.cover}
-				</div>
+				<div class={classes.elCover}>{cover}</div>
 			);
 		}
 
 		if (loading) {
-			if ($slots.loading) {
+			if (slots.loading) {
 				children.push(
-					<div class={`${classNamePrefix}-body`} style={styles.body}>
-						{$slots.loading}
-					</div>
+					<div class={classes.elBody} style={bodyStyle}>{slots.loading}</div>
 				);
 			}
 			else {
 				children.push(
-					<div class={`${classNamePrefix}-body`} style={styles.body}>
-						<div class={`${classNamePrefix}-loading`}>
+					<div class={classes.elBody} style={bodyStyle}>
+						<div class={classes.elLoading}>
 							<VuiRow gutter={8}>
 								<VuiCol span={20}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 							</VuiRow>
 							<VuiRow gutter={8}>
 								<VuiCol span={8}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 								<VuiCol span={16}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 							</VuiRow>
 							<VuiRow gutter={8}>
 								<VuiCol span={4}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 								<VuiCol span={18}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 							</VuiRow>
 							<VuiRow gutter={8}>
 								<VuiCol span={12}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 								<VuiCol span={8}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 							</VuiRow>
 							<VuiRow gutter={8}>
 								<VuiCol span={8}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 								<VuiCol span={8}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 								<VuiCol span={8}>
-									<div class={`${classNamePrefix}-loading-block`}></div>
+									<div class={classes.elLoadingBlock}></div>
 								</VuiCol>
 							</VuiRow>
 						</div>
@@ -169,39 +232,39 @@ const VuiCard = {
 		}
 		else {
 			children.push(
-				<div class={`${classNamePrefix}-body`} style={styles.body}>
-					{$slots.default}
-				</div>
+				<div class={classes.elBody} style={bodyStyle}>{slots.default}</div>
 			);
 		}
 
-		if ($slots.actions) {
+		if (slots.actions) {
 			let actions = [];
+			let filteredActionList = getElementWithoutBlankspace(slots.actions);
 
-			$slots.actions.forEach((action, index) => {
+			filteredActionList.forEach((action, index) => {
 				if (index > 0) {
 					actions.push(
-						<VuiDivider type="vertical" margin="0" />
+						<VuiDivider type="vertical" margin={0} />
 					);
 				}
 
 				actions.push(
-					<div class={`${classNamePrefix}-action`}>{action}</div>
+					<div class={classes.elAction}>{action}</div>
 				);
 			});
 
 			children.push(
-				<div class={`${classNamePrefix}-footer`}>
-					{actions}
-				</div>
+				<div class={classes.elActions}>{actions}</div>
 			);
 		}
 
-		// render
+		if (slots.footer) {
+			children.push(
+				<div class={classes.elFooter} style={footerStyle}>{slots.footer}</div>
+			);
+		}
+
 		return (
-			<div class={classes.el}>
-				{children}
-			</div>
+			<div class={classes.el}>{children}</div>
 		);
 	}
 };

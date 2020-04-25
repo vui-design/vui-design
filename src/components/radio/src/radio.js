@@ -1,5 +1,7 @@
 import VuiRadioInput from "./components/input";
 import VuiRadioLabel from "./components/label";
+import Emitter from "vui-design/mixins/emitter";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiRadio = {
 	name: "vui-radio",
@@ -18,6 +20,10 @@ const VuiRadio = {
 		VuiRadioLabel
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	inheritAttrs: false,
 
 	model: {
@@ -28,21 +34,17 @@ const VuiRadio = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-radio"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return value === "button";
-			}
+			validator: value => value === "button"
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		name: {
 			type: String,
@@ -68,44 +70,47 @@ const VuiRadio = {
 
 	data() {
 		return {
-			state: {
-				focused: false,
-				checked: this.checked
-			}
+			defaultFocused: false,
+			defaultChecked: this.checked
 		};
 	},
 
 	watch: {
 		checked(value) {
-			this.state.checked = value;
+			if (this.defaultChecked === value) {
+				return;
+			}
+
+			this.defaultChecked = value;
+			this.dispatch("vui-form-item", "change", this.defaultChecked);
 		}
 	},
 
 	methods: {
 		handleFocus(e) {
-			this.state.focused = true;
+			this.defaultFocused = true;
 		},
 		handleBlur(e) {
-			this.state.focused = false;
+			this.defaultFocused = false;
 		},
 		handleChange(data) {
 			if (this.disabled) {
 				return;
 			}
 
-			let checked = data.checked;
-
-			this.state.checked = checked;
-			this.$emit("input", checked);
-			this.$emit('change', checked);
+			this.defaultChecked = data.checked;
+			this.$emit("input", this.defaultChecked);
+			this.$emit('change', this.defaultChecked);
+			this.dispatch("vui-form-item", "change", this.defaultChecked);
 		}
 	},
 
 	render() {
-		let { $vui, vuiForm, vuiRadioGroup, $slots, $attrs, classNamePrefix, label, value, state } = this;
+		let { $vui: vui, vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, classNamePrefix: customizedClassNamePrefix, label, value, defaultFocused, defaultChecked } = this;
 		let { handleFocus, handleBlur } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "radio");
 
-		// 属性 type 优先级：vuiRadioGroup > self
+		// type: vuiRadioGroup > self
 		let type;
 
 		if (vuiRadioGroup) {
@@ -115,7 +120,7 @@ const VuiRadio = {
 			type = this.type;
 		}
 
-		// 属性 size 优先级：self > vuiRadioGroup > vuiForm > $vui
+		// size: self > vuiRadioGroup > vuiForm > vui
 		let size;
 
 		if (this.size) {
@@ -127,14 +132,14 @@ const VuiRadio = {
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
+		else if (vui && vui.size) {
+			size = vui.size;
 		}
 		else {
 			size = "medium";
 		}
 
-		// 属性 name 优先级：vuiRadioGroup > self
+		// name: vuiRadioGroup > self
 		let name;
 
 		if (vuiRadioGroup) {
@@ -144,20 +149,20 @@ const VuiRadio = {
 			name = this.name;
 		}
 
-		// 属性 focused
-		let focused = state.focused;
+		// focused
+		let focused = defaultFocused;
 
-		// 属性 checked 优先级：vuiRadioGroup > self
+		// checked: vuiRadioGroup > self
 		let checked;
 
 		if (vuiRadioGroup) {
-			checked = value === vuiRadioGroup.state.value;
+			checked = value === vuiRadioGroup.defaultValue;
 		}
 		else {
-			checked = state.checked;
+			checked = defaultChecked;
 		}
 
-		// 属性 disabled 优先级：vuiForm > vuiRadioGroup > self
+		// disabled: vuiForm > vuiRadioGroup > self
 		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
@@ -170,7 +175,7 @@ const VuiRadio = {
 			disabled = this.disabled;
 		}
 
-		// 事件 handleChange
+		// handleChange
 		let handleChange;
 
 		if (vuiRadioGroup) {
@@ -191,7 +196,7 @@ const VuiRadio = {
 				disabled
 			},
 			attrs: {
-				...$attrs
+				...attrs
 			},
 			on: {
 				focus: handleFocus,
@@ -222,7 +227,7 @@ const VuiRadio = {
 			<label class={classes}>
 				<VuiRadioInput {...theRadioInputOptions} />
 				<VuiRadioLabel {...theRadioLabelOptions}>
-					{$slots.default || label}
+					{slots.default || label}
 				</VuiRadioLabel>
 			</label>
 		);

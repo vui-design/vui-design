@@ -1,42 +1,41 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiLayout = {
 	name: "vui-layout",
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-layout"
-		},
-		direction: {
-			type: String,
 			default: undefined
+		},
+		withSider: {
+			type: Boolean,
+			default: false
 		}
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix } = this;
 
-		let direction;
-		let hasSider = $slots.default && $slots.default.some(vnode => {
-			return vnode.componentOptions && vnode.componentOptions.tag === "vui-sider";
+		// withSider
+		let withSider = this.withSider;
+
+		withSider = slots.default && slots.default.some(vNode => {
+			return vNode.componentOptions && vNode.componentOptions.tag === "vui-sider";
 		});
 
-		if (this.direction) {
-			direction = this.direction;
-		}
-		else if (hasSider) {
-			direction = "horizontal";
-		}
-		else {
-			direction = "vertical";
-		}
+		// classes
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "layout");
+		let classes = {};
 
-		let classes = {
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${direction}`]: direction
+			[`${classNamePrefix}-with-sider`]: withSider
 		};
 
+		// render
 		return (
-			<div class={classes}>{$slots.default}</div>
+			<div class={classes.el}>{slots.default}</div>
 		);
 	}
 };

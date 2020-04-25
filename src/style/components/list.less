@@ -1,0 +1,114 @@
+@vui-list: ~"@{vui}-list";
+
+
+// --------------------------------------------------
+// list
+.vui-list { position:relative; box-sizing:border-box; border-radius:2px; background-color:#fff; color:#595959; font-size:14px; line-height:1.42857143; transition:all 0.2s; }
+.vui-list .vui-list-header { box-sizing:border-box; display:flex; align-items:center; color:#262626; }
+.vui-list .vui-list-body { box-sizing:border-box; }
+.vui-list .vui-list-body .vui-list-item:last-child {  }
+.vui-list .vui-list-body .vui-list-more { box-sizing:border-box; display:flex; justify-content:center; padding:14px 0; text-align:center; line-height:24px; transition:all 0.2s; }
+.vui-list .vui-list-footer { box-sizing:border-box; }
+
+
+// --------------------------------------------------
+// list-item
+.vui-list-item { box-sizing:border-box; display:flex; justify-content:space-between; align-items:center; }
+
+.vui-list-item-main { flex:1; display:block; }
+
+.vui-list-item-meta { flex:1; display:flex; justify-content:flex-start; align-items:flex-start; }
+.vui-list-item-meta-avatar { margin-right:16px; }
+.vui-list-item-meta-content { flex:1 0; }
+.vui-list-item-meta-title { display:flex; justify-content:flex-start; align-items:flex-start; line-height:1.42857143; white-space:normal; word-break:break-all; word-wrap:break-word; }
+.vui-list-item-meta-title a { color:inherit; }
+.vui-list-item-meta-title a:hover { color:tint(#2d8cf0, 10%); }
+.vui-list-item-meta-title a:active { color:shade(#2d8cf0, 10%); }
+.vui-list-item-meta-description { display:block; color:#8c8c8c; font-size:14px; line-height:1.42857143; white-space:normal; word-break:break-all; word-wrap:break-word; }
+
+.vui-list-item-actions { display:flex; justify-content:flex-start; align-items:center; margin:0; padding:0; list-style:none; }
+.vui-list-item-action {  display:flex; justify-content:flex-start; align-items:center; margin:0; padding:0; list-style:none; color:#8c8c8c; font-size:14px; line-height:1.42857143; }
+.vui-list-item-action a { color:inherit; }
+.vui-list-item-action a:hover { color:tint(#2d8cf0, 10%); }
+.vui-list-item-action a:active { color:shade(#2d8cf0, 10%); }
+.vui-list-item-action-divider { height:12px; border-left:1px solid #e6e6e6; }
+
+.vui-list-item-extra {  }
+
+
+// --------------------------------------------------
+// list layout
+.vui-list-horizontal {  }
+.vui-list-horizontal .vui-list-item { align-items:center; }
+.vui-list-horizontal .vui-list-item-meta {  }
+.vui-list-horizontal .vui-list-item-meta-title { color:#595959; font-size:14px; }
+.vui-list-horizontal .vui-list-item-meta-description { margin-top:6px; }
+.vui-list-horizontal .vui-list-item-actions { flex:0 0 auto; margin-left:20px; }
+.vui-list-horizontal .vui-list-item-action { color:#2d8cf0; }
+.vui-list-horizontal .vui-list-item-action-divider { margin:0 10px; }
+.vui-list-horizontal .vui-list-item-extra { margin-left:20px; }
+
+.vui-list-vertical {  }
+.vui-list-vertical .vui-list-item { align-items:flex-start; }
+.vui-list-vertical .vui-list-item-meta { margin-bottom:16px; }
+.vui-list-vertical .vui-list-item-meta-title { color:#262626; font-size:16px; }
+.vui-list-vertical .vui-list-item-meta-description { margin-top:12px; }
+.vui-list-vertical .vui-list-item-actions { margin-top:16px; }
+.vui-list-vertical .vui-list-item-action { color:#8c8c8c; }
+.vui-list-vertical .vui-list-item-action-divider { margin:0 16px; }
+.vui-list-vertical .vui-list-item-extra { margin-left:40px; }
+
+
+// --------------------------------------------------
+// list size
+.vui-list-small {  }
+.vui-list-small .vui-list-header,
+.vui-list-small .vui-list-footer,
+.vui-list-small .vui-list-item { padding-top:10px; padding-bottom:10px }
+
+.vui-list-medium {  }
+.vui-list-medium .vui-list-header,
+.vui-list-medium .vui-list-footer,
+.vui-list-medium .vui-list-item { padding-top:14px; padding-bottom:14px; }
+
+.vui-list-large {  }
+.vui-list-large .vui-list-header,
+.vui-list-large .vui-list-footer,
+.vui-list-large .vui-list-item { padding-top:18px; padding-bottom:18px; }
+
+
+// --------------------------------------------------
+// list bordered
+.vui-list-bordered { border:1px solid #e6e6e6; }
+.vui-list-bordered .vui-list-header,
+.vui-list-bordered .vui-list-footer,
+.vui-list-bordered .vui-list-item {  }
+
+.vui-list-bordered.vui-list-small {  }
+.vui-list-bordered.vui-list-small .vui-list-header,
+.vui-list-bordered.vui-list-small .vui-list-footer,
+.vui-list-bordered.vui-list-small .vui-list-item { padding-left:16px; padding-right:16px; }
+
+.vui-list-bordered.vui-list-medium {  }
+.vui-list-bordered.vui-list-medium .vui-list-header,
+.vui-list-bordered.vui-list-medium .vui-list-footer,
+.vui-list-bordered.vui-list-medium .vui-list-item { padding-left:20px; padding-right:20px; }
+
+.vui-list-bordered.vui-list-large {  }
+.vui-list-bordered.vui-list-large .vui-list-header,
+.vui-list-bordered.vui-list-large .vui-list-footer,
+.vui-list-bordered.vui-list-large .vui-list-item { padding-left:24px; padding-right:24px; }
+
+
+// --------------------------------------------------
+// list split
+.vui-list-split {  }
+.vui-list-split .vui-list-header { border-bottom:1px solid #f3f3f3; }
+.vui-list-split .vui-list-footer { border-top:1px solid #f3f3f3; }
+.vui-list-split .vui-list-item:not(:last-child) { border-bottom:1px solid #f3f3f3; }
+
+// --------------------------------------------------
+// list grid
+.vui-list-grid .vui-col { margin-bottom:16px; }
+.vui-list-grid .vui-col .vui-list-item { display:block; max-width:100%; border-bottom:none; padding-top:0; padding-bottom:0; }
+

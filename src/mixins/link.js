@@ -1,4 +1,3 @@
-import is from "vui-design/utils/is";
 import guardLinkEvent from "vui-design/utils/guardLinkEvent";
 
 export default {
@@ -26,24 +25,26 @@ export default {
 	},
 	methods: {
 		getNextRoute() {
-			let { $router, $route, to, append } = this;
-			let next = $router.resolve(to, $route, append);
+			let { $router: router, $route: route, $props: props } = this;
+			let result = router.resolve(props.to, route, props.append);
 
-			return next;
+			return result;
 		},
 		handleLinkClick(e) {
-			let { $router, href, to, replace, getNextRoute } = this;
+			let { $router: router, $props: props } = this;
+			let { getNextRoute } = this;
 
 			this.$emit("click", e);
 
-			if (href) {
+			if (props.href) {
 
 			}
-			else if (to && guardLinkEvent(e)) {
+			else if (props.to && guardLinkEvent(e)) {
 				try {
-					let next = getNextRoute();
+					let route = getNextRoute();
+					let reject = error => {};
 
-					replace ? $router.replace(next.location).catch(error => {}) : $router.push(next.location).catch(error => {});
+					props.replace ? router.replace(route.location).catch(reject) : router.push(route.location).catch(reject);
 				}
 				catch(e) {
 					console.error(e);

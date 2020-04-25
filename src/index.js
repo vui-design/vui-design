@@ -19,41 +19,69 @@ import CellGroup from "./components/cell-group";
 import Cell from "./components/cell";
 import Divider from "./components/divider";
 // Navigation
+import ActionList from "./components/action-list";
+import Breadcrumb from "./components/breadcrumb";
+import BreadcrumbItem from "./components/breadcrumb-item";
 import Dropdown from "./components/dropdown";
+import DropdownMenu from "./components/dropdown-menu";
+import DropdownSubmenu from "./components/dropdown-submenu";
+import DropdownMenuItem from "./components/dropdown-menu-item";
+import DropdownMenuItemGroup from "./components/dropdown-menu-item-group";
+import DropdownMenuDivider from "./components/dropdown-menu-divider";
 import Menu from "./components/menu";
 import Submenu from "./components/submenu";
 import MenuItemGroup from "./components/menu-item-group";
 import MenuItem from "./components/menu-item";
-import Breadcrumb from "./components/breadcrumb";
-import BreadcrumbItem from "./components/breadcrumb-item";
+import MenuDivider from "./components/menu-divider";
+import PageHeader from "./components/page-header";
+import Pagination from "./components/pagination";
+import Steps from "./components/steps";
+import Step from "./components/step";
 import Tabs from "./components/tabs";
 import TabPanel from "./components/tab-panel";
 // Data Entry
-import RadioGroup from "./components/radio-group";
-import Radio from "./components/radio";
+import Cascader from "./components/cascader";
 import CheckboxGroup from "./components/checkbox-group";
 import Checkbox from "./components/checkbox";
-import Switch from "./components/switch";
+import Datepicker from "./components/datepicker";
+import Form from "./components/form";
+import FormItem from "./components/form-item";
 import InputGroup from "./components/input-group";
 import Input from "./components/input";
+import InputNumber from "./components/input-number";
+import RadioGroup from "./components/radio-group";
+import Radio from "./components/radio";
+import Select from "./components/select";
+import OptionGroup from "./components/option-group";
+import Option from "./components/option";
+import Switch from "./components/switch";
 import Textarea from "./components/textarea";
 import Upload from "./components/upload";
 // Data Display
 import Avatar from "./components/avatar";
 import Badge from "./components/badge";
+import Descriptions from "./components/descriptions";
+import Description from "./components/description";
+import Empty from "./components/empty";
+import List from "./components/list";
+import ListItem from "./components/list-item";
+import ListItemMeta from "./components/list-item-meta";
+import Popover from "./components/popover";
 import Statistic from "./components/statistic";
+import Table from "./components/table";
 import Tag from "./components/tag";
 import Time from "./components/time";
 import Timeline from "./components/timeline";
 import TimelineItem from "./components/timeline-item";
-import Table from "./components/table";
 import Tooltip from "./components/tooltip";
+import Tree from "./components/tree";
 // Feedback
 import Alert from "./components/alert";
 import Drawer from "./components/drawer";
 import Message from "./components/message";
 import Modal from "./components/modal";
 import Notice from "./components/notice";
+import Popconfirm from "./components/popconfirm";
 import Progress from "./components/progress";
 import Result from "./components/result";
 import Spin from "./components/spin";
@@ -84,41 +112,69 @@ const components = [
 	Cell,
 	Divider,
 	// Navigation
+	ActionList,
+	Breadcrumb,
+	BreadcrumbItem,
 	Dropdown,
+	DropdownMenu,
+	DropdownSubmenu,
+	DropdownMenuItem,
+	DropdownMenuItemGroup,
+	DropdownMenuDivider,
 	Menu,
 	Submenu,
 	MenuItemGroup,
 	MenuItem,
-	Breadcrumb,
-	BreadcrumbItem,
+	MenuDivider,
+	PageHeader,
+	Pagination,
+	Steps,
+	Step,
 	Tabs,
 	TabPanel,
 	// Data Entry
-	RadioGroup,
-	Radio,
+	Cascader,
 	CheckboxGroup,
 	Checkbox,
-	Switch,
+	Datepicker,
+	Form,
+	FormItem,
 	InputGroup,
 	Input,
+	InputNumber,
+	RadioGroup,
+	Radio,
+	Select,
+	OptionGroup,
+	Option,
+	Switch,
 	Textarea,
 	Upload,
 	// Data Display
 	Avatar,
 	Badge,
+	Descriptions,
+	Description,
+	Empty,
+	List,
+	ListItem,
+	ListItemMeta,
+	Popover,
 	Statistic,
+	Table,
 	Tag,
 	Time,
 	Timeline,
 	TimelineItem,
-	Table,
 	Tooltip,
+	Tree,
 	// Feedback
 	Alert,
 	Drawer,
 	Message,
 	Modal,
 	Notice,
+	Popconfirm,
 	Progress,
 	Result,
 	Spin
@@ -137,6 +193,7 @@ const install = function(Vue, options = {}) {
 	});
 
 	Vue.prototype.$vui = {
+		classNamePrefix: "vui",
 		size: options.size || "",
 		zIndex: options.zIndex || 2000
 	};
@@ -177,41 +234,69 @@ export default {
 	Cell,
 	Divider,
 	// Navigation
+	ActionList,
+	Breadcrumb,
+	BreadcrumbItem,
 	Dropdown,
+	DropdownMenu,
+	DropdownSubmenu,
+	DropdownMenuItem,
+	DropdownMenuItemGroup,
+	DropdownMenuDivider,
 	Menu,
 	Submenu,
 	MenuItemGroup,
 	MenuItem,
-	Breadcrumb,
-	BreadcrumbItem,
+	MenuDivider,
+	PageHeader,
+	Pagination,
+	Steps,
+	Step,
 	Tabs,
 	TabPanel,
 	// Data Entry
-	RadioGroup,
-	Radio,
+	Cascader,
 	CheckboxGroup,
 	Checkbox,
-	Switch,
+	Datepicker,
+	Form,
+	FormItem,
 	InputGroup,
 	Input,
+	InputNumber,
+	RadioGroup,
+	Radio,
+	Select,
+	OptionGroup,
+	Option,
+	Switch,
 	Textarea,
 	Upload,
 	// Data Display
 	Avatar,
 	Badge,
+	Descriptions,
+	Description,
+	Empty,
+	List,
+	ListItem,
+	ListItemMeta,
+	Popover,
 	Statistic,
+	Table,
 	Tag,
 	Time,
 	Timeline,
 	TimelineItem,
-	Table,
 	Tooltip,
+	Tree,
 	// Feedback
 	Alert,
 	Drawer,
 	Message,
 	Modal,
 	Notice,
+	Popconfirm,
 	Progress,
 	Result,
 	Spin,

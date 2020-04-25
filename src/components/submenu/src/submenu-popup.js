@@ -67,8 +67,16 @@ const VuiSubmenuPopup = {
 			let reference = this.$refs.header;
 			let target = this.$refs.body;
 			let settings = {
-				placement:  matchReferenceWidth ? "bottom-start" : "right-start"
+				placement:  matchReferenceWidth ? "bottom-start" : "right-start",
 			};
+
+			if (!matchReferenceWidth) {
+				settings.modifiers = {
+					offset: {
+						offset: [0, -5]
+					}
+				};
+			}
 
 			if (!reference || !target || !settings.placement) {
 				return;
@@ -177,7 +185,7 @@ const VuiSubmenuPopup = {
 					appear
 				>
 					<div ref="body" v-portal={portal} v-show={open} class={`${classNamePrefix}-body`} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
-						<div class={[`vui-menu`, `vui-menu-popup`, `vui-menu-vertical`, `vui-menu-${theme}`]}>{$slots.default}</div>
+						{$slots.default}
 					</div>
 				</transition>
 			</div>

@@ -1,4 +1,6 @@
 import VuiIcon from "vui-design/components/icon";
+import Emitter from "vui-design/mixins/emitter";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiInput = {
 	name: "vui-input",
@@ -16,12 +18,16 @@ const VuiInput = {
 		VuiIcon
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	inheritAttrs: false,
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-input"
+			default: undefined
 		},
 		type: {
 			type: String,
@@ -64,7 +70,7 @@ const VuiInput = {
 			type: Boolean,
 			default: false
 		},
-		togglable: {
+		showPasswordToggler: {
 			type: Boolean,
 			default: false
 		},
@@ -80,14 +86,19 @@ const VuiInput = {
 
 	data() {
 		return {
-			showPlaintextPassword: false,
+			showPassword: false,
 			defaultValue: this.value
 		};
 	},
 
 	watch: {
 		value(value) {
+			if (this.defaultValue === value) {
+				return;
+			}
+
 			this.defaultValue = value;
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		}
 	},
 
@@ -110,6 +121,7 @@ const VuiInput = {
 		},
 		handleBlur(e) {
 			this.$emit("blur", e);
+			this.dispatch("vui-form-item", "blur", this.defaultValue);
 		},
 		handleKeydown(e) {
 			this.$emit("keydown", e);
@@ -123,34 +135,37 @@ const VuiInput = {
 		handleInput(e) {
 			this.defaultValue = e.target.value;
 			this.$emit("input", this.defaultValue);
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		},
 		handleClear(e) {
 			this.defaultValue = "";
 			this.focus();
-			this.$emit("change", e);
 			this.$emit("clear", e);
 			this.$emit("input", this.defaultValue);
+			this.$emit("change", e);
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		},
 		handleToggle(e) {
-			this.showPlaintextPassword = !this.showPlaintextPassword;
+			this.showPassword = !this.showPassword;
 		}
 	},
 
 	render(h) {
-		let { $vui, vuiForm, vuiInputGroup, $slots, $attrs, $listeners, classNamePrefix, placeholder, defaultValue, maxLength, clearable, togglable, readonly } = this;
+		let { $vui: vui, vuiForm, vuiInputGroup, $slots: slots, $attrs: attrs, $listeners: listeners, classNamePrefix: customizedClassNamePrefix, placeholder, defaultValue, maxLength, clearable, showPasswordToggler, readonly } = this;
 		let { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeypress, handleKeyup, handleChange, handleInput, handleClear, handleToggle } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "input");
 
-		// 属性 type
+		// type
 		let type;
 
-		if (this.type === "password" && this.showPlaintextPassword) {
+		if (this.type === "password" && this.showPassword) {
 			type = "text";
 		}
 		else {
 			type = this.type;
 		}
 
-		// 属性 size 优先级：self > vuiInputGroup > vuiForm > $vui
+		// size: self > vuiInputGroup > vuiForm > vui
 		let size;
 
 		if (this.size) {
@@ -162,14 +177,14 @@ const VuiInput = {
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
+		else if (vui && vui.size) {
+			size = vui.size;
 		}
 		else {
 			size = "medium";
 		}
 
-		// 属性 disabled 优先级：vuiForm > vuiInputGroup > self
+		// disabled: vuiForm > vuiInputGroup > self
 		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
@@ -182,7 +197,7 @@ const VuiInput = {
 			disabled = this.disabled;
 		}
 
-		// 样式
+		// classes
 		let classes = {};
 
 		classes.el = {
@@ -190,24 +205,22 @@ const VuiInput = {
 			[`${classNamePrefix}-${size}`]: size,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
-		classes.prepend = `${classNamePrefix}-prepend`;
-		classes.append = `${classNamePrefix}-append`;
-		classes.main = {
-			[`${classNamePrefix}-main`]: true
-		};
-		classes.prefix = `${classNamePrefix}-main-prefix`;
-		classes.suffix = `${classNamePrefix}-main-suffix`;
-		classes.btnToggle = `${classNamePrefix}-btn-toggle`;
-		classes.btnClear = `${classNamePrefix}-btn-clear`;
+		classes.elPrepend = `${classNamePrefix}-prepend`;
+		classes.elAppend = `${classNamePrefix}-append`;
+		classes.elMain = `${classNamePrefix}-main`;
+		classes.elPrefix = `${classNamePrefix}-main-prefix`;
+		classes.elSuffix = `${classNamePrefix}-main-suffix`;
+		classes.elBtnToggle = `${classNamePrefix}-btn-toggle`;
+		classes.elBtnClear = `${classNamePrefix}-btn-clear`;
 
-		// 渲染结构
-		let prepend = $slots.prepend || this.prepend;
-		let append = $slots.append || this.append;
+		// render
+		let prepend = slots.prepend || this.prepend;
+		let append = slots.append || this.append;
 		let prefix;
 		let suffix;
 
-		if ($slots.prefix) {
-			prefix = $slots.prefix;
+		if (slots.prefix) {
+			prefix = slots.prefix;
 		}
 		else if (this.prefix) {
 			prefix = (
@@ -220,7 +233,7 @@ const VuiInput = {
 				props: {
 					type: "crossmark-circle-filled"
 				},
-				class: classes.btnClear,
+				class: classes.elBtnClear,
 				on: {
 					mousedown: e => e.preventDefault(),
 					click: handleClear
@@ -231,12 +244,12 @@ const VuiInput = {
 				<VuiIcon {...btnClearProps} />
 			);
 		}
-		else if (this.type === "password" && togglable && !readonly && !disabled) {
+		else if (this.type === "password" && showPasswordToggler && !readonly && !disabled) {
 			let btnToggleProps = {
 				props: {
-					type: this.showPlaintextPassword ? "eye-off" : "eye"
+					type: this.showPassword ? "eye-off" : "eye"
 				},
-				class: classes.btnToggle,
+				class: classes.elBtnToggle,
 				on: {
 					mousedown: e => e.preventDefault(),
 					click: handleToggle
@@ -247,8 +260,8 @@ const VuiInput = {
 				<VuiIcon {...btnToggleProps} />
 			);
 		}
-		else if ($slots.suffix) {
-			suffix = $slots.suffix;
+		else if (slots.suffix) {
+			suffix = slots.suffix;
 		}
 		else if (this.suffix) {
 			suffix = (
@@ -259,10 +272,10 @@ const VuiInput = {
 		let nativeInputProps = {
 			ref: "input",
 			attrs: {
-				...$attrs
+				...attrs
 			},
 			on: {
-				...$listeners,
+				...listeners,
 				mouseenter: handleMouseenter,
 				mouseleave: handleMouseleave,
 				focus: handleFocus,
@@ -276,13 +289,29 @@ const VuiInput = {
 
 		return (
 			<div class={classes.el}>
-				{prepend ? <div class={classes.prepend}>{prepend}</div> : null}
-				<div class={classes.main}>
-					{prefix ? <div class={classes.prefix}>{prefix}</div> : null}
-					<input ref="input" type={type} placeholder={placeholder} value={defaultValue} maxLength={maxLength} readonly={readonly} disabled={disabled} {...nativeInputProps} />
-					{suffix ? <div class={classes.suffix}>{suffix}</div> : null}
+				{
+					prepend && (
+						<div class={classes.elPrepend}>{prepend}</div>
+					)
+				}
+				<div class={classes.elMain}>
+					{
+						prefix && (
+							<div class={classes.elPrefix}>{prefix}</div>
+						)
+					}
+					<input ref="input" {...nativeInputProps} type={type} placeholder={placeholder} value={defaultValue} maxLength={maxLength} readonly={readonly} disabled={disabled} />
+					{
+						suffix && (
+							<div class={classes.elSuffix}>{suffix}</div>
+						)
+					}
 				</div>
-				{append ? <div class={classes.append}>{append}</div> : null}
+				{
+					append && (
+						<div class={classes.elAppend}>{append}</div>
+					)
+				}
 			</div>
 		);
 	}

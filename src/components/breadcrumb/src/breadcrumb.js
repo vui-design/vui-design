@@ -1,3 +1,5 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiBreadcrumb = {
 	name: "vui-breadcrumb",
 
@@ -10,7 +12,7 @@ const VuiBreadcrumb = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-breadcrumb"
+			default: undefined
 		},
 		separator: {
 			type: String,
@@ -19,14 +21,12 @@ const VuiBreadcrumb = {
 	},
 
 	render() {
-		let { $slots, classNamePrefix } = this;
-		let classes = {
-			[`${classNamePrefix}`]: true
-		};
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "breadcrumb");
 
 		return (
-			<div class={classes}>
-				{$slots.default}
+			<div class={`${classNamePrefix}`}>
+				{slots.default}
 			</div>
 		);
 	}

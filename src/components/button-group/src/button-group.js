@@ -1,3 +1,5 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiButtonGroup = {
 	name: "vui-button-group",
 
@@ -10,28 +12,22 @@ const VuiButtonGroup = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-button-group"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "default",
-			validator(value) {
-				return ["default", "primary", "info", "warning", "success", "error", "dashed"].indexOf(value) > -1;
-			}
+			validator: value => ["default", "primary", "info", "warning", "success", "error", "dashed"].indexOf(value) > -1
 		},
 		shape: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["round"].indexOf(value) > -1;
-			}
+			validator: value => ["round"].indexOf(value) > -1
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		disabled: {
 			type: Boolean,
@@ -40,11 +36,18 @@ const VuiButtonGroup = {
 	},
 
 	render() {
-		let { $slots, classNamePrefix } = this;
+		let { $slots: slots, $props: props } = this;
 
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "button-group");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+
+		// render
 		return (
-			<div class={`${classNamePrefix}`}>
-				{$slots.default}
+			<div class={classes.el}>
+				{slots.default}
 			</div>
 		);
 	}

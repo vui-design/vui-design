@@ -1,4 +1,6 @@
+import VuiIcon from "vui-design/components/icon";
 import MixinLink from "vui-design/mixins/link";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiBreadcrumbItem = {
 	name: "vui-breadcrumb-item",
@@ -9,6 +11,10 @@ const VuiBreadcrumbItem = {
 		}
 	},
 
+	components: {
+		VuiIcon
+	},
+
 	mixins: [
 		MixinLink
 	],
@@ -16,12 +22,50 @@ const VuiBreadcrumbItem = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-breadcrumb-item"
+			default: undefined
+		},
+		icon: {
+			type: String,
+			default: undefined
+		},
+		title: {
+			type: String,
+			default: undefined
 		}
 	},
 
 	render() {
-		let { vuiBreadcrumb, $slots, classNamePrefix, href, to, target, getNextRoute, handleLinkClick } = this;
+		let { vuiBreadcrumb, $slots: slots, classNamePrefix: customizedClassNamePrefix, href, to, target, getNextRoute, handleLinkClick } = this;
+
+		// class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "breadcrumb-item");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+		classes.elLink = `${classNamePrefix}-link`;
+		classes.elLabel = `${classNamePrefix}-label`;
+		classes.elSeparator = `${classNamePrefix}-separator`;
+
+		// icon
+		let icon;
+
+		if (this.icon) {
+			icon = (
+				<VuiIcon type={this.icon} />
+			);
+		}
+
+		// title
+		let title;
+
+		if (slots.default) {
+			title = slots.default;
+		}
+		else if (this.title) {
+			title = this.title;
+		}
+
+		// render
 		let children = [];
 
 		if (href || to) {
@@ -29,7 +73,7 @@ const VuiBreadcrumbItem = {
 				attrs: {
 					target
 				},
-				class: `${classNamePrefix}-link`,
+				class: classes.elLink,
 				on: {
 					click: handleLinkClick
 				}
@@ -46,26 +90,28 @@ const VuiBreadcrumbItem = {
 
 			children.push(
 				<a {...props}>
-					{$slots.default}
+					{icon}
+					{title}
 				</a>
 			);
 		}
 		else {
 			children.push(
-				<label class={`${classNamePrefix}-label`}>
-					{$slots.default}
+				<label class={classes.elLabel}>
+					{icon}
+					{title}
 				</label>
 			);
 		}
 
 		children.push(
-			<div class={`${classNamePrefix}-separator`}>
+			<div class={classes.elSeparator}>
 				{vuiBreadcrumb.separator}
 			</div>
 		);
 
 		return (
-			<div class={`${classNamePrefix}`}>
+			<div class={classes.el}>
 				{children}
 			</div>
 		);

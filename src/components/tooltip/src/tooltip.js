@@ -1,6 +1,7 @@
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTooltip = {
 	name: "vui-tooltip",
@@ -17,7 +18,7 @@ const VuiTooltip = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-tooltip"
+			default: undefined
 		},
 		visible: {
 			type: Boolean,
@@ -39,7 +40,7 @@ const VuiTooltip = {
 		},
 		animation: {
 			type: String,
-			default: "vui-tooltip-fade"
+			default: "vui-tooltip-content-scale"
 		},
 		getPopupContainer: {
 			type: Function,
@@ -61,11 +62,7 @@ const VuiTooltip = {
 
 	methods: {
 		createPopup() {
-			if (is.server) {
-				return;
-			}
-
-			if (this.popup) {
+			if (is.server || this.popup) {
 				return;
 			}
 
@@ -83,11 +80,7 @@ const VuiTooltip = {
 			this.popup.target.style.zIndex = Popup.nextZIndex();
 		},
 		destroyPopup() {
-			if (is.server) {
-				return;
-			}
-
-			if (!this.popup) {
+			if (is.server || !this.popup) {
 				return;
 			}
 
@@ -130,26 +123,32 @@ const VuiTooltip = {
 	},
 
 	render() {
-		let { $slots, classNamePrefix, defaultVisible, theme, content, placement, animation, getPopupContainer } = this;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible: visible, theme, content, placement, animation, getPopupContainer } = this;
 		let { handleMouseEnter, handleMouseLeave, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 		let portal = getPopupContainer();
 
 		// classes
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "tooltip");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
-		classes.trigger = `${classNamePrefix}-trigger`;
-		classes.content = {
+		classes.elTrigger = `${classNamePrefix}-trigger`;
+		classes.elContent = {
 			[`${classNamePrefix}-content`]: true,
 			[`${classNamePrefix}-content-${theme}`]: theme
 		};
-		classes.arrow = `${classNamePrefix}-arrow`;
+		classes.elArrow = `${classNamePrefix}-arrow`;
 
 		// render
 		return (
 			<div class={classes.el}>
-				<div ref="trigger" class={classes.trigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>
-					{$slots.default}
+				<div
+					ref="trigger"
+					class={classes.elTrigger}
+					onMouseenter={handleMouseEnter}
+					onMouseleave={handleMouseLeave}
+				>
+					{slots.default}
 				</div>
 				<transition
 					name={animation}
@@ -161,9 +160,16 @@ const VuiTooltip = {
 					onAfterLeave={handleAfterLeave}
 					appear
 				>
-					<div v-portal={portal} v-show={defaultVisible} ref="content" class={classes.content} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>
-						{$slots.content || content}
-						<i class={classes.arrow}></i>
+					<div
+						ref="content"
+						v-portal={portal}
+						v-show={visible}
+						class={classes.elContent}
+						onMouseenter={handleMouseEnter}
+						onMouseleave={handleMouseLeave}
+					>
+						{slots.content || content}
+						<i class={classes.elArrow}></i>
 					</div>
 				</transition>
 			</div>

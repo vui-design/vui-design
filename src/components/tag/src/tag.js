@@ -1,4 +1,5 @@
 import { hex2rgba, rgba2hex } from "vui-design/utils/color";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTag = {
 	name: "vui-tag",
@@ -6,7 +7,12 @@ const VuiTag = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-tag"
+			default: undefined
+		},
+		size: {
+			type: String,
+			default: "medium",
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		closable: {
 			type: Boolean,
@@ -31,93 +37,103 @@ const VuiTag = {
 	},
 
 	data() {
+		let colors = [
+			"default", "primary", "info", "warning", "success", "error",
+			"magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"
+		];
+
 		return {
-			store: {
+			state: {
 				checked: this.checked,
-				colors: [
-					"default", "primary", "info", "warning", "success", "error",
-					"magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"
-				]
+				colors
 			}
 		};
-	},
-
-	computed: {
-		withPresetColor() {
-			return this.color && this.store.colors.indexOf(this.color) > -1;
-		},
-		withCustomColor() {
-			return this.color && this.store.colors.indexOf(this.color) === -1;
-		}
 	},
 
 	watch: {
 		checked(value) {
-			this.store.checked = value;
+			this.state.checked = value;
 		}
 	},
 
 	methods: {
-		handleChange() {
-			if (!this.checkable) {
+		handleChange(e) {
+			this.$emit("click", e);
+
+			let { $props: props, state } = this;
+
+			if (!props.checkable) {
 				return;
 			}
 
-			const checked = !this.store.checked;
+			let checked = !state.checked;
 
-			this.store.checked = checked;
+			this.state.checked = checked;
 			this.$emit("change", checked);
 		},
-		handleClose() {
-			this.$emit("close");
+		handleClose(e) {
+			this.$emit("close", e);
 		}
 	},
 
 	render() {
-		let { $slots, classNamePrefix, closable, checkable, color, animation, store, withPresetColor, withCustomColor } = this;
+		let { $slots: slots, $props: props, state } = this;
 		let { handleChange, handleClose } = this;
+
+		// withPresetColor
+		let withPresetColor = props.color && state.colors.indexOf(props.color) > -1;
+
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tag");
 		let classes = {};
-		let styles = {};
-		let children = [];
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-closable`]: closable,
-			[`${classNamePrefix}-checkable`]: checkable,
-			[`${classNamePrefix}-checked`]: store.checked,
-			[`${classNamePrefix}-${color}`]: withPresetColor
+			[`${classNamePrefix}-${props.size}`]: props.size,
+			[`${classNamePrefix}-closable`]: props.closable,
+			[`${classNamePrefix}-checkable`]: props.checkable,
+			[`${classNamePrefix}-checked`]: state.checked,
+			[`${classNamePrefix}-${props.color}`]: withPresetColor
 		};
-		classes.btnClose = {
-			[`${classNamePrefix}-btn-close`]: true
-		};
+		classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
-		if (withCustomColor) {
-			if (!checkable || (checkable && store.checked)) {
-				let borderColor = hex2rgba(color, 0.45);
-				let backgroundColor = hex2rgba(color, 0.05);
+		// style
+		let styles = {};
 
-				styles.borderColor = rgba2hex(borderColor);
-				styles.backgroundColor = rgba2hex(backgroundColor);
-				styles.color = color;
+		if (!withPresetColor) {
+			if (!props.checkable || (props.checkable && state.checked)) {
+				let borderColor = hex2rgba(props.color, 0.45);
+				let backgroundColor = hex2rgba(props.color, 0.05);
+
+				styles.el = {
+					borderColor: rgba2hex(borderColor),
+					backgroundColor: rgba2hex(backgroundColor),
+					color: props.color
+				};
 			}
-			else if (checkable && !store.checked) {
-				styles.borderColor = "transparent";
-				styles.backgroundColor = "transparent";
-				styles.color = "#666";
+			else if (props.checkable && !state.checked) {
+				styles.el = {
+					borderColor: "transparent",
+					backgroundColor: "transparent",
+					color: rgba2hex(hex2rgba("#000", 0.65))
+				};
 			}
 		}
 
-		children.push($slots.default);
+		// render
+		let children = [];
 
-		if (closable) {
+		children.push(slots.default);
+
+		if (props.closable) {
 			children.push(
-				<i domPropsInnerHTML="&#10005" class={classes.btnClose} onClick={handleClose}></i>
+				<i domPropsInnerHTML="&#10005" class={classes.elBtnClose} onClick={handleClose} />
 			);
 		}
 
 		return (
-			<transition name={animation}>
-				<label class={classes.el} style={styles} onClick={handleChange}>
+			<transition name={props.animation}>
+				<label class={classes.el} style={styles.el} onClick={handleChange}>
 					{children}
 				</label>
 			</transition>

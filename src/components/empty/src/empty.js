@@ -1,47 +1,100 @@
+import Locale from "vui-design/mixins/locale";
+import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiEmpty = {
 	name: "vui-empty",
+
+	mixins: [
+		Locale
+	],
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-empty"
+			default: undefined
+		},
+		image: {
+			type: String,
+			description: undefined
 		},
 		description: {
-			type: String,
-			default: undefined
-		}
-	},
-
-	computed: {
-		classes() {
-			let classNamePrefix = this.classNamePrefix;
-			let classes = {};
-
-			classes.el = `${classNamePrefix}`;
-			classes.icon = `${classNamePrefix}-icon`;
-			classes.description = `${classNamePrefix}-description`;
-
-			return classes;
+			type: [String, Boolean],
+			default: true
 		}
 	},
 
 	render() {
-		let { classes, description } = this;
+		let { $slots: slots, $props: props, t: translate } = this;
+
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+		classes.elImage = `${classNamePrefix}-image`;
+		classes.elDescription = `${classNamePrefix}-description`;
+		classes.elMain = `${classNamePrefix}-main`;
+
+		// image
+		let image;
+
+		if (slots.image) {
+			image = slots.image;
+		}
+		else if (props.image) {
+			image = (
+				<img alt="empty" src={props.image} />
+			);
+		}
+		else {
+			image = (
+				<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+					<ellipse fill="#f5f5f5" fill-rule="evenodd" clip-rule="evenodd" cx="32" cy="33" rx="32" ry="7" />
+					<path stroke="#d9d9d9" fill="none" d="M55,13.3L44.9,1.8c-0.5-0.8-1.2-1.3-1.9-1.3H21.1c-0.7,0-1.5,0.5-1.9,1.3L9,13.3v9.2h46V13.3z" />
+					<path stroke="#d9d9d9" fill="#fafafa" d="M41.6,16.4c0-1.6,1-2.9,2.2-2.9H55v18.1c0,2.1-1.3,3.9-3,3.9H12c-1.6,0-3-1.7-3-3.9V13.5h11.2c1.2,0,2.2,1.3,2.2,2.9v0c0,1.6,1,2.9,2.2,2.9h14.8C40.6,19.4,41.6,18,41.6,16.4L41.6,16.4z" />
+				</svg>
+			);
+		}
+
+		// description
+		let description;
+
+		if (slots.description) {
+			description = slots.description;
+		}
+		else if (props.description) {
+			description = is.boolean(props.description) ? translate("vui.empty.description") : props.description;
+		}
+
+		// render
+		let children = [];
+
+		children.push(
+			<div class={classes.elImage}>
+				{image}
+			</div>
+		);
+
+		if (description) {
+			children.push(
+				<div class={classes.elDescription}>
+					{description}
+				</div>
+			);
+		}
+
+		if (slots.default) {
+			children.push(
+				<div class={classes.elMain}>
+					{slots.default}
+				</div>
+			);
+		}
 
 		return (
 			<div class={classes.el}>
-				<div class={classes.icon}>
-					<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
-						<g transform="translate(0 1)" fill="none" fill-rule="evenodd">
-							<ellipse fill="#f5f5f5" cx="32" cy="33" rx="32" ry="7"></ellipse>
-							<g fill-rule="nonzero" stroke="#d9d9d9">
-								<path d="M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z"></path>
-								<path d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z" fill="#fafafa"></path>
-							</g>
-						</g>
-					</svg>
-				</div>
-				{description ? <div class={classes.description}>{description}</div> : null}
+				{children}
 			</div>
 		);
 	}

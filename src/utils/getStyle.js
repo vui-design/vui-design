@@ -1,23 +1,23 @@
 /**
 * 获取 element 元素的指定样式
 * @param {HTMLElement} element
-* @param {String} style
+* @param {String} property
 */
-export default function getStyle(element, name) {
-	if (!element || !name) {
+export default function getStyle(element, property) {
+	if (!element || !property) {
 		return null;
 	}
 
-	if (name === "float") {
-		name = "cssFloat";
+	if (property === "float") {
+		property = "cssFloat";
 	}
 
 	try {
 		const computed = document.defaultView.getComputedStyle(element, "");
 
-		return element.style[name] || computed ? computed[name] : null;
+		return element.style[property] || computed ? computed[property] : null;
 	}
 	catch(e) {
-		return element.style[name];
+		return element.style[property];
 	}
 };

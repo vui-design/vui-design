@@ -2,8 +2,7 @@
 
 
 .vui-button-group { display:inline-block; vertical-align:middle; font-size:0; }
-.vui-button-group .vui-button { margin-left:-1px; }
-.vui-button-group .vui-button:first-child { border-top-right-radius:0; border-bottom-right-radius:0; margin-left:0; }
-.vui-button-group .vui-button:last-child { border-top-left-radius:0; border-bottom-left-radius:0; }
-.vui-button-group .vui-button:not(:first-child):not(:last-child) { border-radius:0; }
+.vui-button-group .vui-button { border-radius:0; margin-left:-1px; }
+.vui-button-group .vui-button:first-child { border-top-left-radius:@border-radius; border-bottom-left-radius:@border-radius; margin-left:0; }
+.vui-button-group .vui-button:last-child { border-top-right-radius:@border-radius; border-bottom-right-radius:@border-radius; }
 

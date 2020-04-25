@@ -1,12 +1,11 @@
 /**
  * (Internal) Applies css properties to an element, similar to the jQuery
- * While this helper does assist with vendor prefixed property names, it
- * does not perform any manipulation of values prior to setting styles.
+ * While this helper does assist with vendor prefixed property names, it does not perform any manipulation of values prior to setting styles.
  */
 let cssPrefixes = ["Webkit", "Moz", "O", "ms"];
-let cssProps = {};
+let cssProperties = {};
 
-function getVendorProp(name) {
+export function getVendorProperty(name) {
 	let style = document.body.style;
 
 	if (name in style) {
@@ -26,39 +25,33 @@ function getVendorProp(name) {
 	}
 
 	return name;
-}
+};
 
-function camelCase(string) {
-	return string.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, function(match, letter) {
+export function getStyleProperty(key) {
+	key = key.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, function(match, letter) {
 		return letter.toUpperCase();
 	});
-}
 
-function getStyleProp(name) {
-	name = camelCase(name);
+	return cssProperties[key] || (cssProperties[key] = getVendorProperty(key));
+};
 
-	return cssProps[name] || (cssProps[name] = getVendorProp(name));
-}
+export function applyStyle(element, key, value) {
+	const property = getStyleProperty(key);
 
-function applyCss(element, prop, value) {
-	prop = getStyleProp(prop);
-
-	element.style[prop] = value;
-}
+	element.style[property] = value;
+};
 
 export default function css(element, properties) {
-	let args = arguments;
+	if (arguments.length == 2) {
+		for (let key in properties) {
+			const value = properties[key];
 
-	if (args.length == 2) {
-		for (let prop in properties) {
-			let value = properties[prop];
-
-			if (value !== undefined && properties.hasOwnProperty(prop)) {
-				applyCss(element, prop, value);
+			if (value !== undefined && properties.hasOwnProperty(key)) {
+				applyStyle(element, key, value);
 			}
 		}
 	}
 	else {
-		applyCss(element, args[1], args[2]);
+		applyStyle(element, arguments[1], arguments[2]);
 	}
 };

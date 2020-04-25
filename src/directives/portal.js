@@ -1,5 +1,4 @@
 // Thanks to: https://github.com/calebroseland/vue-dom-portal
-
 const getRoot = node => node === true ? document.body : node;
 const map = new Map();
 
@@ -14,7 +13,7 @@ const portal = {
 		let comment = document.createComment("");
 		let moved = false;
 
-		// 当 value 为 false，或者本次移动的目前父节点等于原始父节点时不做任何操作
+		// 当 value 为 false，或者本次移动的目前父节点等于原始父节点，或当前元素还处于隐藏状态时不做任何操作
 		if (value === false || getRoot(value) === parentNode) {
 
 		}

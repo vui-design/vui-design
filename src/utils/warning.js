@@ -12,7 +12,7 @@ if (dev) {
     }
 
     var argIndex = 0;
-    var message = "Warning: " + format.replace(/%s/g, function() {
+    var message = format.replace(/%s/g, function() {
       return args[argIndex++];
     });
 

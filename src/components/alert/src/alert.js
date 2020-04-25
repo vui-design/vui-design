@@ -138,13 +138,7 @@ const VuiAlert = {
 
 		return (
 			<transition name={animation}>
-				{
-					visible ? (
-						<div class={classes.el}>
-							{children}
-						</div>
-					) : null
-				}
+				{visible && <div class={classes.el}>{children}</div>}
 			</transition>
 		);
 	}

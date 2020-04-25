@@ -1,3 +1,5 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiMenuItemGroup = {
 	name: "vui-menu-item-group",
 
@@ -10,7 +12,7 @@ const VuiMenuItemGroup = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-menu-item-group"
+			default: undefined
 		},
 		title: {
 			type: String,
@@ -38,17 +40,23 @@ const VuiMenuItemGroup = {
 	},
 
 	render(h) {
-		let { vuiMenu, $slots, classNamePrefix, title, indent } = this;
-		let headerStyles = {};
+		let { vuiMenu, $slots: slots, classNamePrefix: customizedClassNamePrefix, title, indent } = this;
+
+		// Class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "menu-item-group");
+
+		// Style
+		let headerStyle = {};
 
 		if (indent > 20) {
-			headerStyles.paddingLeft = `${indent}px`;
+			headerStyle.paddingLeft = `${indent}px`;
 		}
 
+		// Render
 		return (
 			<div class={`${classNamePrefix}`}>
-				<div class={`${classNamePrefix}-header`} style={headerStyles}>{$slots.title || title}</div>
-				<div class={`${classNamePrefix}-body`}>{$slots.default}</div>
+				<div class={`${classNamePrefix}-header`} style={headerStyle}>{slots.title || title}</div>
+				<div class={`${classNamePrefix}-body`}>{slots.default}</div>
 			</div>
 		);
 	}

@@ -1,0 +1,174 @@
+
+
+
+
+.vui-datepicker { position:relative; display:inline-table; border-collapse:separate; border-spacing:0; width:100%; vertical-align:middle; line-height:normal; }
+
+
+
+
+.vui-datepicker-input { position:relative; display:table-cell; box-sizing:border-box; width:100%; }
+.vui-datepicker-input input { position:relative; appearance:none; outline:none; display:block; box-sizing:border-box; height:@input-size; width:100%; border:@border-width @border-style @border-color; border-radius:@border-radius; background-color:@component-background-color; margin:0; padding:0 8px; color:@font-color; font-size:@font-size; font-family:@font-family; line-height:normal; transition:all @transition-duration; }
+.vui-datepicker-input input::-webkit-input-placeholder { color:tint(@font-color, 60%); }
+.vui-datepicker-input input:-moz-placeholder { color:tint(@font-color, 60%); }
+.vui-datepicker-input input::-moz-placeholder { color:tint(@font-color, 60%); }
+.vui-datepicker-input input:-ms-input-placeholder { color:tint(@font-color, 60%); }
+.vui-datepicker-input input:hover { z-index:1; border-color:tint(#2d8cf0, 10%); }
+.vui-datepicker-input input:focus { z-index:2; border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 15); }
+.vui-datepicker-input input:disabled { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 3.5%); color:@font-disabled-color; }
+.vui-datepicker-input .vui-datepicker-input-prefix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-datepicker-input .vui-datepicker-input-prefix .vui-icon { display:block; }
+.vui-datepicker-input .vui-datepicker-input-suffix { position:absolute; top:50%; z-index:3; display:block; color:@font-secondary-color; line-height:1; transform:translate(0, -50%); transition:all @transition-duration; }
+.vui-datepicker-input .vui-datepicker-input-suffix .vui-icon { display:block; }
+
+
+
+
+
+
+
+
+
+
+
+
+//  vui-datepicker-picker
+.vui-datepicker-picker { position:absolute; top:39px; left:0; z-index:2000; border-radius:2px; background-color:#fff; box-shadow:0 1px 8px rgba(0, 0, 0, 0.15); }
+
+//  vui-datepicker-picker-header
+.vui-datepicker-picker .vui-datepicker-picker-header { position:relative; display:flex; justify-content:center; align-items:center; height:40px; border-bottom:1px solid #f3f3f3; line-height:40px; }
+
+.vui-datepicker-picker-prev-year { position:absolute; top:0; bottom:0; left:10px; cursor:pointer; display:block; padding:0 5px; color:#8f8f8f; transition:all 0.2s; }
+.vui-datepicker-picker-prev-year svg { width:10px; height:10px; fill:currentColor; }
+.vui-datepicker-picker-prev-year:hover { color:#2d8cf0; }
+.vui-datepicker-picker-prev-year:hover svg {  }
+
+.vui-datepicker-picker-next-year { position:absolute; top:0; bottom:0; right:10px; cursor:pointer; display:block; padding:0 5px; color:#8f8f8f; transition:all 0.2s; }
+.vui-datepicker-picker-next-year svg { width:10px; height:10px; fill:currentColor; }
+.vui-datepicker-picker-next-year:hover { color:#2d8cf0; }
+.vui-datepicker-picker-next-year:hover svg {  }
+
+.vui-datepicker-picker-prev-month { position:absolute; top:0; bottom:0; left:30px; cursor:pointer; display:block; padding:0 5px; color:#8f8f8f; transition:all 0.2s; }
+.vui-datepicker-picker-prev-month svg { width:10px; height:10px; fill:currentColor; }
+.vui-datepicker-picker-prev-month:hover { color:#2d8cf0; }
+.vui-datepicker-picker-prev-month:hover svg {  }
+
+.vui-datepicker-picker-next-month { position:absolute; top:0; bottom:0; right:30px; cursor:pointer; display:block; padding:0 5px; color:#8f8f8f; transition:all 0.2s; }
+.vui-datepicker-picker-next-month svg { width:10px; height:10px; fill:currentColor; }
+.vui-datepicker-picker-next-month:hover { color:#2d8cf0; }
+.vui-datepicker-picker-next-month:hover svg {  }
+
+.vui-datepicker-picker-year { cursor:pointer; display:block; margin:0 2px; transition:all 0.2s; }
+.vui-datepicker-picker-year:hover { color:#2d8cf0; }
+
+.vui-datepicker-picker-month { cursor:pointer; display:block; margin:0 2px; transition:all 0.2s; }
+.vui-datepicker-picker-month:hover { color:#2d8cf0; }
+
+//  vui-datepicker-picker-body
+.vui-datepicker-picker .vui-datepicker-picker-body { padding:10px; }
+
+//  vui-datepicker-picker-footer
+.vui-datepicker-picker .vui-datepicker-picker-footer { border-top:1px solid #f3f3f3; padding:10px; text-align:right; }
+.vui-datepicker-picker .vui-datepicker-picker-footer a { float:left; cursor:pointer; height:24px; color:#595959; line-height:24px; transition:all 0.2s; }
+.vui-datepicker-picker .vui-datepicker-picker-footer a:hover { color:tint(#2d8cf0, 20%); }
+.vui-datepicker-picker .vui-datepicker-picker-footer a:active { color: shade(#2d8cf0, 5%); }
+.vui-datepicker-picker .vui-datepicker-picker-footer .vui-button-group {  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// date-table
+.vui-datepicker-date-table {  }
+.vui-datepicker-date-table-colgroup { display:flex; flex-flow:row nowrap; padding:3px 0; }
+
+// date-table-col
+.vui-datepicker-date-table-col { float:left; display:block; box-sizing:border-box; width:34px; background-color:transparent; text-align:center; transition:all 0.2s; }
+.vui-datepicker-date-table-col em { display:block; box-sizing:border-box; width:24px; height:24px; border:1px solid transparent; border-radius:2px; background-color:transparent; margin:0 auto; color:#595959; font-size:14px; text-align:center; line-height:22px; transition:all 0.2s; }
+.vui-datepicker-date-table-col em:hover {  }
+.vui-datepicker-date-table-col em:active {  }
+// date-table-col week-day
+.vui-datepicker-date-table-col-week-day {  }
+.vui-datepicker-date-table-col-week-day em { border-color:transparent; background-color:transparent; color:#595959; }
+.vui-datepicker-date-table-col-week-day em:hover { border-color:transparent; background-color:transparent; color:#595959; }
+.vui-datepicker-date-table-col-week-day em:active { border-color:transparent; background-color:transparent; color:#595959; }
+// date-table-col week-number
+.vui-datepicker-date-table-col-week-number {  }
+.vui-datepicker-date-table-col-week-number em { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-week-number em:hover { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-week-number em:active { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+// date-table-col day-in-prev-month
+.vui-datepicker-date-table-col-day-in-prev-month {  }
+.vui-datepicker-date-table-col-day-in-prev-month em { cursor:pointer; border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-day-in-prev-month em:hover { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-day-in-prev-month em:active { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+// date-table-col day-in-next-month
+.vui-datepicker-date-table-col-day-in-next-month {  }
+.vui-datepicker-date-table-col-day-in-next-month em { cursor:pointer; border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-day-in-next-month em:hover { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+.vui-datepicker-date-table-col-day-in-next-month em:active { border-color:transparent; background-color:transparent; color:#bfbfbf; }
+// date-table-col today
+.vui-datepicker-date-table-col-today {  }
+.vui-datepicker-date-table-col-today em { cursor:pointer; border-color:#2d8cf0; background-color:transparent; color:#2d8cf0; }
+.vui-datepicker-date-table-col-today em:hover { border-color:#2d8cf0; background-color:#e6f7ff; color:#2d8cf0; }
+.vui-datepicker-date-table-col-today em:active { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
+// date-table-col day
+.vui-datepicker-date-table-col-day {  }
+.vui-datepicker-date-table-col-day em { cursor:pointer; border-color:transparent; background-color:transparent; color:#595959; }
+.vui-datepicker-date-table-col-day em:hover { border-color:#e6f7ff; background-color:#e6f7ff; color:#595959; }
+.vui-datepicker-date-table-col-day em:active { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
+// date-table-col in-range
+.vui-datepicker-date-table-col-in-range { background-color:#e6f7ff; }
+.vui-datepicker-date-table-col-in-range em {  }
+.vui-datepicker-date-table-col-in-range em:hover {  }
+.vui-datepicker-date-table-col-in-range em:active {  }
+// date-table-col selected
+.vui-datepicker-date-table-col-selected {  }
+.vui-datepicker-date-table-col-selected em { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
+.vui-datepicker-date-table-col-selected em:hover { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
+.vui-datepicker-date-table-col-selected em:active { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
+// date-table-col disabled
+.vui-datepicker-date-table-col-disabled {  }
+.vui-datepicker-date-table-col-disabled em { cursor:not-allowed; }
+.vui-datepicker-date-table-col-disabled em:hover em {  }
+.vui-datepicker-date-table-col-disabled em:active em {  }
+
+
+
+
+
+
+
+
+
+
+

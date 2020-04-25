@@ -1,17 +1,18 @@
+import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiDivider = {
 	name: "vui-divider",
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-divider"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "horizontal",
-			validator(value) {
-				return ["horizontal", "vertical"].indexOf(value) > -1;
-			}
+			validator: value => ["horizontal", "vertical"].indexOf(value) > -1
 		},
 		dashed: {
 			type: Boolean,
@@ -20,9 +21,7 @@ const VuiDivider = {
 		orientation: {
 			type: String,
 			default: "center",
-			validator(value) {
-				return ["left", "center", "right"].indexOf(value) > -1;
-			}
+			validator: value => ["left", "center", "right"].indexOf(value) > -1
 		},
 		margin: {
 			type: [String, Number],
@@ -31,10 +30,11 @@ const VuiDivider = {
 	},
 
 	render() {
-		let { $slots, classNamePrefix, type, dashed, orientation, margin } = this;
-		let withText = type === "horizontal" && $slots.default;
+		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, type, dashed, orientation, margin } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "divider");
+		let withText = type === "horizontal" && slots.default;
 
-		// classes
+		// class
 		let classes = {};
 
 		classes.el = {
@@ -46,11 +46,11 @@ const VuiDivider = {
 		};
 		classes.elText = `${classNamePrefix}-text`;
 
-		// styles
+		// style
 		let styles = {};
 
 		if (margin !== undefined) {
-			let value = `${margin}px`;
+			let value = is.string(margin) ? margin : `${margin}px`;
 
 			if (type === "horizontal") {
 				styles.el = {
@@ -69,7 +69,11 @@ const VuiDivider = {
 		// render
 		return (
 			<div class={classes.el} style={styles.el}>
-				{withText && <div class={classes.elText}>{$slots.default}</div>}
+				{
+					withText && (
+						<div class={classes.elText}>{slots.default}</div>
+					)
+				}
 			</div>
 		);
 	}

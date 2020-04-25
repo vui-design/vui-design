@@ -38,12 +38,12 @@ export function isUndefined(value) {
 // 检查给定的值是否是 NaN
 // 这和原生的 isNaN 函数不一样，如果变量是 undefined，原生的 isNaN 函数也会返回 true
 export function isNaN(value) {
-	return isNumber(value) && isNaN(value);
+	return window.isNaN(value) && value !== value;
 };
 
 // 检查给定的值是否是数值
 export function isNumber(value) {
-	return objToString.call(value) === "[object Number]";
+	return objToString.call(value) === "[object Number]" && !isNaN(value);
 };
 
 // 检查给定的值是否是字符串

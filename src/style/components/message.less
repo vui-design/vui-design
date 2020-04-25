@@ -1,26 +1,14 @@
 @vui-message: ~"@{vui}-message";
 
 @keyframes vuiMessageFadeIn {
-	0% {
-		opacity:0;
-		transform:translate(-50%, -100%);
-	}
-	100% {
-		opacity:1;
-		transform:translate(-50%, 0);
-	}
+	0% { opacity:0; transform:translate(-50%, -100%); }
+	100% { opacity:1; transform:translate(-50%, 0); }
 }
 
 @keyframes vuiMessageFadeOut {
-	0% {
-		opacity:1;
-	}
-	30% {
-		opacity:1;
-	}
-	100% {
-		opacity:0;
-	}
+	0% { opacity:1; }
+	30% { opacity:1; }
+	100% { opacity:0; }
 }
 
 .@{vui-message} {
@@ -32,12 +20,12 @@
 	background-color:@background-color;
 	box-shadow:@box-shadow;
 	padding:10px 15px;
-	transform:translate(-50%,0);
+	transform:translate(-50%, 0);
 	transition:top @transition-duration @transition-timing-function;
 
 	& &-icon {
 		position:absolute;
-		top:13.5px;
+		top:13px;
 		left:15px;
 		color:@font-color;
 		font-size:@font-size;
@@ -60,7 +48,7 @@
 
 	& &-btn-close {
 		position:absolute;
-		top:14.5px;
+		top:14px;
 		right:15px;
 		cursor:pointer;
 		color:@font-secondary-color;
@@ -81,19 +69,15 @@
 	&-info &-icon {
 		color:@primary-color;
 	}
-
 	&-warning &-icon {
 		color:@warning-color;
 	}
-
 	&-success &-icon {
 		color:@success-color;
 	}
-
 	&-error &-icon {
 		color:@error-color;
 	}
-
 	&-loading &-icon {
 		color:@primary-color;
 	}
@@ -102,8 +86,6 @@
 	&&-with-icon {
 		padding-left:@font-size + 25px;
 	}
-
-
 	&&-closable {
 		padding-right:@font-size-sm + 25px;
 	}

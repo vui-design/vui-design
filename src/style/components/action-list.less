@@ -1,0 +1,28 @@
+@vui-action-list: ~"@{vui}-action-list";
+
+.@{vui-action-list} {
+	display:flex;
+	align-items:center;
+
+	&-left {
+		justify-content:flex-start;
+	}
+	&-center {
+		justify-content:center;
+	}
+	&-right {
+		justify-content:flex-end;
+	}
+
+	&-item {
+		display:flex;
+		justify-content:center;
+		align-items:center;
+	}
+	&-item-separator {
+		width:0;
+		height:12px;
+		border-left:1px solid #e6e6e6;
+		margin:0 10px;
+	}
+}

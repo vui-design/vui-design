@@ -1,6 +1,8 @@
 import VuiIcon from "vui-design/components/icon";
+import VuiTooltip from "vui-design/components/tooltip";
 import MixinLink from "vui-design/mixins/link";
 import guid from "vui-design/utils/guid";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import guardLinkEvent from "vui-design/utils/guardLinkEvent";
 
 const VuiMenuItem = {
@@ -16,7 +18,8 @@ const VuiMenuItem = {
 	},
 
 	components: {
-		VuiIcon
+		VuiIcon,
+		VuiTooltip
 	},
 
 	mixins: [
@@ -26,7 +29,7 @@ const VuiMenuItem = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-menu-item"
+			default: undefined
 		},
 		name: {
 			type: [String, Number],
@@ -73,7 +76,7 @@ const VuiMenuItem = {
 
 	methods: {
 		handleClick(e) {
-			let { vuiMenu, $router,name, isDisabled, href, to, replace, getNextRoute } = this;
+			let { vuiMenu, $router: router, name, isDisabled, href, to, replace, getNextRoute } = this;
 
 			if (isDisabled) {
 				return e.preventDefault();
@@ -86,9 +89,10 @@ const VuiMenuItem = {
 			}
 			else if (to && guardLinkEvent(e)) {
 				try {
-					let next = getNextRoute();
+					let route = getNextRoute();
+					let next = replace ? router.replace : router.push;
 
-					replace ? $router.replace(next.location).catch(error => {}) : $router.push(next.location).catch(error => {});
+					next.call(router, route.location).catch(error => undefined);
 				}
 				catch(error) {
 					console.error(error);
@@ -108,25 +112,24 @@ const VuiMenuItem = {
 	},
 
 	render(h) {
-		let { vuiMenu, $parent, $slots, classNamePrefix, name, indent, isSelected, isDisabled, href, to, target, getNextRoute } = this;
+		let { vuiMenu, $slots: slots, classNamePrefix: customizedClassNamePrefix, name, icon, title, indent, isSelected, isDisabled, href, to, target, getNextRoute } = this;
 		let { handleClick } = this;
 
 		// Icon
-		let icon;
-
-		if ($slots.icon) {
-			icon = $slots.icon;
+		if (slots.icon) {
+			icon = slots.icon;
 		}
-		else if (this.icon) {
+		else if (icon) {
 			icon = (
-				<VuiIcon type={this.icon} />
+				<VuiIcon type={icon} />
 			);
 		}
 
 		// Title
-		let title = $slots.default || this.title;
+		title = slots.default || title;
 
 		// Class
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "menu-item");
 		let classes = {};
 
 		classes.el = {

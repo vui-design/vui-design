@@ -1,30 +1,54 @@
 @vui-menu: ~"@{vui}-menu";
 
+.@{vui-menu} {
+	box-sizing:border-box;
+	line-height:@menu-line-height;
+	transition:all 0.2s;
 
-// root
-.vui-menu-root { box-sizing:border-box; line-height:48px; transition:width 0.2s; }
-.vui-menu-root.vui-menu-light { background-color:#fff; }
-.vui-menu-root.vui-menu-dark { background-color:#09192a; }
+	&-root {
 
-.vui-menu-root.vui-menu-horizontal { display:flex; width:auto; }
-.vui-menu-root.vui-menu-horizontal.vui-menu-light { box-shadow:0 -1px 0 0 #e6e6e6 inset; }
-.vui-menu-root.vui-menu-horizontal.vui-menu-dark {  }
+	}
+	&-root&-light {
+		background-color:@menu-light-background-color;
+	}
+	&-root&-dark {
+		background-color:@menu-dark-background-color;
+	}
 
-.vui-menu-root.vui-menu-vertical { display:block; width:100%; }
-.vui-menu-root.vui-menu-vertical.vui-menu-light {  }
-.vui-menu-root.vui-menu-vertical.vui-menu-dark {  }
+	&-inline {
+		padding:16px 0;
+	}
+	&-inline&-light {
+		background-color:@menu-light-background-color;
+	}
+	&-inline&-dark {
+		background-color:rgba(0, 0, 0, 0.25);
+	}
 
-.vui-menu-root.vui-menu-collapsed { width:80px; }
+	&-popup {
+		min-width:150px;
+		border-radius:2px;
+		box-shadow:0 1px 6px rgba(0,0,0,0.1);
+		padding:5px 0;
+		overflow:hidden;
+	}
+	&-popup&-light {
+		background-color:@menu-light-background-color;
+	}
+	&-popup&-dark {
+		background-color:@menu-dark-background-color;
+	}
 
+	&-horizontal {
+		display:flex;
+		width:auto;
+	}
+	&-vertical {
+		display:block;
+		width:100%;
+	}
 
-// inline
-.vui-menu-inline { box-sizing:border-box; line-height:48px; }
-.vui-menu-inline.vui-menu-light { background-color:#fff; }
-.vui-menu-inline.vui-menu-dark { background-color:rgba(0,0,0,0.25); }
-
-
-// popup
-.vui-menu-popup { box-sizing:border-box; min-width:150px; border-radius:2px; box-shadow:0 1px 8px rgba(0,0,0,0.15); overflow:hidden; line-height:48px; }
-.vui-menu-popup.vui-menu-light { background-color:#fff; }
-.vui-menu-popup.vui-menu-dark { background-color:#09192a; }
-
+	&-collapsed {
+		width:@menu-collapsed-width;
+	}
+}

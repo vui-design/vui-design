@@ -1,3 +1,5 @@
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiMenu = {
 	name: "vui-menu",
 
@@ -15,7 +17,7 @@ const VuiMenu = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-menu"
+			default: undefined
 		},
 		mode: {
 			type: String,
@@ -127,9 +129,14 @@ const VuiMenu = {
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, mode, theme, collapsed } = this;
-		let direction = mode === "horizontal" ? "horizontal" : "vertical";
-		let classes = {
+		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, mode, theme, collapsed } = this;
+
+		// Direction
+		const direction = mode === "horizontal" ? "horizontal" : "vertical";
+
+		// Class
+		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "menu");
+		const classes = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-root`]: true,
 			[`${classNamePrefix}-${direction}`]: direction,
@@ -137,10 +144,9 @@ const VuiMenu = {
 			[`${classNamePrefix}-collapsed`]: mode === "inline" && collapsed
 		};
 
+		// Render
 		return (
-			<div class={classes}>
-				{$slots.default}
-			</div>
+			<div class={classes}>{slots.default}</div>
 		);
 	}
 };

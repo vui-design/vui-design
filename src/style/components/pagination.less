@@ -1,0 +1,79 @@
+@vui-pagination: ~"@{vui}-pagination";
+
+
+// --------------------------------------------------
+// normal
+.vui-pagination { list-style:none; box-sizing:border-box; height:34px; margin:0; padding:0; font-size:14px; line-height:0; }
+.vui-pagination.vui-pagination-align-left { text-align:left; }
+.vui-pagination.vui-pagination-align-center { text-align:center; }
+.vui-pagination.vui-pagination-align-right { text-align:right; }
+
+
+.vui-pagination-total { cursor:unset; display:inline-block; box-sizing:border-box; height:34px; margin:0 16px 0 0; padding:0; vertical-align:middle; line-height:34px; }
+
+
+.vui-pagination-button { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin:0; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
+.vui-pagination-button .vui-pagination-button-arrow { position:absolute; top:50%; left:50%; display:block; width:10px; height:10px; fill:currentColor; transform:translate(-50%, -50%); }
+.vui-pagination-button.vui-pagination-button-prev { margin-right:4px; }
+.vui-pagination-button.vui-pagination-button-next { margin-left:4px; }
+.vui-pagination-button:hover { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
+.vui-pagination-button:focus { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
+.vui-pagination-button:active { border-color:#2d8cf0; color:#2d8cf0; }
+.vui-pagination-button.vui-pagination-button-disabled { cursor:not-allowed; border-color:#e0e0e0; color:#bfbfbf; }
+
+
+.vui-pagination-item { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin:0 4px; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
+.vui-pagination-item:hover { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
+.vui-pagination-item:focus { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
+.vui-pagination-item:active { border-color:#2d8cf0; color:#2d8cf0; }
+.vui-pagination-item.vui-pagination-item-active { border-color:#2d8cf0; color:#2d8cf0; }
+
+
+.vui-pagination-ellipsis { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid transparent; border-radius:2px; background-color:transparent; margin:0 4px; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
+.vui-pagination-ellipsis .vui-pagination-ellipsis-arrow { position:absolute; top:50%; left:50%; display:block; width:10px; height:10px; fill:currentColor; opacity:0; transform:translate(-50%, -50%); transition:opacity 0.2s; }
+.vui-pagination-ellipsis .vui-pagination-ellipsis-icon { position:absolute; top:50%; left:50%; display:block; color:#bfbfbf; opacity:1; transform:translate(-50%, -50%); transition:opacity 0.2s; }
+.vui-pagination-ellipsis:hover { color:tint(#2d8cf0, 10%); }
+.vui-pagination-ellipsis:hover .vui-pagination-ellipsis-arrow { opacity:1; }
+.vui-pagination-ellipsis:hover .vui-pagination-ellipsis-icon { opacity:0; }
+.vui-pagination-ellipsis:focus { color:tint(#2d8cf0, 10%); }
+.vui-pagination-ellipsis:focus .vui-pagination-ellipsis-arrow { opacity:1; }
+.vui-pagination-ellipsis:focus .vui-pagination-ellipsis-icon { opacity:0; }
+.vui-pagination-ellipsis:active { color:#2d8cf0; }
+.vui-pagination-ellipsis:active .vui-pagination-ellipsis-arrow { opacity:1; }
+.vui-pagination-ellipsis:active .vui-pagination-ellipsis-icon { opacity:0; }
+
+
+.vui-pagination-sizer { display:inline-block; box-sizing:border-box; width:100px; height:34px; margin:0 0 0 16px; padding:0; vertical-align:middle; }
+.vui-pagination-sizer .vui-select { float:left; }
+
+
+.vui-pagination-elevator { display:inline-block; box-sizing:border-box; height:34px; margin:0 0 0 16px; padding:0; vertical-align:middle; line-height:34px; }
+.vui-pagination-elevator span { float:left; display:block; }
+.vui-pagination-elevator .vui-input { float:left; display:block; width:50px; margin:0 8px; }
+.vui-pagination-elevator .vui-input .vui-input-main input { text-align:center; }
+
+
+// --------------------------------------------------
+// small
+.vui-pagination-small { height:24px; }
+.vui-pagination-small .vui-pagination-total { height:24px; margin-right:8px; line-height:24px; }
+.vui-pagination-small .vui-pagination-button { min-width:24px; height:24px; border-width:0; background-color:transparent; padding:0 6px; line-height:24px; }
+.vui-pagination-small .vui-pagination-button-prev { margin-right:0; }
+.vui-pagination-small .vui-pagination-button-next { margin-left:0; }
+.vui-pagination-small .vui-pagination-item { min-width:24px; height:24px; border-width:0; background-color:transparent; margin:0; padding:0 6px; line-height:24px; }
+.vui-pagination-small .vui-pagination-ellipsis { min-width:24px; height:24px; border-width:0; background-color:transparent; margin:0; padding:0 6px; line-height:24px; }
+.vui-pagination-small .vui-pagination-sizer { width:80px; height:24px; margin-left:8px; }
+.vui-pagination-small .vui-pagination-elevator { height:24px; margin-left:8px; line-height:24px; }
+.vui-pagination-small .vui-pagination-elevator .vui-input { width:40px; margin:0 6px; }
+
+
+// --------------------------------------------------
+// simple
+.vui-pagination-simple { height:24px; }
+.vui-pagination-simple .vui-pagination-button { min-width:24px; height:24px; border-width:0; background-color:transparent; padding:0 6px; line-height:24px; }
+.vui-pagination-simple .vui-pagination-button-prev { margin-right:8px; }
+.vui-pagination-simple .vui-pagination-button-next { margin-left:8px; }
+.vui-pagination-simple .vui-pagination-elevator { height:24px; margin:0; line-height:24px; }
+.vui-pagination-simple .vui-pagination-elevator span { margin-left:6px; }
+.vui-pagination-simple .vui-pagination-elevator .vui-input { width:40px; margin:0; }
+

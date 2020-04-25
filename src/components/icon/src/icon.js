@@ -1,10 +1,13 @@
+import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiIcon = {
-	name: "VuiIcon",
+	name: "vui-icon",
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-icon"
+			default: undefined
 		},
 		type: {
 			type: String,
@@ -21,36 +24,36 @@ const VuiIcon = {
 	},
 
 	render(h) {
-		let { $listeners, classNamePrefix, type, color, size } = this;
+		let { $props: props, $listeners: listeners } = this;
 
-		// classes
-		let classes = {
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "icon");
+		let classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type
+			[`${classNamePrefix}-${props.type}`]: props.type
 		};
 
-		// styles
+		// style
 		let styles = {};
 
-		if (color) {
-			styles.color = color;
+		styles.el = {
+			color: props.color,
+			fontSize: is.number(props.size) ? (props.size + "px") : (is.string(props.size) ? props.size : undefined)
 		}
 
-		if (size) {
-			styles.fontSize = `${size}px`;
-		}
-
-		// props
-		let props = {
-			class: classes,
-			style: styles,
+		// render
+		let attributes = {
+			class: classes.el,
+			style: styles.el,
 			on: {
-				...$listeners
+				...listeners
 			}
 		};
 
 		return (
-			<i {...props}></i>
+			<i {...attributes}></i>
 		);
 	}
 };

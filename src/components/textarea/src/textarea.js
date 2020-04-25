@@ -1,8 +1,10 @@
 import VuiIcon from "vui-design/components/icon";
+import Emitter from "vui-design/mixins/emitter";
 import is from "vui-design/utils/is";
 import merge from "vui-design/utils/merge";
 import css from "vui-design/utils/css";
-import calculateNodeHeight from "./utils/calculateNodeHeight";
+import getTextareaSize from "vui-design/utils/getTextareaSize";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTextarea = {
 	name: "vui-textarea",
@@ -17,12 +19,16 @@ const VuiTextarea = {
 		VuiIcon
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	inheritAttrs: false,
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-textarea"
+			default: undefined
 		},
 		placeholder: {
 			type: [String, Number],
@@ -70,8 +76,13 @@ const VuiTextarea = {
 
 	watch: {
 		value(value) {
+			if (this.defaultValue === value) {
+				return;
+			}
+
 			this.defaultValue = value;
 			this.resizeTextarea();
+			this.dispatch("vui-form-item", "form-change", this.defaultValue);
 		}
 	},
 
@@ -93,13 +104,13 @@ const VuiTextarea = {
 
 				if (!this.autosize) {
 					styles = {
-						minHeight: calculateNodeHeight(this.$refs.textarea).minHeight
+						minHeight: getTextareaSize(this.$refs.textarea).minHeight
 					};
 				}
 				else {
 					let { minRows, maxRows } = this.autosize;
 
-					styles = calculateNodeHeight(this.$refs.textarea, minRows, maxRows);
+					styles = getTextareaSize(this.$refs.textarea, minRows, maxRows);
 				}
 
 				css(this.$refs.textarea, merge(styles, {
@@ -119,6 +130,7 @@ const VuiTextarea = {
 		},
 		handleBlur(e) {
 			this.$emit("blur", e);
+			this.dispatch("vui-form-item", "blur", this.defaultValue);
 		},
 		handleKeydown(e) {
 			this.$emit("keydown", e);
@@ -131,14 +143,18 @@ const VuiTextarea = {
 		},
 		handleInput(e) {
 			this.defaultValue = e.target.value;
+			this.resizeTextarea();
 			this.$emit("input", this.defaultValue);
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		},
 		handleClear(e) {
 			this.defaultValue = "";
 			this.focus();
-			this.$emit("change", e);
+			this.resizeTextarea();
 			this.$emit("clear", e);
 			this.$emit("input", this.defaultValue);
+			this.$emit("change", e);
+			this.dispatch("vui-form-item", "change", this.defaultValue);
 		}
 	},
 
@@ -147,10 +163,11 @@ const VuiTextarea = {
 	},
 
 	render(h) {
-		let { $vui, vuiForm, $slots, $attrs, $listeners, classNamePrefix, placeholder, defaultValue, maxLength, rows, autosize, clearable, readonly } = this;
+		let { $vui: vui, vuiForm, $attrs: attrs, $listeners: listeners, classNamePrefix: customizedClassNamePrefix, placeholder, defaultValue, maxLength, rows, autosize, clearable, readonly } = this;
 		let { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeyup, handleChange, handleInput, handleClear } = this;
+		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "textarea");
 
-		// 属性 disabled 优先级：vuiForm > self
+		// disabled: vuiForm > self
 		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
@@ -160,24 +177,22 @@ const VuiTextarea = {
 			disabled = this.disabled;
 		}
 
-		// 样式
+		// classes
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
-		classes.elMain = {
-			[`${classNamePrefix}-main`]: true
-		};
+		classes.elMain = `${classNamePrefix}-main`;
 		classes.elMainBtnClear = `${classNamePrefix}-main-btn-clear`;
 		classes.elMainStatistic = `${classNamePrefix}-main-statistic`;
 
-		// 渲染结构
+		// render
 		let nativeTextareaProps = {
 			ref: "textarea",
 			attrs: {
-				...$attrs,
+				...attrs,
 				placeholder,
 				maxLength,
 				rows,
@@ -185,7 +200,7 @@ const VuiTextarea = {
 				disabled
 			},
 			on: {
-				...$listeners,
+				...listeners,
 				mouseenter: handleMouseenter,
 				mouseleave: handleMouseleave,
 				focus: handleFocus,
@@ -219,8 +234,17 @@ const VuiTextarea = {
 		let statistic;
 
 		if (maxLength) {
+			let length = 0;
+
+			if (is.string(defaultValue)) {
+				length = defaultValue.length;
+			}
+			else if (is.number(defaultValue)) {
+				length = String(defaultValue).length;
+			}
+
 			statistic = (
-				<label class={classes.elMainStatistic}>{`${defaultValue.length}/${maxLength}`}</label>
+				<label class={classes.elMainStatistic}>{`${length}/${maxLength}`}</label>
 			);
 		}
 

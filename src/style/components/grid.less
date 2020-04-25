@@ -5,7 +5,10 @@
 
 // row
 .vui-row { position:relative; box-sizing:border-box; display:block; height:auto; margin-left:0; margin-right:0; }
-.vui-row:before, .vui-row:after { content:""; display:block; width:100%; height:0; visibility:hidden; clear:both; }
+.vui-row:before,
+.vui-row:after { content:""; display:table; }
+.vui-row:before {  }
+.vui-row:after { height:0; overflow:hidden; visibility:hidden; clear:both; }
 .vui-row .vui-col { float:left; }
 
 .vui-row-flex { position:relative; box-sizing:border-box; display:flex; flex-direction:row; flex-wrap:wrap; height:auto; margin-left:0; margin-right:0; }

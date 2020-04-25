@@ -11,12 +11,18 @@
 
 
 .vui-card { box-sizing:border-box; border-radius:@border-radius; background-color:@component-background-color; color:@font-color; font-size:@font-size; line-height:@line-height; transition:all 0.2s; }
-.vui-card-header { display:flex; align-items:center; padding:15px 20px; color:@font-primary-color; font-size:@font-size-lg; }
-.vui-card-body {  }
-.vui-card-body:before, 
-.vui-card-body:after { content:""; display:block; width:100%; height:0; visibility:hidden; clear:both; }
-.vui-card-footer { display:flex; align-items:center; border-top:1px solid #e6e6e6; background-color:#f9f9f9; }
-.vui-card-header + .vui-card-body { border-top:1px solid #e6e6e6; }
+.vui-card-header { display:flex; align-items:center; box-sizing:border-box; border-bottom:1px solid #e6e6e6; padding:15px 20px; color:@font-primary-color; font-size:@font-size-lg; }
+.vui-card-body { box-sizing:border-box; padding:20px; }
+.vui-card-body:before,
+.vui-card-body:after { content:""; display:table; }
+.vui-card-body:before {  }
+.vui-card-body:after { height:0; overflow:hidden; visibility:hidden; clear:both; }
+.vui-card-actions { display:flex; align-items:center; box-sizing:border-box; border-top:1px solid #e6e6e6; background-color:#f9f9f9; }
+.vui-card-footer { box-sizing:border-box; border-top:1px solid #e6e6e6; padding:20px; }
+.vui-card-footer:before,
+.vui-card-footer:after { content:""; display:table; }
+.vui-card-footer:before {  }
+.vui-card-footer:after { height:0; overflow:hidden; visibility:hidden; clear:both; }
 
 
 .vui-card-icon { margin-right:10px; line-height:1; }
@@ -37,14 +43,17 @@
 
 .vui-card-shadow-never {  }
 .vui-card-shadow-never:hover {  }
-.vui-card.vui-card-shadow-always { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
-.vui-card.vui-card-shadow-always:hover { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
-.vui-card.vui-card-shadow-hover { cursor:pointer; }
-.vui-card.vui-card-shadow-hover:hover { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
+.vui-card-shadow-always { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
+.vui-card-shadow-always:hover { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
+.vui-card-shadow-hover { cursor:pointer; }
+.vui-card-shadow-hover:hover { box-shadow:0 1px 8px 0 rgba(0,0,0,0.1); }
+
+
 
 
 // card-grid
-.vui-card-grid { float:left; box-sizing:border-box; width:25%; box-shadow:1px 0 0 0 #e6e6e6, 0 1px 0 0 #e6e6e6; padding:20px; transition:all 0.2s; }
+.vui-card-with-grid > .vui-card-body { padding:0; overflow:hidden; }
+.vui-card-with-grid > .vui-card-body > .vui-card-grid { float:left; box-sizing:border-box; width:25%; box-shadow:1px 0 0 0 #f3f3f3, 0 1px 0 0 #f3f3f3; padding:20px; transition:all 0.2s; }
 
 
 // card-meta

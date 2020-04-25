@@ -1,0 +1,152 @@
+@vui-select: ~"@{vui}-select";
+
+
+// --------------------------------------------------
+// select
+.vui-select { position:relative; display:inline-block; width:100%; vertical-align:middle; line-height:normal; }
+.vui-select-hovered { z-index:1; }
+.vui-select-focused { z-index:2; }
+.vui-select-actived { z-index:2; }
+.vui-select-disabled {  }
+
+
+// --------------------------------------------------
+// select selection
+.vui-select .vui-select-selection { position:relative; cursor:pointer; display:block; box-sizing:border-box; width:100%; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; overflow:hidden; transition:all 0.2s; }
+.vui-select .vui-select-selection-placeholder { box-sizing:border-box; overflow:hidden; color:#bfbfbf; text-align:left; white-space:nowrap; text-overflow:ellipsis; transition:height 0.2s, padding 0.2s, font-size 0.2s, line-height 0.2s; }
+.vui-select .vui-select-selection-item { box-sizing:border-box; display:flex; justify-content:flex-start; align-items:center; color:#595959; transition:height 0.2s, padding 0.2s, font-size 0.2s, line-height 0.2s; }
+.vui-select .vui-select-selection-item-content { flex:1; display:block; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.vui-select .vui-select-selection-item-remove { cursor:pointer; display:block; color:#bfbfbf; font-family:fantasy; text-align:center; transition:all 0.2s; }
+.vui-select .vui-select-selection-item-remove:hover { color:#595959; }
+.vui-select .vui-select-selection-input { box-sizing:border-box; margin:0; color:#595959; white-space:nowrap; transition:height 0.2s, padding 0.2s, font-size 0.2s, line-height 0.2s; }
+.vui-select .vui-select-selection-input em { display:block; width:100%; height:100%; text-align:left; opacity:0; }
+.vui-select .vui-select-selection-input input { position:absolute; top:0; left:0; cursor:inherit; display:block; box-sizing:border-box; width:100%; height:100%; border:none; background-color:transparent; padding:inherit; color:inherit; font-size:inherit; font-family:inherit; text-align:left; }
+.vui-select .vui-select-selection-arrow { position:absolute; cursor:inherit; height:2px; color:#bfbfbf; transition:top 0.2s, right 0.2s; }
+.vui-select .vui-select-selection-arrow:before { content:""; top:0; left:0; position:absolute; height:2px; background-color:currentColor; transform:rotate(45deg) scaleY(0.5); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+.vui-select .vui-select-selection-arrow:after { content:""; top:0; right:0; position:absolute; height:2px; background-color:currentColor; transform:rotate(-45deg) scaleY(0.5); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
+.vui-select .vui-select-selection-btn-clear { position:absolute; cursor:pointer; display:block; border-radius:50%; background-color:#fff; color:#bfbfbf; opacity:0; transition:top 0.2s, right 0.2s }
+
+.vui-select-single .vui-select-selection { padding:0; }
+.vui-select-single .vui-select-selection-placeholder { position:absolute; top:0; left:0; width:100%; }
+.vui-select-single .vui-select-selection-item { position:absolute; top:0; left:0; width:100%; }
+.vui-select-single .vui-select-selection-input { position:absolute; top:0; left:0; width:100%; }
+.vui-select-single .vui-select-selection-arrow {  }
+.vui-select-single .vui-select-selection-arrow:before {  }
+.vui-select-single .vui-select-selection-arrow:after {  }
+.vui-select-single .vui-select-selection-btn-clear {  }
+.vui-select-single.vui-select-small .vui-select-selection { height:24px; }
+.vui-select-single.vui-select-small .vui-select-selection-placeholder { height:22px; padding:0 22px 0 6px; font-size:12px; line-height:22px; }
+.vui-select-single.vui-select-small .vui-select-selection-item { height:22px; padding:0 22px 0 6px; font-size:12px; line-height:22px; }
+.vui-select-single.vui-select-small .vui-select-selection-input { height:22px; padding:0 22px 0 6px; font-size:12px; }
+.vui-select-single.vui-select-small .vui-select-selection-arrow { top:10px; right:6px; width:10px; }
+.vui-select-single.vui-select-small .vui-select-selection-arrow:before { width:6px; }
+.vui-select-single.vui-select-small .vui-select-selection-arrow:after { width:6px; }
+.vui-select-single.vui-select-small .vui-select-selection-btn-clear { top:5px; right:6px; font-size:10px; }
+.vui-select-single.vui-select-medium .vui-select-selection { height:34px; }
+.vui-select-single.vui-select-medium .vui-select-selection-placeholder { height:32px; padding:0 28px 0 8px; font-size:14px; line-height:32px; }
+.vui-select-single.vui-select-medium .vui-select-selection-item { height:32px; padding:0 28px 0 8px; font-size:14px; line-height:32px; }
+.vui-select-single.vui-select-medium .vui-select-selection-input { height:32px; padding:0 28px 0 8px; font-size:12px; }
+.vui-select-single.vui-select-medium .vui-select-selection-arrow { top:15px; right:8px; width:12px; }
+.vui-select-single.vui-select-medium .vui-select-selection-arrow:before { width:7px; }
+.vui-select-single.vui-select-medium .vui-select-selection-arrow:after { width:7px; }
+.vui-select-single.vui-select-medium .vui-select-selection-btn-clear { top:10px; right:8px; font-size:12px; }
+.vui-select-single.vui-select-large .vui-select-selection { height:44px; }
+.vui-select-single.vui-select-large .vui-select-selection-placeholder { height:42px; padding:0 34px 0 10px; font-size:16px; line-height:42px; }
+.vui-select-single.vui-select-large .vui-select-selection-item { height:42px; padding:0 34px 0 10px; font-size:16px; line-height:42px; }
+.vui-select-single.vui-select-large .vui-select-selection-input { height:42px; padding:0 34px 0 10px; font-size:16px; }
+.vui-select-single.vui-select-large .vui-select-selection-arrow { top:20px; right:10px; width:14px; }
+.vui-select-single.vui-select-large .vui-select-selection-arrow:before { width:8px; }
+.vui-select-single.vui-select-large .vui-select-selection-arrow:after { width:8px; }
+.vui-select-single.vui-select-large .vui-select-selection-btn-clear { top:14px; right:10px; font-size:14px; }
+
+.vui-select-multiple .vui-select-selection {  }
+.vui-select-multiple .vui-select-selection-placeholder { position:absolute; top:0; left:0; width:100%; }
+.vui-select-multiple .vui-select-selection-item { position:relative; float:left; border:1px solid #e0e0e0; border-radius:2px; background-color:#f9f9f9; }
+.vui-select-multiple .vui-select-selection-item-remove {  }
+.vui-select-multiple .vui-select-selection-input { position:relative; float:left; }
+.vui-select-multiple .vui-select-selection-btn-clear {  }
+.vui-select-multiple.vui-select-small .vui-select-selection { min-height:24px; padding:1px; }
+.vui-select-multiple.vui-select-small .vui-select-selection-placeholder { height:22px; padding:0 6px; font-size:12px; line-height:22px; }
+.vui-select-multiple.vui-select-small .vui-select-selection-item { max-width:calc(100% - 2px); height:18px; margin:1px; padding:0 4px; font-size:12px; line-height:16px; }
+.vui-select-multiple.vui-select-small .vui-select-selection-item-remove { margin-left:4px; font-size:10px; }
+.vui-select-multiple.vui-select-small .vui-select-selection-input { min-width:6px; max-width:calc(100% - 2px); height:18px; margin:1px; font-size:12px; }
+.vui-select-multiple.vui-select-small .vui-select-selection-btn-clear { top:5px; right:6px; font-size:10px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection { min-height:34px; padding:2px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection-placeholder { height:32px; padding:0 8px; font-size:14px; line-height:32px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection-item { max-width:calc(100% - 4px); height:24px; margin:2px; padding:0 6px; font-size:14px; line-height:22px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection-item-remove { margin-left:6px; font-size:12px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection-input { min-width:10px; max-width:calc(100% - 4px); height:24px; margin:2px; font-size:14px; }
+.vui-select-multiple.vui-select-medium .vui-select-selection-btn-clear { top:10px; right:8px; font-size:12px; }
+.vui-select-multiple.vui-select-large .vui-select-selection { min-height:44px; padding:3px; }
+.vui-select-multiple.vui-select-large .vui-select-selection-placeholder { height:42px; padding:0 10px; font-size:16px; line-height:42px; }
+.vui-select-multiple.vui-select-large .vui-select-selection-item { max-width:calc(100% - 6px); height:30px; margin:3px; padding:0 8px; font-size:16px; line-height:28px; }
+.vui-select-multiple.vui-select-large .vui-select-selection-item-remove { margin-left:8px; font-size:14px; }
+.vui-select-multiple.vui-select-large .vui-select-selection-input { min-width:14px; max-width:calc(100% - 6px); height:30px; margin:3px; font-size:16px; }
+.vui-select-multiple.vui-select-large .vui-select-selection-btn-clear { top:14px; right:10px; font-size:14px; }
+
+.vui-select-hovered .vui-select-selection { border-color:tint(#2d8cf0, 10%); }
+.vui-select-hovered .vui-select-selection-item {  }
+.vui-select-hovered .vui-select-selection-arrow {  }
+.vui-select-hovered .vui-select-selection-arrow:before {  }
+.vui-select-hovered .vui-select-selection-arrow:after {  }
+.vui-select-hovered .vui-select-selection-btn-clear { opacity:1; }
+
+.vui-select-focused .vui-select-selection { border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 10); }
+.vui-select-focused .vui-select-selection-item {  }
+.vui-select-focused .vui-select-selection-arrow {  }
+.vui-select-focused .vui-select-selection-arrow:before {  }
+.vui-select-focused .vui-select-selection-arrow:after {  }
+
+.vui-select-actived .vui-select-selection { border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 10); }
+.vui-select-actived .vui-select-selection-item {  }
+.vui-select-actived .vui-select-selection-arrow {  }
+.vui-select-actived .vui-select-selection-arrow:before { transform:rotate(-45deg) scaleY(0.5); }
+.vui-select-actived .vui-select-selection-arrow:after { transform:rotate(45deg) scaleY(0.5); }
+
+.vui-select-disabled .vui-select-selection { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 3.5%); }
+.vui-select-disabled .vui-select-selection-item { border-color:#e6e6e6; color:#bfbfbf; }
+.vui-select-disabled .vui-select-selection-arrow {  }
+.vui-select-disabled .vui-select-selection-arrow:before {  }
+.vui-select-disabled .vui-select-selection-arrow:after {  }
+
+
+// --------------------------------------------------
+// select dropdown
+.vui-select-dropdown { position:absolute; top:0; left:0; box-sizing:border-box; max-height:282px; border-radius:2px; background-color:#fff; box-shadow:0 1px 6px rgba(0, 0, 0, 0.1); padding:5px 0; overflow:auto; }
+.vui-select-dropdown .vui-select-dropdown-loading { position:relative; cursor:default; margin:10px 0; padding:0 10px; color:#bfbfbf; font-size:14px; line-height:16px; }
+.vui-select-dropdown .vui-select-dropdown-loading .vui-spin { float:left; margin-right:10px; }
+.vui-select-dropdown .vui-select-dropdown-empty { position:relative; cursor:default; margin:10px 0; padding:0 10px; color:#bfbfbf; font-size:14px; }
+.vui-select-dropdown .vui-select-dropdown-empty .vui-empty {  }
+.vui-select-dropdown .vui-select-dropdown-menu {  }
+
+.vui-select-dropdown[data-placement="top"] { margin:5px 0; transform-origin:bottom center; }
+.vui-select-dropdown[data-placement="top-start"] { margin:5px 0; transform-origin:bottom left; }
+.vui-select-dropdown[data-placement="top-end"] { margin:5px 0; transform-origin:bottom right; }
+.vui-select-dropdown[data-placement="bottom"] { margin:5px 0; transform-origin:top center; }
+.vui-select-dropdown[data-placement="bottom-start"] { margin:5px 0; transform-origin:top left; }
+.vui-select-dropdown[data-placement="bottom-end"] { margin:5px 0; transform-origin:top right; }
+
+.vui-select-dropdown-scale-enter-active,
+.vui-select-dropdown-scale-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity 0.3s, transform 0.3s; }
+.vui-select-dropdown-scale-enter,
+.vui-select-dropdown-scale-leave-active { opacity:0; transform:scaleY(0.8); }
+
+
+// --------------------------------------------------
+// option-group
+.vui-option-group {  }
+.vui-option-group .vui-option-group-header { margin:0; padding:6px 10px; overflow:hidden; color:#bfbfbf; font-size:12px; text-align:left; line-height:22px; }
+.vui-option-group .vui-option-group-body { margin:0; padding:0; }
+
+
+// --------------------------------------------------
+// option
+.vui-option { position:relative; cursor:pointer; margin:0; padding:6px 10px; overflow:hidden; color:#595959; font-size:14px; text-align:left; line-height:22px; transition:all 0.2s; }
+.vui-option .vui-icon { position:absolute; top:11px; right:10px; width:12px; height:12px; font-size:12px; text-align:center; line-height:12px; }
+.vui-option.vui-option-hovered { background-color:#e6f7ff; }
+.vui-option.vui-option-hovered .vui-icon {  }
+.vui-option.vui-option-selected { color:#2d8cf0; }
+.vui-option.vui-option-selected .vui-icon {  }
+.vui-option.vui-option-disabled { cursor:not-allowed; background-color:#fff; color:#bfbfbf; }
+.vui-option.vui-option-disabled .vui-icon {  }
+
