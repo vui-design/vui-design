@@ -1,0 +1,24 @@
+@vui-transition-collapse: ~"@{vui}-transition-collapse";
+
+.@{vui-transition-collapse} {
+	&-enter {
+		height:0 !important;
+	}
+	&-enter-to {
+
+	}
+	&-enter-active {
+		overflow:hidden;
+		transition:height 0.15s ease-in-out;
+	}
+	&-leave {
+
+	}
+	&-leave-to {
+		height:0 !important;
+	}
+	&-leave-active {
+		overflow:hidden;
+		transition:height 0.15s ease-in-out;
+	}
+}

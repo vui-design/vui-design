@@ -30,7 +30,7 @@ const VuiTooltip = {
 			validator: value => ["light", "dark"].indexOf(value) > -1
 		},
 		content: {
-			type: String,
+			type: [String, Number],
 			default: undefined
 		},
 		placement: {
@@ -49,14 +49,18 @@ const VuiTooltip = {
 	},
 
 	data() {
+		let { $props: props } = this;
+
 		return {
-			defaultVisible: this.visible
+			state: {
+				visible: props.visible
+			}
 		};
 	},
 
 	watch: {
 		visible(value) {
-			this.defaultVisible = value;
+			this.state.visible = value;
 		}
 	},
 
@@ -66,10 +70,11 @@ const VuiTooltip = {
 				return;
 			}
 
-			let reference = this.$refs.trigger;
-			let target = this.$refs.content;
+			let { $refs: refs, $props: props } = this;
+			let reference = refs.trigger;
+			let target = refs.content;
 			let settings = {
-				placement:  this.placement
+				placement:  props.placement
 			};
 
 			if (!reference || !target || !settings.placement) {
@@ -91,15 +96,15 @@ const VuiTooltip = {
 		handleMouseEnter() {
 			clearTimeout(this.timeout);
 			this.timeout = setTimeout(() => {
-				this.defaultVisible = true;
-				this.$emit("change", this.defaultVisible);
+				this.state.visible = true;
+				this.$emit("change", true);
 			}, 100);
 		},
 		handleMouseLeave() {
 			clearTimeout(this.timeout);
 			this.timeout = setTimeout(() => {
-				this.defaultVisible = false;
-				this.$emit("change", this.defaultVisible);
+				this.state.visible = false;
+				this.$emit("change", false);
 			}, 100);
 		},
 		handleBeforeEnter(el) {
@@ -123,35 +128,28 @@ const VuiTooltip = {
 	},
 
 	render() {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible: visible, theme, content, placement, animation, getPopupContainer } = this;
+		let { $slots: slots, $props: props, state } = this;
 		let { handleMouseEnter, handleMouseLeave, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
-		let portal = getPopupContainer();
+		let portal = props.getPopupContainer();
 
-		// classes
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "tooltip");
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tooltip");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
 		classes.elTrigger = `${classNamePrefix}-trigger`;
 		classes.elContent = {
 			[`${classNamePrefix}-content`]: true,
-			[`${classNamePrefix}-content-${theme}`]: theme
+			[`${classNamePrefix}-content-${props.theme}`]: props.theme
 		};
 		classes.elArrow = `${classNamePrefix}-arrow`;
 
 		// render
 		return (
 			<div class={classes.el}>
-				<div
-					ref="trigger"
-					class={classes.elTrigger}
-					onMouseenter={handleMouseEnter}
-					onMouseleave={handleMouseLeave}
-				>
-					{slots.default}
-				</div>
+				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>{slots.default}</div>
 				<transition
-					name={animation}
+					name={props.animation}
 					onBeforeEnter={handleBeforeEnter}
 					onEnter={handleEnter}
 					onAfterEnter={handleAfterEnter}
@@ -163,12 +161,12 @@ const VuiTooltip = {
 					<div
 						ref="content"
 						v-portal={portal}
-						v-show={visible}
+						v-show={state.visible}
 						class={classes.elContent}
 						onMouseenter={handleMouseEnter}
 						onMouseleave={handleMouseLeave}
 					>
-						{slots.content || content}
+						{slots.content || props.content}
 						<i class={classes.elArrow}></i>
 					</div>
 				</transition>

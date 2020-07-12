@@ -30,6 +30,10 @@ const VuiDescriptions = {
 			type: String,
 			default: undefined
 		},
+		extra: {
+			type: String,
+			default: undefined
+		},
 		columns: {
 			type: Number,
 			default: 3
@@ -57,17 +61,17 @@ const VuiDescriptions = {
 				return data;
 			}
 
-			children.forEach(vNode => {
-				if (!vNode) {
+			children.forEach(element => {
+				if (!element) {
 					return;
 				}
 
-				let component = vNode.componentOptions;
+				let options = element.componentOptions;
 
-				if (component && component.propsData && component.tag === "vui-description") {
+				if (options && options.propsData && options.tag === "vui-description") {
 					data.push({
-						...component.propsData,
-						children: component.children
+						...options.propsData,
+						children: options.children
 					});
 				}
 			});
@@ -81,7 +85,8 @@ const VuiDescriptions = {
 		let attributes = {
 			props: {
 				...props,
-				title: props.title || slots.title,
+				title: slots.title || props.title,
+				extra: slots.extra || props.extra,
 				data: getDerivedDataFromChildren(slots.default)
 			}
 		};

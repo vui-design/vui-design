@@ -60,12 +60,8 @@ const VuiTable = {
 		},
 		size: {
 			type: String,
-			default() {
-				return (this.$vui || {}).size || undefined;
-			},
-			validator(value) {
-				return ["large", "small"].indexOf(value) !== -1;
-			}
+			default: "medium",
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
 		loading: {
 			type: Boolean,
@@ -106,7 +102,7 @@ const VuiTable = {
 
 	computed: {
 		classes() {
-			let { classNamePrefix, bordered, striped } = this;
+			let { classNamePrefix, bordered, striped, size } = this;
 			let classes = {};
 
 			classes.el = {
@@ -116,7 +112,8 @@ const VuiTable = {
 			classes.elTable = {
 				[`${classNamePrefix}`]: true,
 				[`${classNamePrefix}-bordered`]: bordered,
-				[`${classNamePrefix}-striped`]: striped
+				[`${classNamePrefix}-striped`]: striped,
+				[`${classNamePrefix}-${size}`]: size
 			};
 
 			return classes;
@@ -150,28 +147,34 @@ const VuiTable = {
 			this.store.data = data;
 			this.store.tbody = this.getTbodyData(this.store.data);
 		},
-		rowCollapsion(value) {
-			let rowCollapsionState;
+		rowCollapsion: {
+			deep: true,
+			handler(value) {
+				let rowCollapsionState;
 
-			if (value) {
-				rowCollapsionState = value.value ? clone(value.value) : [];
+				if (value) {
+					rowCollapsionState = value.value ? clone(value.value) : [];
+				}
+
+				this.store.rowCollapsionState = rowCollapsionState;
 			}
-
-			this.rowCollapsionState = rowCollapsionState;
 		},
-		rowSelection(value) {
-			let rowSelectionState;
+		rowSelection: {
+			deep: true,
+			handler(value) {
+				let rowSelectionState;
 
-			if (value) {
-				if (!("multiple" in value) || value.multiple) {
-					rowSelectionState = value.value ? clone(value.value) : [];
+				if (value) {
+					if (!("multiple" in value) || value.multiple) {
+						rowSelectionState = value.value ? clone(value.value) : [];
+					}
+					else {
+						rowSelectionState = value.value ? value.value : undefined;
+					}
 				}
-				else {
-					rowSelectionState = value.value ? value.value : undefined;
-				}
+
+				this.store.rowSelectionState = rowSelectionState;
 			}
-
-			this.rowSelectionState = rowSelectionState;
 		}
 	},
 

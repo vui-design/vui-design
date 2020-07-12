@@ -1,5 +1,6 @@
 import is from "vui-design/utils/is";
 import padEnd from "vui-design/utils/padEnd";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiStatistic = {
 	name: "vui-statistic",
@@ -7,17 +8,13 @@ const VuiStatistic = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-statistic"
+			default: undefined
 		},
 		title: {
 			type: String,
 			default: undefined
 		},
-		prefix: {
-			type: String,
-			default: undefined
-		},
-		suffix: {
+		extra: {
 			type: String,
 			default: undefined
 		},
@@ -29,67 +26,155 @@ const VuiStatistic = {
 			type: Number,
 			default: undefined
 		},
+		prefix: {
+			type: String,
+			default: undefined
+		},
+		suffix: {
+			type: String,
+			default: undefined
+		},
 		formatter: {
 			type: Function,
+			default: undefined
+		},
+		decimalSeparator: {
+			type: String,
+			default: "."
+		},
+		groupSeparator: {
+			type: String,
+			default: ","
+		},
+		headerStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		bodyStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		footerStyle: {
+			type: [String, Object],
 			default: undefined
 		}
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, title, precision, formatter } = this;
-		let prefix = $slots.prefix || this.prefix;
-		let suffix = $slots.suffix || this.suffix;
-		let main = [];
+		let { $slots: slots, $props: props } = this;
 
-		if (is.function(formatter)) {
-			main = formatter(h, this.value);
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "statistic");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+		classes.elHeader = `${classNamePrefix}-header`;
+		classes.elBody = `${classNamePrefix}-body`;
+		classes.elFooter = `${classNamePrefix}-footer`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elExtra = `${classNamePrefix}-extra`;
+		classes.elPrefix = `${classNamePrefix}-prefix`;
+		classes.elSuffix = `${classNamePrefix}-suffix`;
+		classes.elValue = `${classNamePrefix}-value`;
+
+		// title
+		let title = slots.title || props.title;
+
+		// extra
+		let extra = slots.extra || props.extra;
+
+		// prefix
+		let prefix = slots.prefix || props.prefix;
+
+		// suffix
+		let suffix = slots.suffix || props.suffix;
+
+		// value
+		let value;
+
+		if (is.function(props.formatter)) {
+			value = props.formatter(h, props.value);
 		}
 		else {
-			let value = String(this.value);
+			value = String(props.value);
+
 			let matched = value.match(/^(-?)(\d*)(\.(\d+))?$/);
 
-			if (!matched) {
-				main = value;
-			}
-			else {
+			if (matched) {
+				value = [];
+
 				let negative = matched[1];
 				let int = matched[2] || "0";
 				let decimal = matched[4] || "";
 
-				int = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				int = int.replace(/\B(?=(\d{3})+(?!\d))/g, props.groupSeparator);
 
-				if (is.number(precision)) {
-					decimal = padEnd(decimal, precision, "0").slice(0, precision);
+				if (is.number(props.precision)) {
+					decimal = padEnd(decimal, props.precision, "0").slice(0, props.precision);
 				}
 
 				if (decimal) {
-					decimal = `.${decimal}`;
+					decimal = props.decimalSeparator + decimal;
 				}
 
-				main.push(
+				value.push(
 					<big key="int">{negative + int}</big>
 				);
 
 				if (decimal) {
-					main.push(
+					value.push(
 						<small key="decimal">{decimal}</small>
 					);
 				}
 			}
 		}
 
-		return (
-			<div class={`${classNamePrefix}`}>
-				<div class={`${classNamePrefix}-header`}>
-					{title && <div class={`${classNamePrefix}-title`}>{title}</div>}
-					{$slots.extra && <div class={`${classNamePrefix}-extra`}>{$slots.extra}</div>}
+		// render
+		let children = [];
+
+		if (title || extra) {
+			children.push(
+				<div class={classes.elHeader} style={props.headerStyle}>
+					{
+						title && (
+							<div class={classes.elTitle}>{title}</div>
+						)
+					}
+					{
+						extra && (
+							<div class={classes.elExtra}>{extra}</div>
+						)
+					}
 				</div>
-				<div class={`${classNamePrefix}-main`}>
-					{prefix && <label class={`${classNamePrefix}-prefix`}>{prefix}</label>}
-					<label class={`${classNamePrefix}-value`}>{main}</label>
-					{suffix && <label class={`${classNamePrefix}-suffix`}>{suffix}</label>}
-				</div>
+			);
+		}
+
+		children.push(
+			<div class={classes.elBody} style={props.bodyStyle}>
+				{
+					prefix && (
+						<div class={classes.elPrefix}>{prefix}</div>
+					)
+				}
+				<div class={classes.elValue}>{value}</div>
+				{
+					suffix && (
+						<div class={classes.elSuffix}>{suffix}</div>
+					)
+				}
 			</div>
+		);
+
+		if (slots.footer) {
+			children.push(
+				<div class={classes.elFooter} style={props.footerStyle}>
+					{slots.footer}
+				</div>
+			);
+		}
+
+		return (
+			<div class={classes.el}>{children}</div>
 		);
 	}
 };

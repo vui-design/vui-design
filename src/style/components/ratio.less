@@ -1,0 +1,33 @@
+@vui-ratio: ~"@{vui}-ratio";
+
+.@{vui-ratio} {
+	display:inline-flex;
+	align-items:center;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+
+	&-prefix {
+		margin-right:4px;
+
+		.@{vui}-icon {
+			transform:scale(0.8);
+		}
+	}
+
+	&-suffix {
+
+	}
+
+	&-value {
+		display:flex;
+		align-items:center;
+	}
+
+	&-desc {
+		color:@success-color;
+	}
+	&-asc {
+		color:@error-color;
+	}
+}

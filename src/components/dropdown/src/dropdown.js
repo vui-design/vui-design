@@ -2,6 +2,7 @@ import Outclick from "vui-design/directives/outclick";
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
 import is from "vui-design/utils/is";
+import getStyle from "vui-design/utils/getStyle";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDropdown = {
@@ -41,6 +42,10 @@ const VuiDropdown = {
 			type: String,
 			default: "bottom-start",
 			validator: value => ["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"].indexOf(value) > -1
+		},
+		dropdownAutoWidth: {
+			type: Boolean,
+			default: true
 		},
 		animation: {
 			type: String,
@@ -113,6 +118,13 @@ const VuiDropdown = {
 			let settings = {
 				placement: this.placement
 			};
+
+			if (!this.dropdownAutoWidth) {
+				target.style.width = getStyle(reference, "width");
+			}
+			else {
+				target.style.width = "";
+			}
 
 			if (!reference || !target || !settings.placement) {
 				return;

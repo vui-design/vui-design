@@ -1,5 +1,6 @@
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import "vui-design/icons";
 
 const VuiIcon = {
 	name: "vui-icon",
@@ -25,8 +26,8 @@ const VuiIcon = {
 
 	render(h) {
 		let { $props: props, $listeners: listeners } = this;
+		let name = "#icon-" + props.type;
 
-		// class
 		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "icon");
 		let classes = {};
 
@@ -35,7 +36,6 @@ const VuiIcon = {
 			[`${classNamePrefix}-${props.type}`]: props.type
 		};
 
-		// style
 		let styles = {};
 
 		styles.el = {
@@ -43,7 +43,6 @@ const VuiIcon = {
 			fontSize: is.number(props.size) ? (props.size + "px") : (is.string(props.size) ? props.size : undefined)
 		}
 
-		// render
 		let attributes = {
 			class: classes.el,
 			style: styles.el,
@@ -53,7 +52,11 @@ const VuiIcon = {
 		};
 
 		return (
-			<i {...attributes}></i>
+			<i {...attributes}>
+				<svg aria-hidden="true">
+					<use xlinkHref={name} />
+				</svg>
+			</i>
 		);
 	}
 };

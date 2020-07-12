@@ -5,7 +5,7 @@ const VuiResultException = {
 		status: {
 			type: String,
 			default: undefined,
-			validator: value => ["403", "404", "500"].indexOf(value) > -1
+			validator: value => ["comingsoon", "403", "404", "500"].indexOf(value) > -1
 		},
 		width: {
 			type: [String, Number],
@@ -18,14 +18,76 @@ const VuiResultException = {
 	},
 
 	render() {
-		let { status, width, height } = this;
+		let { $props: props } = this;
 
-		if (!status) {
+		if (!props.status) {
 			return null;
 		}
-		else if (status === "403") {
+		else if (props.status === "comingsoon") {
 			return (
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg"x="0px" y="0px" viewBox="0 0 360 240" width={width} height={height}>
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 20 20" width={props.width} height={props.height}>
+					<path fill="#2d2323" d="M14.6,8.4H5.5C5.3,8.4,5.2,8.2,5.2,8V2.3C5.2,2.1,5.3,2,5.5,2h9.1c0.2,0,0.3,0.1,0.3,0.3v5.7C14.9,8.2,14.8,8.4,14.6,8.4z" />
+					<path fill="#ffffff" d="M14.4,7.8H5.7c-0.2,0-0.4-0.2-0.4-0.3v-5c0-0.2,0.2-0.3,0.4-0.3h8.7c0.2,0,0.4,0.2,0.4,0.3v5 C14.8,7.7,14.6,7.8,14.4,7.8z" />
+					<path fill="#ffd45a" d="M5.7,2.7h0.4V3H5.7V2.7z" />
+					<path fill="#ba83cc" d="M7.9,2.7h0.4V3H7.9V2.7z" />
+					<path fill="#a3a3a3" d="M6.2,2.7h1V3h-1V2.7z M8.4,2.7h1V3h-1V2.7z" />
+					<path fill="#ba83cc" d="M7.9,3.1h0.4v0.3H7.9V3.1z" />
+					<path fill="#a3a3a3" d="M8.4,3.1h5.9v0.3H8.4V3.1z M10.3,2.7h1V3h-1V2.7z M12.5,2.7h2.1V3h-2.1V2.7z" />
+					<path fill="#75e0ce" d="M9.5,2.7h0.7V3H9.5V2.7z" />
+					<path fill="#c176dd" d="M11.4,2.7h1V3h-1V2.7z" />
+					<path fill="#ba83cc" d="M8.4,3.6h0.4v0.3H8.4V3.6z" />
+					<path fill="#a3a3a3" d="M8.8,3.6h4.6v0.3H8.8V3.6z" />
+					<path fill="#ba83cc" d="M8.4,4h0.4v0.3H8.4V4z" />
+					<path fill="#75e0ce" d="M8.9,4h2.9v0.3H8.9L8.9,4z" />
+					<path fill="#ba83cc" d="M8.4,4.5h0.4v0.3H8.4V4.5z M8.4,4.9h0.4v0.3H8.4V4.9z" />
+					<path fill="#a3a3a3" d="M8.8,4.5h5.4v0.3H8.8V4.5z" />
+					<path fill="#ba83cc" d="M8.4,5.8h0.4v0.3H8.4V5.8z" />
+					<path fill="#75e0ce" d="M8.9,5.8h2.9v0.3H8.9L8.9,5.8z" />
+					<path fill="#ba83cc" d="M8.4,7.1h0.4v0.3H8.4V7.1z" />
+					<path fill="#75e0ce" d="M8.9,7.1h2.9v0.3H8.9L8.9,7.1z" />
+					<path fill="#ba83cc" d="M8.4,7.5h0.4v0.3H8.4V7.5z" />
+					<path fill="#75e0ce" d="M8.9,7.5h2.9v0.3H8.9L8.9,7.5z" />
+					<path fill="#a3a3a3" d="M8.8,4.9h3.2v0.3H8.8V4.9z" />
+					<path fill="#ba83cc" d="M8.4,6.2h0.4v0.3H8.4V6.2z M8.4,6.7h0.4V7H8.4V6.7z" />
+					<path fill="#a3a3a3" d="M8.8,6.2h5.4v0.3H8.8V6.2z M8.8,6.7h3.2V7H8.8V6.7z M8.8,5.3h3.2v0.3H8.8V5.3z" />
+					<path fill="#ba83cc" d="M8.4,5.3h0.4v0.3H8.4V5.3z" />
+					<path fill="#ffd45a" d="M5.7,3.2h0.4v0.3H5.7V3.2z" />
+					<path fill="#a3a3a3" d="M6.2,3.2h1v0.3h-1V3.2z" />
+					<path fill="#ffd45a" d="M5.7,3.6h0.4v0.3H5.7V3.6z" />
+					<path fill="#a3a3a3" d="M6.2,3.6h1v0.3h-1V3.6z" />
+					<path fill="#ffd45a" d="M5.7,4.1h0.4v0.3H5.7V4.1z" />
+					<path fill="#a3a3a3" d="M6.2,4.1h1v0.3h-1V4.1z" />
+					<path fill="#ffd45a" d="M5.7,4.6h0.4v0.3H5.7V4.6z" />
+					<path fill="#a3a3a3" d="M6.2,4.6h1v0.3h-1V4.6z" />
+					<path fill="#ffd45a" d="M6.2,5h0.4v0.3H6.2V5z" />
+					<path fill="#a3a3a3" d="M6.7,5h0.4v0.3H6.7V5z" />
+					<path fill="#ffd45a" d="M6.2,5.4h0.4v0.3H6.2V5.4z" />
+					<path fill="#a3a3a3" d="M6.7,5.4h0.4v0.3H6.7V5.4z" />
+					<path fill="#ffd45a" d="M6.2,5.9h0.4v0.3H6.2V5.9z" />
+					<path fill="#a3a3a3" d="M6.7,5.9h0.4v0.3H6.7V5.9z" />
+					<path fill="#ffd45a" d="M6.2,6.3h0.4v0.3H6.2V6.3z" />
+					<path fill="#a3a3a3" d="M6.7,6.3h0.4v0.3H6.7V6.3z" />
+					<path fill="#ffd45a" d="M6.2,6.7h0.4V7H6.2V6.7z" />
+					<path fill="#a3a3a3" d="M6.7,6.7h0.4V7H6.7V6.7z" />
+					<path fill="#ffd45a" d="M6.2,7.2h0.4v0.3H6.2V7.2z" />
+					<path fill="#a3a3a3" d="M6.7,7.2h0.4v0.3H6.7V7.2z" />
+					<path fill="#ffd45a" d="M6.2,7.6h0.4v0.2H6.2V7.6z" />
+					<path fill="#a3a3a3" d="M6.7,7.6h0.4v0.2H6.7V7.6z" />
+					<path fill="#72b5c4" d="M7.5,2.7h0.1v5.1H7.5V2.7z" />
+					<path fill="#aee4e5" d="M14.8,2.6L14.8,2.6c0-0.3-0.2-0.4-0.4-0.4H5.7c-0.2,0-0.4,0.2-0.4,0.3v0.1H14.8z" />
+					<path fill="#2d8cf0" d="M0,10.5h20v1H0V10.5z" />
+					<path fill="#fecac3" d="M6.8,9.4C6.7,9.1,6.3,9,5.9,9.1l-2.1,1c-0.3,0.2-0.5,0.5-0.3,0.8c0.2,0.3,0.6,0.4,0.9,0.3l2.1-1C6.9,10.1,7,9.7,6.8,9.4z M16.3,10.1l-2.1-1c-0.3-0.2-0.7,0-0.9,0.3s0,0.7,0.3,0.8l2.1,1c0.3,0.2,0.7,0,0.9-0.3C16.7,10.7,16.6,10.3,16.3,10.1z" />
+					<path fill="#2d2323" d="M8,6.3c0,1.2,0.9,2.1,2,2.1c1.1,0,2-0.9,2-2.1c0,0,0,0,0,0c0-1.2-0.9-2.1-2-2.1S8,5.1,8,6.3C8,6.2,8,6.2,8,6.3z" />
+					<path fill="#ed5565" d="M4.7,9.3L5,11.2L6.2,11l7.6,0l1.1,0.2l0.4-1.7c0,0-1.4-0.9-3-1.4c-1.1-0.4-3.2-0.4-4.6,0C6,8.5,4.7,9.3,4.7,9.3z" />
+					<path fill="#e4ebf7" d="M12.9,17.4H7.2c-0.3,0-0.5-0.2-0.5-0.5l-0.4-6.3c0-0.3,0.2-0.5,0.5-0.5h6.7c0.3,0,0.5,0.2,0.5,0.5l-0.4,6.3C13.5,17.2,13.2,17.4,12.9,17.4z" />
+					<path fill="#ed5565" d="M7.4,15.2h5.3v0.7H7.4L7.4,15.2z" />
+					<path fill="#d1e2f5" d="M13.7,18H6.4c-0.3,0-0.5-0.2-0.5-0.4v-0.7c0-0.2,0.2-0.4,0.5-0.4h7.3c0.3,0,0.5,0.2,0.5,0.4v0.7C14.2,17.8,14,18,13.7,18z" />
+				</svg>
+			);
+		}
+		else if (props.status === "403") {
+			return (
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 360 240" width={props.width} height={props.height}>
 					<path fill="#e4ebf7" d="M153.8,0c-7.9,0-15.7,1.8-22.5,6.4c-14.6,9.9-21.3,29.8-33,43.7C87.4,63.2,73.3,69.2,59.4,76.3c-11.7,5.9-16.7,20-18.7,33.9c-1.5,10.9-2.2,22.4-7,31.9c-5.5,11-15.7,17.9-22.8,27.6c-11.7,16-14.3,40.1-6,58.7c1.8,4,4.1,7.9,7.7,9.9c2.9,1.7,6.3,1.7,9.4,1.7h0.2h292.4c3.2,0,6.6,0,9.4-1.8c4.6-3,6.1-9.4,9.1-14.5c5.8-9.9,17.3-13.8,23.2-23.7c2.6-4.4,3.7-9.3,3.7-14.5v-0.1c0-8.1-2.9-16.6-6.9-24c-1.3-2.4-2.7-4.6-4.4-6.9c-9.2-12.8-21.5-23.3-27.1-38.5c-7.5-20.4-1.4-44.5-7.8-65.4c-4.5-14.7-15.4-26.7-28.4-31.3c-11.4-4.1-23.5-2.7-35.5-1.2c-8,1-16.1,1.9-24.1,1.3c-16.2-1.4-31.4-9.4-47-14.8c-7.8-2.7-16.2-4.6-24.4-4.6L153.8,0L153.8,0z" />
 					<path fill="#ffffff" d="M119,65h142v126H119V65z" />
 					<path fill="#c5cfd6" d="M119,65h142v14H119V65z" />
@@ -60,9 +122,9 @@ const VuiResultException = {
 				</svg>
 			);
 		}
-		else if (status === "404") {
+		else if (props.status === "404") {
 			return (
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 360 240" width={width} height={height}>
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 360 240" width={props.width} height={props.height}>
 					<path fill="#e4ebf7" d="M153.8,0c-7.9,0-15.7,1.8-22.5,6.4c-14.6,9.9-21.3,29.8-33,43.7C87.4,63.2,73.3,69.2,59.4,76.3c-11.7,5.9-16.7,20-18.7,33.9c-1.5,10.9-2.2,22.4-7,31.9c-5.5,11-15.7,17.9-22.8,27.6c-11.7,16-14.3,40.1-6,58.7c1.8,4,4.1,7.9,7.7,9.9c2.9,1.7,6.3,1.7,9.4,1.7h0.2h292.4c3.2,0,6.6,0,9.4-1.8c4.6-3,6.1-9.4,9.1-14.5c5.8-9.9,17.3-13.8,23.2-23.7c2.6-4.4,3.7-9.3,3.7-14.5v-0.1c0-8.1-2.9-16.6-6.9-24c-1.3-2.4-2.7-4.6-4.4-6.9c-9.2-12.8-21.5-23.3-27.1-38.5c-7.5-20.4-1.4-44.5-7.8-65.4c-4.5-14.7-15.4-26.7-28.4-31.3c-11.4-4.1-23.5-2.7-35.5-1.2c-8,1-16.1,1.9-24.1,1.3c-16.2-1.4-31.4-9.4-47-14.8c-7.8-2.7-16.2-4.6-24.4-4.6L153.8,0L153.8,0z" />
 					<path fill="#ffffff" d="M119,65h142v126H119V65z" />
 					<path fill="#c5cfd6" d="M119,65h142v14H119V65z" />
@@ -96,9 +158,9 @@ const VuiResultException = {
 				</svg>
 			);
 		}
-		else if (status === "500") {
+		else if (props.status === "500") {
 			return (
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 360 240" width={width} height={height}>
+				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 360 240" width={props.width} height={props.height}>
 					<path fill="#e4ebf7" d="M353.1,161.5c-1.3-2.4-2.7-4.6-4.4-6.9c-9.2-12.7-21.5-23.2-27.1-38.5c-7.5-20.4-1.4-44.5-7.8-65.4c-4.5-14.7-15.4-26.7-28.4-31.3c-11.4-4.1-23.5-2.7-35.5-1.2c-8,1-16.1,1.9-24.1,1.3c-16.2-1.4-31.4-9.4-47-14.8c-7.8-2.7-16.2-4.6-24.4-4.6L153.8,0c-7.9,0-15.7,1.8-22.5,6.4c-14.6,9.9-21.3,29.8-33,43.7C87.4,63.2,73.3,69.2,59.4,76.3c-11.7,5.9-16.7,20-18.7,33.9c-1.5,10.9-2.2,22.4-7,31.9c-5.5,11-15.7,17.9-22.8,27.6c-11.7,16-14.3,40.1-6,58.7c1.8,4,4.1,7.9,7.7,9.9c2.9,1.7,6.3,1.7,9.4,1.7h0.2h292.4c3.2,0,6.6,0,9.4-1.8c4.6-3,6.1-9.4,9.1-14.5c5.8-9.9,17.3-13.8,23.2-23.7c2.6-4.4,3.7-9.3,3.7-14.5v-0.1C360,177.3,357.1,168.9,353.1,161.5z" />
 					<path fill="#ffffff" d="M119,65h142v126H119V65z" />
 					<path fill="#c5cfd6" d="M119,65h142v14H119V65z" />

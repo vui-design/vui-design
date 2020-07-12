@@ -33,6 +33,10 @@ const VuiDescriptions = {
 			type: [String, Array],
 			default: undefined
 		},
+		extra: {
+			type: [String, Array],
+			default: undefined
+		},
 		columns: {
 			type: Number,
 			default: 3
@@ -230,18 +234,31 @@ const VuiDescriptions = {
 			[`${classNamePrefix}-bordered`]: props.bordered,
 			[`${classNamePrefix}-${props.size}`]: props.size
 		};
+		classes.elHeader = `${classNamePrefix}-header`;
 		classes.elTitle = `${classNamePrefix}-title`;
-		classes.elView = `${classNamePrefix}-view`;
+		classes.elExtra = `${classNamePrefix}-extra`;
+		classes.elBody = `${classNamePrefix}-body`;
 
 		// render
 		return (
 			<div class={classes.el}>
 				{
-					props.title && (
-						<div class={classes.elTitle}>{props.title}</div>
+					(props.title || props.extra) && (
+						<div class={classes.elHeader}>
+							{
+								props.title && (
+									<div class={classes.elTitle}>{props.title}</div>
+								)
+							}
+							{
+								props.extra && (
+									<div class={classes.elExtra}>{props.extra}</div>
+								)
+							}
+						</div>
 					)
 				}
-				<div class={classes.elView}>
+				<div class={classes.elBody}>
 					<table>
 						<tbody>
 							{

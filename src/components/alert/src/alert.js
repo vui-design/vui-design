@@ -1,6 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const icons = {
+const defaultIconTypes = {
 	info: "info",
 	warning: "warning",
 	success: "checkmark-circle",
@@ -17,14 +18,12 @@ const VuiAlert = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-alert"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "info",
-			validator(value) {
-				return ["info", "warning", "success", "error"].indexOf(value) > -1;
-			}
+			validator: value => ["info", "warning", "success", "error"].indexOf(value) > -1
 		},
 		icon: {
 			type: String,
@@ -56,91 +55,136 @@ const VuiAlert = {
 		},
 		animation: {
 			type: String,
-			default: "vui-alert-slide"
+			default: "vui-alert-slide-up"
 		}
 	},
 
 	data() {
 		return {
-			visible: true
+			state: {
+				closed: false,
+				closing: false
+			}
 		};
 	},
 
 	methods: {
 		handleClose(e) {
-			this.visible = false;
+			e.preventDefault();
+
+			let element = this.$el;
+
+			element.style.height = `${element.offsetHeight}px`;
+			// 重复一次才能正确设置 height 高度，why？
+			element.style.height = `${element.offsetHeight}px`;
+
+			this.state.closing = true;
 			this.$emit("close", e);
+		},
+		handleAfterLeave() {
+			this.state.closed = true;
+			this.state.closing = false;
+			this.$emit("afterClose");
 		}
 	},
 
 	render() {
-		let { $slots, classNamePrefix, type, message, description, banner, showIcon, closable, closeText, animation, visible } = this;
-		let { handleClose } = this;
+		let { $slots: slots, $props: props, state } = this;
+		let { handleClose, handleAfterLeave } = this;
 
-		// icon
-		let icon;
-
-		if (this.icon) {
-			icon = this.icon;
+		if (state.closed) {
+			return null;
 		}
 		else {
-			icon = ($slots.description || description) ? icons[type] : `${icons[type]}-filled`;
-		}
+			let icon;
 
-		// classes
-		let classes = {};
+			if (props.showIcon) {
+				if (slots.icon) {
+					icon = slots.icon;
+				}
+				else if (props.icon) {
+					icon = (
+						<VuiIcon type={prop.icon} />
+					);
+				}
+				else {
+					let defaultIconType = defaultIconTypes[props.type];
+					let iconType = (slots.description || props.description) ? defaultIconType : (defaultIconType + "-filled");
 
-		classes.el = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-banner`]: banner,
-			[`${classNamePrefix}-with-icon`]: showIcon && ($slots.icon || icon),
-			[`${classNamePrefix}-with-description`]: $slots.description || description,
-			[`${classNamePrefix}-closable`]: closable
-		};
-		classes.icon = `${classNamePrefix}-icon`;
-		classes.message = `${classNamePrefix}-message`;
-		classes.description = `${classNamePrefix}-description`;
-		classes.btnClose =  `${classNamePrefix}-btn-close`;
+					icon = (
+						<VuiIcon type={iconType} />
+					);
+				}
+			}
 
-		// render
-		let children = [];
+			let btnClose;
 
-		if (showIcon && ($slots.icon || icon)) {
+			if (props.closable) {
+				if (props.closeText) {
+					btnClose = props.closeText;
+				}
+				else {
+					btnClose = (
+						<VuiIcon type="crossmark" />
+					);
+				}
+			}
+
+			let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "alert");
+			let classes = {};
+
+			classes.el = {
+				[`${classNamePrefix}`]: true,
+				[`${classNamePrefix}-${props.type}`]: props.type,
+				[`${classNamePrefix}-banner`]: props.banner,
+				[`${classNamePrefix}-with-icon`]: icon,
+				[`${classNamePrefix}-with-description`]: slots.description || props.description,
+				[`${classNamePrefix}-closable`]: btnClose,
+				[`${classNamePrefix}-closing`]: state.closing
+			};
+			classes.elIcon = `${classNamePrefix}-icon`;
+			classes.elMessage = `${classNamePrefix}-message`;
+			classes.elDescription = `${classNamePrefix}-description`;
+			classes.elBtnClose =  `${classNamePrefix}-btn-close`;
+
+			let children = [];
+
+			if (icon) {
+				children.push(
+					<div class={classes.elIcon}>
+						{icon}
+					</div>
+				);
+			}
+
 			children.push(
-				<div class={classes.icon}>
-					{$slots.icon || <VuiIcon type={icon} />}
+				<div class={classes.elMessage}>
+					{slots.default || props.message}
 				</div>
 			);
-		}
 
-		children.push(
-			<div class={classes.message}>
-				{$slots.default || message}
-			</div>
-		);
+			if (slots.description || props.description) {
+				children.push(
+					<div class={classes.elDescription}>
+						{slots.description || props.description}
+					</div>
+				);
+			}
 
-		if ($slots.description || description) {
-			children.push(
-				<div class={classes.description}>
-					{$slots.description || description}
-				</div>
+			if (btnClose) {
+				children.push(
+					<div class={classes.elBtnClose} onClick={handleClose}>
+						{btnClose}
+					</div>
+				);
+			}
+
+			return (
+				<transition appear={false} name={props.animation} onAfterLeave={handleAfterLeave}>
+					<div v-show={!state.closing} class={classes.el}>{children}</div>
+				</transition>
 			);
 		}
-
-		if (closable) {
-			children.push(
-				<div class={classes.btnClose} onClick={handleClose}>
-					{closeText || <VuiIcon type="crossmark" />}
-				</div>
-			);
-		}
-
-		return (
-			<transition name={animation}>
-				{visible && <div class={classes.el}>{children}</div>}
-			</transition>
-		);
 	}
 };
 

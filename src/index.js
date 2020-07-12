@@ -67,6 +67,7 @@ import List from "./components/list";
 import ListItem from "./components/list-item";
 import ListItemMeta from "./components/list-item-meta";
 import Popover from "./components/popover";
+import Ratio from "./components/ratio";
 import Statistic from "./components/statistic";
 import Table from "./components/table";
 import Tag from "./components/tag";
@@ -87,6 +88,7 @@ import Result from "./components/result";
 import Spin from "./components/spin";
 // Other
 import Loading from "./components/loading";
+import TransitionCollapse from "./components/transition-collapse";
 // Language
 import locale from "./locale";
 
@@ -160,6 +162,7 @@ const components = [
 	ListItem,
 	ListItemMeta,
 	Popover,
+	Ratio,
 	Statistic,
 	Table,
 	Tag,
@@ -177,7 +180,9 @@ const components = [
 	Popconfirm,
 	Progress,
 	Result,
-	Spin
+	Spin,
+	// Other
+	TransitionCollapse
 ];
 
 const install = function(Vue, options = {}) {
@@ -282,6 +287,7 @@ export default {
 	ListItem,
 	ListItemMeta,
 	Popover,
+	Ratio,
 	Statistic,
 	Table,
 	Tag,
@@ -301,5 +307,6 @@ export default {
 	Result,
 	Spin,
 	// Other
-	Loading
+	Loading,
+	TransitionCollapse
 };

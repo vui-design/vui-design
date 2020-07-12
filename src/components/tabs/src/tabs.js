@@ -42,6 +42,14 @@ const VuiTabs = {
 				return ["small", "medium", "large"].indexOf(value) > -1;
 			}
 		},
+		headerStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		bodyStyle: {
+			type: [String, Object],
+			default: undefined
+		},
 		addable: {
 			type: Boolean,
 			default: false
@@ -116,7 +124,7 @@ const VuiTabs = {
 		},
 
 		drawTabsHeader(h) {
-			let { $slots: slots, classNamePrefix, addable, closable, editable, list, currentValue } = this;
+			let { $slots: slots, classNamePrefix, headerStyle, addable, closable, editable, list, currentValue } = this;
 			let { handleChange, handleAdd, handleClose } = this;
 
 			let classes = {};
@@ -173,14 +181,14 @@ const VuiTabs = {
 			}
 
 			return (
-				<div class={classes.header}>
+				<div class={classes.header} style={headerStyle}>
 					{children}
 				</div>
 			);
 		},
 
 		drawTabsBody(h) {
-			let { $slots: slots, classNamePrefix, animated, list, currentValue } = this;
+			let { $slots: slots, classNamePrefix, bodyStyle, animated, list, currentValue } = this;
 
 			let classes = {};
 
@@ -199,7 +207,7 @@ const VuiTabs = {
 			}
 
 			return (
-				<div class={classes.body}>
+				<div class={classes.body} style={bodyStyle}>
 					<div class={classes.bodyContent} style={styles.bodyContent}>
 						{slots.default}
 					</div>

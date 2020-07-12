@@ -71,20 +71,20 @@
 
 
 // 阴影
-@box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+@box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 
 
 // 属性过度
 @transition-duration: 0.2s;
-@transition-timing-function: cubic-bezier(.645, .045, .355, 1);
+@transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 
 
 // 动画
 @animation-in-duration: 0.2s;
-@animation-in-timing-function: cubic-bezier(.645, .045, .355, 1);
+@animation-in-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 
 @animation-out-duration: 0.2s;
-@animation-out-timing-function: cubic-bezier(.645, .045, .355, 1);
+@animation-out-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 
 
 // 媒体查询
@@ -458,6 +458,32 @@
 @badge-status-success-font-color: #595959;
 @badge-status-error-color: @error-color;
 @badge-status-error-font-color: #595959;
+@badge-status-blue-color: #1890ff;
+@badge-status-blue-font-color: #595959;
+@badge-status-green-color: #52c41a;
+@badge-status-green-font-color: #595959;
+@badge-status-red-color: #f5222d;
+@badge-status-red-font-color: #595959;
+@badge-status-yellow-color: #fadb14;
+@badge-status-yellow-font-color: #595959;
+@badge-status-pink-color: #eb2f96;
+@badge-status-pink-font-color: #595959;
+@badge-status-magenta-color: #eb2f96;
+@badge-status-magenta-font-color: #595959;
+@badge-status-volcano-color: #fa541c;
+@badge-status-volcano-font-color: #595959;
+@badge-status-orange-color: #fa8c16;
+@badge-status-orange-font-color: #595959;
+@badge-status-gold-color: #faad14;
+@badge-status-gold-font-color: #595959;
+@badge-status-lime-color: #a0d911;
+@badge-status-lime-font-color: #595959;
+@badge-status-cyan-color: #13c2c2;
+@badge-status-cyan-font-color: #595959;
+@badge-status-geekblue-color: #2f54eb;
+@badge-status-geekblue-font-color: #595959;
+@badge-status-purple-color: #722ed1;
+@badge-status-purple-font-color: #595959;
 
 
 // Empty
@@ -467,6 +493,35 @@
 @empty-description-line-height: @line-height;
 
 
+// Statistic
+@statistic-line-height: @line-height;
+@statistic-header-margin-bottom: 10px;
+@statistic-body-color: @font-primary-color;
+@statistic-body-font-size: @font-size + 10px;
+@statistic-body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@statistic-footer-margin-top: 10px;
+@statistic-title-color: @font-secondary-color;
+@statistic-title-font-size: @font-size;
+@statistic-extra-color: @font-secondary-color;
+@statistic-extra-font-size: @font-size;
+@statistic-prefix-margin-right: 6px;
+@statistic-prefix-font-size: @font-size + 10px;
+@statistic-suffix-margin-left: 6px;
+@statistic-suffix-font-size: @font-size + 2px;
+
+
+// Tooltip
+@tooltip-border-radius: @border-radius;
+@tooltip-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+@tooltip-padding: 10px 12px;
+@tooltip-font-size: @font-size;
+@tooltip-line-height: @line-height;
+@tooltip-arrow-size: 6px;
+@tooltip-distance: @tooltip-arrow-size + 4px;
+@tooltip-light-background-color: #fff;
+@tooltip-light-font-color: @font-color;
+@tooltip-dark-background-color: #1a2035;
+@tooltip-dark-font-color: #fff;
 
 
 
@@ -483,18 +538,52 @@
 
 // 反馈组件 --------------------------------------------------------------------------------
 
-// Tooltip
-@tooltip-border-radius: @border-radius;
-@tooltip-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
-@tooltip-padding: 10px 12px;
-@tooltip-font-size: @font-size;
-@tooltip-line-height: @line-height;
-@tooltip-arrow-size: 6px;
-@tooltip-distance: @tooltip-arrow-size + 4px;
-@tooltip-light-background-color: #fff;
-@tooltip-light-font-color: @font-color;
-@tooltip-dark-background-color: #293846;
-@tooltip-dark-font-color: #fff;
+// Alert
+@alert-border: @border-width @border-style @border-color;
+@alert-border-radius: @border-radius;
+@alert-background-color: @background-color;
+@alert-line-height: @line-height;
+
+@alert-info-border-color: ~`colorPalette("@{primary-color}", 3) `;
+@alert-info-background-color: ~`colorPalette("@{primary-color}", 1) `;
+@alert-info-icon-color: @primary-color;
+@alert-warning-border-color: ~`colorPalette("@{warning-color}", 3) `;
+@alert-warning-background-color: ~`colorPalette("@{warning-color}", 1) `;
+@alert-warning-icon-color: @warning-color;
+@alert-success-border-color: ~`colorPalette("@{success-color}", 3) `;
+@alert-success-background-color: ~`colorPalette("@{success-color}", 1) `;
+@alert-success-icon-color: @success-color;
+@alert-error-border-color: ~`colorPalette("@{error-color}", 3) `;
+@alert-error-background-color: ~`colorPalette("@{error-color}", 1) `;
+@alert-error-icon-color: @error-color;
+
+@alert-padding-vertical: 10px;
+@alert-padding-horizontal: 16px;
+@alert-with-icon-padding-left: @font-size + @alert-padding-horizontal + 10px;
+@alert-closable-padding-right: @font-size-sm + @alert-padding-horizontal + 10px;
+
+@alert-icon-top: @alert-padding-vertical + floor((@font-size * @alert-line-height - @font-size) / 2);
+@alert-icon-left: @alert-padding-horizontal;
+@alert-icon-font-size: @font-size;
+@alert-message-color: @font-color;
+@alert-message-font-size: @font-size;
+@alert-btn-close-top: @alert-padding-vertical + floor((@font-size * @alert-line-height - @font-size-sm) / 2);
+@alert-btn-close-right: @alert-padding-horizontal;
+@alert-btn-close-font-size: @font-size-sm;
+
+@alert-with-description-padding-vertical: 16px;
+@alert-with-description-padding-horizontal: 16px;
+@alert-with-description-with-icon-padding-left: floor(@font-size-lg * @alert-line-height) + @alert-with-description-padding-horizontal + 14px;
+@alert-with-description-closable-padding-right: @font-size-sm + @alert-with-description-padding-horizontal + 14px;
+
+@alert-with-description-icon-top: @alert-with-description-padding-vertical;
+@alert-with-description-icon-left: @alert-with-description-padding-horizontal;
+@alert-with-description-icon-font-size: floor(@font-size-lg * @alert-line-height);
+@alert-with-description-message-color: @font-primary-color;
+@alert-with-description-message-font-size: @font-size-lg;
+@alert-with-description-btn-close-top: @alert-with-description-padding-vertical + floor((@font-size-lg * @alert-line-height - @font-size-sm) / 2);
+@alert-with-description-btn-close-right: @alert-with-description-padding-horizontal;
+@alert-with-description-btn-close-font-size: @font-size-sm;
 
 // Drawer
 @drawer-background-color: #fff;
@@ -515,14 +604,45 @@
 @modal-footer-border-top: 1px solid #ececec;
 @modal-footer-padding: 20px;
 
+// Notice
+@notice-max-width: 360px;
+@notice-border-radius: @border-radius;
+@notice-background-color: @background-color;
+@notice-box-shadow: @box-shadow;
+@notice-line-height: @line-height;
 
+@notice-info-icon-color: @primary-color;
+@notice-warning-icon-color: @warning-color;
+@notice-success-icon-color: @success-color;
+@notice-error-icon-color: @error-color;
 
+@notice-padding-vertical: 10px;
+@notice-padding-horizontal: 16px;
+@notice-with-icon-padding-left: @font-size + @notice-padding-horizontal + 10px;
+@notice-closable-padding-right: @font-size-sm + @notice-padding-horizontal + 10px;
 
+@notice-icon-top: @notice-padding-vertical + floor((@font-size * @notice-line-height - @font-size) / 2);
+@notice-icon-left: @notice-padding-horizontal;
+@notice-icon-font-size: @font-size;
+@notice-title-color: @font-color;
+@notice-title-font-size: @font-size;
+@notice-btn-close-top: @notice-padding-vertical + floor((@font-size * @notice-line-height - @font-size-sm) / 2);
+@notice-btn-close-right: @notice-padding-horizontal;
+@notice-btn-close-font-size: @font-size-sm;
 
+@notice-with-description-padding-vertical: 16px;
+@notice-with-description-padding-horizontal: 16px;
+@notice-with-description-with-icon-padding-left: floor(@font-size-lg * @notice-line-height) + @notice-with-description-padding-horizontal + 14px;
+@notice-with-description-closable-padding-right: @font-size-sm + @notice-with-description-padding-horizontal + 14px;
 
-
-
-
+@notice-with-description-icon-top: @notice-with-description-padding-vertical;
+@notice-with-description-icon-left: @notice-with-description-padding-horizontal;
+@notice-with-description-icon-font-size: floor(@font-size-lg * @notice-line-height);
+@notice-with-description-title-color: @font-primary-color;
+@notice-with-description-title-font-size: @font-size-lg;
+@notice-with-description-btn-close-top: @notice-with-description-padding-vertical + floor((@font-size-lg * @notice-line-height - @font-size-sm) / 2);
+@notice-with-description-btn-close-right: @notice-with-description-padding-horizontal;
+@notice-with-description-btn-close-font-size: @font-size-sm;
 
 
 

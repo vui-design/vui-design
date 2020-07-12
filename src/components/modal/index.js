@@ -3,6 +3,7 @@ import VuiIcon from "vui-design/components/icon";
 import VuiModal from "./src/modal";
 import createChainedFunction from "vui-design/utils/createChainedFunction";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 /**
 * 默认配置
@@ -72,10 +73,16 @@ const createModalInstance = function(options) {
 			let { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
 			let { onCancel, onOk, onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
 
+			let open = createChainedFunction(handleOpen.bind(this), onOpen);
+			let afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
+			let close = createChainedFunction(handleClose.bind(this), onClose);
+			let afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+
 			// attrs
 			let attrs = {
 				props: {
 					visible,
+					showNotice: true,
 					showCancelButton,
 					cancelButtonProps,
 					cancelText,
@@ -96,10 +103,10 @@ const createModalInstance = function(options) {
 					getPopupContainer
 				},
 				on: {
-					open: createChainedFunction(handleOpen.bind(this), onOpen),
-					afterOpen: createChainedFunction(handleAfterOpen.bind(this), onAfterOpen),
-					close: createChainedFunction(handleClose.bind(this), onClose),
-					afterClose: createChainedFunction(handleAfterClose.bind(this), onAfterClose)
+					open,
+					afterOpen,
+					close,
+					afterClose
 				}
 			};
 
@@ -117,40 +124,40 @@ const createModalInstance = function(options) {
 			// description
 			let description = is.function(this.description) ? this.description(h) : this.description;
 
-			// classes
-			let classNamePrefix = "vui-modal-notice";
+			// class
+			let classNamePrefix = getClassNamePrefix(this.classNamePrefix, "modal-notice");
 			let classes = {};
 
-			classes.notice = {
+			classes.elNotice = {
 				[`${classNamePrefix}`]: true,
 				[`${classNamePrefix}-${type}`]: type
 			};
-			classes.title = `${classNamePrefix}-title`;
-			classes.description = `${classNamePrefix}-description`;
-			classes.icon = `${classNamePrefix}-icon`;
+			classes.elNoticeTitle = `${classNamePrefix}-title`;
+			classes.elNoticeDescription = `${classNamePrefix}-description`;
+			classes.elNoticeIcon = `${classNamePrefix}-icon`;
 
 			// render
 			let children = [];
 
 			children.push(
-				<div class={classes.title}>{title}</div>
+				<div class={classes.elNoticeTitle}>{title}</div>
 			);
 
 			if (description) {
 				children.push(
-					<div class={classes.description}>{description}</div>
+					<div class={classes.elNoticeDescription}>{description}</div>
 				);
 			}
 
 			children.push(
-				<div class={classes.icon}>
+				<div class={classes.elNoticeIcon}>
 					<VuiIcon type={icon} />
 				</div>
 			);
 
 			return (
 				<VuiModal {...attrs}>
-					<div class={classes.notice}>{children}</div>
+					<div class={classes.elNotice}>{children}</div>
 				</VuiModal>
 			);
 		}

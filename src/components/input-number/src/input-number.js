@@ -249,6 +249,7 @@ const VuiInputNumber = {
 			this.dispatch("vui-form-item", "blur", this.state.value);
 		},
 		handleKeydown(e) {
+			let { $props: props } = this;
 			let keyCode = e.keyCode;
 
 			if (keyCode === 38) {
@@ -258,6 +259,15 @@ const VuiInputNumber = {
 			else if (keyCode === 40) {
 				e.preventDefault();
 				this.handleDecrease();
+			}
+			else if (keyCode === 8) {
+				let value = e.target.value;
+
+				if (is.function(props.parser)) {
+					value = props.parser(value);
+				}
+
+				this.$refs.input.value = value;
 			}
 
 			this.$emit("keydown", e);

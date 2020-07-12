@@ -1,6 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
 import Portal from "vui-design/directives/portal";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import Popup from "vui-design/utils/popup";
 
 const VuiNotice = {
@@ -22,21 +23,19 @@ const VuiNotice = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-notice"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "info",
-			validator(value) {
-				return ["info", "warning", "success", "error"].indexOf(value) > -1;
-			}
+			validator: value => ["info", "warning", "success", "error"].indexOf(value) > -1
 		},
 		title: {
-			type: [String, Object, Function],
+			type: [String, Function, Object],
 			default: undefined
 		},
 		description: {
-			type: [String, Object, Function],
+			type: [String, Function, Object],
 			default: undefined
 		},
 		icon: {
@@ -54,9 +53,7 @@ const VuiNotice = {
 		placement: {
 			type: String,
 			default: "top-right",
-			validator(value) {
-				return ["top-left", "top-right", "bottom-left", "bottom-right"].indexOf(value) > -1;
-			}
+			validator: value => ["top-left", "top-right", "bottom-left", "bottom-right"].indexOf(value) > -1
 		},
 		top: {
 			type: Number,
@@ -81,43 +78,53 @@ const VuiNotice = {
 	},
 
 	data() {
+		let { $props: props } = this;
+
 		return {
-			defaultVisible: this.visible,
-			zIndex: Popup.nextZIndex()
+			state: {
+				visible: props.visible,
+				zIndex: Popup.nextZIndex(),
+				cancelLoading: false,
+				okLoading: false
+			}
 		};
+	},
+
+	computed: {
+		visibility() {
+			return this.state.visible;
+		}
 	},
 
 	watch: {
 		visible(value) {
-			if (this.defaultVisible === value) {
+			if (this.state.visible === value) {
 				return;
 			}
 
-			this.defaultVisible = value;
+			this.state.visible = value;
 		},
-		defaultVisible(value) {
+		visibility(value) {
 			if (!value) {
 				return;
 			}
 
-			this.zIndex = Popup.nextZIndex();
+			this.state.zIndex = Popup.nextZIndex();
 		}
 	},
 
 	methods: {
 		open() {
-			this.defaultVisible = true;
-			this.$emit("change", this.defaultVisible);
+			this.state.visible = true;
+			this.$emit("change", true);
 		},
 		close() {
-			this.defaultVisible = false;
-			this.$emit("change", this.defaultVisible);
+			this.state.visible = false;
+			this.$emit("change", false);
 		},
-
 		handleBtnCloseClick() {
 			this.close();
 		},
-
 		handleEnter() {
 			this.$emit("open");
 		},
@@ -133,48 +140,48 @@ const VuiNotice = {
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, type, closable, closeText, placement, zIndex, top, bottom, defaultVisible, animation, getPopupContainer } = this;
+		let { $slots: slots, $props: props, state } = this;
 		let { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let portal = getPopupContainer();
+		let portal = props.getPopupContainer();
+
+		// icon
+		let icon;
+
+		if (slots.icon) {
+			icon = slots.icon;
+		}
+		else if (props.icon) {
+			icon = (
+				<VuiIcon type={props.icon} />
+			);
+		}
 
 		// title
 		let title;
 
-		if ($slots.default) {
-			title = $slots.default;
+		if (slots.default) {
+			title = slots.default;
 		}
-		else if (this.title) {
-			title = is.function(this.title) ? this.title(h) : this.title;
+		else if (props.title) {
+			title = is.function(props.title) ? props.title(h) : props.title;
 		}
 
 		// description
 		let description;
 
-		if ($slots.description) {
-			description = $slots.description;
+		if (slots.description) {
+			description = slots.description;
 		}
-		else if (this.description) {
-			description = is.function(this.description) ? this.description(h) : this.description;
-		}
-
-		// icon
-		let icon;
-
-		if ($slots.icon) {
-			icon = $slots.icon;
-		}
-		else if (this.icon) {
-			icon = (
-				<VuiIcon type={this.icon} />
-			);
+		else if (props.description) {
+			description = is.function(props.description) ? props.description(h) : props.description;
 		}
 
 		// btnClose
 		let btnClose;
 
-		if (closable) {
-			if (closeText) {
-				btnClose = closeText;
+		if (props.closable) {
+			if (props.closeText) {
+				btnClose = props.closeText;
 			}
 			else {
 				btnClose = (
@@ -183,73 +190,67 @@ const VuiNotice = {
 			}
 		}
 
-		// classes
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "notice");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-with-description`]: description,
+			[`${classNamePrefix}-${props.type}`]: props.type,
 			[`${classNamePrefix}-with-icon`]: icon,
-			[`${classNamePrefix}-closable`]: closable,
-			[`${classNamePrefix}-${placement}`]: placement
+			[`${classNamePrefix}-with-description`]: description,
+			[`${classNamePrefix}-closable`]: props.closable,
+			[`${classNamePrefix}-${props.placement}`]: props.placement
 		};
-		classes.title = `${classNamePrefix}-title`;
-		classes.description = `${classNamePrefix}-description`;
-		classes.icon = `${classNamePrefix}-icon`;
-		classes.btnClose = `${classNamePrefix}-btn-close`;
+		classes.elIcon = `${classNamePrefix}-icon`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elDescription = `${classNamePrefix}-description`;
+		classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
-		// styles
+		// style
 		let styles = {};
 
 		styles.el = {
-			zIndex
+			zIndex: state.zIndex
 		};
 
-		if (/^(top)(-left|-right)?$/g.test(placement)) {
-			styles.el.top = `${top}px`;
+		if (/^(top)(-left|-right)?$/g.test(props.placement)) {
+			styles.el.top = `${props.top}px`;
 		}
-		else if (/^(bottom)(-left|-right)?$/g.test(placement)) {
-			styles.el.bottom = `${bottom}px`;
+		else if (/^(bottom)(-left|-right)?$/g.test(props.placement)) {
+			styles.el.bottom = `${props.bottom}px`;
 		}
 
 		// render
 		let children = [];
 
+		if (icon) {
+			children.push(
+				<div class={classes.elIcon}>{icon}</div>
+			);
+		}
+
 		if (title) {
 			children.push(
-				<div class={classes.title}>{title}</div>
+				<div class={classes.elTitle}>{title}</div>
 			);
 		}
 
 		if (description) {
 			children.push(
-				<div class={classes.description}>{description}</div>
+				<div class={classes.elDescription}>{description}</div>
 			);
 		}
 
-		if (icon) {
+		if (props.closable) {
 			children.push(
-				<div class={classes.icon}>{icon}</div>
-			);
-		}
-
-		if (closable) {
-			children.push(
-				<div class={classes.btnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
+				<div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
 			);
 		}
 
 		return (
-			<transition
-				name={animation}
-				onEnter={handleEnter}
-				onAfterEnter={handleAfterEnter}
-				onLeave={handleLeave}
-				onAfterLeave={handleAfterLeave}
-				appear
-			>
-				<div v-portal={portal} v-show={defaultVisible} class={classes.el} style={styles.el}>
+			<transition name={props.animation} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave} appear>
+				<div v-portal={portal} v-show={state.visible} class={classes.el} style={styles.el}>
 					{children}
 				</div>
 			</transition>

@@ -40,8 +40,25 @@ const VcSteps = {
 		}
 	},
 
+	methods: {
+		handleStepClick(index) {
+			let { $listeners: listeners } = this;
+			let clickable = listeners.change;
+
+			if (!clickable) {
+				return;
+			}
+
+			this.$emit("change", index);
+		}
+	},
+
 	render() {
-		let { $slots: slots, $props: props } = this;
+		let { $slots: slots, $props: props, $listeners: listeners } = this;
+		let { handleStepClick } = this;
+
+		// clickable
+		let clickable = listeners.change;
 
 		// class
 		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "steps");
@@ -51,7 +68,8 @@ const VcSteps = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${props.type}`]: props.type,
 			[`${classNamePrefix}-${props.direction}`]: props.direction,
-			[`${classNamePrefix}-${props.size}`]: props.size
+			[`${classNamePrefix}-${props.size}`]: props.size,
+			[`${classNamePrefix}-clickable`]: clickable
 		};
 
 		// render
@@ -130,7 +148,7 @@ const VcSteps = {
 						}
 
 						return (
-							<div class={stepClasses.el}>
+							<div class={stepClasses.el} onClick={e => handleStepClick(step.index)}>
 								<div class={stepClasses.elContent}>{stepChildren}</div>
 								<div class={stepClasses.elSeparator}></div>
 							</div>

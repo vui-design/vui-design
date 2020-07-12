@@ -112,8 +112,11 @@ const VuiMenuItem = {
 	},
 
 	render(h) {
-		let { vuiMenu, $slots: slots, classNamePrefix: customizedClassNamePrefix, name, icon, title, indent, isSelected, isDisabled, href, to, target, getNextRoute } = this;
+		let { vuiMenu, vuiSubmenu, $slots: slots, classNamePrefix: customizedClassNamePrefix, name, icon, title, indent, isSelected, isDisabled, href, to, target, getNextRoute } = this;
 		let { handleClick } = this;
+
+		// collapsed
+		let collapsed = (vuiMenu.mode === "vertical" || vuiMenu.mode === "inline") && vuiMenu.collapsed && !vuiSubmenu;
 
 		// Icon
 		if (slots.icon) {
@@ -139,6 +142,7 @@ const VuiMenuItem = {
 		};
 		classes.elIcon = `${classNamePrefix}-icon`;
 		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elTooltip = `${classNamePrefix}-tooltip`;
 
 		// Style
 		let styles = {};
@@ -178,14 +182,34 @@ const VuiMenuItem = {
 			props.attrs.href = href || getNextRoute().href;
 			props.attrs.target = target;
 
-			return (
-				<a {...props}>{children}</a>
-			);
+			if (collapsed) {
+				return (
+					<VuiTooltip placement="right" class={classes.elTooltip}>
+						<a {...props}>{children}</a>
+						<div slot="content">{title}</div>
+					</VuiTooltip>
+				)
+			}
+			else {
+				return (
+					<a {...props}>{children}</a>
+				);
+			}
 		}
 		else {
-			return (
-				<div {...props}>{children}</div>
-			);
+			if (collapsed) {
+				return (
+					<VuiTooltip placement="right" class={classes.elTooltip}>
+						<div {...props}>{children}</div>
+						<div slot="content">{title}</div>
+					</VuiTooltip>
+				)
+			}
+			else {
+				return (
+					<div {...props}>{children}</div>
+				);
+			}
 		}
 	}
 };

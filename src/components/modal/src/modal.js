@@ -39,6 +39,10 @@ const VuiModal = {
 			type: Boolean,
 			default: false
 		},
+		showNotice: {
+			type: Boolean,
+			default: false
+		},
 		title: {
 			type: String,
 			default: undefined
@@ -120,45 +124,54 @@ const VuiModal = {
 	},
 
 	data() {
+		let { $props: props } = this;
+
 		return {
-			defaultVisible: this.visible,
-			zIndex: Popup.nextZIndex(),
-			cancelLoading: false,
-			okLoading: false
+			state: {
+				visible: props.visible,
+				zIndex: Popup.nextZIndex(),
+				cancelLoading: false,
+				okLoading: false
+			}
 		};
+	},
+
+	computed: {
+		visibility() {
+			return this.state.visible;
+		}
 	},
 
 	watch: {
 		visible(value) {
-			if (this.defaultVisible === value) {
+			if (this.state.visible === value) {
 				return;
 			}
 
-			this.defaultVisible = value;
+			this.state.visible = value;
 		},
-		defaultVisible(value) {
+		visibility(value) {
 			if (!value) {
 				return;
 			}
 
-			this.zIndex = Popup.nextZIndex();
+			this.state.zIndex = Popup.nextZIndex();
 		}
 	},
 
 	methods: {
 		open() {
-			this.defaultVisible = true;
+			this.state.visible = true;
 			this.$emit("change", true);
 		},
 		close() {
-			this.defaultVisible = false;
+			this.state.visible = false;
 			this.$emit("change", false);
 		},
-
 		handleBackdropClick() {
-			let { backdrop, clickBackdropToClose } = this;
+			let { $props: props } = this;
 
-			if (!backdrop || !clickBackdropToClose) {
+			if (!props.backdrop || !props.clickBackdropToClose) {
 				return;
 			}
 
@@ -172,13 +185,15 @@ const VuiModal = {
 			this.handleBackdropClick();
 		},
 		handleCancel() {
-			if (this.cancelAsync) {
+			let { $props: props } = this;
+
+			if (props.cancelAsync) {
 				new Promise(resolve => {
-					this.cancelLoading = true;
+					this.state.cancelLoading = true;
 					this.$emit("cancel", resolve);
 				})
 				.then(value => {
-					this.cancelLoading = false;
+					this.state.cancelLoading = false;
 
 					if (value === false) {
 						return;
@@ -193,13 +208,15 @@ const VuiModal = {
 			}
 		},
 		handleOk() {
-			if (this.okAsync) {
+			let { $props: props } = this;
+
+			if (props.okAsync) {
 				new Promise(resolve => {
-					this.okLoading = true;
+					this.state.okLoading = true;
 					this.$emit("ok", resolve);
 				})
 				.then(value => {
-					this.okLoading = false;
+					this.state.okLoading = false;
 
 					if (value === false) {
 						return;
@@ -213,7 +230,6 @@ const VuiModal = {
 				this.close();
 			}
 		},
-
 		handleEnter() {
 			this.addScrollbarEffect();
 			this.$emit("open");
@@ -231,63 +247,64 @@ const VuiModal = {
 	},
 
 	render() {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible, title, showFooter, showCancelButton, cancelButtonProps, cancelText, cancelAsync, cancelLoading, showOkButton, okButtonProps, okText, okAsync, okLoading, closable, zIndex, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
+		let { $slots: slots, $props: props, state } = this;
 		let { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let showHeader = slots.title || title;
-		let portal = getPopupContainer();
+		let showHeader = slots.title || props.title;
+		let portal = props.getPopupContainer();
 
 		// class
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "modal");
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "modal");
 		let classes = {};
 
-		classes.backdrop = {
+		classes.elBackdrop = {
 			[`${classNamePrefix}-backdrop`]: true,
-			[`${backdropClassName}`]: backdropClassName
+			[`${props.backdropClassName}`]: props.backdropClassName
 		};
-		classes.wrapper = {
+		classes.elWrapper = {
 			[`${classNamePrefix}-wrapper`]: true,
-			[`${classNamePrefix}-wrapper-centered`]: centered
+			[`${classNamePrefix}-wrapper-centered`]: props.centered
 		};
-		classes.modal = {
+		classes.el = {
 			[`${classNamePrefix}`]: true,
+			[`${classNamePrefix}-with-notice`]: props.showNotice,
 			[`${classNamePrefix}-with-header`]: showHeader,
-			[`${classNamePrefix}-with-footer`]: showFooter,
-			[`${classNamePrefix}-centered`]: centered,
-			[`${className}`]: className
+			[`${classNamePrefix}-with-footer`]: props.showFooter,
+			[`${classNamePrefix}-centered`]: props.centered,
+			[`${props.className}`]: props.className
 		};
-		classes.header = `${classNamePrefix}-header`;
-		classes.title = `${classNamePrefix}-title`;
-		classes.body = `${classNamePrefix}-body`;
-		classes.footer = `${classNamePrefix}-footer`;
-		classes.btnClose = `${classNamePrefix}-btn-close`;
+		classes.elHeader = `${classNamePrefix}-header`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elBody = `${classNamePrefix}-body`;
+		classes.elFooter = `${classNamePrefix}-footer`;
+		classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
 		// style
 		let styles = {};
 
-		styles.backdrop = {
-			zIndex
+		styles.elBackdrop = {
+			zIndex: state.zIndex
 		};
-		styles.wrapper = {
-			zIndex,
-			paddingTop: is.string(top) ? top : `${top}px`,
-			paddingBottom: is.string(top) ? top : `${top}px`
+		styles.elWrapper = {
+			zIndex: state.zIndex,
+			paddingTop: is.string(props.top) ? props.top : `${props.top}px`,
+			paddingBottom: is.string(props.top) ? props.top : `${props.top}px`
 		};
-		styles.modal = {
-			width: is.string(width) ? width : `${width}px`
+		styles.el = {
+			width: is.string(props.width) ? props.width : `${props.width}px`
 		};
 
-		if (centered) {
-			delete styles.wrapper.paddingTop;
-			delete styles.wrapper.paddingBottom;
+		if (props.centered) {
+			delete styles.elWrapper.paddingTop;
+			delete styles.elWrapper.paddingBottom;
 		}
 
 		// render
 		let children = [];
 
-		if (backdrop) {
+		if (props.backdrop) {
 			children.push(
-				<transition name={animations[0]}>
-					<div ref="backdrop" v-show={defaultVisible} class={classes.backdrop} style={styles.backdrop} onClick={handleBackdropClick}></div>
+				<transition name={props.animations[0]}>
+					<div ref="backdrop" v-show={state.visible} class={classes.elBackdrop} style={styles.elBackdrop} onClick={handleBackdropClick}></div>
 				</transition>
 			);
 		}
@@ -296,8 +313,8 @@ const VuiModal = {
 
 		if (showHeader) {
 			header = (
-				<div class={classes.header}>
-					<div class={classes.title}>{slots.title || title}</div>
+				<div class={classes.elHeader}>
+					<div class={classes.elTitle}>{slots.title || props.title}</div>
 				</div>
 			);
 		}
@@ -305,74 +322,74 @@ const VuiModal = {
 		let body;
 
 		body = (
-			<div class={classes.body}>{slots.default}</div>
+			<div class={classes.elBody}>{slots.default}</div>
 		);
 
 		let footer;
 
-		if (showFooter) {
+		if (props.showFooter) {
 			if (slots.footer) {
 				footer = (
-					<div class={classes.footer}>{slots.footer}</div>
+					<div class={classes.elFooter}>{slots.footer}</div>
 				);
 			}
 			else {
 				let buttons = [];
 
-				if (showCancelButton) {
-					let defaultCancelButtonProps = {
+				if (props.showCancelButton) {
+					let cancelButtonProps = {
 						props: {
-							loading: cancelLoading
+							loading: state.cancelLoading
 						},
 						on: {
 							click: handleCancel
 						}
 					};
-					let mergedCancelButtonProps = merge(true, defaultCancelButtonProps, cancelButtonProps);
+					let mergedCancelButtonProps = merge(true, cancelButtonProps, props.cancelButtonProps);
 
 					buttons.push(
-						<VuiButton {...mergedCancelButtonProps}>{cancelText || this.t("vui.drawer.cancelText")}</VuiButton>
+						<VuiButton {...mergedCancelButtonProps}>{props.cancelText || this.t("vui.drawer.cancelText")}</VuiButton>
 					);
 				}
 
-				if (showOkButton) {
-					let defaultOkButtonProps = {
+				if (props.showOkButton) {
+					let okButtonProps = {
 						props: {
 							type: "primary",
-							loading: okLoading
+							loading: state.okLoading
 						},
 						on: {
 							click: handleOk
 						}
 					};
-					let mergedOkButtonProps = merge(true, defaultOkButtonProps, okButtonProps);
+					let mergedOkButtonProps = merge(true, okButtonProps, props.okButtonProps);
 
 					buttons.push(
-						<VuiButton {...mergedOkButtonProps}>{okText || this.t("vui.drawer.okText")}</VuiButton>
+						<VuiButton {...mergedOkButtonProps}>{props.okText || this.t("vui.drawer.okText")}</VuiButton>
 					);
 				}
 
 				footer = (
-					<div class={classes.footer}>{buttons}</div>
+					<div class={classes.elFooter}>{buttons}</div>
 				);
 			}
 		}
 
 		let btnClose;
 
-		if (closable) {
+		if (props.closable) {
 			btnClose = (
-				<div class={classes.btnClose} onClick={handleCancel}>
+				<div class={classes.elBtnClose} onClick={handleCancel}>
 					<VuiIcon type="crossmark" />
 				</div>
 			);
 		}
 
 		children.push(
-			<transition name={animations[0]}>
-				<div ref="wrapper" v-show={defaultVisible} class={classes.wrapper} style={styles.wrapper} onClick={handleWrapperClick}>
-					<transition name={animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
-						<div v-show={defaultVisible} class={classes.modal} style={styles.modal}>
+			<transition name={props.animations[0]}>
+				<div ref="wrapper" v-show={state.visible} class={classes.elWrapper} style={styles.elWrapper} onClick={handleWrapperClick}>
+					<transition name={props.animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
+						<div v-show={state.visible} class={classes.el} style={styles.el}>
 							{header}
 							{body}
 							{footer}

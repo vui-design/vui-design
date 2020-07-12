@@ -120,11 +120,14 @@ const VuiSteps = {
 	},
 
 	render() {
-		let { $slots: slots, $props: props, getDerivedStepsFromProps } = this;
+		let { $slots: slots, $props: props, $listeners: listeners, getDerivedStepsFromProps } = this;
 		let attributes = {
 			props: {
 				...props,
 				steps: getDerivedStepsFromProps(props, slots.default)
+			},
+			on: {
+				...listeners
 			}
 		};
 

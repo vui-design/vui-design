@@ -1,72 +1,295 @@
 @vui-badge: ~"@{vui}-badge";
-@vui-badge-status: ~"@{vui}-badge-status";
 
+.@{vui-badge} {
+	position:relative;
+	display:inline-block;
+	box-sizing:border-box;
+	margin:0;
+	padding:0;
+	vertical-align:middle;
+	line-height:1;
 
-@keyframes vuiBadgeStatusProcessing {
-  0% { opacity:0.6; transform:scale(0.8); }
-  100% { opacity:0; transform:scale(2.4); }
+	&-dot {
+		position:absolute;
+		top:0;
+		right:0;
+		z-index:10;
+		display:block;
+		box-sizing:border-box;
+		width:@badge-dot-size;
+		height:@badge-dot-size;
+		border-radius:@badge-dot-size;
+		box-shadow:@badge-dot-shadow;
+		transform:translate(50%,-50%);
+	}
+	&-count {
+		position:absolute;
+		top:0;
+		right:0;
+		z-index:10;
+		display:block;
+		box-sizing:border-box;
+		min-width:@badge-count-size;
+		height:@badge-count-size;
+		border-radius:@badge-count-size;
+		box-shadow:@badge-count-shadow;
+		padding:0 6px;
+		font-size:@badge-count-font-size;
+		white-space:nowrap;
+		text-align:center;
+		line-height:@badge-count-size;
+		transform:translate(50%,-50%);
+	}
+
+	&-alone &-dot {
+		position:unset;
+		top:unset;
+		right:unset;
+		transform:translate(0,0);
+	}
+	&-alone &-count {
+		position:unset;
+		top:unset;
+		right:unset;
+		transform:translate(0,0);
+	}
+
+	&-default &-dot {
+		background-color:@badge-default-color;
+	}
+	&-default &-count {
+		background-color:@badge-default-color;
+		color:@badge-default-font-color;
+	}
+
+	&-primary &-dot {
+		background-color:@badge-primary-color;
+	}
+	&-primary &-count {
+		background-color:@badge-primary-color;
+		color:@badge-primary-font-color;
+	}
+
+	&-info &-dot {
+		background-color:@badge-info-color;
+	}
+	&-info &-count {
+		background-color:@badge-info-color;
+		color:@badge-info-font-color;
+	}
+
+	&-warning &-dot {
+		background-color:@badge-warning-color;
+	}
+	&-warning &-count {
+		background-color:@badge-warning-color;
+		color:@badge-warning-font-color;
+	}
+
+	&-success &-dot {
+		background-color:@badge-success-color;
+	}
+	&-success &-count {
+		background-color:@badge-success-color;
+		color:@badge-success-font-color;
+	}
+
+	&-error &-dot {
+		background-color:@badge-error-color;
+	}
+	&-error &-count {
+		background-color:@badge-error-color;
+		color:@badge-error-font-color;
+	}
+
+	&-status &-status-dot {
+		position:relative;
+		box-sizing:border-box;
+		display:inline-block;
+		width:@badge-status-dot-size;
+		height:@badge-status-dot-size;
+		border-radius:@badge-status-dot-size;
+		box-shadow:@badge-status-dot-shadow;
+		vertical-align:middle;
+	}
+	&-status &-status-text {
+		box-sizing:border-box;
+		display:inline-block;
+		margin-left:8px;
+		vertical-align:middle;
+		color:@font-color;
+		font-size:@badge-status-text-font-size;
+		white-space:nowrap;
+		text-align:left;
+		line-height:1;
+	}
+
+	&-status-default &-status-dot {
+		border-color:@badge-status-default-color;
+		background-color:@badge-status-default-color;
+	}
+	&-status-default &-status-text {
+		color:@badge-status-default-font-color;
+	}
+
+	&-status-processing &-status-dot {
+		border-color:@badge-status-processing-color;
+		background-color:@badge-status-processing-color;
+
+		&:after {
+			content:"";
+			position:absolute;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+			display:block;
+			box-sizing:border-box;
+			width:100%;
+			height:100%;
+			border-width:1px;
+			border-style:solid;
+			border-color:inherit;
+			border-radius:50%;
+			animation:vuiBadgeStatusProcessing 1.2s infinite ease-in-out;
+		}
+	}
+	&-status-processing &-status-text {
+		color:@badge-status-processing-font-color;
+	}
+
+	&-status-warning &-status-dot {
+		border-color:@badge-status-warning-color;
+		background-color:@badge-status-warning-color;
+	}
+	&-status-warning &-status-text {
+		color:@badge-status-warning-font-color;
+	}
+
+	&-status-success &-status-dot {
+		border-color:@badge-status-success-color;
+		background-color:@badge-status-success-color;
+	}
+	&-status-success &-status-text {
+		color:@badge-status-success-font-color;
+	}
+
+	&-status-error &-status-dot {
+		border-color:@badge-status-error-color;
+		background-color:@badge-status-error-color;
+	}
+	&-status-error &-status-text {
+		color:@badge-status-error-font-color;
+	}
+
+	&-status-blue &-status-dot {
+		border-color:@badge-status-blue-color;
+		background-color:@badge-status-blue-color;
+	}
+	&-status-blue &-status-text {
+		color:@badge-status-blue-font-color;
+	}
+
+	&-status-green &-status-dot {
+		border-color:@badge-status-green-color;
+		background-color:@badge-status-green-color;
+	}
+	&-status-green &-status-text {
+		color:@badge-status-green-font-color;
+	}
+
+	&-status-red &-status-dot {
+		border-color:@badge-status-red-color;
+		background-color:@badge-status-red-color;
+	}
+	&-status-red &-status-text {
+		color:@badge-status-red-font-color;
+	}
+
+	&-status-yellow &-status-dot {
+		border-color:@badge-status-yellow-color;
+		background-color:@badge-status-yellow-color;
+	}
+	&-status-yellow &-status-text {
+		color:@badge-status-yellow-font-color;
+	}
+
+	&-status-pink &-status-dot {
+		border-color:@badge-status-pink-color;
+		background-color:@badge-status-pink-color;
+	}
+	&-status-pink &-status-text {
+		color:@badge-status-pink-font-color;
+	}
+
+	&-status-magenta &-status-dot {
+		border-color:@badge-status-magenta-color;
+		background-color:@badge-status-magenta-color;
+	}
+	&-status-magenta &-status-text {
+		color:@badge-status-magenta-font-color;
+	}
+
+	&-status-volcano &-status-dot {
+		border-color:@badge-status-volcano-color;
+		background-color:@badge-status-volcano-color;
+	}
+	&-status-volcano &-status-text {
+		color:@badge-status-volcano-font-color;
+	}
+
+	&-status-orange &-status-dot {
+		border-color:@badge-status-orange-color;
+		background-color:@badge-status-orange-color;
+	}
+	&-status-orange &-status-text {
+		color:@badge-status-orange-font-color;
+	}
+
+	&-status-gold &-status-dot {
+		border-color:@badge-status-gold-color;
+		background-color:@badge-status-gold-color;
+	}
+	&-status-gold &-status-text {
+		color:@badge-status-gold-font-color;
+	}
+
+	&-status-lime &-status-dot {
+		border-color:@badge-status-lime-color;
+		background-color:@badge-status-lime-color;
+	}
+	&-status-lime &-status-text {
+		color:@badge-status-lime-font-color;
+	}
+
+	&-status-cyan &-status-dot {
+		border-color:@badge-status-cyan-color;
+		background-color:@badge-status-cyan-color;
+	}
+	&-status-cyan &-status-text {
+		color:@badge-status-cyan-font-color;
+	}
+
+	&-status-geekblue &-status-dot {
+		border-color:@badge-status-geekblue-color;
+		background-color:@badge-status-geekblue-color;
+	}
+	&-status-geekblue &-status-text {
+		color:@badge-status-geekblue-font-color;
+	}
+
+	&-status-purple &-status-dot {
+		border-color:@badge-status-purple-color;
+		background-color:@badge-status-purple-color;
+	}
+	&-status-purple &-status-text {
+		color:@badge-status-purple-font-color;
+	}
 }
 
 
-// vui-badge
-.vui-badge { position:relative; display:inline-block; box-sizing:border-box; margin:0; padding:0; vertical-align:middle; line-height:1; }
-.vui-badge .vui-badge-dot { position:absolute; top:0; right:0; z-index:10; box-sizing:border-box; display:block; width:@badge-dot-size; height:@badge-dot-size; border-radius:@badge-dot-size; box-shadow:@badge-dot-shadow; transform:translate(50%,-50%); }
-.vui-badge .vui-badge-count { position:absolute; top:0; right:0; z-index:10; box-sizing:border-box; display:block; min-width:@badge-count-size; height:@badge-count-size; border-radius:@badge-count-size; box-shadow:@badge-count-shadow; padding:0 6px; font-size:@badge-count-font-size; white-space:nowrap; text-align:center; line-height:@badge-count-size; transform:translate(50%,-50%); }
+@keyframes vuiBadgeStatusProcessing {
+	0% { opacity:0.6; transform:scale(0.8); }
+	100% { opacity:0; transform:scale(2.4); }
+}
 
-// vui-badge alone
-.vui-badge.vui-badge-alone {  }
-.vui-badge.vui-badge-alone .vui-badge-dot { position:relative; top:unset; right:unset; transform:translate(0,0); }
-.vui-badge.vui-badge-alone .vui-badge-count { position:relative; top:unset; right:unset; transform:translate(0,0); }
-
-// vui-badge type
-.vui-badge.vui-badge-default {  }
-.vui-badge.vui-badge-default .vui-badge-dot { background-color:@badge-default-color; }
-.vui-badge.vui-badge-default .vui-badge-count { background-color:@badge-default-color; color:@badge-default-font-color; }
-
-.vui-badge.vui-badge-primary {  }
-.vui-badge.vui-badge-primary .vui-badge-dot { background-color:@badge-primary-color; }
-.vui-badge.vui-badge-primary .vui-badge-count { background-color:@badge-primary-color; color:@badge-primary-font-color; }
-
-.vui-badge.vui-badge-info {  }
-.vui-badge.vui-badge-info .vui-badge-dot { background-color:@badge-info-color; }
-.vui-badge.vui-badge-info .vui-badge-count { background-color:@badge-info-color; color:@badge-info-font-color; }
-
-.vui-badge.vui-badge-warning {  }
-.vui-badge.vui-badge-warning .vui-badge-dot { background-color:@badge-warning-color; }
-.vui-badge.vui-badge-warning .vui-badge-count { background-color:@badge-warning-color; color:@badge-warning-font-color; }
-
-.vui-badge.vui-badge-success {  }
-.vui-badge.vui-badge-success .vui-badge-dot { background-color:@badge-success-color; }
-.vui-badge.vui-badge-success .vui-badge-count { background-color:@badge-success-color; color:@badge-success-font-color; }
-
-.vui-badge.vui-badge-error {  }
-.vui-badge.vui-badge-error .vui-badge-dot { background-color:@badge-error-color; }
-.vui-badge.vui-badge-error .vui-badge-count { background-color:@badge-error-color; color:@badge-error-font-color; }
-
-
-// vui-badge-status
-.vui-badge-status { position:relative; display:inline-block; box-sizing:border-box; margin:0; padding:0; vertical-align:middle; font-size:0; line-height:1; }
-.vui-badge-status .vui-badge-status-dot { position:relative; box-sizing:border-box; display:inline-block; width:@badge-status-dot-size; height:@badge-status-dot-size; border-radius:@badge-status-dot-size; box-shadow:@badge-status-dot-shadow; vertical-align:middle; }
-.vui-badge-status .vui-badge-status-text { box-sizing:border-box; display:inline-block; margin-left:8px; vertical-align:middle; color:@font-color; font-size:@badge-status-text-font-size; white-space:nowrap; text-align:left; line-height:1; }
-
-// vui-badge-status status
-.vui-badge-status.vui-badge-status-default {  }
-.vui-badge-status.vui-badge-status-default .vui-badge-status-dot { background-color:@badge-status-default-color; }
-.vui-badge-status.vui-badge-status-default .vui-badge-status-text { color:@badge-status-default-font-color; }
-
-.vui-badge-status.vui-badge-status-processing {  }
-.vui-badge-status.vui-badge-status-processing .vui-badge-status-dot { background-color:@badge-status-processing-color; }
-.vui-badge-status.vui-badge-status-processing .vui-badge-status-dot:after { content:""; position:absolute; top:0; bottom:0; left:0; right:0; display:block; box-sizing:border-box; width:100%; height:100%; border:1px solid @badge-status-processing-color; border-radius:50%; animation:vuiBadgeStatusProcessing 1.2s infinite ease-in-out; }
-.vui-badge-status.vui-badge-status-processing .vui-badge-status-text { color:@badge-status-processing-font-color; }
-
-.vui-badge-status.vui-badge-status-warning {  }
-.vui-badge-status.vui-badge-status-warning .vui-badge-status-dot { background-color:@badge-status-warning-color; }
-.vui-badge-status.vui-badge-status-warning .vui-badge-status-text { color:@badge-status-warning-font-color; }
-
-.vui-badge-status.vui-badge-status-success {  }
-.vui-badge-status.vui-badge-status-success .vui-badge-status-dot { background-color:@badge-status-success-color; }
-.vui-badge-status.vui-badge-status-success .vui-badge-status-text { color:@badge-status-success-font-color; }
-
-.vui-badge-status.vui-badge-status-error {  }
-.vui-badge-status.vui-badge-status-error .vui-badge-status-dot { background-color:@badge-status-error-color; }
-.vui-badge-status.vui-badge-status-error .vui-badge-status-text { color:@badge-status-error-font-color; }
