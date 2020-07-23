@@ -77,7 +77,7 @@ const VuiAvatar = {
 	},
 
 	render() {
-		let { $slots: slots, $props: props, state } = this;
+		let { $slots: slots, $props: props, state, $listeners: listeners } = this;
 		let { handleError } = this;
 
 		// type
@@ -136,6 +136,15 @@ const VuiAvatar = {
 			};
 		}
 
+		// attributes
+		let attributes = {
+			class: classes.el,
+			style: styles.el,
+			on: {
+				...listeners
+			}
+		};
+
 		// render
 		let children;
 
@@ -156,7 +165,7 @@ const VuiAvatar = {
 		}
 
 		return (
-			<div class={classes.el} style={styles.el}>
+			<div {...attributes}>
 				{children}
 			</div>
 		);

@@ -6,7 +6,7 @@ import is from "./is";
 
 let cached = undefined;
 
-export default function getScrollBarSize(fresh) {
+export default function getScrollbarSize(fresh) {
 	if (is.server) {
 		return 0;
 	}

@@ -5,6 +5,7 @@ import Locale from "vui-design/mixins/locale";
 import is from "vui-design/utils/is";
 import noop from "vui-design/utils/noop";
 import clone from "vui-design/utils/clone";
+import getTargetByPath from "vui-design/utils/getTargetByPath";
 
 const VuiTableTbody = {
 	name: "vui-table-tbody",
@@ -40,15 +41,31 @@ const VuiTableTbody = {
 			type: String,
 			default: undefined
 		},
-		scroll: {
-			type: Object,
-			default: undefined
+		columns: {
+			type: Array,
+			default: () => []
 		},
-		getRowKey: {
+		data: {
+			type: Array,
+			default: () => []
+		},
+		colgroup: {
+			type: Array,
+			default: () => []
+		},
+		thead: {
+			type: Array,
+			default: () => []
+		},
+		tbody: {
+			type: Array,
+			default: () => []
+		},
+		rowKey: {
 			type: [String, Function],
 			default: "key"
 		},
-		getRowClassName: {
+		rowClassName: {
 			type: [String, Function],
 			default: undefined
 		},
@@ -60,302 +77,365 @@ const VuiTableTbody = {
 			type: Object,
 			default: undefined
 		},
-		locale: {
+		hoveredRowKey: {
+			type: [String, Number],
+			default: undefined
+		},
+		collapsedRowKeys: {
+			type: Array,
+			default: () => []
+		},
+		selectedRowKeys: {
+			type: [Array, String, Number],
+			default: () => []
+		},
+		scroll: {
 			type: Object,
 			default: undefined
 		},
-		store: {
+		locale: {
 			type: Object,
-			default: undefined,
-			required: true
-		}
-	},
-
-	computed: {
-		styles() {
-			let scroll = this.scroll;
-			let styles = {};
-			let width;
-
-			if (scroll && scroll.x > 0) {
-				width = scroll.x + "px";
-			}
-			else {
-				width = "100%";
-			}
-
-			styles.el = {
-				width
-			};
-
-			return styles;
-		},
-		classes() {
-			let classNamePrefix = this.classNamePrefix;
-			let classes = {};
-
-			classes.elColumnCollapsion = `${classNamePrefix}-column-collapsion`;
-			classes.elColumnSelection = `${classNamePrefix}-column-selection`;
-
-			return classes;
-		},
-		emptyText() {
-			const { locale, t } = this;
-
-			if (locale && locale.empty) {
-				return locale.empty;
-			}
-			else {
-				return t("vui.table.empty");
-			}
+			default: undefined
 		}
 	},
 
 	methods: {
+		isRowHovered(rowKey) {
+			let { $props: props } = this;
+
+			return props.hoveredRowKey === rowKey;
+		},
 		isRowCollapsed(rowKey) {
-			if (!this.rowCollapsion) {
+			let { $props: props } = this;
+
+			if (!props.rowCollapsion) {
 				return false;
 			}
 
-			return this.store.rowCollapsionState.indexOf(rowKey) > -1;
+			return props.collapsedRowKeys.indexOf(rowKey) > -1;
 		},
 		isRowSelected(rowKey) {
-			if (!this.rowSelection) {
+			let { $props: props } = this;
+
+			if (!props.rowSelection) {
 				return false;
 			}
 
-			let isMultiple = !("multiple" in this.rowSelection) || this.rowSelection.multiple;
+			let isCustomizedMultiple = "multiple" in props.rowSelection;
+			let isMultiple = !isCustomizedMultiple || this.rowSelection.multiple;
 
 			if (isMultiple) {
-				return this.store.rowSelectionState.indexOf(rowKey) > -1;
+				return props.selectedRowKeys.indexOf(rowKey) > -1;
 			}
 			else {
-				return this.store.rowSelectionState === rowKey;
+				return props.selectedRowKeys === rowKey;
 			}
 		},
-		isRowHovered(rowKey) {
-			return this.store.rowHoverionState === rowKey;
-		},
-		getTrKey(row, rowIndex) {
-			let getRowKey = this.getRowKey;
-			let key;
+		getRowClassName(type, row, rowIndex, rowKey) {
+			let { $props: props } = this;
 
-			if (is.string(getRowKey)) {
-				key = row[getRowKey];
-			}
-			else if (is.function(getRowKey)) {
-				key = getRowKey(row);
+			if (type === "collapsion") {
+				return {
+					[`${props.classNamePrefix}-row`]: true,
+					[`${props.classNamePrefix}-row-collapsed`]: true
+				};
 			}
 			else {
-				key = rowIndex;
-			}
+				let stripe = rowIndex % 2 === 0 ? "even" : "odd";
+				let isHovered = this.isRowHovered(rowKey);
+				let isSelected = this.isRowSelected(rowKey);
+				let className;
 
-			return key;
+				if (is.string(props.rowClassName)) {
+					className = row[props.rowClassName];
+				}
+				else if (is.function(props.rowClassName)) {
+					className = props.rowClassName(row, rowIndex, rowKey);
+				}
+
+				return {
+					[`${props.classNamePrefix}-row`]: true,
+					[`${props.classNamePrefix}-row-${stripe}`]: stripe,
+					[`${props.classNamePrefix}-row-hovered`]: isHovered,
+					[`${props.classNamePrefix}-row-selected`]: isSelected,
+					[`${className}`]: className
+				};
+			}
 		},
-		getTrClasses(row, rowIndex, rowKey) {
-			let classNamePrefix = this.classNamePrefix;
-			let getRowClassName = this.getRowClassName;
-			let className;
-			let stripe = rowIndex % 2 === 0 ? "even" : "odd";
-			let isSelected = this.isRowSelected(rowKey);
-			let isHovered = this.isRowHovered(rowKey);
+		getColumnClassName(type, column, columnKey, row, rowKey) {
+			let { $props: props } = this;
+			let ellipsis = column.ellipsis;
+			let align = column.align || "center";
+			let className = column.className;
 
-			if (is.string(getRowClassName)) {
-				className = row[getRowClassName];
+			if (type === "collapsion") {
+				return {
+					[`${props.classNamePrefix}-column-with-collapsion`]: true,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className
+				};
 			}
-			else if (is.function(getRowClassName)) {
-				className = getRowClassName(row, rowIndex, rowKey);
-			}
-
-			return {
-				[`${classNamePrefix}-row`]: true,
-				[`${className}`]: className,
-				[`${classNamePrefix}-row-${stripe}`]: stripe,
-				[`${classNamePrefix}-row-selected`]: isSelected,
-				[`${classNamePrefix}-row-hovered`]: isHovered
-			};
-		},
-		getCollapsionTrClasses() {
-			let classNamePrefix = this.classNamePrefix;
-
-			return {
-				[`${classNamePrefix}-row-collapsed`]: true
-			};
-		},
-		getTdKey(column, columnIndex) {
-			let key;
-
-			if ("key" in column) {
-				key = column.key;
-			}
-			else if ("dataIndex" in column) {
-				key = column.dataIndex;
+			else if (type === "selection") {
+				return {
+					[`${props.classNamePrefix}-column-with-selection`]: true,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className
+				};
 			}
 			else {
-				key = columnIndex;
-			}
+				let maybeShowColumn = false;
+				let maybeShowColumnSorter = column.sorter;
+				let maybeShowColumnFilter = column.filter;
+				let customizedClassName;
 
-			return key;
+				if (!props.fixed && !column.fixed) {
+					maybeShowColumn = true;
+				}
+				else if (props.fixed === "left" && column.fixed === "left") {
+					maybeShowColumn = true;
+				}
+				else if (props.fixed === "right" && column.fixed === "right") {
+					maybeShowColumn = true;
+				}
+
+				if (row.columnClassNames && columnKey && row.columnClassNames[columnKey]) {
+					customizedClassName = row.columnClassNames[columnKey];
+				}
+
+				return {
+					[`${props.classNamePrefix}-column-hidden`]: !maybeShowColumn,
+					[`${props.classNamePrefix}-column-with-sorter`]: maybeShowColumnSorter,
+					[`${props.classNamePrefix}-column-with-filter`]: maybeShowColumnFilter,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className,
+					[`${customizedClassName}`]: customizedClassName
+				};
+			}
 		},
-		getTdClasses(row, column, columnKey) {
-			let classNamePrefix = this.classNamePrefix;
-			let fixed = this.fixed;
-			let className;
-
-			if (row.columnClassNames && columnKey && row.columnClassNames[columnKey]) {
-				className = row.columnClassNames[columnKey];
-			}
+		getColumnCollapsionClassName(column, collapsed) {
+			let { $props: props } = this;
 
 			return {
-				[`${column.className}`]: column.className,
-				[`${className}`]: className,
-				[`${classNamePrefix}-column-align-${column.align}`]: column.align,
-				[`${classNamePrefix}-column-ellipsis`]: column.ellipsis,
-				[`${classNamePrefix}-column-with-sorter`]: column.sorter,
-				[`${classNamePrefix}-column-with-filter`]: column.filter,
-				[`${classNamePrefix}-column-hidden`]: (fixed === "left" && column.fixed !== "left") || (fixed === "right" && column.fixed !== "right") || (!fixed && (column.fixed === "left" || column.fixed === "right"))
+				[`${props.classNamePrefix}-column-collapsion`]: true,
+				[`${props.classNamePrefix}-column-collapsed`]: collapsed
 			};
 		},
-		getCollapsionTdClasses(rowCollapsion) {
-			let classNamePrefix = this.classNamePrefix;
-			let className = rowCollapsion.className;
-			let align = rowCollapsion.align || "center";
+		getColumnSelectionClassName(column, selected) {
+			let { $props: props } = this;
 
 			return {
-				[`${className}`]: className,
-				[`${classNamePrefix}-column-align-${align}`]: align,
-				[`${classNamePrefix}-column-with-collapsion`]: true
+				[`${props.classNamePrefix}-column-selection`]: true,
+				[`${props.classNamePrefix}-column-selected`]: selected
 			};
 		},
-		getSelectionTdClasses(rowSelection) {
-			let classNamePrefix = this.classNamePrefix;
-			let className = rowSelection.className;
-			let align = rowSelection.align || "center";
+		handleRowMouseenter(event, row, rowIndex, rowKey) {
+			let { vuiTable } = this;
 
-			return {
-				[`${className}`]: className,
-				[`${classNamePrefix}-column-align-${align}`]: align,
-				[`${classNamePrefix}-column-with-selection`]: true
-			};
+			vuiTable.handleRowMouseenter(row, rowIndex, rowKey);
 		},
+		handleRowMouseleave(event, row, rowIndex, rowKey) {
+			let { vuiTable } = this;
 
-		handleRowMouseenter(row, rowKey) {
-			this.vuiTable.handleRowMouseenter(row, rowKey);
+			vuiTable.handleRowMouseleave(row, rowIndex, rowKey);
 		},
-		handleRowMouseleave(row, rowKey) {
-			this.vuiTable.handleRowMouseleave(row, rowKey);
-		},
-		handleRowClick(row, rowKey) {
-			this.vuiTable.handleRowClick(row, rowKey);
+		handleRowClick(event, row, rowIndex, rowKey) {
+			let { vuiTable, $props: props } = this;
+			let { rowCollapsion } = props;
 
-			if (this.rowCollapsion && this.rowCollapsion.clickRowToCollapse) {
-				this.vuiTable.handleRowCollapse(row, rowKey);
+			vuiTable.handleRowClick(row, rowIndex, rowKey);
+
+			if (rowCollapsion && rowCollapsion.clickRowToCollapse) {
+				let isRowCollapsable = is.function(rowCollapsion.rowCollapsable) ? rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
+
+				if (!isRowCollapsable) {
+					return;
+				}
+
+				let e = event || window.event;
+				let target = e.target || e.srcElement;
+				let isIgnoreElements = is.function(rowCollapsion.ignoreElements) ? rowCollapsion.ignoreElements(target) : false;
+
+				if (isIgnoreElements) {
+					return;
+				}
+
+				vuiTable.handleRowCollapse(row, rowIndex, rowKey);
 			}
 		},
-		handleRowCollapse(row, rowKey) {
-			if (this.rowCollapsion && !this.rowCollapsion.clickRowToCollapse) {
-				this.vuiTable.handleRowCollapse(row, rowKey);
-			}
-		},
-		handleRowSelect(checked, row, rowKey) {
-			this.vuiTable.handleRowSelect(checked, row, rowKey);
-		},
+		handleRowDblclick(event, row, rowIndex, rowKey) {
+			let { vuiTable } = this;
 
-		drawColgroupChildren(h) {
-			let { rowCollapsion, rowSelection, store, getTdKey } = this;
+			vuiTable.handleRowDblclick(row, rowIndex, rowKey);
+		},
+		handleRowCollapse(event, row, rowIndex, rowKey) {
+			let { vuiTable, $props: props } = this;
+			let { rowCollapsion } = props;
+
+			if (!rowCollapsion) {
+				return;
+			}
+
+			if (rowCollapsion.clickRowToCollapse) {
+				return;
+			}
+
+			let isRowCollapsable = is.function(rowCollapsion.rowCollapsable) ? rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
+
+			if (!isRowCollapsable) {
+				return;
+			}
+
+			vuiTable.handleRowCollapse(row, rowIndex, rowKey);
+		},
+		handleRowSelect(checked, row, rowIndex, rowKey) {
+			let { vuiTable } = this;
+
+			vuiTable.handleRowSelect(checked, row, rowIndex, rowKey);
+		},
+		renderColgroupChildren(h) {
+			let { $props: props } = this;
 			let children = [];
 
-			if (rowCollapsion) {
+			if (props.rowCollapsion) {
+				let { width = 50 } = props.rowCollapsion;
+
 				children.push(
-					<col width={rowCollapsion.width || 50} />
+					<col key="collapsion" width={width} />
 				);
 			}
 
-			if (rowSelection) {
+			if (props.rowSelection) {
+				let { width = 50 } = props.rowSelection;
+
 				children.push(
-					<col width={rowSelection.width || 50} />
+					<col key="selection" width={width} />
 				);
 			}
 
-			store.colgroup.forEach((column, columnIndex) => {
+			props.colgroup.forEach((column, columnIndex) => {
 				children.push(
-					<col key={getTdKey(column, columnIndex)} width={column.width} />
+					<col key={column.key || columnIndex} width={column.width} />
 				);
 			});
 
 			return children;
 		},
-		drawTbodyChildren(h) {
-			let { vuiTable, rowCollapsion, rowSelection, locale, store, classes, emptyText, isRowCollapsed, isRowSelected, getTrKey, getTrClasses, getCollapsionTrClasses, getTdKey, getTdClasses, getCollapsionTdClasses, getSelectionTdClasses } = this;
-			let { handleRowMouseenter, handleRowMouseleave, handleRowClick, handleRowCollapse, handleRowSelect } = this;
+		renderTbodyChildren(h) {
+			let { vuiTable, $props: props } = this;
 			let children = [];
 
-			if (store.tbody.length === 0) {
+			if (props.tbody.length === 0) {
 				let colspan = 0;
+				let description = props.locale && props.locale.empty ? props.locale.empty : this.t("vui.table.empty");
 
-				if (rowCollapsion) {
+				if (props.rowCollapsion) {
 					colspan++;
 				}
 
-				if (rowSelection) {
+				if (props.rowSelection) {
 					colspan++;
 				}
 
-				colspan += store.colgroup.length;
+				colspan += props.colgroup.length;
 
 				return (
 					<tr>
 						<td colspan={colspan}>
-							<VuiEmpty description={emptyText} style="padding: 30px 0;" />
+							<VuiEmpty description={description} style="padding: 30px 0;" />
 						</td>
 					</tr>
 				);
 			}
 
-			store.tbody.forEach((row, rowIndex) => {
-				let rowKey = getTrKey(row, rowIndex);
+			props.tbody.forEach((row, rowIndex) => {
+				let rowKey;
+
+				if (is.string(props.rowKey)) {
+					rowKey = row[props.rowKey];
+				}
+				else if (is.function(props.rowKey)) {
+					rowKey = props.rowKey(clone(row), rowIndex);
+				}
+				else {
+					rowKey = rowIndex;
+				}
+
 				let tds = [];
 
-				if (rowCollapsion) {
-					let isCollapsed = isRowCollapsed(rowKey);
-					let tag = isCollapsed ? "&minus;" : "&plus;";
+				if (props.rowCollapsion) {
+					let isRowCollapsable = is.function(props.rowCollapsion.rowCollapsable) ? props.rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
+					let isRowCollapsed = this.isRowCollapsed(rowKey);
 
 					tds.push(
-						<td class={getCollapsionTdClasses(rowCollapsion)}>
-							<i class={classes.elColumnCollapsion} onClick={() => handleRowCollapse(row, rowKey)} domPropsInnerHTML={tag}></i>
+						<td key="collapsion" class={this.getColumnClassName("collapsion", props.rowCollapsion)}>
+							{
+								isRowCollapsable ? (
+									<button
+										class={this.getColumnCollapsionClassName(props.rowCollapsion, isRowCollapsed)}
+										onClick={e => this.handleRowCollapse(e, row, rowIndex, rowKey)}
+									></button>
+								) : null
+							}
 						</td>
 					);
 				}
 
-				if (rowSelection) {
-					let isSelected = isRowSelected(rowKey);
-					let component;
-					let options = {};
+				if (props.rowSelection) {
+					let isCustomizedMultiple = "multiple" in props.rowSelection;
+					let isMultiple = !isCustomizedMultiple || props.rowSelection.multiple;
+					let isRowSelected = this.isRowSelected(rowKey);
+					let attributes = {};
 
-					if (rowSelection.getComponentProps) {
-						options.props = rowSelection.getComponentProps(clone(row));
+					if (is.function(props.rowSelection.getComponentProps)) {
+						attributes.props = props.rowSelection.getComponentProps(clone(row), rowIndex, rowKey);
 					}
 
-					if (!("multiple" in rowSelection) || rowSelection.multiple) {
-						component = (
-							<VuiCheckbox {...options} class={classes.elColumnSelection} checked={isSelected} onChange={checked => handleRowSelect(checked, row, rowKey)} />
-						);
-					}
-					else {
-						component = (
-							<VuiRadio {...options} class={classes.elColumnSelection} checked={isSelected} onChange={checked => handleRowSelect(checked, row, rowKey)} />
-						);
-					}
+					attributes.props = {
+						...attributes.props,
+						class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
+						checked: isRowSelected
+					};
+
+					attributes.on = {
+						change: checked => this.handleRowSelect(checked, row, rowIndex, rowKey)
+					};
 
 					tds.push(
-						<td class={getSelectionTdClasses(rowSelection)}>
-							{component}
+						<td key="selection" class={this.getColumnClassName("selection", props.rowSelection)}>
+							{
+								isMultiple ? (
+									<VuiCheckbox {...attributes} />
+								) : (
+									<VuiRadio {...attributes} />
+								)
+							}
 						</td>
 					);
 				}
 
-				store.colgroup.forEach((column, columnIndex) => {
-					let columnKey = getTdKey(column, columnIndex);
+				props.colgroup.forEach((column, columnIndex) => {
+					let columnCellProps = {};
+
+					if (is.plainObject(column.getCellProps)) {
+						columnCellProps.attrs = column.getCellProps;
+					}
+					else if (is.function(column.getCellProps)) {
+						columnCellProps.attrs = column.getCellProps({
+							row: clone(row),
+							rowIndex: rowIndex,
+							column: clone(column),
+							columnIndex: columnIndex
+						});
+					}
+
+					if (columnCellProps.attrs && (columnCellProps.attrs.rowSpan === 0 || columnCellProps.attrs.colSpan === 0)) {
+						return;
+					}
+
+					let columnKey = column.key || columnIndex;
 					let content;
 
 					if (column.slot) {
@@ -363,40 +443,51 @@ const VuiTableTbody = {
 
 						content = scopedSlot && scopedSlot({
 							column: clone(column),
+							columnIndex: columnIndex,
 							row: clone(row),
-							index: rowIndex
+							rowIndex: rowIndex
 						});
 					}
 					else if (column.render) {
 						content = column.render(h, {
 							column: clone(column),
+							columnIndex: columnIndex,
 							row: clone(row),
-							index: rowIndex
+							rowIndex: rowIndex
 						});
 					}
 					else {
-						content = row[column.dataIndex];
+						let target = getTargetByPath(row, column.dataIndex);
+
+						content = target.value;
 					}
 
 					tds.push(
-						<td key={columnKey} class={getTdClasses(row, column, columnKey)}>
+						<td key={columnKey} class={this.getColumnClassName("", column, columnKey, row, rowKey)} {...columnCellProps}>
 							{content}
 						</td>
 					);
 				});
 
 				children.push(
-					<tr key={rowKey} class={getTrClasses(row, rowIndex, rowKey)} onMouseenter={() => handleRowMouseenter(row, rowKey)} onMouseleave={() => handleRowMouseleave(row, rowKey)} onClick={() => handleRowClick(row, rowKey)}>
+					<tr
+						key={rowKey || rowIndex}
+						class={this.getRowClassName("", row, rowIndex, rowKey)}
+						onMouseenter={e => this.handleRowMouseenter(e, row, rowIndex, rowKey)}
+						onMouseleave={e => this.handleRowMouseleave(e, row, rowIndex, rowKey)}
+						onClick={e => this.handleRowClick(e, row, rowIndex, rowKey)}
+						onDblclick={e => this.handleRowDblclick(e, row, rowIndex, rowKey)}
+					>
 						{tds}
 					</tr>
 				);
 
-				if (rowCollapsion && isRowCollapsed(rowKey)) {
+				if (props.rowCollapsion && this.isRowCollapsed(rowKey)) {
 					children.push(
-						<tr class={getCollapsionTrClasses()}>
+						<tr class={this.getRowClassName("collapsion", row, rowIndex, rowKey)}>
 							<td></td>
-							<td colspan={store.colgroup.length}>
-								{rowCollapsion.render && rowCollapsion.render(h, clone(row))}
+							<td colspan={props.colgroup.length}>
+								{props.rowCollapsion.render && props.rowCollapsion.render(h, clone(row), rowIndex, rowKey)}
 							</td>
 						</tr>
 					);
@@ -408,15 +499,20 @@ const VuiTableTbody = {
 	},
 
 	render(h) {
-		let { styles, drawColgroupChildren, drawTbodyChildren } = this;
+		let { $props: props, renderColgroupChildren, renderTbodyChildren } = this;
+		let styles = {
+			el: {
+				width: props.scroll && props.scroll.x > 0 ? `${props.scroll.x}px` : `100%`
+			}
+		};
 
 		return (
 			<table border="0" cellpadding="0" cellspacing="0" style={styles.el}>
 				<colgroup>
-					{this.drawColgroupChildren(h)}
+					{renderColgroupChildren(h)}
 				</colgroup>
 				<tbody>
-					{this.drawTbodyChildren(h)}
+					{renderTbodyChildren(h)}
 				</tbody>
 			</table>
 		);

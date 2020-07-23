@@ -1,4 +1,4 @@
-import getScrollBarSize from "vui-design/utils/getScrollBarSize";
+import getScrollbarSize from "vui-design/utils/getScrollbarSize";
 
 export default {
 	methods: {
@@ -16,7 +16,7 @@ export default {
 			let size;
 
 			if (bodyIsOverflowed) {
-				size = getScrollBarSize();
+				size = getScrollbarSize();
 			}
 
 			if (!bodyIsOverflowed || !size) {

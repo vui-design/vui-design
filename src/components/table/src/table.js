@@ -3,8 +3,10 @@ import VuiTableThead from "./components/thead";
 import VuiTableTbody from "./components/tbody";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
-import getScrollBarSize from "vui-design/utils/getScrollBarSize";
-import { getFlattenColumns, mapColumnsToState, mapDataToState } from "./utils/index";
+import getScrollbarSize from "vui-design/utils/getScrollbarSize";
+import csv from "vui-design/utils/csv";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import utils from "./utils";
 
 const VuiTable = {
 	name: "vui-table",
@@ -24,7 +26,7 @@ const VuiTable = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-table"
+			default: undefined
 		},
 		columns: {
 			type: Array,
@@ -54,29 +56,25 @@ const VuiTable = {
 			type: Boolean,
 			default: false
 		},
-		scroll: {
-			type: Object,
-			default: undefined
-		},
 		size: {
 			type: String,
 			default: "medium",
 			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
+		scroll: {
+			type: Object,
+			default: undefined
+		},
 		loading: {
 			type: Boolean,
 			default: false
 		},
-		getRowKey: {
+		rowKey: {
 			type: [String, Function],
 			default: "key"
 		},
-		getRowClassName: {
+		rowClassName: {
 			type: [String, Function],
-			default: undefined
-		},
-		pagination: {
-			type: Object,
 			default: undefined
 		},
 		locale: {
@@ -86,184 +84,115 @@ const VuiTable = {
 	},
 
 	data() {
-		const store = {
+		const state = {
 			columns: [],
 			data: [],
 			colgroup: [],
 			thead: [],
 			tbody: [],
-			rowCollapsionState: undefined,
-			rowSelectionState: undefined,
-			rowHoverionState: undefined
+			hoveredRowKey: undefined,
+			collapsedRowKeys: [],
+			selectedRowKeys: []
 		};
 
-		return { store };
-	},
-
-	computed: {
-		classes() {
-			let { classNamePrefix, bordered, striped, size } = this;
-			let classes = {};
-
-			classes.el = {
-				[`${classNamePrefix}-wrapper`]: true,
-				[`${classNamePrefix}-wrapper-bordered`]: bordered
-			};
-			classes.elTable = {
-				[`${classNamePrefix}`]: true,
-				[`${classNamePrefix}-bordered`]: bordered,
-				[`${classNamePrefix}-striped`]: striped,
-				[`${classNamePrefix}-${size}`]: size
-			};
-
-			return classes;
-		},
-		showLeftTable() {
-			return this.columns.some(column => column.fixed === "left");
-		},
-		showRightTable() {
-			return this.columns.some(column => column.fixed === "right");
-		},
-		showXScrollbar() {
-			return this.scroll && this.scroll.x > 0;
-		},
-		showYScrollbar() {
-			return this.scroll && this.scroll.y > 0;
-		}
+		return { state };
 	},
 
 	watch: {
-		columns(value) {
-			let columns = mapColumnsToState(value);
+		columns: {
+			handler(newest) {
+				let columns = utils.getDerivedColumns(newest);
 
-			this.store.columns = columns;
-			this.store.colgroup = this.getColgroupData(this.store.columns);
-			this.store.thead = this.getTheadData(this.store.columns);
-			this.store.tbody = this.getTbodyData(this.store.data);
+				this.state.columns = columns;
+				this.state.colgroup = utils.getDerivedColgroup(columns);
+				this.state.thead = utils.getDerivedHeader(columns);
+				this.state.tbody = utils.getDerivedBody(columns, this.state.data);
+			}
 		},
-		data(value) {
-			let data = mapDataToState(value);
+		data: {
+			handler(newest) {
+				let data = utils.getDerivedData(newest);
 
-			this.store.data = data;
-			this.store.tbody = this.getTbodyData(this.store.data);
+				this.state.data = data;
+				this.state.tbody = utils.getDerivedBody(this.state.columns, data);
+			}
 		},
 		rowCollapsion: {
 			deep: true,
-			handler(value) {
-				let rowCollapsionState;
+			handler(newest) {
+				let collapsedRowKeys = [];
 
-				if (value) {
-					rowCollapsionState = value.value ? clone(value.value) : [];
+				if (newest && newest.value) {
+					collapsedRowKeys = clone(newest.value);
 				}
 
-				this.store.rowCollapsionState = rowCollapsionState;
+				this.state.collapsedRowKeys = collapsedRowKeys;
 			}
 		},
 		rowSelection: {
 			deep: true,
-			handler(value) {
-				let rowSelectionState;
+			handler(newest) {
+				let selectedRowKeys = [];
 
-				if (value) {
-					if (!("multiple" in value) || value.multiple) {
-						rowSelectionState = value.value ? clone(value.value) : [];
-					}
-					else {
-						rowSelectionState = value.value ? value.value : undefined;
+				if (newest) {
+					let isCustomizedMultiple = "multiple" in newest;
+					let isMultiple = !isCustomizedMultiple || newest.multiple;
+
+					if (isMultiple && newest.value) {
+						selectedRowKeys = clone(newest.value);
 					}
 				}
 
-				this.store.rowSelectionState = rowSelectionState;
+				this.state.selectedRowKeys = selectedRowKeys;
 			}
 		}
 	},
 
 	methods: {
-		// 获取表格的 colgroup 数据，用于设置列宽
-		getColgroupData(columns) {
-			return getFlattenColumns(columns);
-		},
-		// 获取表格的 thead 数据，用于渲染表头
-		getTheadData(columns) {
-			let max = 1;
-			let traverse = (column, parent) => {
-				if (parent) {
-					column.level = parent.level + 1;
+		// 下载或导出
+		download(options) {
+			let { state } = this;
+			let settings = clone(options);
 
-					if (max < column.level) {
-						max = column.level;
-					}
-				}
-
-				if (column.children) {
-					let colSpan = 0;
-
-					column.children.forEach(child => {
-						traverse(child, column);
-						colSpan += child.colSpan;
-					});
-
-					column.colSpan = colSpan;
-				}
-				else {
-					column.colSpan = 1;
-				}
-			};
-
-			columns.forEach((column) => {
-				column.level = 1;
-				traverse(column);
-			});
-
-			var rows = [];
-
-			for (var i = 0; i < max; i++) {
-				rows.push([]);
+			if (settings.filename) {
+				settings.filename = settings.filename.indexOf(".csv") > -1 ? settings.filename : (settings.filename + ".csv");
+			}
+			else {
+				settings.filename = "table.csv";
 			}
 
-			const flattenColumns = getFlattenColumns(columns, true);
+			if (!("original" in settings)) {
+				settings.original = true;
+			}
 
-			flattenColumns.forEach((column) => {
-				if (column.children) {
-					column.rowSpan = 1;
-				}
-				else {
-					column.rowSpan = max - column.level + 1;
-				}
+			if (!("showHeader" in settings)) {
+				settings.showHeader = true;
+			}
 
-				rows[column.level - 1].push(column);
-			});
+			let columns = [];
+			let data = [];
 
-			return rows;
-		},
-		// 获取表格的 tbody 数据，用于渲染表格
-		getTbodyData(data) {
-			let result = clone(data);
+			if (settings.columns && settings.data) {
+				columns = settings.columns;
+				data = settings.data;
+			}
+			else {
+				columns = utils.getFlattenedColumns(state.columns);
+				data = settings.original ? state.data : state.body;
+			}
 
-			result = this.getDataBySorter(result);
-			result = this.getDataByFilter(result);
+			let content = csv(columns, data, settings);
 
-			return result;
-		},
-
-		// 更新排序列的状态
-		setSorterColumnState(columns, key, order) {
-			columns = getFlattenColumns(columns, true);
-
-			columns.forEach(column => {
-				if (column.sorter) {
-					if (column.key === key) {
-						column.sorter.order = order;
-					}
-					else {
-						column.sorter.order = "normal";
-					}
-				}
-			});
+			if (is.function(settings.callback)) {
+				settings.callback(content);
+			}
+			else {
+				csv.download(settings.filename, content);
+			}
 		},
 		// 更新筛选列的状态
-		setFilterColumnState(columns, key, value) {
-			columns = getFlattenColumns(columns, true);
+		changeFilterColumnState(columns, key, value) {
+			columns = utils.getFlattenedColumns(columns, true);
 
 			columns.forEach(column => {
 				if (column.key === key && column.filter) {
@@ -271,336 +200,280 @@ const VuiTable = {
 				}
 			});
 		},
-
-		// 对 rawDataSource 数据进行排序
-		sorterDataSource(dataSource, column) {
-			let { dataIndex, sorter } = column;
-
-			dataSource.sort((a, b) => {
-				if (sorter.method) {
-					return sorter.method(a[dataIndex], b[dataIndex], sorter.order);
-				}
-				else {
-					if (sorter.order === "asc") {
-						return a[dataIndex] > b[dataIndex] ? 1 : -1;
-					}
-					else if (sorter.order === "desc") {
-						return a[dataIndex] < b[dataIndex] ? 1 : -1;
-					}
-					else {
-						return 0;
-					}
-				}
-			});
-
-			return dataSource;
-		},
-		// 按排序方式重新生成 tbody 数据
-		getDataBySorter(dataSource) {
-			const columns = getFlattenColumns(this.store.columns);
+		// 更新排序列的状态
+		changeSorterColumnState(columns, key, order) {
+			columns = utils.getFlattenedColumns(columns, true);
 
 			columns.forEach(column => {
-				if (column.sorter && column.sorter.order !== "normal" && !column.sorter.server) {
-					dataSource = this.sorterDataSource(dataSource, column);
+				if (column.sorter) {
+					column.sorter.order = column.key === key ? order : "none";
 				}
 			});
-
-			return dataSource;
 		},
-
-		// 对 rawDataSource 数据进行过滤
-		filterDataSource(dataSource, column) {
-			let { dataIndex, filter } = column;
-
-			return dataSource.filter(row => {
-				return filter.method(filter.value, clone(row));
-			});
-		},
-		// 按筛选条件重新生成 tbody 数据
-		getDataByFilter(dataSource) {
-			const columns = getFlattenColumns(this.store.columns);
-
-			columns.forEach(column => {
-				if (column.filter && column.filter.value && !column.filter.server) {
-					dataSource = this.filterDataSource(dataSource, column);
-				}
-			});
-
-			return dataSource;
-		},
-
 		// 同步横向滚动位置
-		setScrollXPosition(e) {
+		changeScrollXPosition(e) {
 			if (e.currentTarget !== e.target) {
 				return;
 			}
 
+			let { $refs: refs } = this;
+			let { tableMiddleHeaderScrollbar, tableMiddleBodyScrollbar } = refs;
 			let target = e.target;
 			let scrollLeft = target.scrollLeft;
-			let { table, fixedMiddleHeaderScrollbar, fixedMiddleBodyScrollbar } = this.$refs;
 
 			if (scrollLeft !== this.lastScrollLeft) {
-				if (target === fixedMiddleHeaderScrollbar && fixedMiddleBodyScrollbar) {
-					fixedMiddleBodyScrollbar.scrollLeft = scrollLeft;
+				if (target === tableMiddleHeaderScrollbar && tableMiddleBodyScrollbar) {
+					tableMiddleBodyScrollbar.scrollLeft = scrollLeft;
 				}
 
-				if (target === fixedMiddleBodyScrollbar && fixedMiddleHeaderScrollbar) {
-					fixedMiddleHeaderScrollbar.scrollLeft = scrollLeft;
+				if (target === tableMiddleBodyScrollbar && tableMiddleHeaderScrollbar) {
+					tableMiddleHeaderScrollbar.scrollLeft = scrollLeft;
 				}
 			}
 
 			this.lastScrollLeft = scrollLeft;
 		},
 		// 同步纵向滚动位置
-		setScrollYPosition(e) {
+		changeScrollYPosition(e) {
 			if (e.currentTarget !== e.target) {
 				return;
 			}
 
-			const target = e.target;
-			const scrollTop = target.scrollTop;
-			const { fixedLeftBodyScrollbar, fixedMiddleBodyScrollbar, fixedRightBodyScrollbar } = this.$refs;
+			let { $refs: refs } = this;
+			let { tableLeftBodyScrollbar, tableMiddleBodyScrollbar, tableRightBodyScrollbar } = refs;
+			let target = e.target;
+			let scrollTop = target.scrollTop;
 
 			if (scrollTop !== this.lastScrollTop) {
-				if (fixedLeftBodyScrollbar && target !== fixedLeftBodyScrollbar) {
-					fixedLeftBodyScrollbar.scrollTop = scrollTop;
+				if (tableLeftBodyScrollbar && target !== tableLeftBodyScrollbar) {
+					tableLeftBodyScrollbar.scrollTop = scrollTop;
 				}
 
-				if (fixedMiddleBodyScrollbar && target !== fixedMiddleBodyScrollbar) {
-					fixedMiddleBodyScrollbar.scrollTop = scrollTop;
+				if (tableMiddleBodyScrollbar && target !== tableMiddleBodyScrollbar) {
+					tableMiddleBodyScrollbar.scrollTop = scrollTop;
 				}
 
-
-				if (fixedRightBodyScrollbar && target !== fixedRightBodyScrollbar) {
-					fixedRightBodyScrollbar.scrollTop = scrollTop;
+				if (tableRightBodyScrollbar && target !== tableRightBodyScrollbar) {
+					tableRightBodyScrollbar.scrollTop = scrollTop;
 				}
 			}
 
 			this.lastScrollTop = scrollTop; 
 		},
-
 		// 滚动事件回调函数
 		handleScroll(e) {
-			this.setScrollXPosition(e);
-			this.setScrollYPosition(e);
+			this.changeScrollXPosition(e);
+			this.changeScrollYPosition(e);
 		},
 		// 行鼠标移入事件回调函数
-		handleRowMouseenter(row, key) {
-			this.store.rowHoverionState = key;
-			this.$emit("mouseenter", row, key);
+		handleRowMouseenter(row, rowIndex, rowKey) {
+			this.state.hoveredRowKey = rowKey;
+			this.$emit("rowMouseenter", row, rowIndex, rowKey);
 		},
 		// 行鼠标移出事件回调函数
-		handleRowMouseleave(row, key) {
-			this.store.rowHoverionState = undefined;
-			this.$emit("mouseleave", row, key);
+		handleRowMouseleave(row, rowIndex, rowKey) {
+			this.state.hoveredRowKey = undefined;
+			this.$emit("rowMouseleave", row, rowIndex, rowKey);
 		},
 		// 行点击事件回调函数
-		handleRowClick(row, key) {
-			this.$emit("click", row, key);
+		handleRowClick(row, rowIndex, rowKey) {
+			this.$emit("rowClick", row, rowIndex, rowKey);
+		},
+		// 行双击事件回调函数
+		handleRowDblclick(row, rowIndex, rowKey) {
+			this.$emit("rowDblclick", row, rowIndex, rowKey);
 		},
 		// 展开事件回调函数
-		handleRowCollapse(row, key) {
-			if (!this.rowCollapsion) {
+		handleRowCollapse(row, rowIndex, rowKey) {
+			let { $props: props, state } = this;
+
+			if (!props.rowCollapsion) {
 				return;
 			}
 
-			if (this.store.rowCollapsionState.indexOf(key) === -1) {
-				this.store.rowCollapsionState.push(key);
+			let collapsedRowKeys = clone(state.collapsedRowKeys);
+			let index = collapsedRowKeys.indexOf(rowKey);
+
+			if (props.rowCollapsion.accordion) {
+				collapsedRowKeys = index === -1 ? [rowKey] : [];
 			}
 			else {
-				this.store.rowCollapsionState.splice(this.store.rowCollapsionState.indexOf(key), 1);
-			}
-
-			this.$emit("collapse", clone(this.store.rowCollapsionState));
-		},
-		// 选择事件回调函数
-		handleRowSelect(checked, row, key) {
-			if (!this.rowSelection) {
-				return;
-			}
-
-			if (!("multiple" in this.rowSelection) || this.rowSelection.multiple) {
-				if (checked) {
-					this.store.rowSelectionState.push(key);
+				if (index === -1) {
+					collapsedRowKeys.push(rowKey);
 				}
 				else {
-					this.store.rowSelectionState.splice(this.store.rowSelectionState.indexOf(key), 1);
-				}
-			}
-			else {
-				if (checked) {
-					this.store.rowSelectionState = key;
+					collapsedRowKeys.splice(index, 1);
 				}
 			}
 
-			this.$emit("select", clone(this.store.rowSelectionState));
+			this.state.collapsedRowKeys = collapsedRowKeys;
+			this.$emit("rowCollapse", clone(this.state.collapsedRowKeys));
+		},
+		// 选择事件回调函数
+		handleRowSelect(checked, row, rowIndex, rowKey) {
+			let { $props: props, state } = this;
+
+			if (!props.rowSelection) {
+				return;
+			}
+
+			let selectedRowKeys = clone(state.selectedRowKeys);
+			let isCustomizedMultiple = "multiple" in props.rowSelection;
+			let isMultiple = !isCustomizedMultiple || props.rowSelection.multiple;
+
+			if (isMultiple) {
+				checked ? selectedRowKeys.push(rowKey) : selectedRowKeys.splice(selectedRowKeys.indexOf(rowKey), 1);
+			}
+			else {
+				selectedRowKeys = checked ? rowKey : undefined;
+			}
+
+			this.state.selectedRowKeys = selectedRowKeys;
+			this.$emit("rowSelect", clone(this.state.selectedRowKeys));
 		},
 		// 全选&取消全选事件回调函数
 		handleSelectAll(checked) {
+			let { $props: props, state } = this;
+
 			// 以下两种情况返回不处理
 			// 1、未启用行选择功能
 			// 2、已启用行选择功能，但是使用单选模式
-			if (!this.rowSelection || (("multiple") in this.rowSelection && this.rowSelection.multiple === false)) {
+			if (!props.rowSelection || (("multiple") in props.rowSelection && props.rowSelection.multiple === false)) {
 				return;
 			}
 
-			// checked 为 true 时执行全选操作
-			if (checked) {
-				let rowSelectionState = clone(this.store.rowSelectionState);
+			// 
+			let selectedRowKeys = clone(state.selectedRowKeys);
 
-				this.store.tbody.forEach((row, rowIndex) => {
-					let getRowKey = this.getRowKey;
-					let key;
-					let props;
+			state.tbody.forEach((row, rowIndex) => {
+				let rowKey;
+				let attributes;
 
-					if (is.string(getRowKey)) {
-						key = row[getRowKey];
+				if (is.string(props.rowKey)) {
+					rowKey = row[props.rowKey];
+				}
+				else if (is.function(props.rowKey)) {
+					rowKey = props.rowKey(clone(row), rowIndex);
+				}
+				else {
+					rowKey = rowIndex;
+				}
+
+				if (is.function(props.rowSelection.getComponentProps)) {
+					attributes = props.rowSelection.getComponentProps(clone(row), rowIndex, rowKey);
+				}
+
+				let isEnabled = !attributes || !attributes.disabled;
+
+				if (checked) {
+					if (selectedRowKeys.indexOf(rowKey) === -1 && isEnabled) {
+						selectedRowKeys.push(rowKey);
 					}
-					else if (is.function(getRowKey)) {
-						key = getRowKey(row);
+				}
+				else {
+					if (selectedRowKeys.indexOf(rowKey) > -1 && isEnabled) {
+						selectedRowKeys.splice(selectedRowKeys.indexOf(rowKey), 1);
 					}
-					else {
-						key = rowIndex;
-					}
+				}
+			});
 
-					if (is.function(this.rowSelection.getComponentProps)) {
-						props = this.rowSelection.getComponentProps(clone(row));
-					}
-
-					if (rowSelectionState.indexOf(key) > -1 || (props && props.disabled)) {
-
-					}
-					else {
-						rowSelectionState.push(key);
-					}
-				});
-
-				this.store.rowSelectionState = rowSelectionState;
-			}
-			// 反之，执行取消全选操作
-			else {
-				let rowSelectionState = clone(this.store.rowSelectionState);
-
-				this.store.tbody.forEach((row, rowIndex) => {
-					let getRowKey = this.getRowKey;
-					let key;
-					let props;
-
-					if (is.string(getRowKey)) {
-						key = row[getRowKey];
-					}
-					else if (is.function(getRowKey)) {
-						key = getRowKey(row);
-					}
-					else {
-						key = rowIndex;
-					}
-
-					if (is.function(this.rowSelection.getComponentProps)) {
-						props = this.rowSelection.getComponentProps(clone(row));
-					}
-
-					if (rowSelectionState.indexOf(key) === -1 || (props && props.disabled)) {
-
-					}
-					else {
-						rowSelectionState.splice(rowSelectionState.indexOf(key), 1);
-					}
-				});
-
-				this.store.rowSelectionState = rowSelectionState;
-			}
-
-			this.$emit("select", clone(this.store.rowSelectionState));
-		},
-		// 排序事件回调函数
-		handleSorter(column, order) {
-			if (!column.sorter) {
-				return;
-			}
-
-			this.setSorterColumnState(this.store.columns, column.key, order);
-
-			if (!column.sorter.server) {
-				this.store.tbody = this.getTbodyData(this.store.data);
-			}
-
-			this.$emit("sorter", clone(column), order);
+			this.state.selectedRowKeys = selectedRowKeys;
+			this.$emit("rowSelect", clone(this.state.selectedRowKeys));
 		},
 		// 筛选事件回调函数
 		handleFilter(column, value) {
+			let { state } = this;
+
 			if (!column.filter) {
 				return;
 			}
 
-			this.setFilterColumnState(this.store.columns, column.key, value);
+			this.changeFilterColumnState(state.columns, column.key, value);
 
-			if (!column.filter.server) {
-				this.store.tbody = this.getTbodyData(this.store.data);
+			if (!column.filter.useServerFilter) {
+				this.state.tbody = utils.getDerivedBody(state.columns, state.data);
 			}
 
 			this.$emit("filter", clone(column), value);
 		},
+		// 排序事件回调函数
+		handleSort(column, order) {
+			let { state } = this;
 
-		// 绘制左固定表格
-		drawLeftTable() {
-			if (!this.showLeftTable) {
+			if (!column.sorter) {
 				return;
 			}
 
+			this.changeSorterColumnState(state.columns, column.key, order);
+
+			if (!column.sorter.useServerSort) {
+				this.state.tbody = utils.getDerivedBody(state.columns, state.data);
+			}
+
+			this.$emit("sort", clone(column), order);
+		},
+		// 绘制左固定表格
+		renderLeftTable() {
+			let { $props: props, state } = this;
 			let header;
 			let body;
 
 			// 计算 style 样式
-			let width = this.store.colgroup.filter(column => column.fixed === "left").reduce((sum, column) => (sum + column.width), 0);
+			let width = state.colgroup.filter(column => column.fixed === "left").reduce((total, column) => total + column.width, 0);
+			let showXScrollbar = props.scroll && props.scroll.x > 0;
+			let showYScrollbar = props.scroll && props.scroll.y > 0;
 			let styles = {
-				table: {
-					width: width + "px"
-				},
-				tableBodyScrollbar: {}
+				el: {
+					width: `${width}px`
+				}
 			};
 
-			if (this.showYScrollbar) {
-				styles.tableBodyScrollbar.width = (width + getScrollBarSize()) + "px";
+			if (showYScrollbar) {
+				let scrollbarSize = getScrollbarSize();
 
-				if (this.showXScrollbar) {
-					styles.tableBodyScrollbar.maxHeight = (this.scroll.y - getScrollBarSize()) + "px";
-				}
-				else {
-					styles.tableBodyScrollbar.maxHeight = this.scroll.y + "px";
-				}
-
-				styles.tableBodyScrollbar.overflowY = "scroll";
+				styles.elBodyScrollbar = {
+					width: `${width + scrollbarSize}px`,
+					maxHeight: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
+					overflowY: `scroll`
+				};
 			}
 			else {
-				styles.tableBodyScrollbar.width = width + "px";
+				styles.elBodyScrollbar = {
+					width: `${width}px`
+				};
 			}
 
 			// 计算 class 样式
+			let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
 			let classes = {
-				table: {
-					[`${this.classNamePrefix}-left`]: true
-				},
-				tableHeader: `${this.classNamePrefix}-header`,
-				tableHeaderScrollbar: `${this.classNamePrefix}-header-scrollbar`,
-				tableBody: `${this.classNamePrefix}-body`,
-				tableBodyScrollbar: `${this.classNamePrefix}-body-scrollbar`
+				el: `${classNamePrefix}-left`,
+				elHeader: `${classNamePrefix}-header`,
+				elHeaderScrollbar: `${classNamePrefix}-header-scrollbar`,
+				elBody: `${classNamePrefix}-body`,
+				elBodyScrollbar: `${classNamePrefix}-body-scrollbar`
 			};
 
 			// 是否显示表头
-			if (this.showHeader) {
+			if (props.showHeader) {
 				header = (
-					<div ref="fixedLeftHeader" class={classes.tableHeader}>
-						<div ref="fixedLeftHeaderScrollbar" class={classes.tableHeaderScrollbar}>
+					<div ref="tableLeftHeader" class={classes.elHeader}>
+						<div ref="tableLeftHeaderScrollbar" class={classes.elHeaderScrollbar}>
 							<VuiTableThead
 								fixed="left"
-								classNamePrefix={this.classNamePrefix}
-								scroll={this.scroll}
-								getRowKey={this.getRowKey}
-								rowCollapsion={this.rowCollapsion}
-								rowSelection={this.rowSelection}
-								locale={this.locale}
-								store={this.store}
+								classNamePrefix={classNamePrefix}
+								columns={state.columns}
+								data={state.data}
+								colgroup={state.colgroup}
+								thead={state.thead}
+								tbody={state.tbody}
+								rowKey={props.rowKey}
+								rowCollapsion={props.rowCollapsion}
+								rowSelection={props.rowSelection}
+								hoveredRowKey={state.hoveredRowKey}
+								collapsedRowKeys={state.collapsedRowKeys}
+								selectedRowKeys={state.selectedRowKeys}
+								scroll={props.scroll}
+								locale={props.locale}
 							/>
 						</div>
 					</div>
@@ -609,75 +482,92 @@ const VuiTable = {
 
 			// 表格内容
 			body = (
-				<div ref="fixedLeftBody" class={classes.tableBody}>
-					<div ref="fixedLeftBodyScrollbar" style={styles.tableBodyScrollbar} class={classes.tableBodyScrollbar} onScroll={this.handleScroll}>
+				<div ref="tableLeftBody" class={classes.elBody}>
+					<div ref="tableLeftBodyScrollbar" style={styles.elBodyScrollbar} class={classes.elBodyScrollbar} onScroll={this.handleScroll}>
 						<VuiTableTbody
-							classNamePrefix={this.classNamePrefix}
-							fixed={"left"}
-							scroll={this.scroll}
-							getRowKey={this.getRowKey}
-							getRowClassName={this.getRowClassName}
-							rowCollapsion={this.rowCollapsion}
-							rowSelection={this.rowSelection}
-							locale={this.locale}
-							store={this.store}
+							fixed="left"
+							classNamePrefix={classNamePrefix}
+							columns={state.columns}
+							data={state.data}
+							colgroup={state.colgroup}
+							thead={state.thead}
+							tbody={state.tbody}
+							rowKey={props.rowKey}
+							rowClassName={props.rowClassName}
+							rowCollapsion={props.rowCollapsion}
+							rowSelection={props.rowSelection}
+							hoveredRowKey={state.hoveredRowKey}
+							collapsedRowKeys={state.collapsedRowKeys}
+							selectedRowKeys={state.selectedRowKeys}
+							scroll={props.scroll}
+							locale={props.locale}
 						/>
 					</div>
 				</div>
 			);
 
 			return (
-				<div class={classes.table} style={styles.table}>
+				<div class={classes.el} style={styles.el}>
 					{header}
 					{body}
 				</div>
 			);
 		},
 		// 绘制中间表格
-		drawMiddleTable() {
+		renderMiddleTable() {
+			let { $props: props, state } = this;
 			let header;
 			let body;
 
 			// 计算 style 样式
+			let width = state.colgroup.filter(column => column.fixed === "left").reduce((total, column) => total + column.width, 0);
+			let showXScrollbar = props.scroll && props.scroll.x > 0;
+			let showYScrollbar = props.scroll && props.scroll.y > 0;
 			let styles = {
-				tableHeaderScrollbar: {},
-				tableBodyScrollbar: {}
+				elHeaderScrollbar: {},
+				elBodyScrollbar: {}
 			};
 
-			if (this.showXScrollbar) {
-				styles.tableBodyScrollbar.overflowX = "scroll";
+			if (showXScrollbar) {
+				styles.elBodyScrollbar.overflowX = `scroll`;
 			}
 
-			if (this.showYScrollbar) {
-				styles.tableHeaderScrollbar.overflowY = "scroll";
-				styles.tableBodyScrollbar.maxHeight = this.scroll.y + "px";
-				styles.tableBodyScrollbar.overflowY = "scroll";
+			if (showYScrollbar) {
+				styles.elHeaderScrollbar.overflowY = `scroll`;
+				styles.elBodyScrollbar.maxHeight = `${props.scroll.y}px`;
+				styles.elBodyScrollbar.overflowY = `scroll`;
 			}
 
 			// 计算 class 样式
+			let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
 			let classes = {
-				table: {
-					[`${this.classNamePrefix}-middle`]: true
-				},
-				tableHeader: `${this.classNamePrefix}-header`,
-				tableHeaderScrollbar: `${this.classNamePrefix}-header-scrollbar`,
-				tableBody: `${this.classNamePrefix}-body`,
-				tableBodyScrollbar: `${this.classNamePrefix}-body-scrollbar`
+				el: `${classNamePrefix}-middle`,
+				elHeader: `${classNamePrefix}-header`,
+				elHeaderScrollbar: `${classNamePrefix}-header-scrollbar`,
+				elBody: `${classNamePrefix}-body`,
+				elBodyScrollbar: `${classNamePrefix}-body-scrollbar`
 			};
 
 			// 是否显示表头
-			if (this.showHeader) {
+			if (props.showHeader) {
 				header = (
-					<div ref="fixedMiddleHeader" class={classes.tableHeader}>
-						<div ref="fixedMiddleHeaderScrollbar" style={styles.tableHeaderScrollbar} class={classes.tableHeaderScrollbar}>
+					<div ref="tableMiddleHeader" class={classes.elHeader}>
+						<div ref="tableMiddleHeaderScrollbar" style={styles.elHeaderScrollbar} class={classes.elHeaderScrollbar}>
 							<VuiTableThead
-								classNamePrefix={this.classNamePrefix}
-								scroll={this.scroll}
-								getRowKey={this.getRowKey}
-								rowCollapsion={this.rowCollapsion}
-								rowSelection={this.rowSelection}
-								locale={this.locale}
-								store={this.store}
+								classNamePrefix={classNamePrefix}
+								columns={state.columns}
+								data={state.data}
+								colgroup={state.colgroup}
+								thead={state.thead}
+								tbody={state.tbody}
+								rowKey={props.rowKey}
+								rowCollapsion={props.rowCollapsion}
+								rowSelection={props.rowSelection}
+								hoveredRowKey={state.hoveredRowKey}
+								collapsedRowKeys={state.collapsedRowKeys}
+								selectedRowKeys={state.selectedRowKeys}
+								scroll={props.scroll}
+								locale={props.locale}
 							/>
 						</div>
 					</div>
@@ -686,89 +576,99 @@ const VuiTable = {
 
 			// 表格内容
 			body = (
-				<div ref="fixedMiddleBody" class={classes.tableBody}>
-					<div ref="fixedMiddleBodyScrollbar" class={classes.tableBodyScrollbar} style={styles.tableBodyScrollbar} onScroll={this.handleScroll}>
+				<div ref="tableMiddleBody" class={classes.elBody}>
+					<div ref="tableMiddleBodyScrollbar" class={classes.elBodyScrollbar} style={styles.elBodyScrollbar} onScroll={this.handleScroll}>
 						<VuiTableTbody
-							classNamePrefix={this.classNamePrefix}
-							scroll={this.scroll}
-							getRowKey={this.getRowKey}
-							getRowClassName={this.getRowClassName}
-							rowCollapsion={this.rowCollapsion}
-							rowSelection={this.rowSelection}
-							locale={this.locale}
-							store={this.store}
+							classNamePrefix={classNamePrefix}
+							columns={state.columns}
+							data={state.data}
+							colgroup={state.colgroup}
+							thead={state.thead}
+							tbody={state.tbody}
+							rowKey={props.rowKey}
+							rowClassName={props.rowClassName}
+							rowCollapsion={props.rowCollapsion}
+							rowSelection={props.rowSelection}
+							hoveredRowKey={state.hoveredRowKey}
+							collapsedRowKeys={state.collapsedRowKeys}
+							selectedRowKeys={state.selectedRowKeys}
+							scroll={props.scroll}
+							locale={props.locale}
 						/>
 					</div>
 				</div>
 			);
 
 			return (
-				<div class={classes.table}>
+				<div class={classes.el}>
 					{header}
 					{body}
 				</div>
 			);
 		},
 		// 绘制右固定表格
-		drawRightTable() {
-			if (!this.showRightTable) {
-				return;
-			}
-
+		renderRightTable() {
+			let { $props: props, state } = this;
 			let header;
 			let body;
 
 			// 计算 style 样式
-			let width = this.store.colgroup.filter(column => column.fixed === "right").reduce((sum, column) => (sum + column.width), 0);
+			let width = state.colgroup.filter(column => column.fixed === "right").reduce((total, column) => total + column.width, 0);
+			let showXScrollbar = props.scroll && props.scroll.x > 0;
+			let showYScrollbar = props.scroll && props.scroll.y > 0;
 			let styles = {
-				table: {
-					width: width + "px"
-				},
-				tableBodyScrollbar: {}
+				el: {
+					width: `${width}px`
+				}
 			};
 
-			if (this.showYScrollbar) {
-				styles.table.right = getScrollBarSize() + "px";
-				styles.tableBodyScrollbar.width = (width + getScrollBarSize()) + "px";
+			if (showYScrollbar) {
+				let scrollbarSize = getScrollbarSize();
 
-				if (this.showXScrollbar) {
-					styles.tableBodyScrollbar.maxHeight = (this.scroll.y - getScrollBarSize()) + "px";
-				}
-				else {
-					styles.tableBodyScrollbar.maxHeight = this.scroll.y + "px";
-				}
-
-				styles.tableBodyScrollbar.overflowY = "scroll";
+				styles.el.right = `${scrollbarSize}px`;
+				styles.elBodyScrollbar = {
+					width: `${width + scrollbarSize}px`,
+					maxHeight: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
+					overflowY: `scroll`
+				};
 			}
 			else {
-				styles.tableBodyScrollbar.width = width + "px";
+				styles.elBodyScrollbar = {
+					width: `${width}px`
+				};
 			}
 
 			// 计算 class 样式
+			let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
 			let classes = {
-				table: {
-					[`${this.classNamePrefix}-right`]: true
-				},
-				tableHeader: `${this.classNamePrefix}-header`,
-				tableHeaderScrollbar: `${this.classNamePrefix}-header-scrollbar`,
-				tableBody: `${this.classNamePrefix}-body`,
-				tableBodyScrollbar: `${this.classNamePrefix}-body-scrollbar`
+				el: `${classNamePrefix}-right`,
+				elHeader: `${classNamePrefix}-header`,
+				elHeaderScrollbar: `${classNamePrefix}-header-scrollbar`,
+				elBody: `${classNamePrefix}-body`,
+				elBodyScrollbar: `${classNamePrefix}-body-scrollbar`
 			};
 
 			// 是否显示表头
-			if (this.showHeader) {
+			if (props.showHeader) {
 				header = (
-					<div ref="fixedRightHeader" class={classes.tableHeader}>
-						<div ref="fixedRightHeaderScrollbar" class={classes.tableHeaderScrollbar}>
+					<div ref="tableRightHeader" class={classes.elHeader}>
+						<div ref="tableRightHeaderScrollbar" class={classes.elHeaderScrollbar}>
 							<VuiTableThead
 								fixed="right"
-								classNamePrefix={this.classNamePrefix}
-								scroll={this.scroll}
-								getRowKey={this.getRowKey}
-								rowCollapsion={this.rowCollapsion}
-								rowSelection={this.rowSelection}
-								locale={this.locale}
-								store={this.store}
+								classNamePrefix={classNamePrefix}
+								columns={state.columns}
+								data={state.data}
+								colgroup={state.colgroup}
+								thead={state.thead}
+								tbody={state.tbody}
+								rowKey={props.rowKey}
+								rowCollapsion={props.rowCollapsion}
+								rowSelection={props.rowSelection}
+								hoveredRowKey={state.hoveredRowKey}
+								collapsedRowKeys={state.collapsedRowKeys}
+								selectedRowKeys={state.selectedRowKeys}
+								scroll={props.scroll}
+								locale={props.locale}
 							/>
 						</div>
 					</div>
@@ -777,25 +677,32 @@ const VuiTable = {
 
 			// 表格内容
 			body = (
-				<div ref="fixedRightBody" class={classes.tableBody}>
-					<div ref="fixedRightBodyScrollbar" style={styles.tableBodyScrollbar} class={classes.tableBodyScrollbar} onScroll={this.handleScroll}>
+				<div ref="tableRightBody" class={classes.elBody}>
+					<div ref="tableRightBodyScrollbar" style={styles.elBodyScrollbar} class={classes.elBodyScrollbar} onScroll={this.handleScroll}>
 						<VuiTableTbody
-							classNamePrefix={this.classNamePrefix}
-							fixed={"right"}
-							scroll={this.scroll}
-							getRowKey={this.getRowKey}
-							getRowClassName={this.getRowClassName}
-							rowCollapsion={this.rowCollapsion}
-							rowSelection={this.rowSelection}
-							locale={this.locale}
-							store={this.store}
+							fixed="right"
+							classNamePrefix={classNamePrefix}
+							columns={state.columns}
+							data={state.data}
+							colgroup={state.colgroup}
+							thead={state.thead}
+							tbody={state.tbody}
+							rowKey={props.rowKey}
+							rowClassName={props.rowClassName}
+							rowCollapsion={props.rowCollapsion}
+							rowSelection={props.rowSelection}
+							hoveredRowKey={state.hoveredRowKey}
+							collapsedRowKeys={state.collapsedRowKeys}
+							selectedRowKeys={state.selectedRowKeys}
+							scroll={props.scroll}
+							locale={props.locale}
 						/>
 					</div>
 				</div>
 			);
 
 			return (
-				<div class={classes.table} style={styles.table}>
+				<div class={classes.el} style={styles.el}>
 					{header}
 					{body}
 				</div>
@@ -804,46 +711,70 @@ const VuiTable = {
 	},
 
 	created() {
-		let columns = mapColumnsToState(this.columns);
-		let data = mapDataToState(this.data);
-		let rowCollapsionState;
-		let rowSelectionState;
-		let rowHoverionState;
+		let { $props: props } = this;
+		let { rowCollapsion, rowSelection } = props;
+		let columns = utils.getDerivedColumns(props.columns);
+		let data = utils.getDerivedData(props.data);
+		let hoveredRowKey = undefined;
+		let collapsedRowKeys = [];
+		let selectedRowKeys = [];
 
-		if (this.rowCollapsion) {
-			rowCollapsionState = this.rowCollapsion.value ? clone(this.rowCollapsion.value) : [];
+		if (rowCollapsion && rowCollapsion.value) {
+			collapsedRowKeys = clone(rowCollapsion.value);
 		}
 
-		if (this.rowSelection) {
-			if (!("multiple" in this.rowSelection) || this.rowSelection.multiple) {
-				rowSelectionState = this.rowSelection.value ? clone(this.rowSelection.value) : [];
-			}
-			else {
-				rowSelectionState = this.rowSelection.value ? this.rowSelection.value : undefined;
+		if (rowSelection) {
+			let isCustomizedMultiple = "multiple" in rowSelection;
+			let isMultiple = !isCustomizedMultiple || rowSelection.multiple;
+
+			if (isMultiple && rowSelection.value) {
+				selectedRowKeys = clone(rowSelection.value);
 			}
 		}
 
-		this.store.columns = columns;
-		this.store.data = data;
-		this.store.colgroup = this.getColgroupData(this.store.columns);
-		this.store.thead = this.getTheadData(this.store.columns);
-		this.store.tbody = this.getTbodyData(this.store.data);
-		this.store.rowCollapsionState = rowCollapsionState;
-		this.store.rowSelectionState = rowSelectionState;
-		this.store.rowHoverionState = rowHoverionState;
+		this.state.columns = columns;
+		this.state.data = data;
+		this.state.colgroup = utils.getDerivedColgroup(columns);
+		this.state.thead = utils.getDerivedHeader(columns);
+		this.state.tbody = utils.getDerivedBody(columns, data);
+		this.state.hoveredRowKey = hoveredRowKey;
+		this.state.collapsedRowKeys = collapsedRowKeys;
+		this.state.selectedRowKeys = selectedRowKeys;
 	},
 
 	render() {
-		let { classes, loading, drawLeftTable, drawMiddleTable, drawRightTable } = this;
+		let { $props: props, state } = this;
+		let { renderLeftTable, renderMiddleTable, renderRightTable } = this;
+
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
+		let classes = {};
+
+		classes.el = {
+			[`${classNamePrefix}-wrapper`]: true,
+			[`${classNamePrefix}-wrapper-bordered`]: props.bordered
+		};
+		classes.elTable = {
+			[`${classNamePrefix}`]: true,
+			[`${classNamePrefix}-bordered`]: props.bordered,
+			[`${classNamePrefix}-striped`]: props.striped,
+			[`${classNamePrefix}-${props.size}`]: props.size
+		};
+
+		// render
+		let showLeftTable = state.columns.some(column => column.fixed === "left");
+		let showRightTable = state.columns.some(column => column.fixed === "right");
 
 		return (
 			<div class={classes.el}>
 				<div ref="table" class={classes.elTable}>
-					{drawLeftTable()}
-					{drawMiddleTable()}
-					{drawRightTable()}
+					{showLeftTable && renderLeftTable()}
+					{renderMiddleTable()}
+					{showRightTable && renderRightTable()}
 				</div>
-				{loading ? <vui-spin fixed /> : null}
+				{
+					props.loading ? <VuiSpin fixed /> : null
+				}
 			</div>
 		);
 	}

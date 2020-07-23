@@ -26,11 +26,27 @@ const VuiTableThead = {
 			type: String,
 			default: undefined
 		},
-		scroll: {
-			type: Object,
-			default: undefined
+		columns: {
+			type: Array,
+			default: () => []
 		},
-		getRowKey: {
+		data: {
+			type: Array,
+			default: () => []
+		},
+		colgroup: {
+			type: Array,
+			default: () => []
+		},
+		thead: {
+			type: Array,
+			default: () => []
+		},
+		tbody: {
+			type: Array,
+			default: () => []
+		},
+		rowKey: {
 			type: [String, Function],
 			default: "key"
 		},
@@ -42,271 +58,315 @@ const VuiTableThead = {
 			type: Object,
 			default: undefined
 		},
-		locale: {
+		hoveredRowKey: {
+			type: [String, Number],
+			default: undefined
+		},
+		collapsedRowKeys: {
+			type: Array,
+			default: () => []
+		},
+		selectedRowKeys: {
+			type: [Array, String, Number],
+			default: () => []
+		},
+		scroll: {
 			type: Object,
 			default: undefined
 		},
-		store: {
+		locale: {
 			type: Object,
-			default: undefined,
-			required: true
-		}
-	},
-
-	computed: {
-		styles() {
-			let scroll = this.scroll;
-			let styles = {};
-			let width;
-
-			if (scroll && scroll.x > 0) {
-				width = scroll.x + "px";
-			}
-			else {
-				width = "100%";
-			}
-
-			styles.el = {
-				width
-			};
-
-			return styles;
-		},
-		classes() {
-			let classNamePrefix = this.classNamePrefix;
-			let classes = {};
-
-			classes.elColumnTitle = `${classNamePrefix}-column-title`;
-			classes.elColumnSorter = `${classNamePrefix}-column-sorter`;
-
-			return classes;
+			default: undefined
 		}
 	},
 
 	methods: {
-		needRenderSorter(column) {
-			let fixed = this.fixed;
+		maybeShowColumn(column) {
+			let { $props: props } = this;
+			let boolean = false;
 
-			return column.sorter && ((!fixed && !column.fixed) || (fixed === "left" && column.fixed === "left") || (fixed === "right" && column.fixed === "right"));
-		},
-		needRenderFilter(column) {
-			let fixed = this.fixed;
-
-			return column.filter && ((!fixed && !column.fixed) || (fixed === "left" && column.fixed === "left") || (fixed === "right" && column.fixed === "right"));
-		},
-		getThKey(column, columnIndex) {
-			let key;
-
-			if ("key" in column) {
-				key = column.key;
+			if (!props.fixed && !column.fixed) {
+				boolean = true;
 			}
-			else if (column.dataIndex) {
-				key = column.dataIndex;
+			else if (props.fixed === "left" && column.fixed === "left") {
+				boolean = true;
+			}
+			else if (props.fixed === "right" && column.fixed === "right") {
+				boolean = true;
+			}
+
+			return boolean;
+		},
+		maybeShowColumnSorter(column) {
+			let { $props: props } = this;
+			let maybeShowColumn = this.maybeShowColumn(column);
+			let boolean = false;
+
+			if (column.sorter && maybeShowColumn) {
+				boolean = true;
+			}
+
+			return boolean;
+		},
+		maybeShowColumnFilter(column) {
+			let { $props: props } = this;
+			let maybeShowColumn = this.maybeShowColumn(column);
+			let boolean = false;
+
+			if (column.filter && maybeShowColumn) {
+				boolean = true;
+			}
+
+			return boolean;
+		},
+		getColumnClassName(type, column) {
+			if (!column) {
+				column = type;
+				type = undefined;
+			}
+
+			let { $props: props } = this;
+			let ellipsis = column.ellipsis;
+			let align = column.align || "center";
+			let className = column.className;
+
+			if (type === "collapsion") {
+				return {
+					[`${props.classNamePrefix}-column-with-collapsion`]: true,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className
+				};
+			}
+			else if (type === "selection") {
+				return {
+					[`${props.classNamePrefix}-column-with-selection`]: true,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className
+				};
 			}
 			else {
-				key = columnIndex;
+				let maybeShowColumn = this.maybeShowColumn(column);
+				let maybeShowColumnSorter = this.maybeShowColumnSorter(column);
+				let maybeShowColumnFilter = this.maybeShowColumnFilter(column);
+
+				return {
+					[`${props.classNamePrefix}-column-hidden`]: !maybeShowColumn,
+					[`${props.classNamePrefix}-column-with-sorter`]: maybeShowColumnSorter,
+					[`${props.classNamePrefix}-column-with-filter`]: maybeShowColumnFilter,
+					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+					[`${props.classNamePrefix}-column-align-${align}`]: align,
+					[`${className}`]: className
+				};
 			}
-
-			return key;
 		},
-		getThClasses(column) {
-			let classNamePrefix = this.classNamePrefix;
-			let fixed = this.fixed;
-			let needRenderSorter = this.needRenderSorter(column);
-			let needRenderFilter = this.needRenderFilter(column);
-			let needHidden = (fixed === "left" && column.fixed !== "left") || (fixed === "right" && column.fixed !== "right") || (!fixed && (column.fixed === "left" || column.fixed === "right"));
+		getColumnTitleClassName(column) {
+			let { $props: props } = this;
 
 			return {
-				[`${column.className}`]: column.className,
-				[`${classNamePrefix}-column-align-${column.align}`]: column.align,
-				[`${classNamePrefix}-column-ellipsis`]: column.ellipsis,
-				[`${classNamePrefix}-column-with-sorter`]: needRenderSorter,
-				[`${classNamePrefix}-column-with-filter`]: needRenderFilter,
-				[`${classNamePrefix}-column-hidden`]: needHidden
+				[`${props.classNamePrefix}-column-title`]: true
 			};
 		},
-		getCollapsionThClasses(rowCollapsion) {
-			let classNamePrefix = this.classNamePrefix;
-			let className = rowCollapsion.className;
-			let align = rowCollapsion.align || "center";
+		getColumnSorterClassName(column) {
+			let { $props: props } = this;
 
 			return {
-				[`${className}`]: className,
-				[`${classNamePrefix}-column-align-${align}`]: align,
-				[`${classNamePrefix}-column-with-collapsion`]: true
+				[`${props.classNamePrefix}-column-sorter`]: true
 			};
 		},
-		getSelectionThClasses(rowSelection) {
-			let classNamePrefix = this.classNamePrefix;
-			let className = rowSelection.className;
-			let align = rowSelection.align || "center";
+		getColumnSorterCaretClassName(type, column) {
+			let { $props: props } = this;
 
 			return {
-				[`${className}`]: className,
-				[`${classNamePrefix}-column-align-${align}`]: align,
-				[`${classNamePrefix}-column-with-selection`]: true
+				[`${props.classNamePrefix}-column-sorter-caret`]: true,
+				[`${props.classNamePrefix}-column-sorter-caret-${type}`]: true,
+				[`on`]: column.sorter.order === type
 			};
 		},
-		getSorterCaretClasses(column, order) {
-			let classNamePrefix = this.classNamePrefix;
-			let state =  column.sorter.order === order ? "on" : "off";
-
-			return {
-				[`${classNamePrefix}-column-sorter-caret`]: true,
-				[`${classNamePrefix}-column-sorter-caret-${order}`]: true,
-				[`${state}`]: state
-			};
-		},
-
 		handleSelectAll(checked) {
 			this.vuiTable.handleSelectAll(checked);
 		},
-		handleSorter(column) {
+		handleFilter(column, value) {
+			if (!column.filter) {
+				return;
+			}
+
+			this.vuiTable.handleFilter(clone(column), value);
+		},
+		handleSort(column) {
 			if (!column.sorter) {
 				return;
 			}
 
 			let order = column.sorter.order;
 
-			if (order === "normal") {
+			if (order === "none") {
 				order = "asc";
 			}
 			else if (order === "asc") {
 				order = "desc";
 			}
 			else if (order === "desc") {
-				order = "normal";
+				order = "none";
 			}
 
-			this.vuiTable.handleSorter(clone(column), order);
+			this.vuiTable.handleSort(clone(column), order);
 		},
-		handleFilter(column, value) {
-			this.vuiTable.handleFilter(clone(column), value);
-		},
-
-		drawColgroupChildren(h) {
-			let { rowCollapsion, rowSelection, store, getThKey } = this;
+		renderColgroupChildren(h) {
+			let { $props: props } = this;
 			let children = [];
 
-			if (rowCollapsion) {
+			if (props.rowCollapsion) {
+				let { width = 50 } = props.rowCollapsion;
+
 				children.push(
-					<col width={rowCollapsion.width || 50} />
+					<col key="collapsion" width={width} />
 				);
 			}
 
-			if (rowSelection) {
+			if (props.rowSelection) {
+				let { width = 50 } = props.rowSelection;
+
 				children.push(
-					<col width={rowSelection.width || 50} />
+					<col key="selection" width={width} />
 				);
 			}
 
-			store.colgroup.forEach((column, columnIndex) => {
+			props.colgroup.forEach((column, columnIndex) => {
 				children.push(
-					<col key={getThKey(column, columnIndex)} width={column.width} />
+					<col key={column.key || columnIndex} width={column.width} />
 				);
 			});
 
 			return children;
 		},
-		drawTheadChildren(h) {
-			let { classNamePrefix, getRowKey, rowCollapsion, rowSelection, locale, store, classes, needRenderSorter, needRenderFilter, getThKey, getThClasses, getCollapsionThClasses, getSelectionThClasses, getSorterCaretClasses } = this;
-			let { handleSelectAll, handleSorter, handleFilter } = this;
+		renderTheadChildren(h) {
+			let { $props: props } = this;
 			let children = [];
 
-			store.thead.forEach((row, rowIndex) => {
+			props.thead.forEach((row, rowIndex) => {
 				let ths = [];
 
-				if (rowIndex === 0 && rowCollapsion) {
+				if (props.rowCollapsion && rowIndex === 0) {
 					ths.push(
-						<th colspan={1} rowspan={store.thead.length} class={getCollapsionThClasses(rowCollapsion)}>
-							{rowCollapsion.title}
+						<th
+							key="collapsion"
+							colspan="1"
+							rowspan={props.thead.length}
+							class={this.getColumnClassName("collapsion", props.rowCollapsion)}
+						>
+							{props.rowCollapsion.title}
 						</th>
 					);
 				}
 
-				if (rowIndex === 0 && rowSelection) {
+				if (props.rowSelection && rowIndex === 0) {
 					let component;
+					let isCustomizedMultiple = "multiple" in props.rowSelection;
+					let isMultiple = !isCustomizedMultiple || props.rowSelection.multiple;
 
-					if (rowSelection.title) {
+					if (props.rowSelection.title) {
 						component = (
-							<div class={classes.elColumnTitle}>
-								{rowSelection.title}
+							<div class={this.getColumnTitleClassName(props.rowSelection)}>
+								{props.rowSelection.title}
 							</div>
 						);
 					}
-					else if (!("multiple" in rowSelection) || rowSelection.multiple) {
-						let theRowLength = 0;
-						let theSelectedLength = 0;
+					else if (isMultiple) {
+						let rowLength = 0;
+						let selectedLength = 0;
 
-						store.tbody.forEach((data, dataIndex) => {
-							let key;
-							let props;
+						props.tbody.forEach((data, dataIndex) => {
+							let dataKey;
+							let attributes;
 
-							if (is.string(getRowKey)) {
-								key = data[getRowKey];
+							if (is.string(props.rowKey)) {
+								dataKey = data[props.rowKey];
 							}
-							else if (is.function(getRowKey)) {
-								key = getRowKey(data);
+							else if (is.function(props.rowKey)) {
+								dataKey = props.rowKey(clone(data), dataIndex);
 							}
 							else {
-								key = dataIndex;
+								dataKey = dataIndex;
 							}
 
-							if (is.function(this.rowSelection.getComponentProps)) {
-								props = this.rowSelection.getComponentProps(clone(data));
+							if (is.function(props.rowSelection.getComponentProps)) {
+								attributes = props.rowSelection.getComponentProps(clone(data), dataIndex, dataKey);
 							}
 
-							if (!props || !props.disabled) {
-								theRowLength++;
+							if (!attributes || !attributes.disabled) {
+								rowLength++;
 
-								if (store.rowSelectionState.indexOf(key) > -1) {
-									theSelectedLength++;
+								if (props.selectedRowKeys.indexOf(dataKey) > -1) {
+									selectedLength++;
 								}
 							}
 						});
 
-						let indeterminate = !!theSelectedLength && (theSelectedLength < theRowLength);
-						let checked = theSelectedLength === theRowLength;
+						let indeterminate = !!selectedLength && (selectedLength < rowLength);
+						let checked = selectedLength === rowLength;
 
 						component = (
-							<VuiCheckbox indeterminate={indeterminate} checked={checked} onChange={handleSelectAll} />
+							<VuiCheckbox
+								indeterminate={indeterminate}
+								checked={checked}
+								onChange={this.handleSelectAll}
+							/>
 						);
 					}
 
 					ths.push(
-						<th colspan={1} rowspan={store.thead.length} class={getSelectionThClasses(rowSelection)}>
+						<th
+							key="selection"
+							colspan="1"
+							rowspan={props.thead.length}
+							class={this.getColumnClassName("selection", props.rowSelection)}
+						>
 							{component}
 						</th>
 					);
 				}
 
 				row.forEach((column, columnIndex) => {
-					let columnKey = getThKey(column, columnIndex);
 					let content = [];
 
 					content.push(
-						<div class={classes.elColumnTitle}>
-							{is.function(column.title) ? column.title(h, clone(column)) : column.title}
+						<div class={this.getColumnTitleClassName(column)}>
+							{is.function(column.title) ? column.title(h, clone(column), columnIndex) : column.title}
 						</div>
 					);
 
-					if (needRenderSorter(column)) {
+					if (this.maybeShowColumnSorter(column)) {
 						content.push(
-							<div class={classes.elColumnSorter}>
-								<i class={getSorterCaretClasses(column, "asc")}></i>
-								<i class={getSorterCaretClasses(column, "desc")}></i>
+							<div class={this.getColumnSorterClassName(column)}>
+								<i class={this.getColumnSorterCaretClassName("asc", column)}></i>
+								<i class={this.getColumnSorterCaretClassName("desc", column)}></i>
 							</div>
 						);
 					}
 
-					if (needRenderFilter(column)) {
+					if (this.maybeShowColumnFilter(column)) {
 						content.push(
-							<VuiTableFilter classNamePrefix={classNamePrefix} options={column.filter.options} multiple={column.filter.multiple} value={column.filter.value} locale={locale} onChange={value => handleFilter(column, value)} />
+							<VuiTableFilter
+								classNamePrefix={props.classNamePrefix}
+								options={column.filter.options}
+								multiple={column.filter.multiple}
+								value={column.filter.value}
+								locale={props.locale}
+								onChange={value => this.handleFilter(column, value)}
+							/>
 						);
 					}
 
 					ths.push(
-						<th key={columnKey} colspan={column.colSpan} rowspan={column.rowSpan} class={getThClasses(column)} onClick={() => handleSorter(column)}>
+						<th
+							key={column.key || columnIndex}
+							colspan={column.colSpan}
+							rowspan={column.rowSpan}
+							class={this.getColumnClassName(column)}
+							onClick={() => this.handleSort(column)}
+						>
 							{content}
 						</th>
 					);
@@ -324,15 +384,20 @@ const VuiTableThead = {
 	},
 
 	render(h) {
-		let { styles, drawColgroupChildren, drawTheadChildren } = this;
+		let { $props: props, renderColgroupChildren, renderTheadChildren } = this;
+		let styles = {
+			el: {
+				width: props.scroll && props.scroll.x > 0 ? `${props.scroll.x}px` : `100%`
+			}
+		};
 
 		return (
 			<table border="0" cellpadding="0" cellspacing="0" style={styles.el}>
 				<colgroup>
-					{this.drawColgroupChildren(h)}
+					{renderColgroupChildren(h)}
 				</colgroup>
 				<thead>
-					{this.drawTheadChildren(h)}
+					{renderTheadChildren(h)}
 				</thead>
 			</table>
 		);

@@ -1,6 +1,6 @@
 import VuiIcon from "vui-design/components/icon";
 import is from "vui-design/utils/is";
-import getScrollBarSize from "vui-design/utils/getScrollBarSize";
+import getScrollbarSize from "vui-design/utils/getScrollbarSize";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 if (typeof window !== "undefined") {
@@ -169,7 +169,7 @@ const VuiSider = {
 			maxWidth: `${width}`
 		};
 		styles.elChildrenScrollbar = {
-			marginRight: `-${getScrollBarSize()}px`
+			marginRight: `-${getScrollbarSize()}px`
 		};
 
 		// render
