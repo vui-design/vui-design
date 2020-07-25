@@ -419,11 +419,11 @@ const VuiTableTbody = {
 				props.colgroup.forEach((column, columnIndex) => {
 					let columnCellProps = {};
 
-					if (is.plainObject(column.getCellProps)) {
-						columnCellProps.attrs = column.getCellProps;
+					if (is.plainObject(column.cellProps)) {
+						columnCellProps.attrs = column.cellProps;
 					}
-					else if (is.function(column.getCellProps)) {
-						columnCellProps.attrs = column.getCellProps({
+					else if (is.function(column.cellProps)) {
+						columnCellProps.attrs = column.cellProps({
 							row: clone(row),
 							rowIndex: rowIndex,
 							column: clone(column),

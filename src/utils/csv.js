@@ -137,7 +137,7 @@ const csv = (columns, data, options) => {
     return content.join(newline);
 };
 
-csv.download = (filename, text) => {
+csv.export = (filename, text) => {
     if (has("ie") && has("ie") < 10) {
         const win = window.top.open("about:blank", "_blank");
 

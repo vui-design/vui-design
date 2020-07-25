@@ -329,6 +329,10 @@ const VuiTableThead = {
 				}
 
 				row.forEach((column, columnIndex) => {
+					if (column.colSpan === 0) {
+						return;
+					}
+
 					let content = [];
 
 					content.push(

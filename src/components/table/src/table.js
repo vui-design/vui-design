@@ -100,8 +100,8 @@ const VuiTable = {
 
 	watch: {
 		columns: {
-			handler(newest) {
-				let columns = utils.getDerivedColumns(newest);
+			handler(value) {
+				let columns = utils.getDerivedColumns(value);
 
 				this.state.columns = columns;
 				this.state.colgroup = utils.getDerivedColgroup(columns);
@@ -110,8 +110,8 @@ const VuiTable = {
 			}
 		},
 		data: {
-			handler(newest) {
-				let data = utils.getDerivedData(newest);
+			handler(value) {
+				let data = utils.getDerivedData(value);
 
 				this.state.data = data;
 				this.state.tbody = utils.getDerivedBody(this.state.columns, data);
@@ -119,11 +119,11 @@ const VuiTable = {
 		},
 		rowCollapsion: {
 			deep: true,
-			handler(newest) {
+			handler(value) {
 				let collapsedRowKeys = [];
 
-				if (newest && newest.value) {
-					collapsedRowKeys = clone(newest.value);
+				if (value && is.array(value.value)) {
+					collapsedRowKeys = clone(value.value);
 				}
 
 				this.state.collapsedRowKeys = collapsedRowKeys;
@@ -131,15 +131,18 @@ const VuiTable = {
 		},
 		rowSelection: {
 			deep: true,
-			handler(newest) {
+			handler(value) {
 				let selectedRowKeys = [];
 
-				if (newest) {
-					let isCustomizedMultiple = "multiple" in newest;
-					let isMultiple = !isCustomizedMultiple || newest.multiple;
+				if (value) {
+					let isCustomizedMultiple = "multiple" in value;
+					let isMultiple = !isCustomizedMultiple || value.multiple;
 
-					if (isMultiple && newest.value) {
-						selectedRowKeys = clone(newest.value);
+					if (isMultiple) {
+						selectedRowKeys = is.array(value.value) ? clone(value.value) : [];
+					}
+					else {
+						selectedRowKeys = is.string(value.value) || is.number(value.value) ? value.value : undefined;
 					}
 				}
 
@@ -149,8 +152,8 @@ const VuiTable = {
 	},
 
 	methods: {
-		// 下载或导出
-		download(options) {
+		// 导出
+		export(options) {
 			let { state } = this;
 			let settings = clone(options);
 
@@ -178,7 +181,7 @@ const VuiTable = {
 			}
 			else {
 				columns = utils.getFlattenedColumns(state.columns);
-				data = settings.original ? state.data : state.body;
+				data = settings.original ? state.data : state.tbody;
 			}
 
 			let content = csv(columns, data, settings);
@@ -187,7 +190,7 @@ const VuiTable = {
 				settings.callback(content);
 			}
 			else {
-				csv.download(settings.filename, content);
+				csv.export(settings.filename, content);
 			}
 		},
 		// 更新筛选列的状态
@@ -719,7 +722,7 @@ const VuiTable = {
 		let collapsedRowKeys = [];
 		let selectedRowKeys = [];
 
-		if (rowCollapsion && rowCollapsion.value) {
+		if (rowCollapsion && is.array(rowCollapsion.value)) {
 			collapsedRowKeys = clone(rowCollapsion.value);
 		}
 
@@ -727,8 +730,11 @@ const VuiTable = {
 			let isCustomizedMultiple = "multiple" in rowSelection;
 			let isMultiple = !isCustomizedMultiple || rowSelection.multiple;
 
-			if (isMultiple && rowSelection.value) {
-				selectedRowKeys = clone(rowSelection.value);
+			if (isMultiple) {
+				selectedRowKeys = is.array(rowSelection.value) ? clone(rowSelection.value) : [];
+			}
+			else {
+				selectedRowKeys = is.string(rowSelection.value) || is.number(rowSelection.value) ? rowSelection.value : undefined;
 			}
 		}
 

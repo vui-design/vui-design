@@ -19,7 +19,7 @@ import CellGroup from "./components/cell-group";
 import Cell from "./components/cell";
 import Divider from "./components/divider";
 // Navigation
-import ActionList from "./components/action-list";
+import ActionGroup from "./components/action-group";
 import Breadcrumb from "./components/breadcrumb";
 import BreadcrumbItem from "./components/breadcrumb-item";
 import Dropdown from "./components/dropdown";
@@ -114,7 +114,7 @@ const components = [
 	Cell,
 	Divider,
 	// Navigation
-	ActionList,
+	ActionGroup,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,
@@ -202,11 +202,11 @@ const install = function(Vue, options = {}) {
 		size: options.size || "",
 		zIndex: options.zIndex || 2000
 	};
-	Vue.prototype.$loading = Loading;
+	Vue.prototype.$notice = Notice;
 	Vue.prototype.$message = Message;
 	Vue.prototype.$modal = Modal;
-	Vue.prototype.$notice = Notice;
 	Vue.prototype.$spin = Spin;
+	Vue.prototype.$loading = Loading;
 };
 
 if (typeof window !== "undefined" && window.Vue) {
@@ -214,7 +214,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.2",
+	version: "1.0.8",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -239,7 +239,7 @@ export default {
 	Cell,
 	Divider,
 	// Navigation
-	ActionList,
+	ActionGroup,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,

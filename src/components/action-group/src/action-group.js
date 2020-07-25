@@ -2,8 +2,8 @@ import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getElementWithoutBlankspace from "vui-design/utils/getElementWithoutBlankspace";
 
-const VuiActionList = {
-	name: "vui-action-list",
+const VuiActionGroup = {
+	name: "vui-action-group",
 
 	props: {
 		classNamePrefix: {
@@ -12,7 +12,7 @@ const VuiActionList = {
 		},
 		align: {
 			type: String,
-			default: "center",
+			default: "left",
 			validator: value => ["left", "center", "right"].indexOf(value) > -1
 		},
 		gutter: {
@@ -38,7 +38,7 @@ const VuiActionList = {
 		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "action-list");
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "action-group");
 		let classes = {};
 
 		classes.el = {
@@ -80,4 +80,4 @@ const VuiActionList = {
 	}
 };
 
-export default VuiActionList;
+export default VuiActionGroup;

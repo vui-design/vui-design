@@ -8,6 +8,8 @@ import is from "vui-design/utils/is";
  * @param {Array} columns 列数据
  */
 const addDefaultPropsToColumns = (columns, parent) => {
+    let isSomeGrouped= columns.some(column => "children" in column);
+
     return columns.map(column => {
         // 填充 key 属性
         if (!("key" in column)) {
@@ -22,6 +24,11 @@ const addDefaultPropsToColumns = (columns, parent) => {
         // 设置列的默认水平对齐方式
         if (!column.align) {
             column.align = "left";
+        }
+
+        // 表头分组中，不允许自定义表头列合并
+        if (isSomeGrouped && "colSpan" in column) {
+            delete column.colSpan;
         }
 
         // 列排序
@@ -163,7 +170,7 @@ export const getDerivedHeader = columns => {
             column.colSpan = colSpan;
         }
         else {
-            column.colSpan = 1;
+            column.colSpan = "colSpan" in column ? column.colSpan : 1;
         }
     };
 
