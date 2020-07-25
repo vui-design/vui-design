@@ -22,4 +22,9 @@ gulp.task("fonts", function() {
 		.pipe(gulp.dest("../dist/style/fonts"));
 });
 
-gulp.task("default", ["css", "fonts"]);
+gulp.task("images", function() {
+	gulp.src("../src/style/components/images/**")
+		.pipe(gulp.dest("../dist/style/images"));
+});
+
+gulp.task("default", ["css", "fonts", "images"]);
