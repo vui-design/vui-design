@@ -6,7 +6,9 @@ const rename = require("gulp-rename");
 
 gulp.task("css", function() {
 	gulp.src("../src/style/index.less")
-		.pipe(less())
+		.pipe(less({
+			javascriptEnabled: true
+		}))
 		.pipe(autoprefixer({
 			browsers: ["last 2 versions", "ie > 8"]
 		}))
