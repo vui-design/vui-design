@@ -18,6 +18,7 @@ import Panel from "./components/panel";
 import CellGroup from "./components/cell-group";
 import Cell from "./components/cell";
 import Divider from "./components/divider";
+import Space from "./components/space";
 // Navigation
 import ActionGroup from "./components/action-group";
 import Breadcrumb from "./components/breadcrumb";
@@ -63,6 +64,7 @@ import Badge from "./components/badge";
 import Descriptions from "./components/descriptions";
 import Description from "./components/description";
 import Empty from "./components/empty";
+import Image from "./components/image";
 import List from "./components/list";
 import ListItem from "./components/list-item";
 import ListItemMeta from "./components/list-item-meta";
@@ -87,6 +89,7 @@ import Progress from "./components/progress";
 import Result from "./components/result";
 import Spin from "./components/spin";
 // Other
+import Backtop from "./components/backtop";
 import Loading from "./components/loading";
 import TransitionCollapse from "./components/transition-collapse";
 // Language
@@ -113,6 +116,7 @@ const components = [
 	CellGroup,
 	Cell,
 	Divider,
+	Space,
 	// Navigation
 	ActionGroup,
 	Breadcrumb,
@@ -158,6 +162,7 @@ const components = [
 	Descriptions,
 	Description,
 	Empty,
+	Image,
 	List,
 	ListItem,
 	ListItemMeta,
@@ -182,6 +187,7 @@ const components = [
 	Result,
 	Spin,
 	// Other
+	Backtop,
 	TransitionCollapse
 ];
 
@@ -214,7 +220,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.10",
+	version: "1.0.11",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -238,6 +244,7 @@ export default {
 	CellGroup,
 	Cell,
 	Divider,
+	Space,
 	// Navigation
 	ActionGroup,
 	Breadcrumb,
@@ -283,6 +290,7 @@ export default {
 	Descriptions,
 	Description,
 	Empty,
+	Image,
 	List,
 	ListItem,
 	ListItemMeta,
@@ -307,6 +315,7 @@ export default {
 	Result,
 	Spin,
 	// Other
+	Backtop,
 	Loading,
 	TransitionCollapse
 };

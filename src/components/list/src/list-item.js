@@ -1,5 +1,5 @@
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import getElementWithoutBlankspace from "vui-design/utils/getElementWithoutBlankspace";
+import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiListItem = {
 	name: "vui-list-item",
@@ -36,7 +36,7 @@ const VuiListItem = {
 
 		// actions
 		let actions = [];
-		let filteredActionList = getElementWithoutBlankspace(slots.actions);
+		let filteredActionList = getValidElements(slots.actions);
 
 		filteredActionList.forEach((action, index) => {
 			if (index > 0) {

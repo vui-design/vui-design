@@ -1,4 +1,4 @@
-import { hex2rgba, rgba2hex } from "vui-design/utils/color";
+import { hex2rgba, rgba2hex } from "vui-design/utils/colours";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTag = {

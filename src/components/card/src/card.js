@@ -4,7 +4,7 @@ import VuiCol from "vui-design/components/col";
 import VuiDivider from "vui-design/components/divider";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import getElementWithoutBlankspace from "vui-design/utils/getElementWithoutBlankspace";
+import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiCard = {
 	name: "vui-card",
@@ -238,7 +238,7 @@ const VuiCard = {
 
 		if (slots.actions) {
 			let actions = [];
-			let filteredActionList = getElementWithoutBlankspace(slots.actions);
+			let filteredActionList = getValidElements(slots.actions);
 
 			filteredActionList.forEach((action, index) => {
 				if (index > 0) {

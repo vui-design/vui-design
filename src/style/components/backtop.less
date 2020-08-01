@@ -1,0 +1,46 @@
+@vui-backtop: ~"@{vui}-backtop";
+
+.@{vui-backtop} {
+	position:fixed;
+	right:50px;
+	bottom:50px;
+	z-index:100;
+	cursor:pointer;
+	display:block;
+	width:@backtop-size;
+	height:@backtop-size;
+
+	&-content {
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		width:@backtop-size;
+		height:@backtop-size;
+		border-radius:@backtop-content-radius;
+		background-color:@backtop-content-background-color;
+		overflow:hidden;
+		color:@backtop-content-font-color;
+		font-size:@backtop-content-font-size;
+		transition:all 0.2s;
+
+		svg {
+			width:1em;
+			height:1em;
+			fill:currentColor;
+		}
+
+		&:hover {
+			background-color:@backtop-content-hover-background-color;
+		}
+	}
+
+	&-fade-enter-active,
+	&-fade-leave-active {
+		opacity:1;
+		transition:opacity @transition-duration;
+	}
+	&-fade-enter,
+	&-fade-leave-active {
+		opacity:0;
+	}
+}

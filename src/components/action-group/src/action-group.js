@@ -1,6 +1,6 @@
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import getElementWithoutBlankspace from "vui-design/utils/getElementWithoutBlankspace";
+import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiActionGroup = {
 	name: "vui-action-group",
@@ -58,7 +58,7 @@ const VuiActionGroup = {
 
 		// render
 		let children = [];
-		let actions = getElementWithoutBlankspace(slots.default);
+		let actions = getValidElements(slots.default);
 
 		actions.forEach((action, index) => {
 			if (index > 0) {

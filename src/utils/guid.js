@@ -1,4 +1,7 @@
-export default function() {
+/**
+* 用于生成全局唯一ID
+*/
+export default function guid() {
 	let result = "";
 
 	for (let i = 1; i <= 32; i++) {

@@ -1,11 +1,11 @@
-/**
-* 获取滚动条的尺寸
-* @param {Boolean} fresh 是否每次调用都重新计算滚动条的尺寸
-*/
 import is from "./is";
 
 let cached = undefined;
 
+/**
+* 获取滚动条的尺寸
+* @param {Boolean} fresh 是否每次调用都重新计算滚动条的尺寸
+*/
 export default function getScrollbarSize(fresh) {
 	if (is.server) {
 		return 0;

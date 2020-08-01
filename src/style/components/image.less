@@ -1,0 +1,45 @@
+@vui-image: ~"@{vui}-image";
+
+.@{vui-image} {
+	position:relative;
+	display:inline-block;
+	overflow:hidden;
+	vertical-align:middle;
+
+	&-filled,
+	&-placeholder,
+	&-error,
+	&-image {
+		width:100%;
+		height:100%;
+	}
+
+	&-placeholder,
+	&-error {
+		display:flex;
+		justify-content:center;
+		align-items:center;
+	}
+
+	&-placeholder {
+		background-color:@image-placeholder-background-color;
+		color:@image-placeholder-font-color;
+		font-size:@image-placeholder-font-size;
+	}
+
+	&-error {
+		background-color:@image-error-background-color;
+		color:@image-error-font-color;
+		font-size:@image-error-font-size;
+	}
+
+	&-fade-enter-active,
+	&-fade-leave-active {
+		opacity:1;
+		transition:opacity @transition-duration;
+	}
+	&-fade-enter,
+	&-fade-leave-active {
+		opacity:0;
+	}
+}

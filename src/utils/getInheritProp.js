@@ -5,18 +5,18 @@
 export default function getInheritProp(prop, defaultValue, parents) {
 	let i = 0;
 	let length = parents.length;
-	let result = defaultValue;
+	let value = defaultValue;
 
 	while (i < length) {
 		const parent = parents[i];
 
 		if (parent && parent[prop]) {
-			result = parent[prop];
+			value = parent[prop];
 			break;
 		}
 
 		i++;
 	}
 
-	return result;
+	return value;
 };

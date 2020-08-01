@@ -3,6 +3,9 @@ export default {
 		empty: {
 			description: "No Data"
 		},
+		image: {
+			error: "Loading failed"
+		},
 		cascader: {
 			placeholder: "Select",
 			notFound: "No Data"

@@ -3,6 +3,9 @@ export default {
 		empty: {
 			description: "暂无数据"
 		},
+		image: {
+			error: "加载失败"
+		},
 		cascader: {
 			placeholder: "请选择",
 			notFound: "暂无数据"

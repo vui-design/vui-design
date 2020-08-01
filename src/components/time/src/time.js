@@ -1,5 +1,6 @@
 import Locale from "vui-design/mixins/locale";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTime = {
 	name: "vui-time",
@@ -11,14 +12,12 @@ const VuiTime = {
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-time"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "relative",
-			validator(value) {
-				return ["relative", "date", "datetime"].indexOf(value) > -1;
-			}
+			validator: value => ["relative", "date", "datetime"].indexOf(value) > -1
 		},
 		time: {
 			type: [Date, String, Number],
@@ -31,8 +30,12 @@ const VuiTime = {
 	},
 
 	data() {
+		let state = {
+			text: ""
+		};
+
 		return {
-			children: ""
+			state
 		};
 	},
 
@@ -80,7 +83,6 @@ const VuiTime = {
 
 			return result;
 		},
-
 		getRelativeTime(value) {
 			let date = this.parse(value);
 			let now = new Date();
@@ -101,45 +103,45 @@ const VuiTime = {
 			let hours = Math.floor(diff / 3600000);
 			let minutes = Math.floor(diff / 60000);
 
-			if(years > 0){
+			if (years > 0) {
 				return years + (years === 1 ? this.t("vui.time.year") : this.t("vui.time.years")) + direction;
 			}
 
-			if(months > 0){
+			if (months > 0) {
 				return months + (months === 1 ? this.t("vui.time.month") : this.t("vui.time.months")) + direction;
 			}
 
-			if(days > 0){
+			if (days > 0) {
 				return days + (days === 1 ? this.t("vui.time.day") : this.t("vui.time.days")) + direction;
 			}
 
-			if(hours > 0){
+			if (hours > 0) {
 				return hours + (hours === 1 ? this.t("vui.time.hour") : this.t("vui.time.hours")) + direction;
 			}
 
-			if(minutes > 0){
+			if (minutes > 0) {
 				return minutes + (minutes === 1 ? this.t("vui.time.minute") : this.t("vui.time.minutes")) + direction;
 			}
 
 			return this.t("vui.time.just");
 		},
 		getDateTime(value, type) {
-			return this.format(this.parse(value), type);
+			return this.format(value, type);
 		},
-
 		setTimeout() {
-			let { type, time, interval, getRelativeTime, getDateTime } = this;
+			let { $props: props } = this;
+			let callback = () => this.setTimeout();
+			let duration = props.interval * 1000;
 
-			if (type === "relative") {
-				this.children = getRelativeTime(time);
+			if (props.type === "relative") {
+				this.state.text = this.getRelativeTime(props.time);
 			}
 			else {
-				this.children = getDateTime(time, type);
+				this.state.text = this.getDateTime(props.time, props.type);
 			}
 
-			this.timeout = setTimeout(() => {
-				this.setTimeout();
-			}, interval * 1000);
+			clearTimeout(this.timeout);
+			this.timeout = setTimeout(callback, duration);
 		},
 		clearTimeout() {
 			if (!this.timeout) {
@@ -147,6 +149,7 @@ const VuiTime = {
 			}
 
 			clearTimeout(this.timeout);
+			this.timeout = null;
 		}
 	},
 
@@ -159,13 +162,17 @@ const VuiTime = {
 	},
 
 	render() {
-		let { classNamePrefix, children } = this;
-		let classes = {
-			[`${classNamePrefix}`]: true
-		};
+		let { $props: props, state } = this;
 
+		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "time");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+
+		// render
 		return (
-			<label class={classes}>{children}</label>
+			<label class={classes.el}>{state.text}</label>
 		);
 	}
 };

@@ -483,12 +483,27 @@ const VuiTableTbody = {
 				);
 
 				if (props.rowCollapsion && this.isRowCollapsed(rowKey)) {
+					let content;
+
+					if (props.rowCollapsion.slot) {
+						let scopedSlot = vuiTable.$scopedSlots[props.rowCollapsion.slot];
+
+						content = scopedSlot && scopedSlot({
+							row: clone(row),
+							rowIndex: rowIndex
+						});
+					}
+					else if (props.rowCollapsion.render) {
+						content = props.rowCollapsion.render(h, {
+							row: clone(row),
+							rowIndex: rowIndex
+						});
+					}
+
 					children.push(
 						<tr class={this.getRowClassName("collapsion", row, rowIndex, rowKey)}>
 							<td></td>
-							<td colspan={props.colgroup.length}>
-								{props.rowCollapsion.render && props.rowCollapsion.render(h, clone(row), rowIndex, rowKey)}
-							</td>
+							<td colspan={props.colgroup.length}>{content}</td>
 						</tr>
 					);
 				}
