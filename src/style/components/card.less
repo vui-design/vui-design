@@ -11,14 +11,14 @@
 
 
 .vui-card { box-sizing:border-box; border-radius:@border-radius; background-color:@component-background-color; color:@font-color; font-size:@font-size; line-height:@line-height; transition:all 0.2s; }
-.vui-card-header { display:flex; align-items:center; box-sizing:border-box; border-bottom:1px solid #e6e6e6; padding:15px 20px; color:@font-primary-color; font-size:@font-size-lg; }
+.vui-card-header { display:flex; align-items:center; box-sizing:border-box; border-bottom:1px solid #f0f0f0; padding:16px 20px; color:@font-primary-color; font-size:@font-size-lg; }
 .vui-card-body { box-sizing:border-box; padding:20px; }
 .vui-card-body:before,
 .vui-card-body:after { content:""; display:table; }
 .vui-card-body:before {  }
 .vui-card-body:after { height:0; overflow:hidden; visibility:hidden; clear:both; }
-.vui-card-actions { display:flex; align-items:center; box-sizing:border-box; border-top:1px solid #e6e6e6; background-color:#f9f9f9; }
-.vui-card-footer { box-sizing:border-box; border-top:1px solid #e6e6e6; padding:20px; }
+.vui-card-actions { display:flex; align-items:center; box-sizing:border-box; border-top:1px solid #f0f0f0; background-color:#f9f9f9; }
+.vui-card-footer { box-sizing:border-box; border-top:1px solid #f0f0f0; padding:20px; }
 .vui-card-footer:before,
 .vui-card-footer:after { content:""; display:table; }
 .vui-card-footer:before {  }
@@ -33,12 +33,13 @@
 .vui-card-cover img { display:block; width:100%; }
 .vui-card-loading {  }
 .vui-card-loading .vui-card-loading-block { height:14px; border-radius:2px; background-image:linear-gradient(90deg,#f5f5f5 25%,#f0f0f0 50%,#f5f5f5 75%); background-size:400% 100%; margin:4px 0; animation:vuiCardLoading 1s ease infinite; }
-.vui-card-action { flex:1; cursor:pointer; display:block; width:0; padding:15px 0; overflow:hidden; color:@font-secondary-color; font-size:@font-size; text-align:center; transition:all 0.2s; }
+.vui-card-action { flex:1; cursor:pointer; display:block; width:0; padding:16px 0; overflow:hidden; color:@font-secondary-color; font-size:@font-size; text-align:center; transition:all 0.2s; }
 .vui-card-action:hover { color:@link-hover-color; }
 .vui-card-action:active { color:@link-active-color; }
+.vui-card-action-separator { display:block; width:1px; height:12px; background-color:#e6e6e6; background-image:linear-gradient(#f3f3f3,#e6e6e6,#f3f3f3); }
 
 
-.vui-card-bordered { border:1px solid #e6e6e6;  }
+.vui-card-bordered { border:1px solid #f0f0f0;  }
 
 
 .vui-card-shadow-never {  }

@@ -63,7 +63,7 @@ const VuiActionGroup = {
 		actions.forEach((action, index) => {
 			if (index > 0) {
 				children.push(
-					<div class={classes.elItemSeparator} style={styles.elItemSeparator}></div>
+					<i class={classes.elItemSeparator} style={styles.elItemSeparator}></i>
 				);
 			}
 

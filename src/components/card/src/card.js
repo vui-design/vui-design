@@ -1,7 +1,6 @@
 import VuiIcon from "vui-design/components/icon";
 import VuiRow from "vui-design/components/row";
 import VuiCol from "vui-design/components/col";
-import VuiDivider from "vui-design/components/divider";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
@@ -12,8 +11,7 @@ const VuiCard = {
 	components: {
 		VuiIcon,
 		VuiRow,
-		VuiCol,
-		VuiDivider
+		VuiCol
 	},
 
 	props: {
@@ -142,6 +140,7 @@ const VuiCard = {
 		classes.elLoadingBlock = `${classNamePrefix}-loading-block`;
 		classes.elActions = `${classNamePrefix}-actions`;
 		classes.elAction = `${classNamePrefix}-action`;
+		classes.elActionSeparator = `${classNamePrefix}-action-separator`;
 		classes.elFooter = `${classNamePrefix}-footer`;
 
 		// render
@@ -243,7 +242,7 @@ const VuiCard = {
 			filteredActionList.forEach((action, index) => {
 				if (index > 0) {
 					actions.push(
-						<VuiDivider type="vertical" margin={0} />
+						<i class={classes.elActionSeparator} />
 					);
 				}
 

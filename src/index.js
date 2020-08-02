@@ -90,6 +90,7 @@ import Result from "./components/result";
 import Spin from "./components/spin";
 // Other
 import Backtop from "./components/backtop";
+import Fullscreen from "./components/fullscreen";
 import Loading from "./components/loading";
 import TransitionCollapse from "./components/transition-collapse";
 // Language
@@ -188,6 +189,7 @@ const components = [
 	Spin,
 	// Other
 	Backtop,
+	Fullscreen,
 	TransitionCollapse
 ];
 
@@ -220,7 +222,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.11",
+	version: "1.0.12",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -317,5 +319,6 @@ export default {
 	// Other
 	Backtop,
 	Loading,
+	Fullscreen,
 	TransitionCollapse
 };
