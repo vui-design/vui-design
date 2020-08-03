@@ -51,7 +51,7 @@
 
 .vui-table-column-title { display:inline-block; color:#262626; font-weight:500; }
 
-.vui-table-column-collapsion { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:17px; height:17px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; vertical-align:-2px; color:#595959; user-select:none; outline:none; transition:border-color 0.2s, color 0.2s; }
+.vui-table-column-collapsion { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:17px; height:17px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin-top:-4px; vertical-align:middle; color:#595959; user-select:none; outline:none; transition:border-color 0.2s, color 0.2s; }
 .vui-table-column-collapsion:before { content:""; position:absolute; top:7px; left:3px; right:3px; display:block; height:1px; background-color:currentColor; transform:rotate(-180deg); transition:transform 0.2s; }
 .vui-table-column-collapsion:after { content:""; position:absolute; left:7px; top:3px; bottom:3px; display:block; width:1px; background-color:currentColor; transform:rotate(0deg); transition:transform 0.2s; }
 .vui-table-column-collapsion:hover { border-color:#4298f2; color:#4298f2; }
@@ -63,6 +63,8 @@
 .vui-table-column-collapsion.vui-table-column-collapsed {  }
 .vui-table-column-collapsion.vui-table-column-collapsed:before { transform:rotate(0deg); }
 .vui-table-column-collapsion.vui-table-column-collapsed:after { transform:rotate(90deg); }
+
+.vui-table-column-selection { margin-top:-4px; }
 
 .vui-table-column-sorter { display:inline-block; width:8px; height:10px; margin-left:10px; }
 .vui-table-column-sorter-caret { cursor:pointer; display:block; width:0; height:0; border-style:solid; }

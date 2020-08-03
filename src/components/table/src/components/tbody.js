@@ -387,21 +387,26 @@ const VuiTableTbody = {
 					let isCustomizedMultiple = "multiple" in props.rowSelection;
 					let isMultiple = !isCustomizedMultiple || props.rowSelection.multiple;
 					let isRowSelected = this.isRowSelected(rowKey);
-					let attributes = {};
+					let attributes = {
+						class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
+						on: {
+							change: checked => this.handleRowSelect(checked, row, rowIndex, rowKey)
+						}
+					};
 
 					if (is.function(props.rowSelection.getComponentProps)) {
-						attributes.props = props.rowSelection.getComponentProps(clone(row), rowIndex, rowKey);
+						let componentProps = props.rowSelection.getComponentProps(clone(row), rowIndex, rowKey);;
+
+						attributes.props = {
+							...componentProps,
+							checked: isRowSelected
+						};
 					}
-
-					attributes.props = {
-						...attributes.props,
-						class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
-						checked: isRowSelected
-					};
-
-					attributes.on = {
-						change: checked => this.handleRowSelect(checked, row, rowIndex, rowKey)
-					};
+					else {
+						attributes.props = {
+							checked: isRowSelected
+						};
+					}
 
 					tds.push(
 						<td key="selection" class={this.getColumnClassName("selection", props.rowSelection)}>

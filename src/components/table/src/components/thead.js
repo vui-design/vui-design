@@ -168,6 +168,14 @@ const VuiTableThead = {
 				[`${props.classNamePrefix}-column-title`]: true
 			};
 		},
+		getColumnSelectionClassName(column, checked) {
+			let { $props: props } = this;
+
+			return {
+				[`${props.classNamePrefix}-column-selection`]: true,
+				[`${props.classNamePrefix}-column-selected`]: checked
+			};
+		},
 		getColumnSorterClassName(column) {
 			let { $props: props } = this;
 
@@ -305,12 +313,15 @@ const VuiTableThead = {
 						});
 
 						let indeterminate = !!selectedLength && (selectedLength < rowLength);
-						let checked = selectedLength === rowLength;
+						let checked = rowLength > 0 && selectedLength === rowLength;
+						let disabled = rowLength === 0;
 
 						component = (
 							<VuiCheckbox
+								class={this.getColumnSelectionClassName(props.rowSelection, checked)}
 								indeterminate={indeterminate}
 								checked={checked}
+								disabled={disabled}
 								onChange={this.handleSelectAll}
 							/>
 						);
