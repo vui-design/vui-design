@@ -140,7 +140,7 @@ const VuiCard = {
 		classes.elLoadingBlock = `${classNamePrefix}-loading-block`;
 		classes.elActions = `${classNamePrefix}-actions`;
 		classes.elAction = `${classNamePrefix}-action`;
-		classes.elActionSeparator = `${classNamePrefix}-action-separator`;
+		classes.elActionDivider = `${classNamePrefix}-action-divider`;
 		classes.elFooter = `${classNamePrefix}-footer`;
 
 		// render
@@ -237,17 +237,17 @@ const VuiCard = {
 
 		if (slots.actions) {
 			let actions = [];
-			let filteredActionList = getValidElements(slots.actions);
+			let elements = getValidElements(slots.actions);
 
-			filteredActionList.forEach((action, index) => {
+			elements.forEach((element, index) => {
 				if (index > 0) {
 					actions.push(
-						<i class={classes.elActionSeparator} />
+						<i class={classes.elActionDivider} />
 					);
 				}
 
 				actions.push(
-					<div class={classes.elAction}>{action}</div>
+					<div class={classes.elAction}>{element}</div>
 				);
 			});
 

@@ -36,17 +36,17 @@ const VuiListItem = {
 
 		// actions
 		let actions = [];
-		let filteredActionList = getValidElements(slots.actions);
+		let elements = getValidElements(slots.actions);
 
-		filteredActionList.forEach((action, index) => {
+		elements.forEach((element, index) => {
 			if (index > 0) {
 				actions.push(
-					<li class={classes.elActionDivider}></li>
+					<i class={classes.elActionDivider} />
 				);
 			}
 
 			actions.push(
-				<li class={classes.elAction}>{action}</li>
+				<div class={classes.elAction}>{element}</div>
 			);
 		});
 
@@ -59,9 +59,9 @@ const VuiListItem = {
 					{slots.default}
 					{
 						actions.length > 0 && (
-							<ul class={classes.elActions}>
+							<div class={classes.elActions}>
 								{actions}
-							</ul>
+							</div>
 						)
 					}
 				</div>
@@ -72,9 +72,9 @@ const VuiListItem = {
 
 			if (actions.length > 0) {
 				children.push(
-					<ul class={classes.elActions}>
+					<div class={classes.elActions}>
 						{actions}
-					</ul>
+					</div>
 				);
 			}
 		}

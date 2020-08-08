@@ -46,12 +46,12 @@ const VuiActionGroup = {
 			[`${classNamePrefix}-${props.align}`]: props.align
 		};
 		classes.elItem = `${classNamePrefix}-item`;
-		classes.elItemSeparator = `${classNamePrefix}-item-separator`;
+		classes.elItemDivider = `${classNamePrefix}-item-divider`;
 
 		// style
 		let styles = {};
 
-		styles.elItemSeparator = {
+		styles.elItemDivider = {
 			marginLeft: gutter,
 			marginRight: gutter
 		};
@@ -63,7 +63,7 @@ const VuiActionGroup = {
 		actions.forEach((action, index) => {
 			if (index > 0) {
 				children.push(
-					<i class={classes.elItemSeparator} style={styles.elItemSeparator}></i>
+					<i class={classes.elItemDivider} style={styles.elItemDivider}></i>
 				);
 			}
 
