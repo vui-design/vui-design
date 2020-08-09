@@ -3,11 +3,11 @@
 
 // --------------------------------------------------
 // list
-.vui-list { position:relative; box-sizing:border-box; border-radius:2px; background-color:#fff; color:#595959; font-size:14px; line-height:1.42857143; transition:all 0.2s; }
+.vui-list { position:relative; box-sizing:border-box; border-radius:2px; color:#595959; font-size:14px; line-height:1.42857143; transition:all 0.2s; }
 .vui-list .vui-list-header { box-sizing:border-box; display:flex; align-items:center; color:#262626; }
 .vui-list .vui-list-body { box-sizing:border-box; }
 .vui-list .vui-list-body .vui-list-item:last-child {  }
-.vui-list .vui-list-body .vui-list-more { box-sizing:border-box; display:flex; justify-content:center; padding:14px 0; text-align:center; line-height:24px; transition:all 0.2s; }
+.vui-list .vui-list-body .vui-list-more { box-sizing:border-box; display:flex; justify-content:center; text-align:center; line-height:24px; transition:all 0.2s; }
 .vui-list .vui-list-footer { box-sizing:border-box; }
 
 
@@ -65,16 +65,19 @@
 .vui-list-small .vui-list-header,
 .vui-list-small .vui-list-footer,
 .vui-list-small .vui-list-item { padding-top:12px; padding-bottom:12px }
+.vui-list-small .vui-list-more { padding-top:12px; padding-bottom:12px; }
 
 .vui-list-medium {  }
 .vui-list-medium .vui-list-header,
 .vui-list-medium .vui-list-footer,
 .vui-list-medium .vui-list-item { padding-top:16px; padding-bottom:16px; }
+.vui-list-medium .vui-list-more { padding-top:16px; padding-bottom:16px; }
 
 .vui-list-large {  }
 .vui-list-large .vui-list-header,
 .vui-list-large .vui-list-footer,
 .vui-list-large .vui-list-item { padding-top:20px; padding-bottom:20px; }
+.vui-list-large .vui-list-more { padding-top:20px; padding-bottom:20px; }
 
 
 // --------------------------------------------------
@@ -109,6 +112,5 @@
 
 // --------------------------------------------------
 // list grid
-.vui-list-grid .vui-col { margin-bottom:16px; }
-.vui-list-grid .vui-col .vui-list-item { display:block; max-width:100%; border-bottom:none; padding-top:0; padding-bottom:0; }
+.vui-list-grid .vui-list-item { display:block; max-width:100%; border-bottom:none; padding-top:0; padding-bottom:0; }
 

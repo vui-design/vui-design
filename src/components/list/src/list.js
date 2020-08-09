@@ -59,10 +59,6 @@ const VuiList = {
 		data: {
 			type: Array,
 			default: undefined
-		},
-		loading: {
-			type: Boolean,
-			default: false
 		}
 	},
 
@@ -98,21 +94,26 @@ const VuiList = {
 		}
 
 		if (props.grid && props.data && props.data.length) {
+			let gutter = props.grid.gutter || 16;
+			let columns = props.grid.columns || 4;
 			let cols = [];
-			let span = Math.round(24 / props.grid.columns);
+			let span = Math.round(24 / columns);
 
 			props.data.forEach((item, index) => {
 				let scopedSlot = scopedSlots.item;
 				let content = scopedSlot && scopedSlot(item, index);
+				let style = {
+					marginTop: index < columns ? `0px` : `${gutter}px`
+				};
 
 				cols.push(
-					<VuiCol span={span}>{content}</VuiCol>
+					<VuiCol span={span} style={style}>{content}</VuiCol>
 				);
 			});
 
 			children.push(
 				<div class={classes.elBody}>
-					<VuiRow gutter={props.grid.gutter}>
+					<VuiRow gutter={gutter}>
 						{cols}
 					</VuiRow>
 				</div>

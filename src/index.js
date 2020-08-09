@@ -222,7 +222,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.17",
+	version: "1.0.19",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
