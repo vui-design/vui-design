@@ -23,45 +23,45 @@ const VuiDivider = {
 			default: "center",
 			validator: value => ["left", "center", "right"].indexOf(value) > -1
 		},
-		margin: {
+		gutter: {
 			type: [String, Number],
 			default: undefined
 		}
 	},
 
 	render() {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, type, dashed, orientation, margin } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "divider");
-		let withText = type === "horizontal" && slots.default;
+		let { $slots: slots, $props: props } = this;
+		let withText = props.type === "horizontal" && slots.default;
 
 		// class
+		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "divider");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-dashed`]: dashed,
+			[`${classNamePrefix}-${props.type}`]: props.type,
+			[`${classNamePrefix}-dashed`]: props.dashed,
 			[`${classNamePrefix}-with-text`]: withText,
-			[`${classNamePrefix}-with-text-${orientation}`]: withText
+			[`${classNamePrefix}-with-text-${props.orientation}`]: withText
 		};
 		classes.elText = `${classNamePrefix}-text`;
 
 		// style
 		let styles = {};
 
-		if (margin !== undefined) {
-			let value = is.string(margin) ? margin : `${margin}px`;
+		if (props.gutter !== undefined) {
+			let gutter = is.string(props.gutter) ? props.gutter : `${props.gutter}px`;
 
 			if (type === "horizontal") {
 				styles.el = {
-					marginTop: value,
-					marginBottom: value
+					marginTop: gutter,
+					marginBottom: gutter
 				};
 			}
 			else {
 				styles.el = {
-					marginLeft: value,
-					marginRight: value
+					marginLeft: gutter,
+					marginRight: gutter
 				};
 			}
 		}

@@ -18,9 +18,9 @@ import Panel from "./components/panel";
 import CellGroup from "./components/cell-group";
 import Cell from "./components/cell";
 import Divider from "./components/divider";
+import Separator from "./components/separator";
 import Space from "./components/space";
 // Navigation
-import ActionGroup from "./components/action-group";
 import Breadcrumb from "./components/breadcrumb";
 import BreadcrumbItem from "./components/breadcrumb-item";
 import Dropdown from "./components/dropdown";
@@ -117,9 +117,9 @@ const components = [
 	CellGroup,
 	Cell,
 	Divider,
+	Separator,
 	Space,
 	// Navigation
-	ActionGroup,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,
@@ -222,7 +222,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.19",
+	version: "1.0.20",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -246,9 +246,9 @@ export default {
 	CellGroup,
 	Cell,
 	Divider,
+	Separator,
 	Space,
 	// Navigation
-	ActionGroup,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,
