@@ -24,7 +24,7 @@
 .vui-table-header table { table-layout:fixed; min-width:100%; border-collapse:separate; border-spacing:0; }
 .vui-table-header tr { transition:background-color 0.2s; }
 .vui-table-header th { box-sizing:border-box; vertical-align:middle; white-space:normal; word-break:break-all; word-wrap:break-word; transition:background-color 0.2s, padding 0.2s; }
-.vui-table-header th.vui-table-column-with-collapsion {  }
+.vui-table-header th.vui-table-column-with-expansion {  }
 .vui-table-header th.vui-table-column-with-selection {  }
 .vui-table-header th.vui-table-column-with-sorter { cursor:pointer; user-select:none; }
 .vui-table-header th.vui-table-column-with-filter { position:relative; padding-right:30px !important; user-select:none; }
@@ -39,7 +39,7 @@
 .vui-table-body table { table-layout:fixed; min-width:100%; border-collapse:separate; border-spacing:0; }
 .vui-table-body tr { transition:background-color 0.2s; }
 .vui-table-body td { box-sizing:border-box; vertical-align:middle; white-space:normal; word-break:break-all; word-wrap:break-word; transition:background-color 0.2s, padding 0.2s; }
-.vui-table-body td.vui-table-column-with-collapsion {  }
+.vui-table-body td.vui-table-column-with-expansion {  }
 .vui-table-body td.vui-table-column-with-selection {  }
 .vui-table-body td.vui-table-column-with-sorter {  }
 .vui-table-body td.vui-table-column-with-filter {  }
@@ -51,18 +51,31 @@
 
 .vui-table-column-title { display:inline-block; color:#262626; font-weight:500; }
 
-.vui-table-column-collapsion { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:17px; height:17px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin-top:-4px; vertical-align:middle; color:#595959; user-select:none; outline:none; transition:border-color 0.2s, color 0.2s; }
-.vui-table-column-collapsion:before { content:""; position:absolute; top:7px; left:3px; right:3px; display:block; height:1px; background-color:currentColor; transform:rotate(-180deg); transition:transform 0.2s; }
-.vui-table-column-collapsion:after { content:""; position:absolute; left:7px; top:3px; bottom:3px; display:block; width:1px; background-color:currentColor; transform:rotate(0deg); transition:transform 0.2s; }
-.vui-table-column-collapsion:hover { border-color:#4298f2; color:#4298f2; }
-.vui-table-column-collapsion:hover:before {  }
-.vui-table-column-collapsion:hover:after {  }
-.vui-table-column-collapsion:active { border-color:#297ed8; color:#297ed8; }
-.vui-table-column-collapsion:active:before {  }
-.vui-table-column-collapsion:active:after {  }
-.vui-table-column-collapsion.vui-table-column-collapsed {  }
-.vui-table-column-collapsion.vui-table-column-collapsed:before { transform:rotate(0deg); }
-.vui-table-column-collapsion.vui-table-column-collapsed:after { transform:rotate(90deg); }
+.vui-table-column-switch { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:17px; height:17px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin-top:-4px; margin-right:8px; vertical-align:middle; color:#595959; user-select:none; outline:none; transition:border-color 0.2s, color 0.2s; }
+.vui-table-column-switch:before { content:""; position:absolute; top:7px; left:3px; right:3px; display:block; height:1px; background-color:currentColor; transform:rotate(-180deg); transition:transform 0.2s; }
+.vui-table-column-switch:after { content:""; position:absolute; left:7px; top:3px; bottom:3px; display:block; width:1px; background-color:currentColor; transform:rotate(0deg); transition:transform 0.2s; }
+.vui-table-column-switch:hover { border-color:#4298f2; color:#4298f2; }
+.vui-table-column-switch:hover:before {  }
+.vui-table-column-switch:hover:after {  }
+.vui-table-column-switch:active { border-color:#297ed8; color:#297ed8; }
+.vui-table-column-switch:active:before {  }
+.vui-table-column-switch:active:after {  }
+.vui-table-column-switch.vui-table-column-opened {  }
+.vui-table-column-switch.vui-table-column-opened:before { transform:rotate(0deg); }
+.vui-table-column-switch.vui-table-column-opened:after { transform:rotate(90deg); }
+
+.vui-table-column-expansion { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; width:17px; height:17px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin-top:-4px; vertical-align:middle; color:#595959; user-select:none; outline:none; transition:border-color 0.2s, color 0.2s; }
+.vui-table-column-expansion:before { content:""; position:absolute; top:7px; left:3px; right:3px; display:block; height:1px; background-color:currentColor; transform:rotate(-180deg); transition:transform 0.2s; }
+.vui-table-column-expansion:after { content:""; position:absolute; left:7px; top:3px; bottom:3px; display:block; width:1px; background-color:currentColor; transform:rotate(0deg); transition:transform 0.2s; }
+.vui-table-column-expansion:hover { border-color:#4298f2; color:#4298f2; }
+.vui-table-column-expansion:hover:before {  }
+.vui-table-column-expansion:hover:after {  }
+.vui-table-column-expansion:active { border-color:#297ed8; color:#297ed8; }
+.vui-table-column-expansion:active:before {  }
+.vui-table-column-expansion:active:after {  }
+.vui-table-column-expansion.vui-table-column-expanded {  }
+.vui-table-column-expansion.vui-table-column-expanded:before { transform:rotate(0deg); }
+.vui-table-column-expansion.vui-table-column-expanded:after { transform:rotate(90deg); }
 
 .vui-table-column-selection { margin-top:-4px; }
 
@@ -133,9 +146,9 @@
 
 /* striped table */
 .vui-table-striped .vui-table-body tr.vui-table-row-even td {  }
-.vui-table-striped .vui-table-body tr.vui-table-row-even + tr.vui-table-row-collapsed td {  }
+.vui-table-striped .vui-table-body tr.vui-table-row-even + tr.vui-table-row-expanded td {  }
 .vui-table-striped .vui-table-body tr.vui-table-row-odd td { background-color:#fafafa; }
-.vui-table-striped .vui-table-body tr.vui-table-row-odd + tr.vui-table-row-collapsed td { background-color:#fafafa; }
+.vui-table-striped .vui-table-body tr.vui-table-row-odd + tr.vui-table-row-expanded td { background-color:#fafafa; }
 
 /* table size */
 .vui-table-small .vui-table-header th { padding:8px 8px; }

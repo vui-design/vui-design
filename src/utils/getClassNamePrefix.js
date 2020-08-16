@@ -4,10 +4,10 @@ const vui = Vue.prototype.$vui;
 const customizedClassNamePrefix = (vui && vui.classNamePrefix) || "vui";
 
 /**
- * 获取组件 class 样式类名的前缀
+* 获取组件 class 样式类名的前缀
 * @param {String} classNamePrefix 自定义前缀
 * @param {String} componentName 组件名称
- */
+*/
 export default function getClassNamePrefix(classNamePrefix = customizedClassNamePrefix, componentName) {
 	return classNamePrefix + "-" + componentName;
 };

@@ -85,7 +85,7 @@ const VuiTableFilter = {
 
 	watch: {
 		value(value) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			this.state.value = props.multiple ? clone(value) : value;
 		}
@@ -101,10 +101,10 @@ const VuiTableFilter = {
 				return;
 			}
 
-			let { $refs: refs, $props: props } = this;
-			let reference = refs.trigger;
-			let target = refs.dropdown;
-			let settings = {
+			const { $refs: refs, $props: props } = this;
+			const reference = refs.trigger;
+			const target = refs.dropdown;
+			const settings = {
 				placement: props.placement
 			};
 
@@ -133,7 +133,7 @@ const VuiTableFilter = {
 			this.state.visible = !this.state.visible;
 		},
 		handleClose(e) {
-			let { $el: el, $refs: refs, $props: props } = this;
+			const { $el: el, $refs: refs, $props: props } = this;
 
 			if (!el.contains(refs.dropdown) && refs.dropdown.contains(e.target)) {
 				return;
@@ -146,14 +146,14 @@ const VuiTableFilter = {
 			this.state.value = value;
 		},
 		handleConfirm(e) {
-			let { $props: props, state } = this;
+			const { $props: props, state } = this;
 
 			this.state.visible = false;
 			this.state.value = props.multiple ? clone(state.value) : state.value;
 			this.$emit("change", props.multiple ? clone(this.state.value) : this.state.value);
 		},
 		handleClear(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			this.state.visible = false;
 			this.state.value = props.multiple ? [] : undefined;
@@ -168,13 +168,13 @@ const VuiTableFilter = {
 	},
 
 	render() {
-		let { $props: props, state, t: translate } = this;
-		let { handleToggle, handleClose, handleChange, handleConfirm, handleClear, handleBeforeEnter, handleAfterLeave } = this;
-		let portal = props.getPopupContainer();
+		const { $props: props, state, t: translate } = this;
+		const { handleToggle, handleClose, handleChange, handleConfirm, handleClear, handleBeforeEnter, handleAfterLeave } = this;
+		const portal = props.getPopupContainer();
 
 		// locale
-		let btnConfirmText = props.locale && props.locale.confirm ? props.locale.confirm : translate("vui.table.confirm");
-		let btnClearText = props.locale && props.locale.clear ? props.locale.clear : translate("vui.table.clear");
+		const btnConfirmText = props.locale && props.locale.confirm ? props.locale.confirm : translate("vui.table.confirm");
+		const btnClearText = props.locale && props.locale.clear ? props.locale.clear : translate("vui.table.clear");
 
 		// class
 		let classes = {};

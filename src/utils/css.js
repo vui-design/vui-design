@@ -1,7 +1,7 @@
 /**
- * (Internal) Applies css properties to an element, similar to the jQuery
- * While this helper does assist with vendor prefixed property names, it does not perform any manipulation of values prior to setting styles.
- */
+* (Internal) Applies css properties to an element, similar to the jQuery
+* While this helper does assist with vendor prefixed property names, it does not perform any manipulation of values prior to setting styles.
+*/
 let cssPrefixes = ["Webkit", "Moz", "O", "ms"];
 let cssProperties = {};
 

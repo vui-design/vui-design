@@ -1,7 +1,7 @@
 /**
- * Parse or format dates
- * @class fecha
- */
+* Parse or format dates
+* @class fecha
+*/
 var fecha = {};
 var token = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
 var twoDigits = /\d\d?/;

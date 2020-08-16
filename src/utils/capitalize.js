@@ -1,6 +1,6 @@
 /**
- * 首字母大写
- */
+* 首字母大写
+*/
 export default function firstUpperCase(str) {
 	str = str.toString();
 

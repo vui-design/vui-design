@@ -1,11 +1,12 @@
+import VuiEmpty from "vui-design/components/empty";
 import VuiCheckbox from "vui-design/components/checkbox";
 import VuiRadio from "vui-design/components/radio";
-import VuiEmpty from "vui-design/components/empty";
 import Locale from "vui-design/mixins/locale";
 import is from "vui-design/utils/is";
-import noop from "vui-design/utils/noop";
 import clone from "vui-design/utils/clone";
+import flatten from "vui-design/utils/flatten";
 import getTargetByPath from "vui-design/utils/getTargetByPath";
+import utils from "../utils";
 
 const VuiTableTbody = {
 	name: "vui-table-tbody",
@@ -23,9 +24,9 @@ const VuiTableTbody = {
 	},
 
 	components: {
+		VuiEmpty,
 		VuiCheckbox,
-		VuiRadio,
-		VuiEmpty
+		VuiRadio
 	},
 
 	mixins: [
@@ -69,7 +70,11 @@ const VuiTableTbody = {
 			type: [String, Function],
 			default: undefined
 		},
-		rowCollapsion: {
+		rowTreeview: {
+			type: Object,
+			default: undefined
+		},
+		rowExpansion: {
 			type: Object,
 			default: undefined
 		},
@@ -81,7 +86,11 @@ const VuiTableTbody = {
 			type: [String, Number],
 			default: undefined
 		},
-		collapsedRowKeys: {
+		openedRowKeys: {
+			type: Array,
+			default: () => []
+		},
+		expandedRowKeys: {
 			type: Array,
 			default: () => []
 		},
@@ -101,28 +110,36 @@ const VuiTableTbody = {
 
 	methods: {
 		isRowHovered(rowKey) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			return props.hoveredRowKey === rowKey;
 		},
-		isRowCollapsed(rowKey) {
-			let { $props: props } = this;
+		isRowOpened(rowKey) {
+			const { $props: props } = this;
 
-			if (!props.rowCollapsion) {
+			if (!props.rowTreeview) {
 				return false;
 			}
 
-			return props.collapsedRowKeys.indexOf(rowKey) > -1;
+			return props.openedRowKeys.indexOf(rowKey) > -1;
+		},
+		isRowExpanded(rowKey) {
+			const { $props: props } = this;
+
+			if (!props.rowExpansion) {
+				return false;
+			}
+
+			return props.expandedRowKeys.indexOf(rowKey) > -1;
 		},
 		isRowSelected(rowKey) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (!props.rowSelection) {
 				return false;
 			}
 
-			let isCustomizedMultiple = "multiple" in props.rowSelection;
-			let isMultiple = !isCustomizedMultiple || this.rowSelection.multiple;
+			const isMultiple = utils.getSelectionMultiple(props.rowSelection);
 
 			if (isMultiple) {
 				return props.selectedRowKeys.indexOf(rowKey) > -1;
@@ -132,18 +149,18 @@ const VuiTableTbody = {
 			}
 		},
 		getRowClassName(type, row, rowIndex, rowKey) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
-			if (type === "collapsion") {
+			if (type === "expansion") {
 				return {
 					[`${props.classNamePrefix}-row`]: true,
-					[`${props.classNamePrefix}-row-collapsed`]: true
+					[`${props.classNamePrefix}-row-expanded`]: true
 				};
 			}
 			else {
-				let stripe = rowIndex % 2 === 0 ? "even" : "odd";
-				let isHovered = this.isRowHovered(rowKey);
-				let isSelected = this.isRowSelected(rowKey);
+				const stripe = rowIndex % 2 === 0 ? "even" : "odd";
+				const isHovered = this.isRowHovered(rowKey);
+				const isSelected = this.isRowSelected(rowKey);
 				let className;
 
 				if (is.string(props.rowClassName)) {
@@ -163,14 +180,14 @@ const VuiTableTbody = {
 			}
 		},
 		getColumnClassName(type, column, columnKey, row, rowKey) {
-			let { $props: props } = this;
-			let ellipsis = column.ellipsis;
-			let align = column.align || "center";
-			let className = column.className;
+			const { $props: props } = this;
+			const ellipsis = column.ellipsis;
+			const align = column.align || "center";
+			const className = column.className;
 
-			if (type === "collapsion") {
+			if (type === "expansion") {
 				return {
-					[`${props.classNamePrefix}-column-with-collapsion`]: true,
+					[`${props.classNamePrefix}-column-with-expansion`]: true,
 					[`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
 					[`${props.classNamePrefix}-column-align-${align}`]: align,
 					[`${className}`]: className
@@ -186,8 +203,9 @@ const VuiTableTbody = {
 			}
 			else {
 				let maybeShowColumn = false;
-				let maybeShowColumnSorter = column.sorter;
-				let maybeShowColumnFilter = column.filter;
+				const maybeShowColumnSorter = column.sorter;
+				const maybeShowColumnFilter = column.filter;
+
 				let customizedClassName;
 
 				if (!props.fixed && !column.fixed) {
@@ -215,16 +233,24 @@ const VuiTableTbody = {
 				};
 			}
 		},
-		getColumnCollapsionClassName(column, collapsed) {
-			let { $props: props } = this;
+		getColumnSwitchClassName(column, opened) {
+			const { $props: props } = this;
 
 			return {
-				[`${props.classNamePrefix}-column-collapsion`]: true,
-				[`${props.classNamePrefix}-column-collapsed`]: collapsed
+				[`${props.classNamePrefix}-column-switch`]: true,
+				[`${props.classNamePrefix}-column-opened`]: opened
+			};
+		},
+		getColumnExpansionClassName(column, expanded) {
+			const { $props: props } = this;
+
+			return {
+				[`${props.classNamePrefix}-column-expansion`]: true,
+				[`${props.classNamePrefix}-column-expanded`]: expanded
 			};
 		},
 		getColumnSelectionClassName(column, selected) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			return {
 				[`${props.classNamePrefix}-column-selection`]: true,
@@ -232,106 +258,150 @@ const VuiTableTbody = {
 			};
 		},
 		handleRowMouseenter(event, row, rowIndex, rowKey) {
-			let { vuiTable } = this;
+			const { vuiTable } = this;
 
 			vuiTable.handleRowMouseenter(row, rowIndex, rowKey);
 		},
 		handleRowMouseleave(event, row, rowIndex, rowKey) {
-			let { vuiTable } = this;
+			const { vuiTable } = this;
 
 			vuiTable.handleRowMouseleave(row, rowIndex, rowKey);
 		},
 		handleRowClick(event, row, rowIndex, rowKey) {
-			let { vuiTable, $props: props } = this;
-			let { rowCollapsion } = props;
+			const { vuiTable, $props: props } = this;
+			const { rowTreeview, rowExpansion } = props;
 
 			vuiTable.handleRowClick(row, rowIndex, rowKey);
 
-			if (rowCollapsion && rowCollapsion.clickRowToCollapse) {
-				let isRowCollapsable = is.function(rowCollapsion.rowCollapsable) ? rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
+			if (rowTreeview && rowTreeview.clickRowToToggle) {
+				const isTogglable = utils.getRowTogglable(row, rowTreeview);
 
-				if (!isRowCollapsable) {
+				if (!isTogglable) {
 					return;
 				}
 
-				let e = event || window.event;
-				let target = e.target || e.srcElement;
-				let isIgnoreElements = is.function(rowCollapsion.ignoreElements) ? rowCollapsion.ignoreElements(target) : false;
+				const isIgnoreElements = utils.isIgnoreElements(rowTreeview.ignoreElements, event);
 
 				if (isIgnoreElements) {
 					return;
 				}
 
-				vuiTable.handleRowCollapse(row, rowIndex, rowKey);
+				vuiTable.handleRowToggle(row, rowIndex, rowKey);
+			}
+
+			if (rowExpansion && rowExpansion.clickRowToExpand) {
+				const isExpandable = utils.getRowExpandable(row, rowKey, rowExpansion);
+
+				if (!isExpandable) {
+					return;
+				}
+
+				const isIgnoreElements = utils.isIgnoreElements(rowExpansion.ignoreElements, event);
+
+				if (isIgnoreElements) {
+					return;
+				}
+
+				vuiTable.handleRowExpand(row, rowIndex, rowKey);
 			}
 		},
 		handleRowDblclick(event, row, rowIndex, rowKey) {
-			let { vuiTable } = this;
+			const { vuiTable } = this;
 
 			vuiTable.handleRowDblclick(row, rowIndex, rowKey);
 		},
-		handleRowCollapse(event, row, rowIndex, rowKey) {
-			let { vuiTable, $props: props } = this;
-			let { rowCollapsion } = props;
+		handleRowToggle(event, row, rowIndex, rowKey) {
+			const { vuiTable, $props: props } = this;
+			const { rowTreeview } = props;
 
-			if (!rowCollapsion) {
+			if (!rowTreeview) {
 				return;
 			}
 
-			if (rowCollapsion.clickRowToCollapse) {
+			if (rowTreeview.clickRowToToggle) {
 				return;
 			}
 
-			let isRowCollapsable = is.function(rowCollapsion.rowCollapsable) ? rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
+			const isTogglable = utils.getRowTogglable(row, rowTreeview);
 
-			if (!isRowCollapsable) {
+			if (!isTogglable) {
 				return;
 			}
 
-			vuiTable.handleRowCollapse(row, rowIndex, rowKey);
+			vuiTable.handleRowToggle(row, rowIndex, rowKey);
+		},
+		handleRowExpand(event, row, rowIndex, rowKey) {
+			const { vuiTable, $props: props } = this;
+			const { rowExpansion } = props;
+
+			if (!rowExpansion) {
+				return;
+			}
+
+			if (rowExpansion.clickRowToExpand) {
+				return;
+			}
+
+			const isExpandable = utils.getRowExpandable(row, rowKey, rowExpansion);
+
+			if (!isExpandable) {
+				return;
+			}
+
+			vuiTable.handleRowExpand(row, rowIndex, rowKey);
 		},
 		handleRowSelect(checked, row, rowIndex, rowKey) {
-			let { vuiTable } = this;
+			const { vuiTable } = this;
 
 			vuiTable.handleRowSelect(checked, row, rowIndex, rowKey);
 		},
-		renderColgroupChildren(h) {
-			let { $props: props } = this;
-			let children = [];
+		getColgroup(h) {
+			const { $props: props } = this;
+			let cols = [];
 
-			if (props.rowCollapsion) {
-				let { width = 50 } = props.rowCollapsion;
+			this.gatherColgroupChildren(h, cols, props.colgroup);
 
-				children.push(
-					<col key="collapsion" width={width} />
+			return (
+				<colgroup>{cols}</colgroup>
+			);
+		},
+		gatherColgroupChildren(h, cols, columns) {
+			const { $props: props } = this;
+
+			if (props.rowExpansion) {
+				const { width = 50 } = props.rowExpansion;
+
+				cols.push(
+					<col key="expansion" width={width} />
 				);
 			}
 
 			if (props.rowSelection) {
-				let { width = 50 } = props.rowSelection;
+				const { width = 50 } = props.rowSelection;
 
-				children.push(
+				cols.push(
 					<col key="selection" width={width} />
 				);
 			}
 
-			props.colgroup.forEach((column, columnIndex) => {
-				children.push(
-					<col key={column.key || columnIndex} width={column.width} />
+			columns.forEach((column, columnIndex) => {
+				const columnKey = utils.getColumnKey(column);
+
+				cols.push(
+					<col key={columnKey} width={column.width} />
 				);
 			});
-
-			return children;
 		},
-		renderTbodyChildren(h) {
-			let { vuiTable, $props: props } = this;
-			let children = [];
+		getTbody(h) {
+			const { $props: props } = this;
+			let trs = [];
 
 			if (props.tbody.length === 0) {
+				const { locale } = props;
+				const description = locale && locale.empty ? locale.empty : this.t("vui.table.empty");
 				let colspan = 0;
-				let description = props.locale && props.locale.empty ? props.locale.empty : this.t("vui.table.empty");
 
-				if (props.rowCollapsion) {
+				if (props.rowExpansion) {
 					colspan++;
 				}
 
@@ -341,94 +411,121 @@ const VuiTableTbody = {
 
 				colspan += props.colgroup.length;
 
-				return (
+				trs.push(
 					<tr>
 						<td colspan={colspan}>
-							<VuiEmpty description={description} style="padding: 30px 0;" />
+							<VuiEmpty description={description} style="padding: 40px 0;" />
 						</td>
 					</tr>
 				);
 			}
+			else {
+				this.rowIndex = 0;
+				this.gatherTbodyChildren(h, trs, 1, props.tbody);
+			}
 
-			props.tbody.forEach((row, rowIndex) => {
-				let rowKey;
+			return (
+				<tbody>{trs}</tbody>
+			);
+		},
+		gatherTbodyChildren(h, trs, level, rows) {
+			const { vuiTable, $props: props } = this;
+			const { $scopedSlots: scopedSlots } = vuiTable;
 
-				if (is.string(props.rowKey)) {
-					rowKey = row[props.rowKey];
-				}
-				else if (is.function(props.rowKey)) {
-					rowKey = props.rowKey(clone(row), rowIndex);
-				}
-				else {
-					rowKey = rowIndex;
-				}
-
+			rows.forEach(row => {
+				const rowKey = utils.getRowKey(row, props.rowKey);
+				const rowIndex = this.rowIndex;
 				let tds = [];
 
-				if (props.rowCollapsion) {
-					let isRowCollapsable = is.function(props.rowCollapsion.rowCollapsable) ? props.rowCollapsion.rowCollapsable(row, rowIndex, rowKey) : true;
-					let isRowCollapsed = this.isRowCollapsed(rowKey);
+				if (props.rowExpansion) {
+					const isExpandable = utils.getRowExpandable(row, rowKey, props.rowExpansion);
+					const isRowExpanded = this.isRowExpanded(rowKey);
+					let btnExpansion;
+
+					if (isExpandable) {
+						const btnExpansionAttributes = {
+							class: this.getColumnExpansionClassName(props.rowExpansion, isRowExpanded),
+							on: {
+								click: e => this.handleRowExpand(e, row, rowIndex, rowKey)
+							}
+						};
+
+						btnExpansion = (
+							<button {...btnExpansionAttributes}></button>
+						);
+					}
 
 					tds.push(
-						<td key="collapsion" class={this.getColumnClassName("collapsion", props.rowCollapsion)}>
-							{
-								isRowCollapsable ? (
-									<button
-										class={this.getColumnCollapsionClassName(props.rowCollapsion, isRowCollapsed)}
-										onClick={e => this.handleRowCollapse(e, row, rowIndex, rowKey)}
-									></button>
-								) : null
-							}
+						<td key="expansion" class={this.getColumnClassName("expansion", props.rowExpansion)}>
+							{btnExpansion}
 						</td>
 					);
 				}
 
 				if (props.rowSelection) {
-					let isCustomizedMultiple = "multiple" in props.rowSelection;
-					let isMultiple = !isCustomizedMultiple || props.rowSelection.multiple;
-					let isRowSelected = this.isRowSelected(rowKey);
-					let attributes = {
+					const isMultiple = utils.getSelectionMultiple(props.rowSelection);
+					const isRowSelected = this.isRowSelected(rowKey);
+					const componentProps = utils.getSelectionComponentProps(row, rowKey, props.rowSelection);
+					let btnSelection;
+					let btnSelectionAttributes = {
 						class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
+						props: {
+							checked: isRowSelected
+						},
 						on: {
 							change: checked => this.handleRowSelect(checked, row, rowIndex, rowKey)
 						}
 					};
 
-					if (is.function(props.rowSelection.getComponentProps)) {
-						let componentProps = props.rowSelection.getComponentProps(clone(row), rowIndex, rowKey);;
+					if (props.rowTreeview && isMultiple && !props.rowSelection.strictly) {
+						const childrenKey = props.rowTreeview.children;
+						const children = utils.getRowChildren(row, childrenKey);
 
-						attributes.props = {
+						if (is.array(children) && children.length > 0) {
+							const status = utils.getSelectionComponentStatus(flatten(children, childrenKey, true), {
+								rowKey: props.rowKey,
+								rowSelection: props.rowSelection,
+								selectedRowKeys: props.selectedRowKeys
+							});
+
+							btnSelectionAttributes.props.indeterminate = status.indeterminate;
+						}
+					}
+
+					if (componentProps) {
+						btnSelectionAttributes.props = {
 							...componentProps,
-							checked: isRowSelected
+							...btnSelectionAttributes.props
 						};
 					}
+
+					if (isMultiple) {
+						btnSelection = (
+							<VuiCheckbox {...btnSelectionAttributes} />
+						);
+					}
 					else {
-						attributes.props = {
-							checked: isRowSelected
-						};
+						btnSelection = (
+							<VuiRadio {...btnSelectionAttributes} />
+						);
 					}
 
 					tds.push(
 						<td key="selection" class={this.getColumnClassName("selection", props.rowSelection)}>
-							{
-								isMultiple ? (
-									<VuiCheckbox {...attributes} />
-								) : (
-									<VuiRadio {...attributes} />
-								)
-							}
+							{btnSelection}
 						</td>
 					);
 				}
 
 				props.colgroup.forEach((column, columnIndex) => {
+					const cellProps = column.cellProps;
 					let columnCellProps = {};
 
-					if (is.plainObject(column.cellProps)) {
-						columnCellProps.attrs = column.cellProps;
+					if (is.plainObject(cellProps)) {
+						columnCellProps.attrs = cellProps;
 					}
-					else if (is.function(column.cellProps)) {
-						columnCellProps.attrs = column.cellProps({
+					else if (is.function(cellProps)) {
+						columnCellProps.attrs = cellProps({
 							row: clone(row),
 							rowIndex: rowIndex,
 							column: clone(column),
@@ -440,43 +537,79 @@ const VuiTableTbody = {
 						return;
 					}
 
-					let columnKey = column.key || columnIndex;
+					let btnSwitches = [];
+
+					if (props.rowTreeview && columnIndex === 0) {
+						const lastLevelIndex = level - 1;
+
+						for (let i = 0; i < level; i++) {
+							const childrenKey = props.rowTreeview.children;
+							const children = utils.getRowChildren(row, childrenKey);
+							let btnSwitchAttributes;
+
+							if (i === lastLevelIndex && is.array(children) && children.length > 0) {
+								const isRowOpened = this.isRowOpened(rowKey);
+
+								btnSwitchAttributes = {
+									class: this.getColumnSwitchClassName(props.rowTreeview, isRowOpened),
+									on: {
+										click: e => this.handleRowToggle(e, row, rowIndex, rowKey)
+									}
+								};
+							}
+							else {
+								btnSwitchAttributes = {
+									class: this.getColumnSwitchClassName(props.rowTreeview, false),
+									style: {
+										visibility: "hidden"
+									}
+								};
+							}
+
+							btnSwitches.push(
+								<button {...btnSwitchAttributes}></button>
+							);
+						}
+					}
+
+					const columnKey = utils.getColumnKey(column);
 					let content;
 
 					if (column.slot) {
-						let scopedSlot = vuiTable.$scopedSlots[column.slot];
+						const scopedSlot = scopedSlots[column.slot];
 
 						content = scopedSlot && scopedSlot({
-							column: clone(column),
-							columnIndex: columnIndex,
 							row: clone(row),
-							rowIndex: rowIndex
+							rowIndex: rowIndex,
+							column: clone(column),
+							columnIndex: columnIndex
 						});
 					}
 					else if (column.render) {
 						content = column.render(h, {
-							column: clone(column),
-							columnIndex: columnIndex,
 							row: clone(row),
-							rowIndex: rowIndex
+							rowIndex: rowIndex,
+							column: clone(column),
+							columnIndex: columnIndex
 						});
 					}
 					else {
-						let target = getTargetByPath(row, column.dataIndex);
+						const target = getTargetByPath(row, column.dataIndex);
 
 						content = target.value;
 					}
 
 					tds.push(
 						<td key={columnKey} class={this.getColumnClassName("", column, columnKey, row, rowKey)} {...columnCellProps}>
+							{btnSwitches}
 							{content}
 						</td>
 					);
 				});
 
-				children.push(
+				trs.push(
 					<tr
-						key={rowKey || rowIndex}
+						key={rowKey}
 						class={this.getRowClassName("", row, rowIndex, rowKey)}
 						onMouseenter={e => this.handleRowMouseenter(e, row, rowIndex, rowKey)}
 						onMouseleave={e => this.handleRowMouseleave(e, row, rowIndex, rowKey)}
@@ -487,40 +620,49 @@ const VuiTableTbody = {
 					</tr>
 				);
 
-				if (props.rowCollapsion && this.isRowCollapsed(rowKey)) {
+				if (props.rowExpansion && this.isRowExpanded(rowKey)) {
 					let content;
 
-					if (props.rowCollapsion.slot) {
-						let scopedSlot = vuiTable.$scopedSlots[props.rowCollapsion.slot];
+					if (props.rowExpansion.slot) {
+						const scopedSlot = scopedSlots[props.rowExpansion.slot];
 
 						content = scopedSlot && scopedSlot({
 							row: clone(row),
 							rowIndex: rowIndex
 						});
 					}
-					else if (props.rowCollapsion.render) {
-						content = props.rowCollapsion.render(h, {
+					else if (props.rowExpansion.render) {
+						content = props.rowExpansion.render(h, {
 							row: clone(row),
 							rowIndex: rowIndex
 						});
 					}
 
-					children.push(
-						<tr class={this.getRowClassName("collapsion", row, rowIndex, rowKey)}>
+					trs.push(
+						<tr key={rowKey + "-expansion"} class={this.getRowClassName("expansion", row, rowIndex, rowKey)}>
 							<td></td>
 							<td colspan={props.colgroup.length}>{content}</td>
 						</tr>
 					);
 				}
-			});
 
-			return children;
+				this.rowIndex++;
+
+				if (props.rowTreeview && this.isRowOpened(rowKey)) {
+					const childrenKey = props.rowTreeview.children;
+					const children = utils.getRowChildren(row, childrenKey);
+
+					if (is.array(children) && children.length > 0) {
+						this.gatherTbodyChildren(h, trs, level + 1, children);
+					}
+				}
+			});
 		}
 	},
 
 	render(h) {
-		let { $props: props, renderColgroupChildren, renderTbodyChildren } = this;
-		let styles = {
+		const { $props: props } = this;
+		const styles = {
 			el: {
 				width: props.scroll && props.scroll.x > 0 ? `${props.scroll.x}px` : `100%`
 			}
@@ -528,12 +670,8 @@ const VuiTableTbody = {
 
 		return (
 			<table border="0" cellpadding="0" cellspacing="0" style={styles.el}>
-				<colgroup>
-					{renderColgroupChildren(h)}
-				</colgroup>
-				<tbody>
-					{renderTbodyChildren(h)}
-				</tbody>
+				{this.getColgroup(h)}
+				{this.getTbody(h)}
 			</table>
 		);
 	}
