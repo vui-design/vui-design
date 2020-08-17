@@ -1,18 +1,18 @@
-import clone from "vui-design/utils/clone";
 import guid from "vui-design/utils/guid";
+import clone from "vui-design/utils/clone";
 import flatten from "vui-design/utils/flatten";
 import getTargetByPath from "vui-design/utils/getTargetByPath";
 import is from "vui-design/utils/is";
 
-// 
-const isIgnoreElements = (ignoreElements, event) => {
+// 判断事件源元素是否需要被忽略
+const isIgnoreElements = (event, predicate) => {
     const e = event || window.event;
     const element = e.target || e.srcElement;
 
-    return is.function(ignoreElements) ? ignoreElements(element) : false;
+    return is.function(predicate) ? predicate(element) : false;
 };
 
-// 获取列数据的唯一 key 值
+// 获取列数据的唯一键值
 const getColumnKey = (column) => {
     let columnKey;
 
@@ -29,7 +29,7 @@ const getColumnKey = (column) => {
     return columnKey;
 };
 
-// 获取行数据的唯一 key 值
+// 获取行数据的唯一键值
 const getRowKey = (row, property) => {
     let rowKey;
 
@@ -53,28 +53,27 @@ const getRowChildren = (row, childrenKey = "children") => {
     return row[childrenKey];
 };
 
-// 获取行的可展开性（用于树形结构，根据子行数量判断是否允许展开）
+// 判断给定行是否可展开（用于树形结构，根据子行数量判断是否允许展开）
 const getRowTogglable = (row, rowTreeview) => {
-    const childrenKey = rowTreeview.children;
-    const children = getRowChildren(row, childrenKey);
+    const children = getRowChildren(row, rowTreeview.children);
 
     return is.array(children) && children.length > 0;
 };
 
-// 获取行的可展开性（用于展开功能，根据用户配置判断是否允许展开）
+// 判断给定行是否可展开（用于展开功能，根据用户配置判断是否允许展开）
 const getRowExpandable = (row, rowKey, rowExpansion) => {
     let expandable = true;
-    const checker = rowExpansion.expandable;
+    const predicate = rowExpansion.expandable;
 
-    if (is.function(checker)) {
-        expandable = checker(clone(row), rowKey);
+    if (is.function(predicate)) {
+        expandable = predicate(clone(row), rowKey);
     }
 
     return expandable;
 };
 
 // 根据树形表格嵌套关系获取一维映射数组
-const getTreeview = (rows, rowKey, childrenKey = "children", parentKey, array = []) => {
+const getTreemap = (rows, rowKey, childrenKey = "children", parentKey, array = []) => {
     rows.forEach(row => {
         const key = getRowKey(row, rowKey);
 
@@ -85,16 +84,16 @@ const getTreeview = (rows, rowKey, childrenKey = "children", parentKey, array = 
         });
 
         if (row[childrenKey]) {
-            array.push.apply(array, getTreeview(row[childrenKey], rowKey, childrenKey, key));
+            array.push.apply(array, getTreemap(row[childrenKey], rowKey, childrenKey, key));
         }
     });
 
     return array;
 };
 
-// 根据当前行的 rowKey 获取所有子行
-const getTreeviewChildren = (treeview, rowKey, children = []) => {
-    const target = treeview.find(element => element.key === rowKey);
+// 从 treemap 中获取给定行的所有子行
+const getTreemapChildren = (treemap, rowKey, children = []) => {
+    const target = treemap.find(element => element.key === rowKey);
 
     if (target) {
         children = target.children;
@@ -103,16 +102,16 @@ const getTreeviewChildren = (treeview, rowKey, children = []) => {
     return children;
 };
 
-// 根据当前行的 rowKey 获取所有父行
-const getTreeviewParents = (rows, rowKey, parents = []) => {
-    const target = rows.find(row => row.key === rowKey);
+// 从 treemap 中获取给定行的所有父行
+const getTreemapParents = (treemap, rowKey, parents = []) => {
+    const target = treemap.find(row => row.key === rowKey);
 
     if (target && target.parentKey) {
-        const parent = rows.find(row => row.key === target.parentKey);
+        const parent = treemap.find(row => row.key === target.parentKey);
 
         if (parent) {
             parents.push(parent);
-            getTreeviewParents(rows, parent.key, parents);
+            getTreemapParents(treemap, parent.key, parents);
         }
     }
 
@@ -142,7 +141,7 @@ const getSelectionComponentProps = (row, rowKey, rowSelection) => {
     return componentProps;
 };
 
-// 根据所有子行的选择状态，获取父行复选框的 indeterminate、checked 以及 disabled 属性
+// 根据所有子行的选择状态，获取父行复选框的 indeterminate、checked 以及 disabled 状态
 const getSelectionComponentStatus = (rows, options) => {
     let rowsLength = 0;
     let selectedLength = 0;
@@ -326,11 +325,11 @@ const filter = (column, data, props) => {
         const boolean = method(value, clone(row));
 
         if (boolean && props.rowTreeview) {
-            const property = props.rowTreeview.children || "children";
-            const children = row[property];
+            const childrenKey = props.rowTreeview.children || "children";
+            const children = getRowChildren(row, childrenKey);
 
             if (is.array(children) && children.length > 0) {
-                row[property] = filter(column, children, props);
+                row[childrenKey] = filter(column, children, props);
             }
         }
 
@@ -373,13 +372,13 @@ const sorter = (column, data, props) => {
     });
 
     if (props.rowTreeview) {
-        const property = props.rowTreeview.children || "children";
+        const childrenKey = props.rowTreeview.children || "children";
 
         data.forEach(row => {
-            const children = row[property];
+            const children = getRowChildren(row, childrenKey);
 
             if (is.array(children) && children.length > 0) {
-                row[property] = sorter(column, children, props);
+                row[childrenKey] = sorter(column, children, props);
             }
         });
     }
@@ -420,9 +419,9 @@ export default {
     getRowChildren,
     getRowTogglable,
     getRowExpandable,
-    getTreeview,
-    getTreeviewChildren,
-    getTreeviewParents,
+    getTreemap,
+    getTreemapChildren,
+    getTreemapParents,
     getSelectionMultiple,
     getSelectionComponentProps,
     getSelectionComponentStatus,

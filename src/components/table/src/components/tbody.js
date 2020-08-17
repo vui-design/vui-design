@@ -280,7 +280,7 @@ const VuiTableTbody = {
 					return;
 				}
 
-				const isIgnoreElements = utils.isIgnoreElements(rowTreeview.ignoreElements, event);
+				const isIgnoreElements = utils.isIgnoreElements(event, rowTreeview.ignoreElements);
 
 				if (isIgnoreElements) {
 					return;
@@ -296,7 +296,7 @@ const VuiTableTbody = {
 					return;
 				}
 
-				const isIgnoreElements = utils.isIgnoreElements(rowExpansion.ignoreElements, event);
+				const isIgnoreElements = utils.isIgnoreElements(event, rowExpansion.ignoreElements);
 
 				if (isIgnoreElements) {
 					return;

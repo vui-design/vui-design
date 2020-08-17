@@ -366,9 +366,9 @@ const VuiTable = {
 
 			if (isMultiple) {
 				if (props.rowTreeview && !props.rowSelection.strictly) {
-					const treeview = utils.getTreeview(state.tbody, props.rowKey, props.rowTreeview.children);
-					const children = utils.getTreeviewChildren(treeview, rowKey);
-					const parents = utils.getTreeviewParents(treeview, rowKey);
+					const treemap = utils.getTreemap(state.tbody, props.rowKey, props.rowTreeview.children);
+					const children = utils.getTreemapChildren(treemap, rowKey);
+					const parents = utils.getTreemapParents(treemap, rowKey);
 
 					if (checked) {
 						if (selectedRowKeys.indexOf(rowKey) === -1) {
@@ -555,7 +555,7 @@ const VuiTable = {
 
 				styles.elBodyScrollbar = {
 					width: `${width + scrollbarSize}px`,
-					maxHeight: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
+					height: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
 					overflowY: `scroll`
 				};
 			}
@@ -660,7 +660,7 @@ const VuiTable = {
 
 			if (showYScrollbar) {
 				styles.elHeaderScrollbar.overflowY = `scroll`;
-				styles.elBodyScrollbar.maxHeight = `${props.scroll.y}px`;
+				styles.elBodyScrollbar.height = `${props.scroll.y}px`;
 				styles.elBodyScrollbar.overflowY = `scroll`;
 			}
 
@@ -758,7 +758,7 @@ const VuiTable = {
 				styles.el.right = `${scrollbarSize}px`;
 				styles.elBodyScrollbar = {
 					width: `${width + scrollbarSize}px`,
-					maxHeight: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
+					height: showXScrollbar ? `${props.scroll.y - scrollbarSize}px` : `${props.scroll.y}px`,
 					overflowY: `scroll`
 				};
 			}
