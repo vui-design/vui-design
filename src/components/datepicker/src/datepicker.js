@@ -1,69 +1,65 @@
-import VuiDatepickerSinglePicker from "./components/pickers/single";
-import VuiDatepickerRangePicker from "./components/pickers/range";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import { defaultFormats, mapTypeValueResolver } from "vui-design/utils/moment";
+import Emitter from "vui-design/mixins/emitter";
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/locale/zh-cn";
 
 const VuiDatepicker = {
 	name: "vui-datepicker",
 
 	components: {
-		VuiDatepickerSinglePicker,
-		VuiDatepickerRangePicker
+		DatePicker
 	},
 
+	mixins: [
+		Emitter
+	],
+
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
 		type: {
 			type: String,
 			default: "date",
-			validator: value => ["date", "daterange", "datetime", "datetimerange", "year", "month"].indexOf(value) > -1
+			validator: value => ["date", "datetime", "year", "month", "time", "week"].indexOf(value) > -1
 		},
-		placeholder: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: [String, Date, Array],
-			default: undefined
-		},
-		format: {
-			type: String,
-			default: undefined
-		},
-		separator: {
-			type: String,
-			default: ","
-		},
-		showWeekNumber: {
+		range: {
 			type: Boolean,
 			default: false
 		},
-		shortcuts: {
-			type: Array,
+		format: {
+			type: String,
+			default: "YYYY-MM-DD"
+		},
+		valueType: {
+			type: String,
+			default: "date"
+		},
+		defaultValue: {
+			type: Date,
+			default: () => new Date()
+		},
+		lang: {
+			type: Object,
 			default: undefined
 		},
-		steps: {
-			type: Array,
-			default: () => []
-		},
-		getDateDisabled: {
-			type: Function,
-			default: () => false
-		},
-		getTimeDisabled: {
-			type: Function,
-			default: () => false
-		},
-		size: {
+		placeholder: {
 			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
+			default: ""
 		},
-		readonly: {
+		editable: {
+			type: Boolean,
+			default: true
+		},
+		clearable: {
+			type: Boolean,
+			default: true
+		},
+		confirm: {
+			type: Boolean,
+			default: false
+		},
+		confirmText: {
+			type: String,
+			default: "OK"
+		},
+		multiple: {
 			type: Boolean,
 			default: false
 		},
@@ -71,186 +67,165 @@ const VuiDatepicker = {
 			type: Boolean,
 			default: false
 		},
-		defaultPickerDate: {
-			type: Date,
+		disabledDate: {
+			type: Function,
 			default: undefined
 		},
-		placement: {
-			type: String,
-			default: "bottom-start",
-			validator: value => ["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"].indexOf(value) > -1
-		},
-		animation: {
-			type: String,
-			default: "vui-datepicker-panel-scale"
-		},
-		getPopupContainer: {
+		disabledTime: {
 			type: Function,
-			default: () => document.body
+			default: undefined
+		},
+		appendToBody: {
+			type: Boolean,
+			default: true
+		},
+		inline: {
+			type: Boolean,
+			default: false
+		},
+		inputClass: {
+			type: String,
+			default: "mx-datepicker-input"
+		},
+		inputAttr: {
+			type: Object,
+			default: undefined
+		},
+		open: {
+			type: Boolean,
+			default: undefined
+		},
+		defaultPanel: {
+			type: String,
+			default: undefined
+		},
+		popupStyle: {
+			type: Object,
+			default: undefined
+		},
+		popupClass: {
+			default: undefined
+		},
+		shortcuts: {
+			type: Array,
+			default: undefined
+		},
+		titleFormat: {
+			type: String,
+			default: "YYYY-MM-DD"
+		},
+		partialUpdate: {
+			type: Boolean,
+			default: false
+		},
+		rangeSeparator: {
+			type: String,
+			default: " ~ "
+		},
+		showWeekNumber: {
+			type: Boolean,
+			default: false
+		},
+		hourStep: {
+			type: Number,
+			default: 1
+		},
+		minuteStep: {
+			type: Number,
+			default: 1
+		},
+		secondStep: {
+			type: Number,
+			default: 1
+		},
+		hourOptions: {
+			type: Array,
+			default: undefined
+		},
+		minuteOptions: {
+			type: Array,
+			default: undefined
+		},
+		secondOptions: {
+			type: Array,
+			default: undefined
+		},
+		showHour: {
+			type: Boolean,
+			default: undefined
+		},
+		showMinute: {
+			type: Boolean,
+			default: undefined
+		},
+		showSecond: {
+			type: Boolean,
+			default: undefined
+		},
+		use12h: {
+			type: Boolean,
+			default: undefined
+		},
+		showTimeHeader: {
+			type: Boolean,
+			default: false
+		},
+		timeTitleFormat: {
+			type: String,
+			default: "YYYY-MM-DD"
+		},
+		timePickerOptions: {
+			type: Object,
+			default: null
+		},
+		prefixClass: {
+			type: String,
+			default: "mx"
+		},
+		scrollDuration: {
+			type: Number,
+			default: 100
 		}
 	},
 
 	data() {
 		return {
-			defaultVisible: false,
-			mode: this.getSelectionMode(this.type),
-			defaultValue: this.mapValueToDate(this.value),
+			stateValue: this.value
 		};
 	},
 
+	watch: {
+		value(value) {
+			this.stateValue = value;
+		}
+	},
+
 	methods: {
-		getSelectionMode(type) {
-			if (type.match(/^date/)) {
-				type = "date";
-			}
-
-			return (["year", "month", "date", "time"].indexOf(type) > -1) && type;
-		},
-
-		mapValueToDate(value) {
-			const type = this.type;
-			const format = this.format || defaultFormats[type];
-			const parser = (mapTypeValueResolver[type] || mapTypeValueResolver["default"]).parser;
-
-			if (type.includes("range")) {
-				if (!value) {
-					value = [null, null];
-				}
-				else if (is.string(value)) {
-					value = parser(value, format, this.separator);
-				}
-				else {
-					const [start, end] = value;
-
-					if (is.date(start) && is.date(end)){
-						value = value.map(date => new Date(date.getTime()));
-					}
-					else if (is.string(start) && is.string(end)){
-						value = parser(value, format);
-					}
-					else if (!start || !end){
-						value = [null, null];
-					}
-				}
-			}
-			else {
-				if (!value) {
-					value = null;
-				}
-				else if (is.string(value)) {
-					value = parser(value, format);
-				}
-				else if (is.date(value)) {
-					value = new Date(value.getTime());
-				}
-			}
-
-			return value;
-		},
-		mapDateToValue() {
-
-		},
-
-		handleSelect() {
-
-		},
-		handleChangeMode(type) {
-			this.mode = this.getSelectionMode(type);
-		},
-		handleClear() {
-
-		},
-		handleConfirm() {
-
+		handleChange(value) {
+			this.stateValue = value;
+			this.$emit("input", value);
+			this.$emit("change", value);
+			this.dispatch("vui-form-item", "change", value);
 		}
 	},
 
 	render() {
-		const { classNamePrefix: customizedClassNamePrefix, type, mode, defaultValue, defaultPickerDate, format, showWeekNumber, steps, confirmable, placement, animation, getPopupContainer } = this;
-		const { handleSelect, handleChangeMode, handleClear, handleConfirm } = this;
+		const { $slots: slots, $props: props, $listeners: listeners } = this;
 
-
-		const portal = getPopupContainer();
-		const isRange = type === "daterange" || type === "datetimerange";
-		const isConfirmable = confirmable || type === "datetime" || type === "datetimerange";
-
-
-
-
-
-
-
-
-
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "datepicker");
-		let classes = {};
-
-		classes.el = {
-			[`${classNamePrefix}`]: true,
+		const attributes = {
+			props: {
+				...props,
+				value: this.stateValue
+			},
+			on: {
+				...listeners,
+				input: this.handleChange,
+				change: this.handleChange
+			}
 		};
 
-
-
-
-
-
-
-
-		let panel;
-
-		if (isRange) {
-			panel = (
-				<VuiDatepickerRangePicker
-					ref="panel"
-					type={type}
-					mode={mode}
-					value={defaultValue}
-					defaultPickerDate={defaultPickerDate}
-					format={format}
-					showWeekNumber={showWeekNumber}
-					showTimepicker={type === "dateTime" || type === "dateTimeRange"}
-					steps={steps}
-					confirmable={isConfirmable}
-					onSelect={handleSelect}
-					onChangeMode={handleChangeMode}
-					onClear={handleClear}
-					onConfirm={handleConfirm}
-				/>
-			);
-		}
-		else {
-			panel = (
-				<VuiDatepickerSinglePicker
-					ref="panel"
-					type={type}
-					mode={mode}
-					value={defaultValue}
-					defaultPickerDate={defaultPickerDate}
-					format={format}
-					showWeekNumber={showWeekNumber}
-					showTimepicker={type === "dateTime" || type === "dateTimeRange"}
-					steps={steps}
-					confirmable={isConfirmable}
-					onSelect={handleSelect}
-					onChangeMode={handleChangeMode}
-					onClear={handleClear}
-					onConfirm={handleConfirm}
-				/>
-			);
-		}
-
-
-
-
 		return (
-			<div class={classes.el}>
-				<div class={`${classNamePrefix}-input`}>
-					<input type="text" />
-				</div>
-				<transition appear>
-					{panel}
-				</transition>
-			</div>
+			<DatePicker {...attributes} />
 		);
 	}
 };
