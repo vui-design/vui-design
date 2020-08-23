@@ -356,7 +356,7 @@ const sorter = (column, data, props) => {
         const { order, method } = column.sorter;
 
         if (method) {
-            return method(a, b, order);
+            return method(a, b, order, clone(column));
         }
         else {
             if (order === "asc") {

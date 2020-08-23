@@ -129,44 +129,36 @@ const VuiTable = {
 		rowTreeview: {
 			deep: true,
 			handler(options) {
-				let openedRowKeys = [];
-
 				if (options && is.array(options.value)) {
-					openedRowKeys = clone(options.value);
+					this.state.openedRowKeys = clone(options.value);
 				}
-
-				this.state.openedRowKeys = openedRowKeys;
 			}
 		},
 		rowExpansion: {
 			deep: true,
 			handler(options) {
-				let expandedRowKeys = [];
-
 				if (options && is.array(options.value)) {
-					expandedRowKeys = clone(options.value);
+					this.state.expandedRowKeys = clone(options.value);
 				}
-
-				this.state.expandedRowKeys = expandedRowKeys;
 			}
 		},
 		rowSelection: {
 			deep: true,
 			handler(options) {
-				let selectedRowKeys = [];
-
 				if (options) {
 					const isMultiple = utils.getSelectionMultiple(options);
 
 					if (isMultiple) {
-						selectedRowKeys = is.array(options.value) ? clone(options.value) : [];
+						if (is.array(options.value)) {
+							this.state.selectedRowKeys = clone(options.value);
+						}
 					}
 					else {
-						selectedRowKeys = is.string(options.value) || is.number(options.value) ? options.value : undefined;
+						if (is.string(options.value) || is.number(options.value)) {
+							this.state.selectedRowKeys = options.value;
+						}
 					}
 				}
-
-				this.state.selectedRowKeys = selectedRowKeys;
 			}
 		}
 	},

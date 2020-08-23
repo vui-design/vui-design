@@ -1,53 +1,35 @@
-import VuiTabTrigger from "./tab-trigger";
+import VcTabs from "vui-design/components/vc-tabs";
 import is from "vui-design/utils/is";
 
 const VuiTabs = {
 	name: "vui-tabs",
 
-	provide() {
-		return {
-			vuiTabs: this
-		};
-	},
-
 	components: {
-		VuiTabTrigger
+		VcTabs
 	},
 
 	model: {
-		prop: "value",
+		prop: "activeKey",
 		event: "input"
 	},
 
 	props: {
 		classNamePrefix: {
 			type: String,
-			default: "vui-tabs"
+			default: undefined
 		},
 		type: {
 			type: String,
 			default: "line",
-			validator(value) {
-				return ["line", "card"].indexOf(value) > -1;
-			}
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
+			validator: value => ["line", "card"].indexOf(value) > -1
 		},
 		size: {
 			type: String,
 			default: undefined,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
+			validator: value => ["small", "medium", "large"].indexOf(value) > -1
 		},
-		headerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		bodyStyle: {
-			type: [String, Object],
+		activeKey: {
+			type: [String, Number],
 			default: undefined
 		},
 		addable: {
@@ -61,189 +43,200 @@ const VuiTabs = {
 		editable: {
 			type: Boolean,
 			default: false
-		}
-	},
-
-	data() {
-		return {
-			list: [],
-			currentValue: this.value
-		};
-	},
-
-	watch: {
-		value(value) {
-			this.currentValue = value;
+		},
+		animated: {
+			type: Boolean,
+			default: false
+		},
+		headerStyle: {
+			type: [String, Object],
+			default: undefined
+		},
+		bodyStyle: {
+			type: [String, Object],
+			default: undefined
 		}
 	},
 
 	methods: {
-		update() {
-			let { $children: children, closable, editable } = this;
-			let list = [];
+		getDerivedTabpanels(tabsProps, nodes, tagName = "vui-tab-panel") {
+			let tabpanels = [];
 
-			children.forEach(child => {
-				if (child.$options.name !== "vui-tab-panel") {
+			if (!nodes) {
+				return tabpanels;
+			}
+
+			nodes.forEach(node => {
+				if (!node) {
 					return;
 				}
 
-				let item = {
-					name: child.name,
-					icon: child.icon,
-					title: child.$slots.title || child.title,
-					closable: (closable || editable) && child.closable !== false,
-					disabled: child.disabled
-				};
+				const options = node.componentOptions;
 
-				list.push(item);
+				if (!options) {
+					return;
+				}
+
+				const { tag, propsData: props, children: elements } = options;
+
+				if (tag === tagName && is.json(props)) {
+					let tabpanel = {
+						...props,
+						index: tabpanels.length
+					};
+
+					// 设置 panel 的唯一 key 值
+					const key = node.key;
+
+					if (is.effective(key)) {
+						tabpanel.key = key;
+					}
+					else {
+						tabpanel.key = tabpanel.index;
+					}
+
+					// 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 tabs 的 closable 或 editable 属性
+					const closable = props.closable;
+
+					if (closable === false) {
+						tabpanel.closable = false;
+					}
+					else {
+						tabpanel.closable = tabsProps.closable || tabsProps.editable;
+					}
+
+					// 设置 panel 的禁用属性
+					const disabled = props.disabled;
+
+					if (disabled === undefined || disabled === null || disabled === false) {
+						tabpanel.disabled = false;
+					}
+					else {
+						tabpanel.disabled = true;
+					}
+
+					// 分离 panel 的内容元素，因为内容可能包含了图标或标题等自定义插槽
+					if (elements) {
+						elements.forEach(element => {
+							if (!element) {
+								return;
+							}
+
+							if (element.data && element.data.slot) {
+								const slot = element.data.slot;
+
+								// icon
+								if (slot === "icon") {
+									if (element.data.attrs) {
+										delete element.data.attrs.slot;
+									}
+
+									if (element.tag === "template") {
+										if (is.array(tabpanel.icon)) {
+											tabpanel.icon.push.apply(tabpanel.icon, element.children);
+										}
+										else {
+											tabpanel.icon = element.children;
+										}
+									}
+									else {
+										if (is.array(tabpanel.icon)) {
+											tabpanel.icon.push(element);
+										}
+										else {
+											tabpanel.icon = [element];
+										}
+									}
+								}
+								else if (slot === "title") {
+									if (element.data.attrs) {
+										delete element.data.attrs.slot;
+									}
+
+									if (element.tag === "template") {
+										if (is.array(tabpanel.title)) {
+											tabpanel.title.push.apply(tabpanel.icon, element.children);
+										}
+										else {
+											tabpanel.title = element.children;
+										}
+									}
+									else {
+										if (is.array(tabpanel.title)) {
+											tabpanel.title.push(element);
+										}
+										else {
+											tabpanel.title = [element];
+										}
+									}
+								}
+							}
+							else {
+								if (is.array(tabpanel.children)) {
+									tabpanel.children.push(element);
+								}
+								else {
+									tabpanel.children = [element];
+								}
+							}
+						});
+					}
+
+					tabpanels.push(tabpanel);
+				}
 			});
 
-			let currentValue = this.currentValue;
-			let item = list[0];
-
-			if (!currentValue && item) {
-				currentValue = item.name;
-			}
-
-			this.list = list;
-			this.currentValue = currentValue;
-		},
-
-		handleChange(e, name) {
-			this.currentValue = name;
-
-			this.$emit("input", name);
-			this.$emit("change", name);
-		},
-		handleAdd(e) {
-			this.$emit("add");
-		},
-		handleClose(e, name) {
-			this.$emit("close", name);
-			e.stopPropagation();
-		},
-
-		drawTabsHeader(h) {
-			let { $slots: slots, classNamePrefix, headerStyle, addable, closable, editable, list, currentValue } = this;
-			let { handleChange, handleAdd, handleClose } = this;
-
-			let classes = {};
-
-			classes.header = `${classNamePrefix}-header`;
-			classes.headerContent = `${classNamePrefix}-header-content`;
-			classes.extra = `${classNamePrefix}-extra`;
-			classes.btnAdd = `${classNamePrefix}-btn-add`;
-
-			let children = [];
-
-			children.push(
-				<div class={classes.headerContent}>
-					{
-						list.map(item => {
-							return (
-								<VuiTabTrigger
-									key={item.name}
-									name={item.name}
-									icon={item.icon}
-									closable={item.closable}
-									active={item.name === currentValue}
-									disabled={item.disabled}
-									onClick={handleChange}
-									onClose={handleClose}
-								>
-									{
-										is.function(item.title) ? item.title(h, item) : item.title
-									}
-								</VuiTabTrigger>
-							);
-						})
-					}
-				</div>
-			);
-
-			if (slots.extra) {
-				children.push(
-					<div class={classes.extra}>
-						{slots.extra}
-					</div>
-				);
-			}
-			else if (addable || editable) {
-				children.push(
-					<div class={classes.extra}>
-						<a href="javascript:;" class={classes.btnAdd} onClick={handleAdd}>
-							<svg viewBox="0 0 28 28">
-								<path d="M27,12.5v3H15.5V27h-3V15.5H1v-3h11.5V1h3v11.5H27z" />
-							</svg>
-						</a>
-					</div>
-				);
-			}
-
-			return (
-				<div class={classes.header} style={headerStyle}>
-					{children}
-				</div>
-			);
-		},
-
-		drawTabsBody(h) {
-			let { $slots: slots, classNamePrefix, bodyStyle, animated, list, currentValue } = this;
-
-			let classes = {};
-
-			classes.body = `${classNamePrefix}-body`;
-			classes.bodyContent = `${classNamePrefix}-body-content`;
-
-			let styles = {};
-			let x = list.findIndex(item => item.name === currentValue);
-
-			if (x > -1) {
-				x = x === 0 ? `0%` : `-${x * 100}%`;
-
-				styles.bodyContent = {
-					transform: `translateX(${x}) translateZ(0px)`
-				};
-			}
-
-			return (
-				<div class={classes.body} style={bodyStyle}>
-					<div class={classes.bodyContent} style={styles.bodyContent}>
-						{slots.default}
-					</div>
-				</div>
-			);
+			return tabpanels;
 		}
 	},
 
 	render(h) {
-		let { $vui, classNamePrefix, type, drawTabsHeader, drawTabsBody } = this;
-		let size;
-		let classes;
+		const { $slots: slots, $props: props, $listeners: listeners } = this;
 
-		if (this.size) {
-			size = this.size;
-		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
-		}
-		else {
-			size = "medium";
+		let activeKey = props.activeKey;
+		const tabpanels = this.getDerivedTabpanels(props, slots.default);
+
+		if (!is.effective(activeKey)) {
+			const enabledTabpanels = tabpanels.filter(tabpanel => !tabpanel.disabled);
+			const tabpanel = enabledTabpanels[0];
+
+			if (tabpanel) {
+				activeKey = tabpanel.key;
+			}
 		}
 
-		classes = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: true,
-			[`${classNamePrefix}-${size}`]: size
+		const attributes = {
+			props: {
+				...props,
+				activeKey,
+				tabpanels,
+				extra: slots.extra
+			},
+			on: {
+				...listeners
+			}
 		};
 
 		return (
-			<div class={classes}>
-				{drawTabsHeader(h)}
-				{drawTabsBody(h)}
-			</div>
+			<VcTabs {...attributes} />
 		);
 	}
 };
 
 export default VuiTabs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

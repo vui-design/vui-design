@@ -104,6 +104,11 @@ export function isMergeableObject(value) {
 };
 
 // 
+export function isEffective(value) {
+	return value !== null && value !== undefined && value !== '';
+};
+
+// 
 export default {
 	server: isServer,
 	vnode: isVNode,
@@ -120,5 +125,7 @@ export default {
 	array: isArray,
 	object: isObject,
 	plainObject: isPlainObject,
-	mergeableObject: isMergeableObject
+	json: isPlainObject,
+	mergeableObject: isMergeableObject,
+	effective: isEffective
 };
