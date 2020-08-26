@@ -29,11 +29,14 @@ const VuiDatepicker = {
 		},
 		valueType: {
 			type: String,
-			default: "date"
+			default: "format"
 		},
 		defaultValue: {
 			type: Date,
 			default: () => new Date()
+		},
+		value: {
+
 		},
 		lang: {
 			type: Object,
