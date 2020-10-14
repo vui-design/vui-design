@@ -21,6 +21,7 @@ import Divider from "./components/divider";
 import Separator from "./components/separator";
 import Space from "./components/space";
 // Navigation
+import Affix from "./components/affix";
 import Breadcrumb from "./components/breadcrumb";
 import BreadcrumbItem from "./components/breadcrumb-item";
 import Dropdown from "./components/dropdown";
@@ -89,6 +90,8 @@ import Progress from "./components/progress";
 import Result from "./components/result";
 import Spin from "./components/spin";
 // Other
+import Anchor from "./components/anchor";
+import AnchorLink from "./components/anchor-link";
 import Backtop from "./components/backtop";
 import Fullscreen from "./components/fullscreen";
 import Loading from "./components/loading";
@@ -120,6 +123,7 @@ const components = [
 	Separator,
 	Space,
 	// Navigation
+	Affix,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,
@@ -188,6 +192,8 @@ const components = [
 	Result,
 	Spin,
 	// Other
+	Anchor,
+	AnchorLink,
 	Backtop,
 	Fullscreen,
 	TransitionCollapse
@@ -222,7 +228,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.25",
+	version: "1.0.26",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -249,6 +255,7 @@ export default {
 	Separator,
 	Space,
 	// Navigation
+	Affix,
 	Breadcrumb,
 	BreadcrumbItem,
 	Dropdown,
@@ -317,6 +324,8 @@ export default {
 	Result,
 	Spin,
 	// Other
+	Anchor,
+	AnchorLink,
 	Backtop,
 	Loading,
 	Fullscreen,

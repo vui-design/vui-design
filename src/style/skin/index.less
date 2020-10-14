@@ -236,6 +236,9 @@
 
 // 导航组件 --------------------------------------------------------------------------------
 
+// Affix
+@affix-zIndex: 10;
+
 // Menu
 @menu-collapsed-width: 80px;
 @menu-line-height: 48px;
@@ -257,49 +260,50 @@
 
 
 // Radio
-@vui-radio-size-sm: 14px;
-@vui-radio-size-md: 16px;
-@vui-radio-size-lg: 18px;
+@radio-border-color: @border-color;
+@radio-background-color: @component-background-color;
+@radio-input-color: @primary-color;
+@radio-font-color: @font-color;
 
-@vui-radio-font-size-sm: 12px;
-@vui-radio-font-size-md: 14px;
-@vui-radio-font-size-lg: 16px;
+@radio-hover-border-color: tint(@primary-color, 10%);
 
-@vui-radio-border-color: #e0e0e0;
-@vui-radio-background-color: #fff;
-@vui-radio-input-color: #2d8cf0;
-@vui-radio-font-color: #666;
+@radio-checked-border-color: @primary-color;
 
-@vui-radio-hover-border-color: tint(#2d8cf0, 10%);
+@radio-disabled-border-color: @border-color;
+@radio-disabled-background-color: shade(@component-background-color, 3.5%);
+@radio-disabled-input-color: shade(@border-color, 10%);
+@radio-disabled-font-color: @font-disabled-color;
 
-@vui-radio-checked-border-color: #2d8cf0;
+@radio-size-sm: 14px;
+@radio-size-md: 16px;
+@radio-size-lg: 18px;
 
-@vui-radio-disabled-border-color: #e0e0e0;
-@vui-radio-disabled-background-color: shade(#fff, 3.5%);
-@vui-radio-disabled-input-color: shade(#e0e0e0, 10%);
-@vui-radio-disabled-font-color: tint(#000, 75%);
+@radio-font-size-sm: 12px;
+@radio-font-size-md: 14px;
+@radio-font-size-lg: 16px;
 
 // Radio Button
-@vui-radio-button-size-sm: 24px;
-@vui-radio-button-size-md: 34px;
-@vui-radio-button-size-lg: 44px;
+@radio-button-border-color: @border-color;
+@radio-button-border-radius: @border-radius;
+@radio-button-background-color: @component-background-color;
+@radio-button-font-color: @font-color;
 
-@vui-radio-button-font-size-sm: 12px;
-@vui-radio-button-font-size-md: 14px;
-@vui-radio-button-font-size-lg: 16px;
+@radio-button-hover-font-color: tint(@primary-color, 10%);
 
-@vui-radio-button-border-color: #e0e0e0;
-@vui-radio-button-background-color: #fff;
-@vui-radio-button-font-color: #595959;
+@radio-button-checked-border-color: @primary-color;
+@radio-button-checked-font-color: @primary-color;
 
-@vui-radio-button-hover-font-color: tint(#2d8cf0, 10%);
+@radio-button-disabled-border-color: @border-color;
+@radio-button-disabled-background-color: shade(@component-background-color, 3.5%);
+@radio-button-disabled-font-color: @font-disabled-color;
 
-@vui-radio-button-checked-border-color: #2d8cf0;
-@vui-radio-button-checked-font-color: #2d8cf0;
+@radio-button-size-sm: 24px;
+@radio-button-size-md: 34px;
+@radio-button-size-lg: 44px;
 
-@vui-radio-button-disabled-border-color: #e0e0e0;
-@vui-radio-button-disabled-background-color: shade(#fff, 3.5%);
-@vui-radio-button-disabled-font-color: tint(#000, 75%);
+@radio-button-font-size-sm: 12px;
+@radio-button-font-size-md: 14px;
+@radio-button-font-size-lg: 16px;
 
 
 // Checkbox
@@ -502,6 +506,20 @@
 @image-error-font-size: @font-size;
 
 
+// Popover
+@popover-border-radius: @border-radius;
+@popover-background-color: #fff;
+@popover-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+@popover-padding: 10px 16px;
+@popover-font-color: #595959;
+@popover-font-size: @font-size;
+@popover-line-height: @line-height;
+@popover-header-border-bottom: 1px solid #f0f0f0;
+@popover-header-font-color: #262626;
+@popover-arrow-size: 8px;
+@popover-gutter: @popover-arrow-size + 2px;
+
+
 // Statistic
 @statistic-line-height: @line-height;
 @statistic-header-margin-bottom: 10px;
@@ -525,12 +543,38 @@
 @tooltip-padding: 10px 12px;
 @tooltip-font-size: @font-size;
 @tooltip-line-height: @line-height;
-@tooltip-arrow-size: 6px;
-@tooltip-distance: @tooltip-arrow-size + 4px;
+@tooltip-arrow-size: 8px;
+@tooltip-gutter: @tooltip-arrow-size + 2px;
 @tooltip-light-background-color: #fff;
-@tooltip-light-font-color: @font-color;
+@tooltip-light-font-color: #595959;
 @tooltip-dark-background-color: #1a2035;
 @tooltip-dark-font-color: #fff;
+@tooltip-blue-background-color: #1890ff;
+@tooltip-blue-font-color: #fff;
+@tooltip-green-background-color: #52c41a;
+@tooltip-green-font-color: #fff;
+@tooltip-red-background-color: #f5222d;
+@tooltip-red-font-color: #fff;
+@tooltip-yellow-background-color: #fadb14;
+@tooltip-yellow-font-color: #fff;
+@tooltip-pink-background-color: #eb2f96;
+@tooltip-pink-font-color: #fff;
+@tooltip-magenta-background-color: #eb2f96;
+@tooltip-magenta-font-color: #fff;
+@tooltip-volcano-background-color: #fa541c;
+@tooltip-volcano-font-color: #fff;
+@tooltip-orange-background-color: #fa8c16;
+@tooltip-orange-font-color: #fff;
+@tooltip-gold-background-color: #faad14;
+@tooltip-gold-font-color: #fff;
+@tooltip-lime-background-color: #a0d911;
+@tooltip-lime-font-color: #fff;
+@tooltip-cyan-background-color: #13c2c2;
+@tooltip-cyan-font-color: #fff;
+@tooltip-geekblue-background-color: #2f54eb;
+@tooltip-geekblue-font-color: #fff;
+@tooltip-purple-background-color: #722ed1;
+@tooltip-purple-font-color: #fff;
 
 
 
@@ -597,20 +641,20 @@
 // Drawer
 @drawer-background-color: #fff;
 @drawer-box-shadow: @box-shadow;
-@drawer-header-border-bottom: 1px solid #ececec;
+@drawer-header-border-bottom: 1px solid #f0f0f0;
 @drawer-header-padding: 20px;
 @drawer-body-padding: 20px;
-@drawer-footer-border-top: 1px solid #ececec;
+@drawer-footer-border-top: 1px solid #f0f0f0;
 @drawer-footer-padding: 20px;
 
 // Modal
 @modal-border-radius: @border-radius;
 @modal-background-color: #fff;
 @modal-box-shadow: @box-shadow;
-@modal-header-border-bottom: 1px solid #ececec;
+@modal-header-border-bottom: 1px solid #f0f0f0;
 @modal-header-padding: 20px;
 @modal-body-padding: 20px;
-@modal-footer-border-top: 1px solid #ececec;
+@modal-footer-border-top: 1px solid #f0f0f0;
 @modal-footer-padding: 20px;
 
 // Notice
@@ -663,6 +707,19 @@
 
 
 // 其它组件 --------------------------------------------------------------------------------
+
+// Anchor
+@anchor-font-color: @font-color;
+@anchor-font-size: @font-size;
+@anchor-line-height: @line-height;
+@anchor-ink-track-size: 2px;
+@anchor-link-padding-vertical: 5px;
+@anchor-link-padding-horizontal: 16px;
+@anchor-link-padding: @anchor-link-padding-vertical 0 @anchor-link-padding-vertical @anchor-link-padding-horizontal;
+@anchor-link-title-font-color: @font-color;
+@anchor-link-title-hover-font-color: tint(@primary-color, 10%);
+@anchor-link-title-active-font-color: shade(@primary-color, 10%);
+@anchor-link-title-on-font-color: @primary-color;
 
 // Backtop
 @backtop-size: 40px;

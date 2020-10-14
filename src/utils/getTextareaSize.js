@@ -32,10 +32,10 @@ let computedStyleCache = {};
 let hiddenTextarea = null;
 
 export function calculateNodeStyle(node, useCache = false) {
-	const reference = node.getAttribute("id") || node.getAttribute("name");
+	const key = node.getAttribute("id") || node.getAttribute("name");
 
-	if (useCache && computedStyleCache[reference]) {
-		return computedStyleCache[reference];
+	if (useCache && computedStyleCache[key]) {
+		return computedStyleCache[key];
 	}
 
 	const style = window.getComputedStyle(node);
@@ -52,13 +52,18 @@ export function calculateNodeStyle(node, useCache = false) {
 		contextStyle
 	};
 
-	if (useCache && reference) {
-		computedStyleCache[reference] = data;
+	if (useCache && key) {
+		computedStyleCache[key] = data;
 	}
 
 	return data;
 };
 
+/**
+* 获取 Textarea 文本域的实时尺寸，用于文本域的尺寸自适应
+* @param {HTMLElement} targetElement 目标元素
+* @param {Boolean} useCache 是否使用缓存
+*/
 export default function getTextareaSize(targetElement, minRows = 2, maxRows = null, useCache = false) {
 	if (!hiddenTextarea) {
 		hiddenTextarea = document.createElement("textarea");
@@ -72,7 +77,7 @@ export default function getTextareaSize(targetElement, minRows = 2, maxRows = nu
 		hiddenTextarea.removeAttribute('wrap');
 	}
 
-	let {
+	const {
 		boxSizing,
 		border,
 		padding,

@@ -25,14 +25,13 @@ export default {
 	},
 	methods: {
 		getNextRoute() {
-			let { $router: router, $route: route, $props: props } = this;
-			let result = router.resolve(props.to, route, props.append);
+			const { $router: router, $route: route, $props: props } = this;
+			const result = router.resolve(props.to, route, props.append);
 
 			return result;
 		},
 		handleLinkClick(e) {
-			let { $router: router, $props: props } = this;
-			let { getNextRoute } = this;
+			const { $router: router, $props: props, getNextRoute } = this;
 
 			this.$emit("click", e);
 
@@ -41,10 +40,10 @@ export default {
 			}
 			else if (props.to && guardLinkEvent(e)) {
 				try {
-					let route = getNextRoute();
-					let reject = error => {};
+					const route = getNextRoute();
+					const fallback = error => {};
 
-					props.replace ? router.replace(route.location).catch(reject) : router.push(route.location).catch(reject);
+					props.replace ? router.replace(route.location).catch(fallback) : router.push(route.location).catch(fallback);
 				}
 				catch(e) {
 					console.error(e);

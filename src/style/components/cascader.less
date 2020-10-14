@@ -50,9 +50,6 @@
 .vui-cascader-large .vui-cascader-selection-arrow:after { width:8px; }
 .vui-cascader-large .vui-cascader-selection-btn-clear { top:14px; right:10px; font-size:14px; }
 
-
-
-
 .vui-cascader-hovered .vui-cascader-selection { border-color:tint(#2d8cf0, 10%); }
 .vui-cascader-hovered .vui-cascader-selection-value {  }
 .vui-cascader-hovered .vui-cascader-selection-arrow {  }
@@ -79,25 +76,6 @@
 .vui-cascader-disabled .vui-cascader-selection-arrow:after {  }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // --------------------------------------------------
 // cascader dropdown
 .vui-cascader-dropdown { position:absolute; top:472px; left:301px; box-sizing:border-box; max-height:282px; border-radius:2px; background-color:#fff; box-shadow:0 1px 6px rgba(0, 0, 0, 0.1); }
@@ -115,18 +93,9 @@
 .vui-cascader-dropdown[data-placement="bottom-end"] { margin:5px 0; transform-origin:top right; }
 
 .vui-cascader-dropdown-scale-enter-active,
-.vui-cascader-dropdown-scale-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity 0.3s, transform 0.3s; }
+.vui-cascader-dropdown-scale-leave-active { opacity:1; transform:scaleY(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
 .vui-cascader-dropdown-scale-enter,
 .vui-cascader-dropdown-scale-leave-active { opacity:0; transform:scaleY(0.8); }
-
-
-
-
-
-
-
-
-
 
 
 // --------------------------------------------------

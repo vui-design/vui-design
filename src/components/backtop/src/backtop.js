@@ -1,7 +1,9 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import throttle from "vui-design/utils/throttle";
-import smoothScrollTo from "vui-design/utils/smoothScrollTo";
+import scrollTo from "vui-design/utils/scrollTo";
 import { on, off } from "vui-design/utils/dom";
+import addEventListener from "vui-design/utils/addEventListener";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiBacktop = {
@@ -130,10 +132,10 @@ const VuiBacktop = {
 				return;
 			}
 
-			let scrollFrom = this.getContainerScrollTop();
-			let scrollTo = 0;
+			let start = this.getContainerScrollTop();
+			let end = 0;
 
-			smoothScrollTo(container, scrollFrom, scrollTo, props.duration);
+			scrollTo(container, start, end, props.duration);
 		}
 	},
 

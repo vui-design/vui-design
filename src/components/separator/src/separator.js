@@ -1,41 +1,27 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiSeparator = {
 	name: "vui-separator",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		align: {
-			type: String,
-			default: "left",
-			validator: value => ["left", "center", "right"].indexOf(value) > -1
-		},
-		size: {
-			type: [Number, String],
-			default: 12
-		},
-		gutter: {
-			type: [Number, String],
-			default: 10
-		}
+		classNamePrefix: PropTypes.string,
+		align: PropTypes.oneOf(["left", "center", "right"]).def("left"),
+		size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(12),
+		gutter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(10)
 	},
-
 	render(h) {
-		let { $slots: slots, $props: props } = this;
+		const { $slots: slots, $props: props } = this;
 
 		// size
 		let size;
 
-		if (is.number(props.size)) {
-			size = props.size + "px";
-		}
-		else if (is.string(props.size)) {
+		if (is.string(props.size)) {
 			size = props.size;
+		}
+		else if (is.number(props.size)) {
+			size = props.size + "px";
 		}
 		else {
 			size = "12px";
@@ -44,18 +30,18 @@ const VuiSeparator = {
 		// gutter
 		let gutter;
 
-		if (is.number(props.gutter)) {
-			gutter = props.gutter + "px";
-		}
-		else if (is.string(props.gutter)) {
+		if (is.string(props.gutter)) {
 			gutter = props.gutter;
+		}
+		else if (is.number(props.gutter)) {
+			gutter = props.gutter + "px";
 		}
 		else {
 			gutter = "10px";
 		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "separator");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "separator");
 		let classes = {};
 
 		classes.el = {
@@ -75,8 +61,8 @@ const VuiSeparator = {
 		};
 
 		// render
+		const actions = getValidElements(slots.default);
 		let children = [];
-		let actions = getValidElements(slots.default);
 
 		actions.forEach((action, index) => {
 			if (index > 0) {

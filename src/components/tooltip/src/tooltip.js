@@ -1,55 +1,37 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
+const colors = ["blue", "green", "red", "yellow", "pink", "magenta", "volcano", "orange", "gold", "lime", "cyan", "geekblue", "purple"];
+
 const VuiTooltip = {
 	name: "vui-tooltip",
-
+	components: {
+		VuiLazyRender
+	},
 	directives: {
 		Portal
 	},
-
 	model: {
 		prop: "visible",
-		event: "change"
+		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		theme: {
-			type: String,
-			default: "dark",
-			validator: value => ["light", "dark"].indexOf(value) > -1
-		},
-		content: {
-			type: [String, Number],
-			default: undefined
-		},
-		placement: {
-			type: String,
-			default: "top",
-			validator: value => ["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"].indexOf(value) > -1
-		},
-		animation: {
-			type: String,
-			default: "vui-tooltip-content-scale"
-		},
-		getPopupContainer: {
-			type: Function,
-			default: () => document.body
-		}
+		classNamePrefix: PropTypes.string,
+		visible: PropTypes.bool.def(false),
+		theme: PropTypes.oneOf(["light", "dark"]).def("dark"),
+		color: PropTypes.string,
+		content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
+		animation: PropTypes.string.def("vui-tooltip-content-scale"),
+		getPopupContainer: PropTypes.any.def(() => document.body)
 	},
-
 	data() {
-		let { $props: props } = this;
+		const { $props: props } = this;
 
 		return {
 			state: {
@@ -57,23 +39,26 @@ const VuiTooltip = {
 			}
 		};
 	},
-
 	watch: {
 		visible(value) {
 			this.state.visible = value;
 		}
 	},
-
 	methods: {
+		toggle(visible) {
+			this.state.visible = visible;
+			this.$emit("input", visible);
+			this.$emit("change", visible);
+		},
 		createPopup() {
 			if (is.server || this.popup) {
 				return;
 			}
 
-			let { $refs: refs, $props: props } = this;
-			let reference = refs.trigger;
-			let target = refs.content;
-			let settings = {
+			const { $refs: references, $props: props } = this;
+			const reference = references.trigger;
+			const target = references.content;
+			const settings = {
 				placement:  props.placement
 			};
 
@@ -92,84 +77,76 @@ const VuiTooltip = {
 			this.popup.destroy();
 			this.popup = null;
 		},
-
-		handleMouseEnter() {
+		handleMouseenter() {
 			clearTimeout(this.timeout);
-			this.timeout = setTimeout(() => {
-				this.state.visible = true;
-				this.$emit("change", true);
-			}, 100);
+			this.timeout = setTimeout(() => this.toggle(true), 100);
 		},
-		handleMouseLeave() {
+		handleMouseleave() {
 			clearTimeout(this.timeout);
-			this.timeout = setTimeout(() => {
-				this.state.visible = false;
-				this.$emit("change", false);
-			}, 100);
+			this.timeout = setTimeout(() => this.toggle(false), 100);
 		},
 		handleBeforeEnter(el) {
 			this.$nextTick(() => this.createPopup());
-		},
-		handleEnter(el) {
-
-		},
-		handleAfterEnter(el) {
-
-		},
-		handleBeforeLeave(el) {
-
-		},
-		handleLeave(el) {
-
 		},
 		handleAfterLeave(el) {
 			this.$nextTick(() => this.destroyPopup());
 		}
 	},
-
 	render() {
-		let { $slots: slots, $props: props, state } = this;
-		let { handleMouseEnter, handleMouseLeave, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
-		let portal = props.getPopupContainer();
+		const { $slots: slots, $props: props, state } = this;
+		const { handleMouseenter, handleMouseleave, handleBeforeEnter, handleAfterLeave } = this;
+
+		// color
+		const withPresetColor = props.color && colors.indexOf(props.color) > -1;
+		const withCustomColor = props.color && colors.indexOf(props.color) === -1;
+
+		// maxWidth
+		let maxWidth;
+
+		if (props.maxWidth) {
+			maxWidth = is.string(props.maxWidth) ? props.maxWidth : `${props.maxWidth}px`;
+		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tooltip");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tooltip");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
 		classes.elTrigger = `${classNamePrefix}-trigger`;
 		classes.elContent = {
 			[`${classNamePrefix}-content`]: true,
-			[`${classNamePrefix}-content-${props.theme}`]: props.theme
+			[`${classNamePrefix}-content-${props.theme}`]: props.theme && !withPresetColor && !withCustomColor,
+			[`${classNamePrefix}-content-${props.color}`]: withPresetColor
 		};
-		classes.elArrow = `${classNamePrefix}-arrow`;
+		classes.elContentMain = `${classNamePrefix}-content-main`;
+		classes.elContentArrow = `${classNamePrefix}-content-arrow`;
+
+		// style
+		let styles = {};
+
+		styles.elContent = {
+			maxWidth: maxWidth,
+			backgroundColor: withCustomColor && props.color
+		};
+		styles.elContentMain = {
+			color: withCustomColor &&`#fff`
+		};
+		styles.elContentArrow = {
+			backgroundColor: withCustomColor && props.color
+		};
 
 		// render
 		return (
 			<div class={classes.el}>
-				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>{slots.default}</div>
-				<transition
-					name={props.animation}
-					onBeforeEnter={handleBeforeEnter}
-					onEnter={handleEnter}
-					onAfterEnter={handleAfterEnter}
-					onBeforeLeave={handleBeforeLeave}
-					onLeave={handleLeave}
-					onAfterLeave={handleAfterLeave}
-					appear
-				>
-					<div
-						ref="content"
-						v-portal={portal}
-						v-show={state.visible}
-						class={classes.elContent}
-						onMouseenter={handleMouseEnter}
-						onMouseleave={handleMouseLeave}
-					>
-						{slots.content || props.content}
-						<i class={classes.elArrow}></i>
-					</div>
-				</transition>
+				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>{slots.default}</div>
+				<VuiLazyRender status={state.visible}>
+					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+						<div ref="content" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elContent} style={styles.elContent} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
+							<div class={classes.elContentMain} style={styles.elContentMain}>{slots.content || props.content}</div>
+							<div class={classes.elContentArrow} style={styles.elContentArrow}></div>
+						</div>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

@@ -1,3 +1,4 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import VuiIcon from "vui-design/components/icon";
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
@@ -26,6 +27,7 @@ const VuiDropdownSubmenu = {
 	},
 
 	components: {
+		VuiLazyRender,
 		VuiIcon
 	},
 
@@ -225,11 +227,13 @@ const VuiDropdownSubmenu = {
 					{title && <div class={classes.elTitle}>{title}</div>}
 					<i class={classes.elArrow}></i>
 				</div>
-				<transition appear name={animation} onBeforeEnter={handleBodyBeforeEnter} onAfterLeave={handleBodyAfterLeave}>
-					<div ref="body" v-portal={portal} v-show={visible} class={classes.elBody} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
-						<div class={classes.elMenu}>{slots.default}</div>
-					</div>
-				</transition>
+				<VuiLazyRender status={visible}>
+					<transition appear name={animation} onBeforeEnter={handleBodyBeforeEnter} onAfterLeave={handleBodyAfterLeave}>
+						<div ref="body" v-portal={portal} v-show={visible} class={classes.elBody} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
+							<div class={classes.elMenu}>{slots.default}</div>
+						</div>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

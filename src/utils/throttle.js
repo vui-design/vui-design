@@ -1,4 +1,4 @@
-import now from "./now";
+import getTime from "./getTime";
 
 export default function(fn, wait, options){
   let timeout, context, args, result, previous = 0;
@@ -8,7 +8,7 @@ export default function(fn, wait, options){
   }
 
   let later = function() {
-    previous = options.leading === false ? 0 : now();
+    previous = options.leading === false ? 0 : getTime();
     timeout = null;
     result = fn.apply(context, args);
 
@@ -18,7 +18,7 @@ export default function(fn, wait, options){
   };
 
   let throttled = function() {
-    let current = now();
+    let current = getTime();
 
     if (!previous && options.leading === false) {
       previous = current;

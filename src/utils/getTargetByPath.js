@@ -4,23 +4,23 @@ export default function getTargetByPath(source, path = "", strict) {
 	path = path.replace(/\[(\w+)\]/g, ".$1");
 	path = path.replace(/^\./, "");
 
-	let keys = path.split(".");
+	const keys = path.split(".");
+	const length = keys.length;
 	let i = 0;
-	let length = keys.length;
 
 	for (; i < length - 1; ++i) {
 		if (!target && !strict) {
 			break;
 		}
 
-		let key = keys[i];
+		const key = keys[i];
 
 		if (key in target) {
 			target = target[key];
 		}
 		else {
 			if (strict) {
-				throw new Error("[Vui warn][utils]: please transfer a valid prop path.");
+				throw new Error("[Vui Design warn][getTargetByPath]: please transfer a valid prop path.");
 			}
 
 			break;

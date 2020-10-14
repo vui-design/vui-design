@@ -1,3 +1,4 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import VuiCascaderSelection from "./components/selection";
 import VuiCascaderDropdown from "./components/dropdown";
 import VuiCascaderMenuList from "./components/menu-list";
@@ -30,6 +31,7 @@ const VuiCascader = {
 	},
 
 	components: {
+		VuiLazyRender,
 		VuiCascaderSelection,
 		VuiCascaderDropdown,
 		VuiCascaderMenuList,
@@ -123,7 +125,7 @@ const VuiCascader = {
 		},
 		animation: {
 			type: String,
-			default: "vui-select-dropdown-scale"
+			default: "vui-cascader-dropdown-scale"
 		},
 		getPopupContainer: {
 			type: Function,
@@ -398,33 +400,17 @@ const VuiCascader = {
 					onInput={handleSelectionInput}
 					onClear={handleSelectionClear}
 				/>
-				<transition
-					name={props.animation}
-					onBeforeEnter={handleDropdownBeforeEnter}
-					onAfterLeave={handleDropdownAfterLeave}
-					appear
-				>
-					<VuiCascaderDropdown
-						ref="dropdown"
-						v-portal={portal}
-						v-show={dropdownVisible}
-						classNamePrefix={props.classNamePrefix}
-					>
-						{
-							showMenuList && (
-								<VuiCascaderMenuList
-									classNamePrefix={props.classNamePrefix}
-									value={state.value}
-									options={props.options}
-									keyNames={props.keyNames}
-									changeOnSelect={props.changeOnSelect}
-									visible={dropdownVisible}
-									onSelect={handleMenuListSelect}
-								/>
-							)
-						}
-					</VuiCascaderDropdown>
-				</transition>
+				<VuiLazyRender status={dropdownVisible}>
+					<transition appear name={props.animation} onBeforeEnter={handleDropdownBeforeEnter} onAfterLeave={handleDropdownAfterLeave}>
+						<VuiCascaderDropdown ref="dropdown" v-portal={portal} v-show={dropdownVisible} classNamePrefix={props.classNamePrefix}>
+							{
+								showMenuList && (
+									<VuiCascaderMenuList classNamePrefix={props.classNamePrefix} value={state.value} options={props.options} keyNames={props.keyNames} changeOnSelect={props.changeOnSelect} visible={dropdownVisible} onSelect={handleMenuListSelect} />
+								)
+							}
+						</VuiCascaderDropdown>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

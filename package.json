@@ -1,6 +1,6 @@
 {
   "name": "vui-design",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "title": "Vui Design",
   "description": "A high quality UI Toolkit based on Vue.js",
   "author": "kiwi <vui.design@aliyun.com>",
@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "async-validator": "^3.2.4",
+    "resize-observer-polyfill": "^1.5.1",
     "vue": "^2.6.11",
     "vue-i18n": "^8.17.3",
     "vue-router": "^3.1.6",

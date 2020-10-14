@@ -1,39 +1,20 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiSpace = {
 	name: "vui-space",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		direction: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical"].indexOf(value) > -1
-		},
-		align: {
-			type: String,
-			default: "center",
-			validator: value => ["start", "center", "end"].indexOf(value) > -1
-		},
-		size: {
-			type: String,
-			default: "medium",
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		gutter: {
-			type: [Number, String],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		direction: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+		align: PropTypes.oneOf(["start", "center", "end"]).def("center"),
+		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+		gutter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	},
-
 	render(h) {
-		let { $slots: slots, $props: props } = this;
-		let isHorizontal = props.direction === "horizontal";
+		const { $slots: slots, $props: props } = this;
+		const isHorizontal = props.direction === "horizontal";
 
 		// gutter
 		let gutter;
@@ -48,15 +29,15 @@ const VuiSpace = {
 			gutter = "24px";
 		}
 
-		if (is.number(props.gutter)) {
-			gutter = props.gutter + "px";
-		}
-		else if (is.string(props.gutter)) {
+		if (is.string(props.gutter)) {
 			gutter = props.gutter;
+		}
+		else if (is.number(props.gutter)) {
+			gutter = props.gutter + "px";
 		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "space");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "space");
 		let classes = {};
 
 		classes.el = {
@@ -75,9 +56,9 @@ const VuiSpace = {
 		};
 
 		// render
+		const list = getValidElements(slots.default);
+		const lastIndex = list.length - 1;
 		let children = [];
-		let list = getValidElements(slots.default);
-		let lastIndex = list.length - 1;
 
 		list.forEach((item, index) => {
 			let isNotLast = index < lastIndex;

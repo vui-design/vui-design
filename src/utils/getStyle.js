@@ -1,11 +1,13 @@
 /**
-* 获取 element 元素的指定样式
+* 获取 HTMLElement 元素的指定样式
 * @param {HTMLElement} element
 * @param {String} property
 */
 export default function getStyle(element, property) {
+	let value = "";
+
 	if (!element || !property) {
-		return null;
+		return value;
 	}
 
 	if (property === "float") {
@@ -13,9 +15,19 @@ export default function getStyle(element, property) {
 	}
 
 	try {
-		const computed = document.defaultView.getComputedStyle(element, "");
+		value = element.style[property];
 
-		return element.style[property] || computed ? computed[property] : null;
+		if (value) {
+			return value;
+		}
+
+		const computedStyle = document.defaultView.getComputedStyle(element, "");
+
+		if (computedStyle) {
+			return computedStyle[property] || value;
+		}
+
+		return value;
 	}
 	catch(e) {
 		return element.style[property];

@@ -1,12 +1,9 @@
 @vui-modal: ~"@{vui}-modal";
-@vui-modal-notice: ~"@{vui}-modal-notice";
-
 
 .@{vui-modal} {
 	&-backdrop {
 		.backdrop;
 	}
-
 
 	&-wrapper {
 		position:fixed;
@@ -31,7 +28,6 @@
 		}
 	}
 
-
 	& {
 		position:relative;
 		display:block;
@@ -39,7 +35,6 @@
 		background-color:@modal-background-color;
 		box-shadow:@modal-box-shadow;
 		margin:0 auto;
-		pointer-events:all;
 
 		&-centered {
 			display:inline-block;
@@ -53,14 +48,12 @@
 	}
 
 	&-title {
-		padding-right:20px;
+		padding-right:@font-size-sm + 20px;
 		color:@font-primary-color;
 		font-size:@font-size-lg;
 		text-align:left;
 		line-height:@line-height;
-		white-space:normal;
-		word-break:break-all;
-		word-wrap:break-word;
+		.writeBreak;
 	}
 
 	&-body {
@@ -69,12 +62,10 @@
 		font-size:@font-size;
 		text-align:left;
 		line-height:@line-height;
-		white-space:normal;
-		word-break:break-all;
-		word-wrap:break-word;
+		.writeBreak;
 	}
 	&-with-notice &-body {
-		padding:@modal-body-padding + 10;
+		padding:@modal-body-padding + 10px;
 	}
 
 	&-footer {
@@ -87,7 +78,7 @@
 	}
 	&-with-notice &-footer {
 		border-top:none;
-		padding:@modal-footer-padding + 10;
+		padding:@modal-footer-padding + 10px;
 		padding-top:0;
 	}
 
@@ -96,7 +87,7 @@
 		top:0;
 		right:0;
 		cursor:pointer;
-		padding:20px;
+		padding:@modal-header-padding;
 		color:@font-secondary-color;
 		font-size:@font-size-sm;
 		text-align:center;
@@ -108,9 +99,52 @@
 		}
 	}
 	&-with-header &-btn-close {
-		line-height:@font-size-lg * @line-height;
+		line-height:floor(@font-size-lg * @line-height);
 	}
 
+	&-notice {
+		position:relative;
+		padding-left:floor(@font-size-lg * @line-height) + 10px;
+		color:@font-color;
+		font-size:@font-size;
+		line-height:@line-height;
+
+		&-icon {
+			position:absolute;
+			top:0;
+			left:0;
+			font-size:floor(@font-size-lg * @line-height);
+			line-height:1;
+
+			i {
+				display:block;
+			}
+		}
+		&-info &-icon {
+			color:@primary-color;
+		}
+		&-warning &-icon {
+			color:@warning-color;
+		}
+		&-success &-icon {
+			color:@success-color;
+		}
+		&-error &-icon {
+			color:@error-color;
+		}
+		&-confirm &-icon {
+			color:@warning-color;
+		}
+
+		&-title {
+			color:@font-primary-color;
+			font-size:@font-size-lg;
+		}
+
+		&-description {
+			margin-top:8px;
+		}
+	}
 
 	@media (max-width: @screen-sm-max) {
 		& {
@@ -120,14 +154,12 @@
 		}
 	}
 
-
 	&-backdrop-fade-enter-active {
 		animation:vuiModalBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
 	}
 	&-backdrop-fade-leave-active {
 		animation:vuiModalBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
 	}
-
 
 	&-zoom-enter-active {
 		animation:vuiModalZoomIn @animation-in-duration @animation-in-timing-function both;
@@ -136,52 +168,6 @@
 		animation:vuiModalZoomOut @animation-out-duration @animation-out-timing-function both;
 	}
 }
-
-
-.@{vui-modal-notice} {
-	position:relative;
-	padding-left:floor(@font-size-lg * @line-height) + 10px;
-	color:@font-color;
-	font-size:@font-size;
-	line-height:@line-height;
-
-	&-title {
-		color:@font-primary-color;
-		font-size:@font-size-lg;
-	}
-	
-	&-description {
-		margin-top:8px;
-	}
-	
-	&-icon {
-		position:absolute;
-		top:0;
-		left:0;
-		font-size:floor(@font-size-lg * @line-height);
-		line-height:1;
-
-		.@{vui}-icon {
-			display:block;
-		}
-	}
-	&-info &-icon {
-		color:@primary-color;
-	}
-	&-warning &-icon {
-		color:@warning-color;
-	}
-	&-success &-icon {
-		color:@success-color;
-	}
-	&-error &-icon {
-		color:@error-color;
-	}
-	&-confirm &-icon {
-		color:@warning-color;
-	}
-}
-
 
 @keyframes vuiModalBackdropFadeIn {
 	0% { opacity:0; }
@@ -192,7 +178,6 @@
 	30% { opacity:1; }
 	100% { opacity:0; }
 }
-
 
 @keyframes vuiModalZoomIn {
 	0% { transform:scale(0.8); }

@@ -4,9 +4,9 @@
 * @param {Number} from 
 * @param {Number} to 
 * @param {Number} duration 
-* @param {Function} end 
+* @param {Function} complete 
 */
-export default function smoothScrollTo(element, from = 0, to, duration = 500, success) {
+export default function scrollTo(element, from = 0, to, duration = 500, complete) {
 	if (!window.requestAnimationFrame) {
 			window.requestAnimationFrame = (
 			window.webkitRequestAnimationFrame ||
@@ -22,7 +22,7 @@ export default function smoothScrollTo(element, from = 0, to, duration = 500, su
 	const step = Math.ceil(difference / duration * 50);
 	const scroll = (start, end, step) => {
 		if (start === end) {
-			return success && success();
+			return complete && complete();
 		}
 
 		let d = (start + step > end) ? end : start + step;

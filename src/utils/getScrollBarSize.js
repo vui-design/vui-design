@@ -3,30 +3,30 @@ import is from "./is";
 let cached = undefined;
 
 /**
-* 获取滚动条的尺寸
-* @param {Boolean} fresh 是否每次调用都重新计算滚动条的尺寸
+* 获取浏览器滚动条的尺寸
+* @param {Boolean} useCache 是否使用缓存，即每次调用不会重新计算滚动条的尺寸，而是直接返回首次调用计算得到的值
 */
-export default function getScrollbarSize(fresh) {
+export default function getScrollbarSize(useCache = true) {
 	if (is.server) {
 		return 0;
 	}
 
-	if (fresh || cached === undefined) {
-		let inner = document.createElement("div");
+	if (!useCache || cached === undefined) {
+		const inner = document.createElement("div");
 		let innerStyle = inner.style;
 
 		innerStyle.width = "100%";
 		innerStyle.height = "200px";
 
-		let outer = document.createElement("div");
+		const outer = document.createElement("div");
 		let outerStyle = outer.style;
 
 		outerStyle.position = "absolute";
 		outerStyle.top = 0;
 		outerStyle.left = 0;
 		outerStyle.pointerEvents = "none";
-		outerStyle.width = "200px";
-		outerStyle.height = "150px";
+		outerStyle.width = "100px";
+		outerStyle.height = "100px";
 		outerStyle.visibility = "hidden";
 
 		outer.appendChild(inner);

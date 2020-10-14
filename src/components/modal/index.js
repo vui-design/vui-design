@@ -19,13 +19,13 @@ const defaults = {
 */
 const createModalInstance = function(options) {
 	// 创建 Modal 挂载的 html 根节点
-	let container = options.getPopupContainer();
-	let el = document.createElement("div");
+	const container = options.getPopupContainer();
+	const el = document.createElement("div");
 
 	container.appendChild(el);
 
 	// 上述已创建 Modal 挂载的 html 根节点，这里对 getPopupContainer 选项进行重置，避免在组件实例化后又进行一次挂载
-	options.getPopupContainer = () => false;
+	options.getPopupContainer = false;
 
 	// 创建 Modal 实例
 	return new Vue({
@@ -70,13 +70,13 @@ const createModalInstance = function(options) {
 			}
 		},
 		render(h) {
-			let { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
-			let { onCancel, onOk, onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
+			const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
+			const { onCancel, onOk, onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
 
-			let open = createChainedFunction(handleOpen.bind(this), onOpen);
-			let afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
-			let close = createChainedFunction(handleClose.bind(this), onClose);
-			let afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+			const open = createChainedFunction(handleOpen.bind(this), onOpen);
+			const afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
+			const close = createChainedFunction(handleClose.bind(this), onClose);
+			const afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
 
 			// attrs
 			let attrs = {
@@ -119,13 +119,13 @@ const createModalInstance = function(options) {
 			}
 
 			// title
-			let title = is.function(this.title) ? this.title(h) : this.title;
+			const title = is.function(this.title) ? this.title(h) : this.title;
 
 			// description
-			let description = is.function(this.description) ? this.description(h) : this.description;
+			const description = is.function(this.description) ? this.description(h) : this.description;
 
 			// class
-			let classNamePrefix = getClassNamePrefix(this.classNamePrefix, "modal-notice");
+			const classNamePrefix = getClassNamePrefix(this.classNamePrefix, "modal-notice");
 			let classes = {};
 
 			classes.elNotice = {
@@ -137,27 +137,19 @@ const createModalInstance = function(options) {
 			classes.elNoticeIcon = `${classNamePrefix}-icon`;
 
 			// render
-			let children = [];
-
-			children.push(
-				<div class={classes.elNoticeTitle}>{title}</div>
-			);
-
-			if (description) {
-				children.push(
-					<div class={classes.elNoticeDescription}>{description}</div>
-				);
-			}
-
-			children.push(
-				<div class={classes.elNoticeIcon}>
-					<VuiIcon type={icon} />
-				</div>
-			);
-
 			return (
 				<VuiModal {...attrs}>
-					<div class={classes.elNotice}>{children}</div>
+					<div class={classes.elNotice}>
+						<div class={classes.elNoticeIcon}>
+							<VuiIcon type={icon} />
+						</div>
+						<div class={classes.elNoticeTitle}>{title}</div>
+						{
+							description && (
+								<div class={classes.elNoticeDescription}>{description}</div>
+							)
+						}
+					</div>
 				</VuiModal>
 			);
 		}
@@ -187,7 +179,7 @@ VuiModal.info = function(options) {
 	options.showCancelButton = false;
 	options.showOkButton = true;
 
-	let instance = createModalInstance(options);
+	const instance = createModalInstance(options);
 
 	instance.open();
 
@@ -217,7 +209,7 @@ VuiModal.warning = function(options) {
 	options.showCancelButton = false;
 	options.showOkButton = true;
 
-	let instance = createModalInstance(options);
+	const instance = createModalInstance(options);
 
 	instance.open();
 
@@ -247,7 +239,7 @@ VuiModal.success = function(options) {
 	options.showCancelButton = false;
 	options.showOkButton = true;
 
-	let instance = createModalInstance(options);
+	const instance = createModalInstance(options);
 
 	instance.open();
 
@@ -277,7 +269,7 @@ VuiModal.error = function(options) {
 	options.showCancelButton = false;
 	options.showOkButton = true;
 
-	let instance = createModalInstance(options);
+	const instance = createModalInstance(options);
 
 	instance.open();
 
@@ -307,7 +299,7 @@ VuiModal.confirm = function(options) {
 	options.showCancelButton = true;
 	options.showOkButton = true;
 
-	let instance = createModalInstance(options);
+	const instance = createModalInstance(options);
 
 	instance.open();
 

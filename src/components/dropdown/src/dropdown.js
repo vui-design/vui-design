@@ -1,3 +1,4 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import Outclick from "vui-design/directives/outclick";
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
@@ -12,6 +13,10 @@ const VuiDropdown = {
 		return {
 			vuiDropdown: this
 		};
+	},
+
+	components: {
+		VuiLazyRender
 	},
 
 	directives: {
@@ -211,9 +216,11 @@ const VuiDropdown = {
 		return (
 			<div v-outclick={handleOutClick} class={classes.el}>
 				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave} onClick={handleClick}>{slots.default}</div>
-				<transition name={animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave} appear>
-					<div ref="body" v-portal={portal} v-show={defaultVisible} class={classes.elBody} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>{slots.menu}</div>
-				</transition>
+				<VuiLazyRender status={defaultVisible}>
+					<transition appear name={animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+						<div ref="body" v-portal={portal} v-show={defaultVisible} class={classes.elBody} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>{slots.menu}</div>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

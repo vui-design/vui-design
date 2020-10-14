@@ -1,3 +1,4 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import VuiCheckboxGroup from "vui-design/components/checkbox-group";
 import VuiCheckbox from "vui-design/components/checkbox";
 import VuiRadioGroup from "vui-design/components/radio-group";
@@ -8,6 +9,7 @@ import Locale from "vui-design/mixins/locale";
 import Popup from "vui-design/utils/popup";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
+import getEventTarget from "vui-design/utils/getEventTarget";
 
 const VuiTableFilter = {
 	name: "vui-table-filter",
@@ -22,6 +24,7 @@ const VuiTableFilter = {
 	},
 
 	components: {
+		VuiLazyRender,
 		VuiCheckboxGroup,
 		VuiCheckbox,
 		VuiRadioGroup,
@@ -133,9 +136,14 @@ const VuiTableFilter = {
 			this.state.visible = !this.state.visible;
 		},
 		handleClose(e) {
-			const { $el: el, $refs: refs, $props: props } = this;
+			const { $el: el, $refs: references, $props: props } = this;
+			const target = getEventTarget(e);
 
-			if (!el.contains(refs.dropdown) && refs.dropdown.contains(e.target)) {
+			if (!target || !references.dropdown) {
+				return;
+			}
+
+			if (!el.contains(references.dropdown) && references.dropdown.contains(e.target)) {
 				return;
 			}
 
@@ -197,39 +205,41 @@ const VuiTableFilter = {
 						<path d="M0 0h1024L624.390244 462.04878v561.95122l-224.780488-112.390244V449.560976L0 0z m0 0"></path>
 					</svg>
 				</div>
-				<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
-					<div ref="dropdown" v-portal={portal} v-show={state.visible} class={classes.elDropdown}>
-						<div class={classes.elDropdownBody}>
-							{
-								props.multiple ? (
-									<VuiCheckboxGroup value={state.value} onChange={handleChange}>
-										{
-											props.options.map(option => {
-												return (
-													<VuiCheckbox key={option.value} value={option.value} label={option.label} />
-												);
-											})
-										}
-									</VuiCheckboxGroup>
-								) : (
-									<VuiRadioGroup value={state.value} onChange={handleChange}>
-										{
-											props.options.map(option => {
-												return (
-													<VuiRadio key={option.value} value={option.value} label={option.label} />
-												);
-											})
-										}
-									</VuiRadioGroup>
-								)
-							}
+				<VuiLazyRender status={state.visible}>
+					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+						<div ref="dropdown" v-portal={portal} v-show={state.visible} class={classes.elDropdown}>
+							<div class={classes.elDropdownBody}>
+								{
+									props.multiple ? (
+										<VuiCheckboxGroup value={state.value} onChange={handleChange}>
+											{
+												props.options.map(option => {
+													return (
+														<VuiCheckbox key={option.value} value={option.value} label={option.label} />
+													);
+												})
+											}
+										</VuiCheckboxGroup>
+									) : (
+										<VuiRadioGroup value={state.value} onChange={handleChange}>
+											{
+												props.options.map(option => {
+													return (
+														<VuiRadio key={option.value} value={option.value} label={option.label} />
+													);
+												})
+											}
+										</VuiRadioGroup>
+									)
+								}
+							</div>
+							<div class={classes.elDropdownFooter}>
+								<a href="javascript:;" onClick={handleConfirm}>{btnConfirmText}</a>
+								<a href="javascript:;" onClick={handleClear}>{btnClearText}</a>
+							</div>
 						</div>
-						<div class={classes.elDropdownFooter}>
-							<a href="javascript:;" onClick={handleConfirm}>{btnConfirmText}</a>
-							<a href="javascript:;" onClick={handleClear}>{btnClearText}</a>
-						</div>
-					</div>
-				</transition>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

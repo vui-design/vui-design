@@ -1,63 +1,28 @@
 import VcTabs from "vui-design/components/vc-tabs";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 
 const VuiTabs = {
 	name: "vui-tabs",
-
 	components: {
 		VcTabs
 	},
-
 	model: {
 		prop: "activeKey",
 		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "line",
-			validator: value => ["line", "card"].indexOf(value) > -1
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		activeKey: {
-			type: [String, Number],
-			default: undefined
-		},
-		addable: {
-			type: Boolean,
-			default: false
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		editable: {
-			type: Boolean,
-			default: false
-		},
-		animated: {
-			type: Boolean,
-			default: false
-		},
-		headerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		bodyStyle: {
-			type: [String, Object],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.oneOf(["line", "card"]).def("line"),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		addable: PropTypes.bool.def(false),
+		closable: PropTypes.bool.def(false),
+		editable: PropTypes.bool.def(false),
+		animated: PropTypes.bool.def(true),
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	},
-
 	methods: {
 		getDerivedTabpanels(tabsProps, nodes, tagName = "vui-tab-panel") {
 			let tabpanels = [];
@@ -189,7 +154,6 @@ const VuiTabs = {
 			return tabpanels;
 		}
 	},
-
 	render(h) {
 		const { $slots: slots, $props: props, $listeners: listeners } = this;
 
@@ -224,19 +188,3 @@ const VuiTabs = {
 };
 
 export default VuiTabs;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,3 +1,4 @@
+import VuiLazyRender from "vui-design/components/lazy-render";
 import VcSelectSelection from "./components/selection";
 import VcSelectDropdown from "./components/dropdown";
 import Emitter from "vui-design/mixins/emitter";
@@ -28,6 +29,7 @@ const VcSelect = {
 	},
 
 	components: {
+		VuiLazyRender,
 		VcSelectSelection,
 		VcSelectDropdown
 	},
@@ -661,24 +663,26 @@ const VcSelect = {
 					onRemove={handleSelectionRemove}
 					onClear={handleSelectionClear}
 				/>
-				<transition name={animation} onBeforeEnter={handleDropdownBeforeEnter} onAfterLeave={handleDropdownAfterLeave} appear>
-					<VcSelectDropdown
-						ref="dropdown"
-						v-portal={portal}
-						v-show={show}
-						classNamePrefix={customizedClassNamePrefix}
-						options={filteredOptions}
-						hoveredOption={this.hoveredOption}
-						selectedOption={multiple ? undefined : value}
-						selectedOptions={multiple ? value : undefined}
-						multiple={multiple}
-						loading={loading}
-						loadingText={loadingText || translate("vui.select.loading")}
-						notFoundText={notFoundText || translate("vui.select.notFound")}
-						onOptionHover={handleOptionHover}
-						onOptionClick={handleOptionClick}
-					/>
-				</transition>
+				<VuiLazyRender status={show}>
+					<transition name={animation} onBeforeEnter={handleDropdownBeforeEnter} onAfterLeave={handleDropdownAfterLeave} appear>
+						<VcSelectDropdown
+							ref="dropdown"
+							v-portal={portal}
+							v-show={show}
+							classNamePrefix={customizedClassNamePrefix}
+							options={filteredOptions}
+							hoveredOption={this.hoveredOption}
+							selectedOption={multiple ? undefined : value}
+							selectedOptions={multiple ? value : undefined}
+							multiple={multiple}
+							loading={loading}
+							loadingText={loadingText || translate("vui.select.loading")}
+							notFoundText={notFoundText || translate("vui.select.notFound")}
+							onOptionHover={handleOptionHover}
+							onOptionClick={handleOptionClick}
+						/>
+					</transition>
+				</VuiLazyRender>
 			</div>
 		);
 	}

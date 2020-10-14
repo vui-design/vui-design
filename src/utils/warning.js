@@ -1,53 +1,50 @@
-var dev = process.env.NODE_ENV !== "production";
-var warning = function() {};
+const production = process.env.NODE_ENV === "production";
+let warning = function() {};
 
-if (dev) {
-  var printWarning = function printWarning(format, args) {
-    var len = arguments.length;
+if (!production) {
+	const printWarning = function(format, args) {
+		const length = arguments.length;
 
-    args = new Array(len > 1 ? len - 1 : 0);
+		args = new Array(length > 1 ? length - 1 : 0);
 
-    for (var key = 1; key < len; key++) {
-      args[key - 1] = arguments[key];
-    }
+		for (let i = 1; i < length; i++) {
+			args[i - 1] = arguments[i];
+		}
 
-    var argIndex = 0;
-    var message = format.replace(/%s/g, function() {
-      return args[argIndex++];
-    });
+		let argIndex = 0;
+		const message = format.replace(/%s/g, function() {
+			return args[argIndex++];
+		});
 
-    if (typeof console !== "undefined") {
-      console.error(message);
-    }
+		if (typeof console !== "undefined") {
+			console.error(message);
+		}
 
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    }
-    catch(x) {
+		try {
+			throw new Error(message);
+		}
+		catch(e) {
 
-    }
-  }
+		}
+	};
 
-  warning = function(condition, format, args) {
-    var len = arguments.length;
+	warning = function(condition, format, args) {
+		const length = arguments.length;
 
-    args = new Array(len > 2 ? len - 2 : 0);
+		args = new Array(length > 2 ? length - 2 : 0);
 
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
-    }
+		for (let i = 2; i < length; i++) {
+			args[i - 2] = arguments[i];
+		}
 
-    if (format === undefined) {
-      throw new Error("`warning(condition, format, ...args)` requires a warning " + "message argument");
-    }
+		if (format === undefined) {
+			throw new Error("`warning(condition, format, ...args)` requires a warning message argument.");
+		}
 
-    if (!condition) {
-      printWarning.apply(null, [format].concat(args));
-    }
-  };
+		if (!condition) {
+			printWarning.apply(null, [format].concat(args));
+		}
+	};
 }
 
 export default warning;

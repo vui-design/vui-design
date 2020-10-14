@@ -1,6 +1,6 @@
 .vui-steps-item { position:relative; }
 .vui-steps-item-content {  }
-.vui-steps-item-title { font-size:16px; white-space:nowrap; text-overflow:ellipsis; transition:all 0.2s; }
+.vui-steps-item-title { overflow:hidden; font-size:16px; white-space:nowrap; text-overflow:ellipsis; transition:all 0.2s; }
 .vui-steps-item-icon { box-sizing:border-box; width:28px; height:28px; border:1px solid transparent; border-radius:50%; font-size:14px; text-align:center; line-height:26px; transition:all 0.2s; }
 .vui-steps-item-custom-icon { box-sizing:border-box; width:28px; height:28px; font-size:24px; text-align:center; line-height:28px; transition:all 0.2s; }
 .vui-steps-item-dot { box-sizing:border-box; width:10px; height:10px;  border-radius:50%; transition:all 0.2s; }
@@ -96,7 +96,8 @@
 .vui-steps-item-process .vui-steps-item-title { color:#262626; }
 .vui-steps-item-process .vui-steps-item-icon { border-color:#2d8cf0; background-color:#2d8cf0; color:#fff; }
 .vui-steps-item-process .vui-steps-item-custom-icon { color:#2d8cf0; }
-.vui-steps-item-process .vui-steps-item-dot { background-color:#2d8cf0; }
+.vui-steps-item-process .vui-steps-item-dot { position:relative; background-color:#2d8cf0; }
+.vui-steps-item-process .vui-steps-item-dot:after { content:""; position:absolute; top:0; bottom:0; left:0; right:0; display:block; box-sizing:border-box; width:100%; height:100%; border-width:1px; border-style:solid; border-color:#2d8cf0; border-radius:50%; animation:vuiStepsItemProcessing 1.2s infinite ease-in-out; }
 .vui-steps-item-process .vui-steps-item-description { color:#595959; }
 
 
@@ -119,3 +120,8 @@
 .vui-steps-item-next-finish .vui-steps-item-separator { background-color:#2d8cf0; }
 .vui-steps-item-next-error .vui-steps-item-separator { background-color:#ed5565; }
 
+
+@keyframes vuiStepsItemProcessing {
+	0% { opacity:0.6; transform:scale(0.8); }
+	100% { opacity:0; transform:scale(2.4); }
+}

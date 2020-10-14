@@ -2,21 +2,21 @@
 * (Internal) Applies css properties to an element, similar to the jQuery
 * While this helper does assist with vendor prefixed property names, it does not perform any manipulation of values prior to setting styles.
 */
-let cssPrefixes = ["Webkit", "Moz", "O", "ms"];
+const cssPrefixes = ["Webkit", "Moz", "O", "ms"];
 let cssProperties = {};
 
-export function getVendorProperty(name) {
-	let style = document.body.style;
+export function getVendorProperty(key) {
+	const style = document.body.style;
 
-	if (name in style) {
-		return name;
+	if (key in style) {
+		return key;
 	}
 
 	let i = cssPrefixes.length;
-	let capName = name.charAt(0).toUpperCase() + name.slice(1);
+	let capName = key.charAt(0).toUpperCase() + key.slice(1);
 	let vendorName;
 
-	while (i--) {
+	while(i--) {
 		vendorName = cssPrefixes[i] + capName;
 
 		if (vendorName in style) {
@@ -24,18 +24,18 @@ export function getVendorProperty(name) {
 		}
 	}
 
-	return name;
+	return key;
 };
 
 export function getStyleProperty(key) {
-	key = key.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, function(match, letter) {
+	key = key.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, (match, letter) => {
 		return letter.toUpperCase();
 	});
 
 	return cssProperties[key] || (cssProperties[key] = getVendorProperty(key));
 };
 
-export function applyStyle(element, key, value) {
+export function addStyle(element, key, value) {
 	const property = getStyleProperty(key);
 
 	element.style[property] = value;
@@ -47,11 +47,11 @@ export default function css(element, properties) {
 			const value = properties[key];
 
 			if (value !== undefined && properties.hasOwnProperty(key)) {
-				applyStyle(element, key, value);
+				addStyle(element, key, value);
 			}
 		}
 	}
 	else {
-		applyStyle(element, arguments[1], arguments[2]);
+		addStyle(element, arguments[1], arguments[2]);
 	}
 };

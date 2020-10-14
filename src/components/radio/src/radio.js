@@ -1,11 +1,9 @@
-import VuiRadioInput from "./components/input";
-import VuiRadioLabel from "./components/label";
 import Emitter from "vui-design/mixins/emitter";
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiRadio = {
 	name: "vui-radio",
-
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -14,117 +12,92 @@ const VuiRadio = {
 			default: undefined
 		}
 	},
-
-	components: {
-		VuiRadioInput,
-		VuiRadioLabel
-	},
-
 	mixins: [
 		Emitter
 	],
-
 	inheritAttrs: false,
-
 	model: {
 		prop: "checked",
 		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: undefined,
-			validator: value => value === "button"
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		name: {
-			type: String,
-			default: undefined
-		},
-		label: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		checked: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.string,
+		name: PropTypes.string,
+		label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+		checked: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		size: PropTypes.oneOf(["small", "medium", "large"])
 	},
-
 	data() {
+		const { $props: props } = this;
+
 		return {
-			defaultFocused: false,
-			defaultChecked: this.checked
+			state: {
+				focused: false,
+				checked: props.checked
+			}
 		};
 	},
-
 	watch: {
 		checked(value) {
-			if (this.defaultChecked === value) {
+			if (this.state.checked === value) {
 				return;
 			}
 
-			this.defaultChecked = value;
-			this.dispatch("vui-form-item", "change", this.defaultChecked);
+			this.state.checked = value;
+			this.dispatch("vui-form-item", "change", value);
 		}
 	},
-
 	methods: {
 		handleFocus(e) {
-			this.defaultFocused = true;
+			this.state.focused = true;
+			this.$emit("focus");
 		},
 		handleBlur(e) {
-			this.defaultFocused = false;
+			this.state.focused = false;
+			this.$emit("blur");
 		},
-		handleChange(data) {
-			if (this.disabled) {
+		handleChange(e) {
+			const { vuiRadioGroup, $props: props } = this;
+			const checked = e.target.checked;
+
+			if (props.disabled) {
 				return;
 			}
 
-			this.defaultChecked = data.checked;
-			this.$emit("input", this.defaultChecked);
-			this.$emit('change', this.defaultChecked);
-			this.dispatch("vui-form-item", "change", this.defaultChecked);
+			if (vuiRadioGroup) {
+				vuiRadioGroup.handleChange(props.value);
+			}
+			else {
+				this.state.checked = checked;
+				this.$emit("input", checked);
+				this.$emit('change', checked);
+				this.dispatch("vui-form-item", "change", checked);
+			}
 		}
 	},
-
 	render() {
-		let { $vui: vui, vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, classNamePrefix: customizedClassNamePrefix, label, value, defaultFocused, defaultChecked } = this;
-		let { handleFocus, handleBlur } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "radio");
+		const { $vui: vui, vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
-		// type: vuiRadioGroup > self
-		let type;
+		// props & state
+		let type, name, label, value, size, focused, checked, disabled;
 
 		if (vuiRadioGroup) {
 			type = vuiRadioGroup.type;
+			name = vuiRadioGroup.name;
 		}
 		else {
-			type = this.type;
+			type = props.type;
+			name = props.name;
 		}
 
-		// size: self > vuiRadioGroup > vuiForm > vui
-		let size;
+		label = slots.default || props.label;
+		value = props.value;
 
-		if (this.size) {
-			size = this.size;
+		if (props.size) {
+			size = props.size;
 		}
 		else if (vuiRadioGroup && vuiRadioGroup.size) {
 			size = vuiRadioGroup.size;
@@ -139,31 +112,14 @@ const VuiRadio = {
 			size = "medium";
 		}
 
-		// name: vuiRadioGroup > self
-		let name;
+		focused = state.focused;
 
 		if (vuiRadioGroup) {
-			name = vuiRadioGroup.name;
+			checked = value === vuiRadioGroup.state.value;
 		}
 		else {
-			name = this.name;
+			checked = state.checked;
 		}
-
-		// focused
-		let focused = defaultFocused;
-
-		// checked: vuiRadioGroup > self
-		let checked;
-
-		if (vuiRadioGroup) {
-			checked = value === vuiRadioGroup.defaultValue;
-		}
-		else {
-			checked = defaultChecked;
-		}
-
-		// disabled: vuiForm > vuiRadioGroup > self
-		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
 			disabled = vuiForm.disabled;
@@ -172,63 +128,43 @@ const VuiRadio = {
 			disabled = vuiRadioGroup.disabled;
 		}
 		else {
-			disabled = this.disabled;
+			disabled = props.disabled;
 		}
 
-		// handleChange
-		let handleChange;
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, type === "button" ? "radio-button" : "radio");
+		let classes = {};
 
-		if (vuiRadioGroup) {
-			handleChange = vuiRadioGroup.handleChange;
-		}
-		else {
-			handleChange = this.handleChange;
-		}
-
-		// theRadioInputOptions
-		let theRadioInputOptions = {
-			props: {
-				classNamePrefix,
-				type,
-				name,
-				value,
-				checked,
-				disabled
-			},
-			attrs: {
-				...attrs
-			},
-			on: {
-				focus: handleFocus,
-				blur: handleBlur,
-				change: handleChange
-			}
-		};
-
-		// theRadioLabelOptions
-		let theRadioLabelOptions = {
-			props: {
-				classNamePrefix
-			}
-		};
-
-		// classes
-		let classes = {
-			[`${classNamePrefix}`]: !type,
-			[`${classNamePrefix}-${type}`]: type,
+		classes.el = {
+			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${size}`]: size,
 			[`${classNamePrefix}-focused`]: focused,
 			[`${classNamePrefix}-checked`]: checked,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
+		classes.elInput = `${classNamePrefix}-input`;
+		classes.elLabel = `${classNamePrefix}-label`;
 
 		// render
+		const radioInputProps = {
+			attrs: attrs,
+			on: {
+				focus: this.handleFocus,
+				blur: this.handleBlur,
+				change: this.handleChange
+			}
+		};
+
 		return (
-			<label class={classes}>
-				<VuiRadioInput {...theRadioInputOptions} />
-				<VuiRadioLabel {...theRadioLabelOptions}>
-					{slots.default || label}
-				</VuiRadioLabel>
+			<label class={classes.el}>
+				<div class={classes.elInput}>
+					<input type="radio" name={name} value={value} checked={state.checked} disabled={disabled} {...radioInputProps} />
+				</div>
+				{
+					label && (
+						<div class={classes.elLabel}>{label}</div>
+					)
+				}
 			</label>
 		);
 	}
