@@ -158,7 +158,7 @@ const VuiRadio = {
 		return (
 			<label class={classes.el}>
 				<div class={classes.elInput}>
-					<input type="radio" name={name} value={value} checked={state.checked} disabled={disabled} {...radioInputProps} />
+					<input type="radio" name={name} value={value} checked={checked} disabled={disabled} {...radioInputProps} />
 				</div>
 				{
 					label && (
