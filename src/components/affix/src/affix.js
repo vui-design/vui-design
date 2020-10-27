@@ -184,7 +184,7 @@ const VuiAffix = {
 	updated() {
 		this.measure();
 	},
-	beforeUnmount() {
+	beforeDestroy() {
 		clearTimeout(this.timeout);
 		removeObserver(this);
 		this.onUpdatePosition.cancel();

@@ -1,23 +1,12 @@
+import PropTypes from "vui-design/utils/prop-types";
+
 const VuiTabPanel = {
 	name: "vui-tab-panel",
-
 	props: {
-		icon: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: [String, Number, Function],
-			default: undefined
-		},
-		closable: {
-			type: Boolean,
-			default: undefined
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		icon: PropTypes.string,
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.func]),
+		closable: PropTypes.bool,
+		disabled: PropTypes.bool.def(false)
 	}
 };
 

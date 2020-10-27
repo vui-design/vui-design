@@ -41,7 +41,7 @@ const VuiAnchorLink = {
 
 		vuiAnchor.registerLink(href);
 	},
-	beforeUnmount() {
+	beforeDestroy() {
 		const { vuiAnchor, $props: props } = this;
 		const { href } = props;
 

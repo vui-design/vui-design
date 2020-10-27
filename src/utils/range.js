@@ -16,7 +16,7 @@ export default function range(start, end, step) {
 		step = end < start ? -1 : 1;
 	}
 
-	let length = Math.max(Math.ceil((end - start) / step), 0);
+	const length = Math.max(Math.ceil((end - start) / step), 0);
 	let range = Array(length);
 
 	for (let i = 0; i < length; i++, start += step) {

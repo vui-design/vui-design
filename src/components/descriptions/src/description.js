@@ -1,15 +1,10 @@
+import PropTypes from "vui-design/utils/prop-types";
+
 const VuiDescription = {
 	name: "vui-description",
-
 	props: {
-		label: {
-			type: String,
-			default: undefined
-		},
-		span: {
-			type: Number,
-			default: undefined
-		}
+		label: PropTypes.string,
+		span: PropTypes.number,
 	}
 };
 

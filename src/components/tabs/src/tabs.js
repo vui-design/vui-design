@@ -21,7 +21,7 @@ const VuiTabs = {
 		editable: PropTypes.bool.def(false),
 		animated: PropTypes.bool.def(true),
 		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 	},
 	methods: {
 		getDerivedTabpanels(tabsProps, nodes, tagName = "vui-tab-panel") {

@@ -1,60 +1,27 @@
 import VcDescriptions from "vui-design/components/vc-descriptions";
+import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
 
 const VuiDescriptions = {
 	name: "vui-descriptions",
-
 	components: {
 		VcDescriptions
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		layout: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical"].indexOf(value) > -1
-		},
-		bordered: {
-			type: Boolean,
-			default: false
-		},
-		size: {
-			type: String,
-			default: "medium",
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		extra: {
-			type: String,
-			default: undefined
-		},
-		columns: {
-			type: Number,
-			default: 3
-		},
-		colon: {
-			type: Boolean,
-			default: undefined
-		},
-		labelWidth: {
-			type: [String, Number],
-			default: undefined
-		},
-		labelAlign: {
-			type: String,
-			default: undefined,
-			validator: value => ["left", "center", "right"].indexOf(value) > -1
-		}
+		classNamePrefix: PropTypes.string,
+		layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+		bordered: PropTypes.bool.def(false),
+		fixed: PropTypes.bool.def(false),
+		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+		columns: PropTypes.number.def(3),
+		colon: PropTypes.bool,
+		labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		labelAlign: PropTypes.oneOf(["left", "center", "right"]),
+		title: PropTypes.any,
+		extra: PropTypes.any
 	},
-
 	methods: {
-		getDerivedDataFromChildren(children) {
+		getDerivedDataFromChildren(children, tagName = "vui-description") {
 			let data = [];
 
 			if (!children) {
@@ -66,9 +33,13 @@ const VuiDescriptions = {
 					return;
 				}
 
-				let options = element.componentOptions;
+				const options = element.componentOptions;
 
-				if (options && options.propsData && options.tag === "vui-description") {
+				if (!options) {
+					return;
+				}
+
+				if (options && options.propsData && options.tag === tagName) {
 					data.push({
 						...options.propsData,
 						children: options.children
@@ -79,10 +50,9 @@ const VuiDescriptions = {
 			return data;
 		}
 	},
-
 	render() {
-		let { $slots: slots, $props: props, getDerivedDataFromChildren } = this;
-		let attributes = {
+		const { $slots: slots, $props: props, getDerivedDataFromChildren } = this;
+		const attributes = {
 			props: {
 				...props,
 				title: slots.title || props.title,

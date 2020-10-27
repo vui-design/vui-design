@@ -3,61 +3,21 @@ import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VcTabs = {
-	name: "vc-steps",
-
+	name: "vc-tabs",
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "line",
-			validator: value => ["line", "card"].indexOf(value) > -1
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		activeKey: {
-			type: [String, Number],
-			default: undefined
-		},
-		tabpanels: {
-			type: Array,
-			default: () => []
-		},
-		extra: {
-			type: Array,
-			default: undefined
-		},
-		addable: {
-			type: Boolean,
-			default: false
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		editable: {
-			type: Boolean,
-			default: false
-		},
-		animated: {
-			type: Boolean,
-			default: false
-		},
-		headerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		bodyStyle: {
-			type: [String, Object],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.oneOf(["line", "card"]).def("line"),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		tabpanels: PropTypes.array.def([]),
+		extra: PropTypes.any,
+		addable: PropTypes.bool.def(false),
+		closable: PropTypes.bool.def(false),
+		editable: PropTypes.bool.def(false),
+		animated: PropTypes.bool.def(true),
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 	},
-
 	data() {
 		const { $props: props } = this;
 		const state = {
@@ -68,13 +28,11 @@ const VcTabs = {
 			state
 		};
 	},
-
 	watch: {
 		activeKey(value) {
 			this.state.activeKey = value;
 		}
 	},
-
 	methods: {
 		handleChange(e, tabpanel) {
 			if (tabpanel.disabled) {
@@ -97,9 +55,8 @@ const VcTabs = {
 			e.stopPropagation();
 		}
 	},
-
 	render() {
-		let { $vui: vui, $props: props, state } = this;
+		const { $vui: vui, $props: props, state } = this;
 
 		// size
 		let size;
