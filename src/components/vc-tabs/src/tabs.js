@@ -1,4 +1,5 @@
 import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 

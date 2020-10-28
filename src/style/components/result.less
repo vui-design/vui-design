@@ -1,27 +1,81 @@
 @vui-result: ~"@{vui}-result";
 
-.vui-result { padding:50px; }
-.vui-result .vui-result-icon { margin-bottom:40px; text-align:center; }
-.vui-result .vui-result-icon .vui-icon { font-size:72px; }
-.vui-result .vui-result-title { color:@font-primary-color; font-size:@font-size + 10px; text-align:center; line-height:@line-height; }
-.vui-result .vui-result-description { margin-top:10px; color:@font-secondary-color; font-size:@font-size; text-align:center; line-height:@line-height; }
-.vui-result .vui-result-content { border-radius:@border-radius; background-color:#f9f9f9; margin-top:40px; padding:30px; }
-.vui-result .vui-result-extra { margin-top:40px; text-align:center; }
-.vui-result .vui-result-extra .vui-button { margin:0 5px; }
+.@{vui-result} {
+	display:block;
+	box-sizing:border-box;
+	padding:@result-padding;
 
+	&-icon {
+		display:block;
+		box-sizing:border-box;
+		margin-bottom:@result-icon-margin-bottom;
+		text-align:center;
 
-.vui-result-info {  }
-.vui-result-info .vui-result-icon .vui-icon { color:@primary-color; }
+		i {
+			font-size:@result-icon-font-size;
+		}
+	}
 
+	&-title {
+		display:block;
+		box-sizing:border-box;
+		color:@result-title-font-color;
+		font-size:@result-title-font-size;
+		text-align:center;
+		line-height:@result-title-line-height;
+	}
 
-.vui-result-warning {  }
-.vui-result-warning .vui-result-icon .vui-icon { color:@warning-color; }
+	&-description {
+		display:block;
+		box-sizing:border-box;
+		margin-top:@result-description-margin-top;
+		color:@result-description-font-color;
+		font-size:@result-description-font-size;
+		text-align:center;
+		line-height:@result-description-line-height;
+	}
 
+	&-content {
+		display:block;
+		box-sizing:border-box;
+		border-radius:@result-content-border-radius;
+		background-color:@result-content-background-color;
+		margin-top:@result-content-margin-top;
+		padding:@result-content-padding;
+	}
 
-.vui-result-success {  }
-.vui-result-success .vui-result-icon .vui-icon { color:@success-color; }
+	&-extra {
+		display:block;
+		box-sizing:border-box;
+		margin-top:@result-extra-margin-top;
+		text-align:center;
 
+		button, a {
+			margin:0 4px;
+		}
+	}
 
-.vui-result-error {  }
-.vui-result-error .vui-result-icon .vui-icon { color:@error-color; }
+	&-info &-icon {
+		i {
+			color:@primary-color;
+		}
+	}
 
+	&-warning &-icon {
+		i {
+			color:@warning-color;
+		}
+	}
+
+	&-success &-icon {
+		i {
+			color:@success-color;
+		}
+	}
+
+	&-error &-icon {
+		i {
+			color:@error-color;
+		}
+	}
+}
