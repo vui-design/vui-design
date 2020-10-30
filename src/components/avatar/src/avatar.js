@@ -1,4 +1,5 @@
 import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
@@ -7,42 +8,19 @@ const sizes = ["small", "medium", "large"];
 
 const VuiAvatar = {
 	name: "vui-avatar",
-
 	components: {
 		VuiIcon
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		src: {
-			type: String,
-			default: undefined
-		},
-		alt: {
-			type: String,
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		shape: {
-			type: String,
-			default: "circle",
-			validator: value => shapes.indexOf(value) > -1
-		},
-		size: {
-			type: [String, Number],
-			default: undefined,
-			validator: value => sizes.indexOf(value) > -1 || is.number(value)
-		}
+		classNamePrefix: PropTypes.string,
+		src: PropTypes.string,
+		alt: PropTypes.string,
+		icon: PropTypes.string,
+		shape: PropTypes.oneOf(shapes).def("circle"),
+		size: PropTypes.oneOfType([PropTypes.oneOf(sizes), PropTypes.number]).def("medium")
 	},
-
 	data() {
-		let state = {
+		const state = {
 			scale: 1
 		};
 
@@ -50,16 +28,17 @@ const VuiAvatar = {
 			state
 		};
 	},
-
 	methods: {
 		response() {
-			if (!this.$refs.children) {
+			const { $el: el, $refs: references } = this;
+
+			if (!references.children) {
 				return;
 			}
 
-			let boundary = this.$el.getBoundingClientRect().width;
-			let width = this.$refs.children.offsetWidth;
-			let isOverflowed = boundary - 8 < width;
+			const boundary = el.getBoundingClientRect().width;
+			const width = references.children.offsetWidth;
+			const isOverflowed = boundary - 8 < width;
 
 			this.state.scale = isOverflowed ? ((boundary - 8) / width) : 1;
 		},
@@ -67,18 +46,16 @@ const VuiAvatar = {
 			this.$emit("error", e);
 		}
 	},
-
 	mounted() {
 		this.response();
 	},
-
 	updated() {
 		this.response();
 	},
-
 	render() {
-		let { $slots: slots, $props: props, state, $listeners: listeners } = this;
-		let { handleError } = this;
+		const { $slots: slots, $props: props, state, $listeners: listeners } = this;
+		const { handleError } = this;
+		const isPresetSize =  sizes.indexOf(props.size) > -1;
 
 		// type
 		let type;
@@ -93,40 +70,27 @@ const VuiAvatar = {
 			type = "children";
 		}
 
-		// size
-		let size;
-		let isPresetSize;
-
-		if (props.size) {
-			size = props.size;
-		}
-		else {
-			size = "medium";
-		}
-
-		isPresetSize =  sizes.indexOf(size) > -1;
-
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-with-${type}`]: type,
 			[`${classNamePrefix}-${props.shape}`]: props.shape,
-			[`${classNamePrefix}-${size}`]: size && isPresetSize
+			[`${classNamePrefix}-${props.size}`]: props.size && isPresetSize
 		};
 		classes.elChildren = `${classNamePrefix}-${type}`;
 
 		// style
 		let styles = {};
 
-		if (size && !isPresetSize) {
+		if (props.size && !isPresetSize) {
 			styles.el = {
-				width: `${size}px`,
-				height: `${size}px`,
-				lineHeight: `${size}px`,
-				fontSize: `${size / 2}px`,
+				width: `${props.size}px`,
+				height: `${props.size}px`,
+				lineHeight: `${props.size}px`,
+				fontSize: `${props.size / 2}px`
 			};
 		}
 
@@ -137,7 +101,7 @@ const VuiAvatar = {
 		}
 
 		// attributes
-		let attributes = {
+		const attributes = {
 			class: classes.el,
 			style: styles.el,
 			on: {
@@ -165,9 +129,7 @@ const VuiAvatar = {
 		}
 
 		return (
-			<div {...attributes}>
-				{children}
-			</div>
+			<div {...attributes}>{children}</div>
 		);
 	}
 };

@@ -1,68 +1,40 @@
+import PropTypes from "vui-design/utils/prop-types";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiRow = {
 	name: "vui-row",
-
 	provide() {
 		return {
 			vuiRow: this
 		};
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-row"
-		},
-		type: {
-			type: String,
-			default: undefined,
-			validator(value) {
-				return ["flex"].indexOf(value) > -1;
-			}
-		},
-		justify: {
-			type: String,
-			default: "start",
-			validator(value) {
-				return ["start", "center", "end", "space-around", "space-between"].indexOf(value) > -1;
-			}
-		},
-		align: {
-			type: String,
-			default: "top",
-			validator(value) {
-				return ["top", "middle", "bottom"].indexOf(value) > -1;
-			}
-		},
-		gutter: {
-			type: Number,
-			default: 0
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.oneOf(["flex"]),
+		justify: PropTypes.oneOf(["start", "center", "end", "space-around", "space-between"]).def("start"),
+		align: PropTypes.oneOf(["top", "middle", "bottom"]).def("top"),
+		gutter: PropTypes.number.def(0)
 	},
-
 	render(h) {
-		let { $slots, classNamePrefix, type, justify, align, gutter } = this;
+		const { $slots: slots, $props: props } = this;
 
-		// classes
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "row");
 		let classes = {
-			[`${classNamePrefix}`]: !type,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-justify-${justify}`]: type === "flex",
-			[`${classNamePrefix}-align-${align}`]: type === "flex"
+			[`${classNamePrefix}`]: !props.type,
+			[`${classNamePrefix}-${props.type}`]: props.type,
+			[`${classNamePrefix}-justify-${props.justify}`]: props.type === "flex",
+			[`${classNamePrefix}-align-${props.align}`]: props.type === "flex"
 		};
 
-		// styles
 		let styles = {};
 
-		if (gutter) {
-			styles.marginLeft = gutter / -2 + "px";
+		if (props.gutter) {
+			styles.marginLeft = props.gutter / -2 + "px";
 			styles.marginRight = styles.marginLeft;
 		}
 
-		// render
 		return (
-			<div class={classes} style={styles}>
-				{$slots.default}
-			</div>
+			<div class={classes} style={styles}>{slots.default}</div>
 		);
 	}
 };

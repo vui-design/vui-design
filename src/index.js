@@ -60,6 +60,7 @@ import Switch from "./components/switch";
 import Textarea from "./components/textarea";
 import Upload from "./components/upload";
 // Data Display
+import AvatarGroup from "./components/avatar-group";
 import Avatar from "./components/avatar";
 import Badge from "./components/badge";
 import Descriptions from "./components/descriptions";
@@ -88,6 +89,7 @@ import Notice from "./components/notice";
 import Popconfirm from "./components/popconfirm";
 import Progress from "./components/progress";
 import Result from "./components/result";
+import Skeleton from "./components/skeleton";
 import Spin from "./components/spin";
 // Other
 import Anchor from "./components/anchor";
@@ -162,6 +164,7 @@ const components = [
 	Textarea,
 	Upload,
 	// Data Display
+	AvatarGroup,
 	Avatar,
 	Badge,
 	Descriptions,
@@ -190,6 +193,7 @@ const components = [
 	Popconfirm,
 	Progress,
 	Result,
+	Skeleton,
 	Spin,
 	// Other
 	Anchor,
@@ -294,6 +298,7 @@ export default {
 	Textarea,
 	Upload,
 	// Data Display
+	AvatarGroup,
 	Avatar,
 	Badge,
 	Descriptions,
@@ -322,6 +327,7 @@ export default {
 	Popconfirm,
 	Progress,
 	Result,
+	Skeleton,
 	Spin,
 	// Other
 	Anchor,

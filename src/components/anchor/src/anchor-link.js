@@ -16,11 +16,11 @@ const VuiAnchorLink = {
 		target: PropTypes.string
 	},
 	watch: {
-		href(next, prev) {
+		href(value, oldValue) {
 			const { vuiAnchor } = this;
 			const nextTick = () => {
-				vuiAnchor.unregisterLink(prev);
-				vuiAnchor.registerLink(next);
+				vuiAnchor.unregisterLink(oldValue);
+				vuiAnchor.registerLink(value);
 			};
 
 			this.$nextTick(nextTick);
@@ -50,11 +50,8 @@ const VuiAnchorLink = {
 	render() {
 		const { vuiAnchor, $slots: slots, $props: props } = this;
 		const { handleClick } = this;
-
-		// active
 		const active = vuiAnchor && vuiAnchor.state.link === props.href;
 
-		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "anchor-link");
 		let classes = {};
 
@@ -67,7 +64,6 @@ const VuiAnchorLink = {
 			[`${classNamePrefix}-title-active`]: active
 		};
 
-		// render
 		return (
 			<div class={classes.el}>
 				<a href={props.href} target={props.target} class={classes.elTitle} title={is.string(props.title) ? props.title : ""} onClick={handleClick}>{slots.title || props.title}</a>

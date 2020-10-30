@@ -20,8 +20,9 @@ const VuiResult = {
 		classNamePrefix: PropTypes.string,
 		status: PropTypes.oneOf(["info", "warning", "success", "error", "comingsoon", "403", "404", "500"]).def("info"),
 		icon: PropTypes.string,
-		title: PropTypes.string,
-		description: PropTypes.string
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		extra: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 	},
 	render() {
 		const { $slots: slots, $props: props } = this;
@@ -75,7 +76,7 @@ const VuiResult = {
 		const content = slots.default || slots.content;
 
 		// extra
-		const extra = slots.extra;
+		const extra = slots.extra || props.extra;
 
 		// render
 		return (

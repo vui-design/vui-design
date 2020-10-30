@@ -1,75 +1,38 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCol = {
 	name: "vui-col",
-
 	inject: {
 		vuiRow: {
 			default: undefined
 		}
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-col"
-		},
-		span: {
-			type: Number,
-			default: 24
-		},
-		offset: {
-			type: Number,
-			default: undefined
-		},
-		push: {
-			type: Number,
-			default: undefined
-		},
-		pull: {
-			type: Number,
-			default: undefined
-		},
-		order: {
-			type: Number,
-			default: undefined
-		},
-		xs: {
-			type: [Number, Object],
-			default: undefined
-		},
-		sm: {
-			type: [Number, Object],
-			default: undefined
-		},
-		md: {
-			type: [Number, Object],
-			default: undefined
-		},
-		lg: {
-			type: [Number, Object],
-			default: undefined
-		},
-		xl: {
-			type: [Number, Object],
-			default: undefined
-		},
-		xxl: {
-			type: [Number, Object],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		span: PropTypes.number.def(24),
+		offset: PropTypes.number,
+		push: PropTypes.number,
+		pull: PropTypes.number,
+		order: PropTypes.number,
+		xs: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+		sm: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+		md: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+		lg: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+		xl: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+		xxl: PropTypes.oneOfType([PropTypes.number, PropTypes.object])
 	},
-
 	render(h) {
-		let { vuiRow, $slots, classNamePrefix } = this;
+		const { vuiRow, $slots: slots, $props: props } = this;
 
-		// classes
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "col");
 		let classes = [];
 
 		classes.push(`${classNamePrefix}`);
 
 		["span", "offset", "push", "pull", "order"].forEach(key => {
-			let value = this[key];
+			const value = props[key];
 
 			if (value || value === 0) {
 				classes.push(key === "span" ? `${classNamePrefix}-${value}` : `${classNamePrefix}-${key}-${value}`);
@@ -77,10 +40,10 @@ const VuiCol = {
 		});
 
 		["xs", "sm", "md", "lg", "xl", "xxl"].forEach(key => {
-			let value = this[key];
+			let value = props[key];
 
 			if (is.number(value)) {
-				classes.push(`vui-col-${key}-${value}`);
+				classes.push(`${classNamePrefix}-${key}-${value}`);
 			}
 			else if (is.object(value)) {
 				Object.keys(value).forEach(item => {
@@ -89,7 +52,6 @@ const VuiCol = {
 			}
 		});
 
-		// styles
 		let styles = {};
 
 		if (vuiRow && vuiRow.gutter) {
@@ -97,11 +59,8 @@ const VuiCol = {
 			styles.paddingRight = styles.paddingLeft;
 		}
 
-		// render
 		return (
-			<div class={classes} style={styles}>
-				{$slots.default}
-			</div>
+			<div class={classes} style={styles}>{slots.default}</div>
 		);
 	}
 };

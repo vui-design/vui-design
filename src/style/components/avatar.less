@@ -9,7 +9,7 @@
 	color:@avatar-font-color;
 	text-align:center;
 	white-space:nowrap;
-	transition:all 0.2s;
+	transition:all @transition-duration;
 
 	& &-image {
 		display:block;
@@ -19,8 +19,10 @@
 		object-position:center;
 	}
 	& &-icon {
-		display:block;
-		line-height:inherit;
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%, -50%);
 	}
 	& &-children {
 		position:absolute;
@@ -64,5 +66,43 @@
 		height:@avatar-size-lg;
 		font-size:@avatar-font-size-lg;
 		line-height:@avatar-size-lg;
+	}
+
+	&-group {
+		display:inline-flex;
+		box-sizing:border-box;
+		align-items:center;
+
+		&-item,
+		&-placeholder {
+			margin-left:-8px;
+		}
+
+		&-item:first-child {
+			margin-left:0;
+		}
+	}
+
+	&-group & {
+		box-shadow:0px 0px 0px 1px rgba(255, 255, 255, 1);
+	}
+
+	&-group &-group-placeholder & {
+		background-color:#fde3cf;
+		color:#f56a00;
+	}
+
+	&-group-tooltip-content {
+		display:flex;
+		box-sizing:border-box;
+		align-items:center;
+
+		& > div {
+			margin-left:4px;
+
+			&:first-child {
+				margin-left:0;
+			}
+		}
 	}
 }

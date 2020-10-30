@@ -1,7 +1,8 @@
 import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const defaultIconTypes = {
+const mapIconTypes = {
 	info: "info",
 	warning: "warning",
 	success: "checkmark-circle",
@@ -10,64 +11,31 @@ const defaultIconTypes = {
 
 const VuiAlert = {
 	name: "vui-alert",
-
 	components: {
 		VuiIcon
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "info",
-			validator: value => ["info", "warning", "success", "error"].indexOf(value) > -1
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		message: {
-			type: String,
-			default: undefined
-		},
-		description: {
-			type: String,
-			default: undefined
-		},
-		banner: {
-			type: Boolean,
-			default: false
-		},
-		showIcon: {
-			type: Boolean,
-			default: false
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		closeText: {
-			type: String,
-			default: undefined
-		},
-		animation: {
-			type: String,
-			default: "vui-alert-slide-up"
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.oneOf(["info", "warning", "success", "error"]).def("info"),
+		icon: PropTypes.string,
+		message: PropTypes.string,
+		description: PropTypes.string,
+		banner: PropTypes.bool.def(false),
+		showIcon: PropTypes.bool.def(false),
+		closable: PropTypes.bool.def(false),
+		closeText: PropTypes.string,
+		animation: PropTypes.string.def("vui-alert-slide-up")
 	},
-
 	data() {
+		const state = {
+			closed: false,
+			closing: false
+		};
+
 		return {
-			state: {
-				closed: false,
-				closing: false
-			}
+			state
 		};
 	},
-
 	methods: {
 		handleClose(e) {
 			e.preventDefault();
@@ -87,10 +55,12 @@ const VuiAlert = {
 			this.$emit("afterClose");
 		}
 	},
-
 	render() {
-		let { $slots: slots, $props: props, state } = this;
-		let { handleClose, handleAfterLeave } = this;
+		const { $slots: slots, $props: props, state } = this;
+		const { handleClose, handleAfterLeave } = this;
+		const message = slots.default || slots.message || props.message;
+		const description = slots.description || props.description;
+		const closeText = slots.closeText || props.closeText;
 
 		if (state.closed) {
 			return null;
@@ -108,8 +78,11 @@ const VuiAlert = {
 					);
 				}
 				else {
-					let defaultIconType = defaultIconTypes[props.type];
-					let iconType = (slots.description || props.description) ? defaultIconType : (defaultIconType + "-filled");
+					let iconType = mapIconTypes[props.type];
+
+					if (!description) {
+						iconType = iconType + "-filled";
+					}
 
 					icon = (
 						<VuiIcon type={iconType} />
@@ -120,8 +93,8 @@ const VuiAlert = {
 			let btnClose;
 
 			if (props.closable) {
-				if (props.closeText) {
-					btnClose = props.closeText;
+				if (closeText) {
+					btnClose = closeText;
 				}
 				else {
 					btnClose = (
@@ -130,7 +103,7 @@ const VuiAlert = {
 				}
 			}
 
-			let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "alert");
+			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "alert");
 			let classes = {};
 
 			classes.el = {
@@ -138,7 +111,7 @@ const VuiAlert = {
 				[`${classNamePrefix}-${props.type}`]: props.type,
 				[`${classNamePrefix}-banner`]: props.banner,
 				[`${classNamePrefix}-with-icon`]: icon,
-				[`${classNamePrefix}-with-description`]: slots.description || props.description,
+				[`${classNamePrefix}-with-description`]: description,
 				[`${classNamePrefix}-closable`]: btnClose,
 				[`${classNamePrefix}-closing`]: state.closing
 			};
@@ -147,41 +120,26 @@ const VuiAlert = {
 			classes.elDescription = `${classNamePrefix}-description`;
 			classes.elBtnClose =  `${classNamePrefix}-btn-close`;
 
-			let children = [];
-
-			if (icon) {
-				children.push(
-					<div class={classes.elIcon}>
-						{icon}
-					</div>
-				);
-			}
-
-			children.push(
-				<div class={classes.elMessage}>
-					{slots.default || props.message}
-				</div>
-			);
-
-			if (slots.description || props.description) {
-				children.push(
-					<div class={classes.elDescription}>
-						{slots.description || props.description}
-					</div>
-				);
-			}
-
-			if (btnClose) {
-				children.push(
-					<div class={classes.elBtnClose} onClick={handleClose}>
-						{btnClose}
-					</div>
-				);
-			}
-
 			return (
-				<transition appear={false} name={props.animation} onAfterLeave={handleAfterLeave}>
-					<div v-show={!state.closing} class={classes.el}>{children}</div>
+				<transition name={props.animation} onAfterLeave={handleAfterLeave}>
+					<div v-show={!state.closing} class={classes.el}>
+						{
+							icon && (
+								<div class={classes.elIcon}>{icon}</div>
+							)
+						}
+						<div class={classes.elMessage}>{message}</div>
+						{
+							description && (
+								<div class={classes.elDescription}>{description}</div>
+							)
+						}
+						{
+							btnClose && (
+								<div class={classes.elBtnClose} onClick={handleClose}>{btnClose}</div>
+							)
+						}
+					</div>
 				</transition>
 			);
 		}
