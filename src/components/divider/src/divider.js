@@ -34,7 +34,7 @@ const VuiDivider = {
 		if (props.gutter) {
 			const gutter = is.string(props.gutter) ? props.gutter : `${props.gutter}px`;
 
-			if (type === "horizontal") {
+			if (props.type === "horizontal") {
 				styles.el = {
 					marginTop: gutter,
 					marginBottom: gutter
