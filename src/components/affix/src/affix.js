@@ -7,6 +7,9 @@ import { getElementRect, getFixedTop, getFixedBottom, addObserver,  removeObserv
 
 const VuiAffix = {
 	name: "vui-affix",
+	components: {
+		VuiResizeObserver
+	},
 	props: {
 		classNamePrefix: PropTypes.string,
 		getScrollContainer: PropTypes.func.def(() => typeof window === "undefined" ? null : window),

@@ -1,5 +1,189 @@
 @vui-spin: ~"@{vui}-spin";
 
+.@{vui-spin} {
+	display:inline-block;
+	box-sizing:border-box;
+	vertical-align:middle;
+
+	&-children {
+		display:block;
+		box-sizing:border-box;
+		transition:opacity @transition-duration @transition-timing-function;
+	}
+
+	&-spinner {
+		display:block;
+		box-sizing:border-box;
+		color:@spin-color;
+		text-align:center;
+		line-height:1;
+	}
+
+	&-indicator {
+		display:inline-block;
+		box-sizing:border-box;
+		vertical-align:middle;
+	}
+
+	&-message {
+		display:block;
+		box-sizing:border-box;
+	}
+
+	&-dot {
+		position:relative;
+		display:block;
+		box-sizing:border-box;
+		border-radius:50%;
+		animation:vuiSpinDotRotate 2s infinite linear;
+
+		&-item {
+			position:absolute;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+			display:block;
+			width:100%;
+			height:100%;
+			border-radius:50%;
+			opacity:0.33333333;
+			animation:vuiSpinDotItemTwinkle 1s linear infinite alternate;
+
+			&:before {
+				content:"";
+				position:absolute;
+				top:0;
+				left:50%;
+				display:block;
+				border-radius:50%;
+				background-color:@spin-color;
+			}
+
+			&:nth-child(1) {
+				transform:rotate(0deg);
+				animation-delay:0s;
+			}
+			&:nth-child(2) {
+				transform:rotate(120deg);
+				animation-delay:0.33333333s;
+			}
+			&:nth-child(3) {
+				transform:rotate(-120deg);
+				animation-delay:0.66666666s;
+			}
+		}
+	}
+
+	&-small {
+		font-size:@spin-font-size-sm;
+	}
+	&-small &-message {
+		margin-top:@spin-message-margin-top-sm;
+	}
+	&-small &-dot {
+		width:@spin-dot-size-sm;
+		height:@spin-dot-size-sm;
+
+		&-item:before {
+			width:@spin-dot-item-size-sm;
+			height:@spin-dot-item-size-sm;
+			margin-left:-@spin-dot-item-size-sm / 2;
+		}
+	}
+
+	&-medium {
+		font-size:@spin-font-size-md;
+	}
+	&-medium &-message {
+		margin-top:@spin-message-margin-top-md;
+	}
+	&-medium &-dot {
+		width:@spin-dot-size-md;
+		height:@spin-dot-size-md;
+
+		&-item:before {
+			width:@spin-dot-item-size-md;
+			height:@spin-dot-item-size-md;
+			margin-left:-@spin-dot-item-size-md / 2;
+		}
+	}
+
+	&-large {
+		font-size:@spin-font-size-lg;
+	}
+	&-large &-message {
+		margin-top:@spin-message-margin-top-lg;
+	}
+	&-large &-dot {
+		width:@spin-dot-size-lg;
+		height:@spin-dot-size-lg;
+
+		&-item:before {
+			width:@spin-dot-item-size-lg;
+			height:@spin-dot-item-size-lg;
+			margin-left:-@spin-dot-item-size-lg / 2;
+		}
+	}
+
+	&-fullscreen {
+		position:fixed;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		z-index:10;
+		background-color:rgba(255,255,255,0.5);
+	}
+	&-fullscreen &-spinner {
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%, -50%);
+	}
+
+	&-with-children {
+		position:relative;
+		display:block;
+	}
+	&-with-children &-spinner {
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%, -50%);
+	}
+
+	&-spinning &-children {
+		overflow:hidden;
+		opacity:0.5;
+		user-select:none;
+		pointer-events:none;
+	}
+
+	&-fade-enter-active {
+		animation:vuiSpinFadeIn @animation-in-duration @animation-in-timing-function both;
+	}
+	&-fade-leave-active {
+		animation:vuiSpinFadeOut @animation-out-duration @animation-out-timing-function both;
+	}
+}
+
+@keyframes vuiSpinDotRotate {
+	0% {
+		transform:rotateZ(0deg) translate3d(0, 0, 0);
+	}
+
+	100% {
+		transform:rotateZ(720deg) translate3d(0, 0, 0);
+	}
+}
+
+@keyframes vuiSpinDotItemTwinkle {
+	100% {
+		opacity:1;
+	}
+}
+
 @keyframes vuiSpinFadeIn {
 	0% { opacity:0; }
 	100% { opacity:1; }
@@ -10,35 +194,3 @@
 	30% { opacity:1; }
 	100% { opacity:0; }
 }
-
-@keyframes vuiSpinIconSpin {
-	0% { transform:rotate(0deg); }
-	50% { transform:rotate(180deg); }
-	100% { transform:rotate(360deg); }
-}
-
-.vui-spin { display:inline-block; vertical-align:middle; user-select:none; }
-.vui-spin .vui-spin-main { color:#2d8cf0; text-align:center; line-height:1; }
-.vui-spin .vui-spin-icon { box-sizing:border-box; display:block; border-width:1px; border-style:solid; border-color:rgba(45,140,240,0) rgba(45,140,240,0) rgba(45,140,240,1) rgba(45,140,240,0); border-radius:50%; margin:0 auto; animation:vuiSpinIconSpin 1s infinite linear; }
-.vui-spin .vui-spin-message { margin-top:10px; }
-
-/* fixed & fullscreen */
-.vui-spin-fixed, .vui-spin-fullscreen { top:0; bottom:0; left:0; right:0; z-index:10; background-color:rgba(255,255,255,0.5); }
-.vui-spin-fixed .vui-spin-main, .vui-spin-fullscreen .vui-spin-main { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); }
-
-.vui-spin-fixed { position:absolute; }
-.vui-spin-fullscreen { position:fixed; }
-
-/* size */
-.vui-spin-small { font-size:12px; }
-.vui-spin-small .vui-spin-icon { width:16px; height:16px; }
-
-.vui-spin-medium { font-size:14px; }
-.vui-spin-medium .vui-spin-icon { width:24px; height:24px; }
-
-.vui-spin-large { font-size:16px; }
-.vui-spin-large .vui-spin-icon { width:32px; height:32px; }
-
-/* animation */
-.vui-spin-fade-enter-active { animation:vuiSpinFadeIn @animation-in-duration @animation-in-timing-function both; }
-.vui-spin-fade-leave-active { animation:vuiSpinFadeOut @animation-out-duration @animation-out-timing-function both; }

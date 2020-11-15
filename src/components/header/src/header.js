@@ -1,30 +1,22 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiHeader = {
 	name: "vui-header",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		theme: {
-			type: String,
-			default: "light",
-			validator: value => ["light", "dark"].indexOf(value) > -1
-		}
+		classNamePrefix: PropTypes.string,
+		theme: PropTypes.oneOf(["light", "dark"]).def("light")
 	},
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, theme } = this;
+		const { $slots: slots, $props: props } = this;
 
-		// classes
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "header");
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-header");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${theme}`]: theme
+			[`${classNamePrefix}-${props.theme}`]: props.theme
 		};
 
 		// render

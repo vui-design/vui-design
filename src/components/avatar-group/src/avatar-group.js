@@ -6,12 +6,19 @@ import getValidElements from "vui-design/utils/getValidElements";
 
 const VuiAvatarGroup = {
 	name: "vui-avatar-group",
+	provide() {
+		return {
+			vuiAvatarGroup: this
+		};
+	},
 	components: {
 		VuiTooltip,
 		VuiAvatar
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
+		shape: PropTypes.oneOf(["circle", "square"]).def("circle"),
+		size: PropTypes.oneOfType([PropTypes.oneOf(["small", "medium", "large"]), PropTypes.number]).def("medium"),
 		maxCount: PropTypes.number,
 		maxTooltipTheme: PropTypes.oneOf(["light", "dark"]).def("light"),
 		maxTooltipPlacement: PropTypes.oneOf(["top", "bottom"]).def("top")

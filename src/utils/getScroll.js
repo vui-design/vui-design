@@ -1,3 +1,5 @@
+import is from "./is";
+
 /**
 * 获取容器水平方向或垂直方向的滚动距离
 * @param {Window|HTMLElement} scrollContainer 滚动容器

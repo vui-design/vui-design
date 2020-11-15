@@ -1,7 +1,7 @@
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiSeparator = {
 	name: "vui-separator",

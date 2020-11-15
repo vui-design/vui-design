@@ -1,8 +1,8 @@
 @vui-page-header: ~"@{vui}-page-header";
 
 .@{vui-page-header} {
-	background-color:#fff;
-	padding:20px;
+	background-color:@page-header-background-color;
+	padding:@page-header-padding;
 
 	&&-with-footer {
 		padding-bottom:0;
@@ -12,91 +12,114 @@
 	}
 
 	&-breadcrumb {
-		margin-bottom:16px;
+		display:block;
+		box-sizing:border-box;
 	}
 
 	&-header {
-		.clearfix;
+		display:flex;
+		box-sizing:border-box;
+		align-items:center;
+
+		&-content {
+			flex:1;
+			display:flex;
+			box-sizing:border-box;
+			align-items:center;
+			overflow:hidden;
+		}
+
+		&-extra {
+			display:block;
+			box-sizing:border-box;
+			white-space:nowrap;
+		}
 	}
 
 	&-back {
-		float:left;
 		cursor:pointer;
-		margin:9px 16px 9px 0;
-		color:@font-color;
-		font-size:16px;
-		transition:color 0.2s;
+		display:block;
+		box-sizing:border-box;
+		margin-right:@page-header-back-margin-right;
+		color:@page-header-back-color;
+		font-size:@page-header-back-size;
+		line-height:1;
+		transition:color @transition-duration @transition-timing-function;
 
-		.vui-icon {
+		i {
 			display:block;
 		}
 
 		&:hover {
-			color:@link-hover-color;
+			color:@page-header-back-hover-color;
 		}
 		&:active {
-			color:@link-active-color;
+			color:@page-header-back-active-color;
 		}
 	}
 
 	&-avatar {
-		float:left;
-		margin:1px 16px 1px 0;
+		display:block;
+		box-sizing:border-box;
+		margin-right:@page-header-avatar-margin-right;
 	}
 
 	&-title {
-		float:left;
-		height:34px;
-		margin-right:16px;
+		display:block;
+		box-sizing:border-box;
+		height:@page-header-title-height;
+		margin-right:@page-header-title-margin-right;
 		color:@font-primary-color;
-		font-size:20px;
-		font-weight:600;
+		font-size:@page-header-title-font-size;
+		font-weight:@page-header-title-font-weight;
 		font-family:-webkit-pictograph;
-		line-height:34px;
+		line-height:@page-header-title-height;
+
+		.writeEllipsis;
 	}
 
 	&-sub-title {
-		float:left;
-		height:34px;
-		margin-right:16px;
+		display:block;
+		box-sizing:border-box;
+		height:@page-header-sub-title-height;
+		margin-right:@page-header-sub-title-margin-right;
 		color:@font-disabled-color;
-		font-size:14px;
-		line-height:34px;
+		font-size:@page-header-sub-title-font-size;
+		line-height:@page-header-sub-title-height;
+
+		.writeEllipsis;
 	}
 
 	&-tags { 
-		float:left;
-		margin:5px 0;
+		display:flex;
+		box-sizing:border-box;
+		align-items:center;
 
-		.vui-tag {
-			float:left;
+		:not(:first-child) {
+			margin-left:@page-header-tag-gutter;
 		}
-		.vui-tag + .vui-tag {
-			margin-left:8px;
-		}
-	}
-
-	&-extra {
-		float:right;
 	}
 
 	&-body {
-		margin-top:16px;
+		margin-top:@page-header-body-margin-top;
 
 		.clearfix;
 	}
 
 	&-footer {
-		margin-top:16px;
+		margin-top:@page-header-footer-margin-top;
 
 		.clearfix;
 
 		.@{vui}-menu {
-			line-height:40px;
+			height:36px;
+			line-height:@line-height;
 		}
 		.@{vui}-menu-item {
-			margin-right:20px;
 			padding:0;
+		}
+		.@{vui}-menu-item + .@{vui}-menu-item {
+			margin-left:20px;
 		}
 
 		.@{vui}-tabs {
@@ -109,20 +132,35 @@
 		.@{vui}-tabs-header-content {
 			margin-bottom:0;
 		}
-		.@{vui}-tabs-small > .@{vui}-tabs-header .@{vui}-tab-trigger {
+		.@{vui}-tabs-small .@{vui}-tabs-header .@{vui}-tabs-tab {
 			margin-right:14px;
 			padding:0;
 			height:30px;
 		}
-		.@{vui}-tabs-medium > .@{vui}-tabs-header .@{vui}-tab-trigger {
+		.@{vui}-tabs-medium .@{vui}-tabs-header .@{vui}-tabs-tab {
 			margin-right:18px;
 			padding:0;
 			height:40px;
 		}
-		.@{vui}-tabs-large > .@{vui}-tabs-header .@{vui}-tab-trigger {
+		.@{vui}-tabs-large .@{vui}-tabs-header .@{vui}-tabs-tab {
 			margin-right:22px;
 			padding:0;
 			height:50px;
 		}
+	}
+
+	&-breadcrumb + &-header {
+		margin-top:@page-header-header-margin-top;
+	}
+
+	&-breadcrumb + &-body,
+	&-header + &-body {
+		margin-top:@page-header-body-margin-top;
+	}
+
+	&-breadcrumb + &-footer,
+	&-header + &-footer,
+	&-body + &-footer {
+		margin-top:@page-header-footer-margin-top;
 	}
 }

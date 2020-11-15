@@ -1,34 +1,34 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import "vui-design/icons";
 
 const VuiIcon = {
 	name: "vui-icon",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: undefined
-		},
-		color: {
-			type: String,
-			default: undefined
-		},
-		size: {
-			type: [Number, String],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.string,
+		color: PropTypes.string,
+		size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 	},
-
 	render(h) {
-		let { $props: props, $listeners: listeners } = this;
-		let name = "#icon-" + props.type;
+		const { $props: props, $listeners: listeners } = this;
 
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "icon");
+		// name
+		const name = "#icon-" + props.type;
+
+		// fontSize
+		let fontSize;
+
+		if (is.string(props.size)) {
+			fontSize = props.size;
+		}
+		else if (is.number(props.size)) {
+			fontSize = props.size + "px";
+		}
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "icon");
 		let classes = {};
 
 		classes.el = {
@@ -36,14 +36,16 @@ const VuiIcon = {
 			[`${classNamePrefix}-${props.type}`]: props.type
 		};
 
+		// style
 		let styles = {};
 
 		styles.el = {
 			color: props.color,
-			fontSize: is.number(props.size) ? (props.size + "px") : (is.string(props.size) ? props.size : undefined)
-		}
+			fontSize: fontSize
+		};
 
-		let attributes = {
+		// render
+		const attributes = {
 			class: classes.el,
 			style: styles.el,
 			on: {

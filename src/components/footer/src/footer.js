@@ -1,19 +1,26 @@
+import PropTypes from "vui-design/utils/prop-types";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiFooter = {
 	name: "vui-footer",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-footer"
-		}
+		classNamePrefix: PropTypes.string
 	},
-
 	render(h) {
-		let { $slots, classNamePrefix } = this;
+		const { $slots: slots, $props: props } = this;
 
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-footer");
+		let classes = {};
+
+		classes.el = {
+			[`${classNamePrefix}`]: true
+		};
+
+		// render
 		return (
-			<div class={`${classNamePrefix}`}>
-				{$slots.default}
+			<div class={classes.el}>
+				{slots.default}
 			</div>
 		);
 	}

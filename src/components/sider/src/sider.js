@@ -1,5 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
+import noop from "vui-design/utils/noop";
 import getScrollbarSize from "vui-design/utils/getScrollbarSize";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
@@ -8,8 +10,8 @@ if (typeof window !== "undefined") {
 		return {
 			media: mediaQuery,
 			matches: false,
-			addListener: function() {},
-			removeListener: function() {}
+			addListener: noop,
+			removeListener: noop
 		};
 	};
 
@@ -27,133 +29,104 @@ const dimensions = {
 
 const VuiSider = {
 	name: "vui-sider",
-
 	components: {
 		VuiIcon
 	},
-
 	model: {
 		prop: "collapsed",
 		event: "collapse",
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		theme: {
-			type: String,
-			default: "light",
-			validator: value => ["light", "dark"].indexOf(value) > -1
-		},
-		breakpoint: {
-			type: String,
-			default: undefined,
-			validator: value => ["xs", "sm", "md", "lg", "xl", "xxl"].indexOf(value) > -1
-		},
-		width: {
-			type: [String, Number],
-			default: 200
-		},
-		collapsible: {
-			type: Boolean,
-			default: false
-		},
-		collapsed: {
-			type: Boolean,
-			default: false
-		},
-		collapsedWidth: {
-			type: [String, Number],
-			default: 80
-		},
-		showTrigger: {
-			type: Boolean,
-			default: true
-		},
-		trigger: {
-			type: String,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		theme: PropTypes.oneOf(["light", "dark"]).def("light"),
+		breakpoint: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl", "xxl"]),
+		width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(200),
+		collapsible: PropTypes.bool.def(false),
+		collapsed: PropTypes.bool.def(false),
+		collapsedWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(80),
+		showTrigger: PropTypes.bool.def(true),
+		trigger: PropTypes.string
 	},
-
 	data() {
+		const { $props: props } = this;
 		let matchMedia;
 		let mediaQueryList = null;
-		let matches = false;
-		let defaultCollapsed = this.collapsed;
 
 		if (typeof window !== "undefined") {
 			matchMedia = window.matchMedia;
 		}
 
-		if (matchMedia && this.breakpoint && this.breakpoint in dimensions) {
-			mediaQueryList = matchMedia(`(max-width: ${dimensions[this.breakpoint]})`);
+		if (matchMedia && props.breakpoint && props.breakpoint in dimensions) {
+			mediaQueryList = matchMedia("(max-width: " + dimensions[props.breakpoint] + ")");
 		}
+
+		const state = {
+			mediaQueryList,
+			matches: false,
+			collapsed: props.collapsed
+		};
 
 		return {
-			mediaQueryList,
-			matches,
-			defaultCollapsed
+			state
 		};
 	},
-
 	watch: {
 		collapsed(value) {
-			this.defaultCollapsed = value;
+			this.state.collapsed = value;
 		}
 	},
-
 	methods: {
 		responsive() {
-			this.matches = this.mediaQueryList.matches;
-			this.defaultCollapsed = this.defaultCollapsed !== this.matches ? this.matches : this.defaultCollapsed;
-			this.$emit("collapse", this.defaultCollapsed);
+			this.state.matches = this.state.mediaQueryList.matches;
+			this.state.collapsed = this.state.collapsed !== this.state.matches ? this.state.matches : this.state.collapsed;
+			this.$emit("collapse", this.state.collapsed);
 		},
 		toggle() {
-			this.defaultCollapsed = !this.defaultCollapsed;
-			this.$emit("collapse", this.defaultCollapsed);
+			this.state.collapsed = !this.state.collapsed;
+			this.$emit("collapse", this.state.collapsed);
 		},
 		handleTriggerClick() {
 			this.toggle();
 		}
 	},
-
 	mounted() {
-		if (this.mediaQueryList) {
+		if (this.state.mediaQueryList) {
 			this.responsive();
-			this.mediaQueryList.addListener(() => this.responsive());
+			this.state.mediaQueryList.addListener(() => this.responsive());
 		}
 	},
-
 	beforeDestroy() {
-		if (this.mediaQueryList) {
-			this.mediaQueryList.removeListener(() => this.responsive());
+		if (this.state.mediaQueryList) {
+			this.state.mediaQueryList.removeListener(() => this.responsive());
 		}
 	},
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, theme, collapsible, defaultCollapsed, showTrigger, matches, handleTriggerClick } = this;
+		const { $slots: slots, $props: props, state, handleTriggerClick } = this;
 
 		// width
 		let width;
 
-		if (defaultCollapsed) {
-			width = is.string(this.collapsedWidth) ? this.collapsedWidth : `${this.collapsedWidth}px`;
+		if (state.collapsed) {
+			width = is.string(props.collapsedWidth) ? props.collapsedWidth : `${props.collapsedWidth}px`;
 		}
 		else {
-			width = is.string(this.width) ? this.width : `${this.width}px`;
+			width = is.string(props.width) ? props.width : `${props.width}px`;
 		}
 
+		// scrollbarSize
+		const scrollbarSize = getScrollbarSize();
+
+		// showTrigger
+		const showTrigger = (props.collapsible || state.matches) && props.showTrigger;
+
 		// class
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "sider");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-sider");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-with-trigger`]: showTrigger,
-			[`${classNamePrefix}-${theme}`]: theme
+			[`${classNamePrefix}-${props.theme}`]: props.theme,
+			[`${classNamePrefix}-with-trigger`]: showTrigger
 		};
 		classes.elChildren = `${classNamePrefix}-children`;
 		classes.elChildrenScrollbar = `${classNamePrefix}-children-scrollbar`;
@@ -169,7 +142,7 @@ const VuiSider = {
 			maxWidth: `${width}`
 		};
 		styles.elChildrenScrollbar = {
-			marginRight: `-${getScrollbarSize()}px`
+			marginRight: `-${scrollbarSize}px`
 		};
 
 		// render
@@ -183,10 +156,12 @@ const VuiSider = {
 			</div>
 		);
 
-		if ((collapsible || matches) && showTrigger) {
+		if (showTrigger) {
+			const iconType = state.collapsed ? "menu-unfold" : "menu-fold";
+
 			children.push(
 				<div class={classes.elTrigger} onClick={handleTriggerClick}>
-					<VuiIcon type={defaultCollapsed ? "menu-unfold" : "menu-fold"} />
+					<VuiIcon type={iconType} />
 				</div>
 			);
 		}

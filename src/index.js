@@ -3,21 +3,14 @@ import Icon from "./components/icon";
 import ButtonGroup from "./components/button-group";
 import Button from "./components/button";
 // Layout
+import Divider from "./components/divider";
+import Row from "./components/row";
+import Col from "./components/col";
 import Layout from "./components/layout";
 import Header from "./components/header";
 import Sider from "./components/sider";
 import Content from "./components/content";
 import Footer from "./components/footer";
-import Row from "./components/row";
-import Col from "./components/col";
-import Card from "./components/card";
-import CardGrid from "./components/card-grid";
-import CardMeta from "./components/card-meta";
-import Collapse from "./components/collapse";
-import Panel from "./components/panel";
-import CellGroup from "./components/cell-group";
-import Cell from "./components/cell";
-import Divider from "./components/divider";
 import Separator from "./components/separator";
 import Space from "./components/space";
 // Navigation
@@ -32,8 +25,8 @@ import DropdownMenuItemGroup from "./components/dropdown-menu-item-group";
 import DropdownMenuDivider from "./components/dropdown-menu-divider";
 import Menu from "./components/menu";
 import Submenu from "./components/submenu";
-import MenuItemGroup from "./components/menu-item-group";
 import MenuItem from "./components/menu-item";
+import MenuItemGroup from "./components/menu-item-group";
 import MenuDivider from "./components/menu-divider";
 import PageHeader from "./components/page-header";
 import Pagination from "./components/pagination";
@@ -43,26 +36,34 @@ import Tabs from "./components/tabs";
 import TabPanel from "./components/tab-panel";
 // Data Entry
 import Cascader from "./components/cascader";
-import CheckboxGroup from "./components/checkbox-group";
 import Checkbox from "./components/checkbox";
+import CheckboxGroup from "./components/checkbox-group";
 import Datepicker from "./components/datepicker";
 import Form from "./components/form";
 import FormItem from "./components/form-item";
-import InputGroup from "./components/input-group";
 import Input from "./components/input";
+import InputGroup from "./components/input-group";
 import InputNumber from "./components/input-number";
-import RadioGroup from "./components/radio-group";
 import Radio from "./components/radio";
+import RadioGroup from "./components/radio-group";
 import Select from "./components/select";
-import OptionGroup from "./components/option-group";
 import Option from "./components/option";
+import OptionGroup from "./components/option-group";
 import Switch from "./components/switch";
 import Textarea from "./components/textarea";
+// import Transfer from "./components/transfer";
 import Upload from "./components/upload";
 // Data Display
-import AvatarGroup from "./components/avatar-group";
 import Avatar from "./components/avatar";
+import AvatarGroup from "./components/avatar-group";
 import Badge from "./components/badge";
+import Card from "./components/card";
+import CardGrid from "./components/card-grid";
+import CardMeta from "./components/card-meta";
+import Cell from "./components/cell";
+import CellGroup from "./components/cell-group";
+import Collapse from "./components/collapse";
+import Panel from "./components/panel";
 import Descriptions from "./components/descriptions";
 import Description from "./components/description";
 import Empty from "./components/empty";
@@ -107,21 +108,14 @@ const components = [
 	ButtonGroup,
 	Button,
 	// Layout
+	Divider,
+	Row,
+	Col,
 	Layout,
 	Header,
 	Sider,
 	Content,
 	Footer,
-	Row,
-	Col,
-	Card,
-	CardGrid,
-	CardMeta,
-	Collapse,
-	Panel,
-	CellGroup,
-	Cell,
-	Divider,
 	Separator,
 	Space,
 	// Navigation
@@ -136,8 +130,8 @@ const components = [
 	DropdownMenuDivider,
 	Menu,
 	Submenu,
-	MenuItemGroup,
 	MenuItem,
+	MenuItemGroup,
 	MenuDivider,
 	PageHeader,
 	Pagination,
@@ -147,26 +141,34 @@ const components = [
 	TabPanel,
 	// Data Entry
 	Cascader,
-	CheckboxGroup,
 	Checkbox,
+	CheckboxGroup,
 	Datepicker,
 	Form,
 	FormItem,
-	InputGroup,
 	Input,
+	InputGroup,
 	InputNumber,
-	RadioGroup,
 	Radio,
+	RadioGroup,
 	Select,
-	OptionGroup,
 	Option,
+	OptionGroup,
 	Switch,
 	Textarea,
+	// Transfer,
 	Upload,
 	// Data Display
 	AvatarGroup,
 	Avatar,
 	Badge,
+	Card,
+	CardGrid,
+	CardMeta,
+	Cell,
+	CellGroup,
+	Collapse,
+	Panel,
 	Descriptions,
 	Description,
 	Empty,
@@ -232,7 +234,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.27",
+	version: "1.0.28",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -241,21 +243,14 @@ export default {
 	ButtonGroup,
 	Button,
 	// Layout
+	Divider,
+	Row,
+	Col,
 	Layout,
 	Header,
 	Sider,
 	Content,
 	Footer,
-	Row,
-	Col,
-	Card,
-	CardGrid,
-	CardMeta,
-	Collapse,
-	Panel,
-	CellGroup,
-	Cell,
-	Divider,
 	Separator,
 	Space,
 	// Navigation
@@ -270,8 +265,8 @@ export default {
 	DropdownMenuDivider,
 	Menu,
 	Submenu,
-	MenuItemGroup,
 	MenuItem,
+	MenuItemGroup,
 	MenuDivider,
 	PageHeader,
 	Pagination,
@@ -281,26 +276,34 @@ export default {
 	TabPanel,
 	// Data Entry
 	Cascader,
-	CheckboxGroup,
 	Checkbox,
+	CheckboxGroup,
 	Datepicker,
 	Form,
 	FormItem,
-	InputGroup,
 	Input,
+	InputGroup,
 	InputNumber,
-	RadioGroup,
 	Radio,
+	RadioGroup,
 	Select,
-	OptionGroup,
 	Option,
+	OptionGroup,
 	Switch,
 	Textarea,
+	// Transfer,
 	Upload,
 	// Data Display
-	AvatarGroup,
 	Avatar,
+	AvatarGroup,
 	Badge,
+	Card,
+	CardGrid,
+	CardMeta,
+	Cell,
+	CellGroup,
+	Collapse,
+	Panel,
 	Descriptions,
 	Description,
 	Empty,

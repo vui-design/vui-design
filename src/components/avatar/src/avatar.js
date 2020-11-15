@@ -8,6 +8,11 @@ const sizes = ["small", "medium", "large"];
 
 const VuiAvatar = {
 	name: "vui-avatar",
+	inject: {
+		vuiAvatarGroup: {
+			default: undefined
+		}
+	},
 	components: {
 		VuiIcon
 	},
@@ -16,8 +21,8 @@ const VuiAvatar = {
 		src: PropTypes.string,
 		alt: PropTypes.string,
 		icon: PropTypes.string,
-		shape: PropTypes.oneOf(shapes).def("circle"),
-		size: PropTypes.oneOfType([PropTypes.oneOf(sizes), PropTypes.number]).def("medium")
+		shape: PropTypes.oneOf(shapes),
+		size: PropTypes.oneOfType([PropTypes.oneOf(sizes), PropTypes.number])
 	},
 	data() {
 		const state = {
@@ -53,9 +58,8 @@ const VuiAvatar = {
 		this.response();
 	},
 	render() {
-		const { $slots: slots, $props: props, state, $listeners: listeners } = this;
+		const { vuiAvatarGroup, $slots: slots, $props: props, state, $listeners: listeners } = this;
 		const { handleError } = this;
-		const isPresetSize =  sizes.indexOf(props.size) > -1;
 
 		// type
 		let type;
@@ -70,6 +74,34 @@ const VuiAvatar = {
 			type = "children";
 		}
 
+		// shape
+		let shape;
+
+		if (vuiAvatarGroup && vuiAvatarGroup.shape) {
+			shape = vuiAvatarGroup.shape;
+		}
+		else if (props.shape) {
+			shape = props.shape;
+		}
+		else {
+			shape = "circle";
+		}
+
+		// size
+		let size;
+
+		if (vuiAvatarGroup && vuiAvatarGroup.size) {
+			size = vuiAvatarGroup.size;
+		}
+		else if (props.size) {
+			size = props.size;
+		}
+		else {
+			size = "medium";
+		}
+
+		const isPresetSize =  sizes.indexOf(size) > -1;
+
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
 		let classes = {};
@@ -77,20 +109,20 @@ const VuiAvatar = {
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-with-${type}`]: type,
-			[`${classNamePrefix}-${props.shape}`]: props.shape,
-			[`${classNamePrefix}-${props.size}`]: props.size && isPresetSize
+			[`${classNamePrefix}-${shape}`]: shape,
+			[`${classNamePrefix}-${size}`]: size && isPresetSize
 		};
 		classes.elChildren = `${classNamePrefix}-${type}`;
 
 		// style
 		let styles = {};
 
-		if (props.size && !isPresetSize) {
+		if (size && !isPresetSize) {
 			styles.el = {
-				width: `${props.size}px`,
-				height: `${props.size}px`,
-				lineHeight: `${props.size}px`,
-				fontSize: `${props.size / 2}px`
+				width: `${size}px`,
+				height: `${size}px`,
+				lineHeight: `${size}px`,
+				fontSize: `${size / 2}px`
 			};
 		}
 

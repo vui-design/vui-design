@@ -5,7 +5,7 @@ import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const colors = ["blue", "green", "red", "yellow", "pink", "magenta", "volcano", "orange", "gold", "lime", "cyan", "geekblue", "purple"];
+const colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
 const VuiTooltip = {
 	name: "vui-tooltip",

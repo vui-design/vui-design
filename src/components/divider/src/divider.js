@@ -1,40 +1,22 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDivider = {
 	name: "vui-divider",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical"].indexOf(value) > -1
-		},
-		dashed: {
-			type: Boolean,
-			default: false
-		},
-		orientation: {
-			type: String,
-			default: "center",
-			validator: value => ["left", "center", "right"].indexOf(value) > -1
-		},
-		gutter: {
-			type: [String, Number],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+		dashed: PropTypes.bool.def(false),
+		orientation: PropTypes.oneOf(["left", "center", "right"]).def("center"),
+		gutter: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 	},
-
 	render() {
-		let { $slots: slots, $props: props } = this;
-		let withText = props.type === "horizontal" && slots.default;
+		const { $slots: slots, $props: props } = this;
+		const withText = props.type === "horizontal" && slots.default;
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "divider");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "divider");
 		let classes = {};
 
 		classes.el = {
@@ -49,8 +31,8 @@ const VuiDivider = {
 		// style
 		let styles = {};
 
-		if (props.gutter !== undefined) {
-			let gutter = is.string(props.gutter) ? props.gutter : `${props.gutter}px`;
+		if (props.gutter) {
+			const gutter = is.string(props.gutter) ? props.gutter : `${props.gutter}px`;
 
 			if (type === "horizontal") {
 				styles.el = {

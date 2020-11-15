@@ -1,141 +1,144 @@
-import { hex2rgba, rgba2hex } from "vui-design/utils/colours";
+import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
+const colors = [
+	"default", "primary", "info", "warning", "success", "error",
+	"blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"
+];
 
 const VuiTag = {
 	name: "vui-tag",
-
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		size: {
-			type: String,
-			default: "medium",
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		checkable: {
-			type: Boolean,
-			default: false
-		},
-		checked: {
-			type: Boolean,
-			default: false
-		},
-		color: {
-			type: String,
-			default: "default"
-		},
-		animation: {
-			type: String,
-			default: "vui-tag-zoom"
-		}
+	components: {
+		VuiIcon
 	},
-
+	model: {
+		prop: "checked",
+		event: "input"
+	},
+	props: {
+		classNamePrefix: PropTypes.string,
+		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+		color: PropTypes.string.def("default"),
+		icon: PropTypes.string,
+		closable: PropTypes.bool.def(false),
+		checkable: PropTypes.bool.def(false),
+		checked: PropTypes.bool.def(false),
+		animation: PropTypes.string.def("vui-tag-zoom")
+	},
 	data() {
-		let colors = [
-			"default", "primary", "info", "warning", "success", "error",
-			"magenta", "red", "volcano", "orange", "gold", "lime", "green", "cyan", "blue", "geekblue", "purple"
-		];
+		const { $props: props } = this;
+		const state = {
+			checked: props.checked
+		};
 
 		return {
-			state: {
-				checked: this.checked,
-				colors
-			}
+			state
 		};
 	},
-
 	watch: {
 		checked(value) {
 			this.state.checked = value;
 		}
 	},
-
 	methods: {
-		handleChange(e) {
+		handleClick(e) {
 			this.$emit("click", e);
-
-			let { $props: props, state } = this;
+			this.handleChange(e);
+		},
+		handleClose(e) {
+			e.stopPropagation();
+			this.$emit("close", e);
+		},
+		handleChange(e) {
+			const { $props: props, state } = this;
 
 			if (!props.checkable) {
 				return;
 			}
 
-			let checked = !state.checked;
+			const checked = !state.checked;
 
 			this.state.checked = checked;
+			this.$emit("input", checked);
 			this.$emit("change", checked);
-		},
-		handleClose(e) {
-			this.$emit("close", e);
 		}
 	},
-
 	render() {
-		let { $slots: slots, $props: props, state } = this;
-		let { handleChange, handleClose } = this;
+		const { $slots: slots, $props: props, state } = this;
+		const { handleClick, handleClose } = this;
 
-		// withPresetColor
-		let withPresetColor = props.color && state.colors.indexOf(props.color) > -1;
+		// color
+		const withPresetColor = props.color && colors.indexOf(props.color) > -1;
+		const withCustomColor = props.color && colors.indexOf(props.color) === -1;
+
+		// icon
+		let icon;
+
+		if (slots.icon) {
+			icon = slots.icon;
+		}
+		else if (props.icon) {
+			icon = (
+				<VuiIcon type={props.icon} />
+			);
+		}
+
+		// status
+		let status;
+
+		if (props.checkable) {
+			status = state.checked ? "checked" : "unchecked";
+		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tag");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tag");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${props.size}`]: props.size,
-			[`${classNamePrefix}-closable`]: props.closable,
-			[`${classNamePrefix}-checkable`]: props.checkable,
-			[`${classNamePrefix}-checked`]: state.checked,
-			[`${classNamePrefix}-${props.color}`]: withPresetColor
+			[`${classNamePrefix}-${props.color}`]: withPresetColor,
+			[`${classNamePrefix}-${status}`]: props.checkable
 		};
+		classes.elIcon = `${classNamePrefix}-icon`;
 		classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
 		// style
 		let styles = {};
 
-		if (!withPresetColor) {
-			if (!props.checkable || (props.checkable && state.checked)) {
-				let borderColor = hex2rgba(props.color, 0.45);
-				let backgroundColor = hex2rgba(props.color, 0.05);
-
-				styles.el = {
-					borderColor: rgba2hex(borderColor),
-					backgroundColor: rgba2hex(backgroundColor),
-					color: props.color
-				};
-			}
-			else if (props.checkable && !state.checked) {
-				styles.el = {
-					borderColor: "transparent",
-					backgroundColor: "transparent",
-					color: rgba2hex(hex2rgba("#000", 0.65))
-				};
-			}
+		if (withCustomColor && (!props.checkable || state.checked)) {
+			styles.el = {
+				borderColor: props.color,
+				backgroundColor: props.color,
+				color: "#fff"
+			};
 		}
 
 		// render
 		let children = [];
 
-		children.push(slots.default);
+		if (icon) {
+			children.push(
+				<div class={classes.elIcon}>{icon}</div>
+			);
+		}
+
+		children.push(
+			<label>{slots.default}</label>
+		);
 
 		if (props.closable) {
 			children.push(
-				<i domPropsInnerHTML="&#10005" class={classes.elBtnClose} onClick={handleClose} />
+				<div class={classes.elBtnClose} onClick={handleClose}>
+					<VuiIcon type="crossmark" />
+				</div>
 			);
 		}
 
 		return (
 			<transition name={props.animation}>
-				<label class={classes.el} style={styles.el} onClick={handleChange}>
-					{children}
-				</label>
+				<div class={classes.el} style={styles.el} onClick={handleClick}>{children}</div>
 			</transition>
 		);
 	}

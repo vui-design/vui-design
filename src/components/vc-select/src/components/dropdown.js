@@ -104,7 +104,7 @@ export default {
 				{
 					loading ? (
 						<div class={`${classNamePrefix}-loading`}>
-							<VuiSpin size="small" animation={null} />{loadingText}
+							<VuiSpin size="small" />{loadingText}
 						</div>
 					) : (
 						options.length === 0 ? (

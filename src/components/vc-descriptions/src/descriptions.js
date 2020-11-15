@@ -267,7 +267,7 @@ const VuiDescriptions = {
 		return (
 			<div class={classes.el}>
 				{
-					header.length && (
+					!!header.length && (
 						<div class={classes.elHeader}>{header}</div>
 					)
 				}

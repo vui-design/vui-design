@@ -901,16 +901,15 @@ const VuiTable = {
 		const showRightTable = state.columns.some(column => column.fixed === "right");
 
 		return (
-			<div class={classes.el}>
-				<div ref="table" class={classes.elTable}>
-					{showLeftTable && renderLeftTable()}
-					{renderMiddleTable()}
-					{showRightTable && renderRightTable()}
+			<VuiSpin spinning={props.loading}>
+				<div class={classes.el}>
+					<div ref="table" class={classes.elTable}>
+						{showLeftTable && renderLeftTable()}
+						{renderMiddleTable()}
+						{showRightTable && renderRightTable()}
+					</div>
 				</div>
-				{
-					props.loading ? <VuiSpin fixed /> : null
-				}
-			</div>
+			</VuiSpin>
 		);
 	}
 };

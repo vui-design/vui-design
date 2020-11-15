@@ -1,91 +1,139 @@
+import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
+import debounce from "vui-design/utils/debounce";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiSpin = {
 	name: "vui-spin",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-spin"
+		classNamePrefix: PropTypes.string,
+		fullscreen: PropTypes.bool.def(false),
+		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+		spinning: PropTypes.bool.def(true),
+		delay: PropTypes.number,
+		indicator: PropTypes.func,
+		message: PropTypes.string
+	},
+	data() {
+		const { $props: props } = this;
+		const shouldBeDelayed = props.spinning && is.number(props.delay) && props.delay > 0;
+
+		return {
+			state: {
+				spinning: props.spinning && !shouldBeDelayed
+			}
+		};
+	},
+	created() {
+		this.addSpinningDebouncer();
+	},
+	mounted() {
+		this.changeSpinning();
+	},
+	updated() {
+		const nextTick = () => {
+			this.addSpinningDebouncer();
+			this.changeSpinning();
+		};
+
+		this.$nextTick(nextTick);
+	},
+	beforeDestroy() {
+		this.removeSpinningDebouncer();
+	},
+	methods: {
+		changeSpinning() {
+			const { $props: props, state } = this;
+
+			if (props.spinning === state.spinning) {
+				return;
+			}
+
+			this.state.spinning = props.spinning;
 		},
-		fixed: {
-			type: Boolean,
-			default: false
-		},
-		fullscreen: {
-			type: Boolean,
-			default: false
-		},
-		size: {
-			type: String,
-			validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
+		addSpinningDebouncer() {
+			const { $props: props } = this;
+
+			if (is.number(props.delay) && props.delay > 0) {
+				this.removeSpinningDebouncer();
+				this.changeSpinning = debounce(this.changeSpinning, props.delay);
 			}
 		},
-		message: {
-			type: String,
-			default: undefined
-		},
-		animation: {
-			type: String,
-			default: "vui-spin-fade"
+		removeSpinningDebouncer() {
+			if (this.changeSpinning && this.changeSpinning.cancel) {
+				this.changeSpinning = this.changeSpinning.cancel();
+			}
 		}
 	},
-
 	render(h) {
-		let { $vui, $slots, classNamePrefix, fixed, fullscreen, message, animation } = this;
+		const { $slots: slots, $props: props, state } = this;
 
-		// 属性 size 优先级：self > $vui
-		let size;
-
-		if (this.size) {
-			size = this.size;
-		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
-		}
-		else {
-			size = "medium";
-		}
-
-		// classes
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "spin");
 		let classes = {};
 
-		classes.root = {
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-fixed`]: fixed,
-			[`${classNamePrefix}-fullscreen`]: fullscreen,
-			[`${classNamePrefix}-${size}`]: size
+			[`${classNamePrefix}-fullscreen`]: props.fullscreen,
+			[`${classNamePrefix}-with-children`]: slots.default,
+			[`${classNamePrefix}-${props.size}`]: props.size,
+			[`${classNamePrefix}-spinning`]: state.spinning
 		};
-		classes.main = `${classNamePrefix}-main`;
-		classes.icon = `${classNamePrefix}-icon`;
-		classes.message = `${classNamePrefix}-message`;
+		classes.elSpinner = `${classNamePrefix}-spinner`;
+		classes.elIndicator = `${classNamePrefix}-indicator`;
+		classes.elDot = `${classNamePrefix}-dot`;
+		classes.elDotItem = `${classNamePrefix}-dot-item`;
+		classes.elMessage = `${classNamePrefix}-message`;
+		classes.elChildren = `${classNamePrefix}-children`;
 
-		// children
-		let children = [];
+		// indicator
+		let indicator;
 
-		if ($slots.default) {
-			children = $slots.default;
+		if (slots.indicator) {
+			indicator = slots.indicator;
+		}
+		else if (is.function(props.indicator)) {
+			indicator = props.indicator(h);
 		}
 		else {
-			children.push(
-				<i class={classes.icon}></i>
+			indicator = (
+				<div class={classes.elDot}>
+					<div class={classes.elDotItem}></div>
+					<div class={classes.elDotItem}></div>
+					<div class={classes.elDotItem}></div>
+				</div>
 			);
-
-			if (message) {
-				children.push(
-					<div class={classes.message}>{message}</div>
-				);
-			}
 		}
 
+		// message
+		let message = slots.message || props.message;
+
 		// render
+		let spinner = [];
+
+		spinner.push(
+			<div class={classes.elIndicator}>{indicator}</div>
+		);
+
+		if (message) {
+			spinner.push(
+				<div class={classes.elMessage}>{message}</div>
+			);
+		}
+
 		return (
-			<transition name={animation}>
-				<div class={classes.root}>
-					<div class={classes.main}>
-						{children}
-					</div>
-				</div>
-			</transition>
+			<div class={classes.el}>
+				{
+					slots.default && (
+						<div class={classes.elChildren}>{slots.default}</div>
+					)
+				}
+				{
+					state.spinning && (
+						<div class={classes.elSpinner}>{spinner}</div>
+					)
+				}
+			</div>
 		);
 	}
 };

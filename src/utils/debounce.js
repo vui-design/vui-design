@@ -35,6 +35,7 @@ export default function(fn, wait, immediate) {
   debounced.cancel = function() {
     clearTimeout(timeout);
     timeout = null;
+    return fn;
   };
 
   return debounced;

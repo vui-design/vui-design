@@ -1,0 +1,53 @@
+@vui-transfer: ~"@{vui}-transfer";
+
+.@{vui-transfer} {
+	display:flex;
+	align-items:center;
+	box-sizing:border-box;
+
+	&-list {
+		display:flex;
+		flex-direction:column;
+		box-sizing:border-box;
+		width:180px;
+		height:200px;
+		border:1px solid #e0e0e0;
+		border-radius:2px;
+		margin-right:20px;
+
+		&-header {
+			display:flex;
+			align-items:center;
+			box-sizing:border-box;
+			height:40px;
+			border-bottom:1px solid #f0f0f0;
+			background-color:#fff;
+			padding:8px 12px;
+			color:#595959;
+			font-size:14px;
+		}
+
+		&-header &-selection {
+			display:block;
+			box-sizing:border-box;
+			margin-right:8px;
+
+			label {
+				display:block;
+			}
+		}
+
+		&-header &-title {
+			flex:1;
+			display:block;
+			box-sizing:border-box;
+			.writeEllipsis;
+		}
+
+		&-header &-selected {
+			display:block;
+			box-sizing:border-box;
+			margin-left:8px;
+		}
+	}
+}

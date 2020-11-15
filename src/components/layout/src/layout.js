@@ -1,31 +1,24 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiLayout = {
 	name: "vui-layout",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		withSider: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		withSider: PropTypes.bool.def(false)
 	},
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix } = this;
+		const { $slots: slots, $props: props } = this;
 
 		// withSider
-		let withSider = this.withSider;
+		let withSider = props.withSider;
 
-		withSider = slots.default && slots.default.some(vNode => {
-			return vNode.componentOptions && vNode.componentOptions.tag === "vui-sider";
+		withSider = slots.default && slots.default.some(element => {
+			return element.componentOptions && element.componentOptions.tag === "vui-sider";
 		});
 
-		// classes
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "layout");
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout");
 		let classes = {};
 
 		classes.el = {

@@ -2,6 +2,7 @@
 
 .@{vui-space} {
 	display:inline-flex;
+	box-sizing:border-box;
 
 	&-horizontal {
 		flex-direction:row;
@@ -18,5 +19,25 @@
 	}
 	&-end {
 		align-items:flex-end;
+	}
+
+	&-horizontal&-small &-item + &-item {
+		margin-left:@space-size-sm;
+	}
+	&-horizontal&-medium &-item + &-item {
+		margin-left:@space-size-md;
+	}
+	&-horizontal&-large &-item + &-item {
+		margin-left:@space-size-lg;
+	}
+
+	&-vertical&-small &-item + &-item {
+		margin-top:@space-size-sm;
+	}
+	&-vertical&-medium &-item + &-item {
+		margin-top:@space-size-md;
+	}
+	&-vertical&-large &-item + &-item {
+		margin-top:@space-size-lg;
 	}
 }

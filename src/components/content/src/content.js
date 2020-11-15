@@ -1,21 +1,25 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiContent = {
 	name: "vui-content",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string
 	},
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "content");
+		const { $slots: slots, $props: props } = this;
 
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-content");
+		let classes = {};
+
+		classes.el = {
+			[`${classNamePrefix}`]: true
+		};
+
+		// render
 		return (
-			<div class={`${classNamePrefix}`}>
+			<div class={classes.el}>
 				{slots.default}
 			</div>
 		);

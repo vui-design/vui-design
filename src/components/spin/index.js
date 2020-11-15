@@ -8,6 +8,7 @@ import is from "vui-design/utils/is";
 */
 const defaults = {
 	size: "large",
+	animation: "vui-spin-fade",
 	getPopupContainer: () => document.body
 };
 
@@ -17,75 +18,83 @@ const defaults = {
 */
 const createSpinInstance = options => {
 	// 创建 Spin 挂载的 html 根节点
-	let container = options.getPopupContainer();
-	let el = document.createElement("div");
+	const container = options.getPopupContainer();
+	const el = document.createElement("div");
 
 	container.appendChild(el);
 
 	delete options.getPopupContainer;
 
 	// 创建 Spin 实例
-	return new Vue({
+	const component = {
 		el,
 		components: {
 			VuiSpin
 		},
 		data() {
-			return {
+			const state = {
 				...options,
 				visible: false
 			};
+
+			return {
+				state
+			};
 		},
 		methods: {
-			open() {
-				this.visible = true;
+			spinning() {
+				this.state.visible = true;
 			},
-			close() {
-				this.visible = false;
+			cancel() {
+				this.state.visible = false;
+			},
+			handleAfterLeave() {
+				this.$destroy();
+				this.$el && this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
 			}
 		},
 		render(h) {
-			let { visible, message, size, animation, render } = this;
+			const { state, handleAfterLeave } = this;
 
-			if (!visible) {
+			if (!state.visible) {
 				return;
 			}
 
-			let attrs = {
+			const attributes = {
 				props: {
 					fullscreen: true,
-					message,
-					size,
-					animation
+					size: state.size,
+					delay: state.delay,
+					indicator: state.indicator,
+					message: state.message
 				},
 				style: {
-					zIndex: Popup.nextZIndex()
+					zIndex: Popup.nextZIndex(),
+					background: state.background
 				}
 			};
 
-			let children;
-
-			if (is.function(render)) {
-				children = render(h);
-			}
-
 			return (
-				<VuiSpin {...attrs}>{children}</VuiSpin>
+				<transition appear name={state.animation} onAfterLeave={handleAfterLeave}>
+					<VuiSpin {...attributes} />
+				</transition>
 			);
 		}
-	});
+	};
+
+	return new Vue(component);
 };
 
 /**
-* 对外提供 open 接口
+* 对外提供 spinning 接口
 * @param {String/Object} options 
 */
-VuiSpin.open = function(options = {}) {
+VuiSpin.spinning = function(options = {}) {
 	if (is.server) {
 		return;
 	}
 
-	if (!is.string(options) && !is.plainObject(options)) {
+	if (!is.string(options) && !is.json(options)) {
 		return;
 	}
 
@@ -100,9 +109,9 @@ VuiSpin.open = function(options = {}) {
 		...options
 	};
 
-	let instance = createSpinInstance(options);
+	const instance = createSpinInstance(options);
 
-	instance.open();
+	instance.spinning();
 
 	return instance;
 };
