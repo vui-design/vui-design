@@ -1,169 +1,139 @@
-import MixinLink from "vui-design/mixins/link";
 import VuiIcon from "vui-design/components/icon";
-import guid from "vui-design/utils/guid";
+import MixinLink from "vui-design/mixins/link";
+import PropTypes from "vui-design/utils/prop-types";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCell = {
 	name: "vui-cell",
-
 	inject: {
 		vuiCellGroup: {
 			default: undefined
 		}
 	},
-
 	components: {
 		VuiIcon
 	},
-
 	mixins: [
 		MixinLink
 	],
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-cell"
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		extra: {
-			type: String,
-			default: undefined
-		},
-		selected: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		icon: PropTypes.string,
+		title: PropTypes.string,
+		extra: PropTypes.string,
+		selected: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false)
 	},
-
 	methods: {
 		handleCellClick(e) {
 			this.$emit("click", e);
 		}
 	},
-
 	render(h) {
-		let { $slots, $attrs, $listeners, classNamePrefix, icon, title, extra, selected, disabled, href, to, target } = this;
-		let { getNextRoute } = this;
-		let { handleCellClick, handleLinkClick } = this;
+		const { $slots: slots, $props: props, $attrs: attrs, $listeners: listeners } = this;
+		const { getNextRoute } = this;
+		const { handleCellClick, handleLinkClick } = this;
 
+		// icon
+		let icon;
+
+		if (slots.icon) {
+			icon = slots.icon;
+		}
+		else if (props.icon) {
+			icon = (
+				<VuiIcon type={props.icon} />
+			);
+		}
+
+		// content
+		const content = slots.default || props.title;
+
+		// extra
+		const extra = slots.extra || props.extra;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cell");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-selected`]: selected,
-			[`${classNamePrefix}-disabled`]: disabled
+			[`${classNamePrefix}-link`]: props.href || props.to,
+			[`${classNamePrefix}-selected`]: props.selected,
+			[`${classNamePrefix}-disabled`]: props.disabled
 		};
-		classes.header = `${classNamePrefix}-header`;
-		classes.body = `${classNamePrefix}-body`;
-		classes.footer = `${classNamePrefix}-footer`;
-		classes.extra = `${classNamePrefix}-extra`;
+		classes.elIcon = `${classNamePrefix}-icon`;
+		classes.elContent = `${classNamePrefix}-content`;
+		classes.elExtra = `${classNamePrefix}-extra`;
+		classes.elCheckmark = `${classNamePrefix}-checkmark`;
+		classes.elArrow = `${classNamePrefix}-arrow`;
 
+		// render
 		let children = [];
 
-		if ($slots.icon || icon) {
-			let header = [];
-
-			if ($slots.icon) {
-				header.push($slots.icon);
-			}
-			else if (icon) {
-				header.push(
-					<VuiIcon type={icon} />
-				);
-			}
-
+		if (icon) {
 			children.push(
-				<div class={classes.header}>
-					{header}
-				</div>
+				<div class={classes.elIcon}>{icon}</div>
 			);
 		}
 
 		children.push(
-			<div class={classes.body}>
-				{$slots.default || title}
-			</div>
+			<div class={classes.elContent}>{content}</div>
 		);
 
-		if ($slots.extra || extra || selected || href || to) {
-			let footer = [];
-
-			if ($slots.extra) {
-				footer.push(
-					<div class={classes.extra}>{$slots.extra}</div>
-				);
-			}
-			else if (extra) {
-				footer.push(
-					<div class={classes.extra}>{extra}</div>
-				);
-			}
-
-			if (selected) {
-				footer.push(
-					<vui-icon type="checkmark" class={classes.icon} />
-				);
-			}
-			else if (href || to) {
-				footer.push(
-					<vui-icon type="chevron-right" class={classes.icon} />
-				);
-			}
-
+		if (extra) {
 			children.push(
-				<div class={classes.footer}>
-					{footer}
+				<div class={classes.elExtra}>{extra}</div>
+			);
+		}
+
+		if (props.selected) {
+			children.push(
+				<div class={classes.elCheckmark}>
+					<VuiIcon type="checkmark" />
+				</div>
+			);
+		}
+		else if (props.href || props.to) {
+			children.push(
+				<div class={classes.elArrow}>
+					<VuiIcon type="chevron-right" />
 				</div>
 			);
 		}
 
-		let props = {
+		let attributes = {
 			attrs: {
-				...$attrs
+				...attrs
 			},
 			class: classes.el,
 			on: {
-				...$listeners
+				...listeners
 			}
 		};
 
-		if (!href && !to) {
-			props.on.click = handleCellClick;
+		if (!props.href && !props.to) {
+			attributes.on.click = handleCellClick;
 
 			return (
-				<div {...props}>
-					{children}
-				</div>
+				<div {...attributes}>{children}</div>
 			);
 		}
 		else {
-			if (href) {
-				props.attrs.href = href;
+			if (props.href) {
+				attributes.attrs.href = props.href;
 			}
 			else {
-				let next = getNextRoute();
+				const route = getNextRoute();
 
-				props.attrs.href = next.href;
+				attributes.attrs.href = route.href;
 			}
 
-			props.attrs.target = target;
-			props.on.click = handleLinkClick;
+			attributes.attrs.target = props.target;
+			attributes.on.click = handleLinkClick;
 
 			return (
-				<a {...props}>
-					{children}
-				</a>
+				<a {...attributes}>{children}</a>
 			);
 		}
 	}

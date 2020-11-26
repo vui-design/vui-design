@@ -1,24 +1,31 @@
 @vui-empty: ~"@{vui}-empty";
 
 .@{vui-empty} {
+	display:block;
+	box-sizing:border-box;
 	text-align:center;
 
 	&-image {
 		svg, img {
 			display:block;
+			box-sizing:border-box;
 			height:@empty-image-height;
 			margin:0 auto;
 		}
 	}
 
 	&-description {
-		margin-top:10px;
+		display:block;
+		box-sizing:border-box;
+		margin-top:@empty-description-margin-top;
 		color:@empty-description-font-color;
 		font-size:@empty-description-font-size;
 		line-height:@empty-description-line-height;
 	}
 
-	&-main {
-		margin-top:20px;
+	&-content {
+		display:block;
+		box-sizing:border-box;
+		margin-top:@empty-content-margin-top;
 	}
 }

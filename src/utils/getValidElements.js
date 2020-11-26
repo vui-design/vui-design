@@ -7,5 +7,11 @@ const isValidElement = function(element) {
 * @param {Array} children 元素列表
 */
 export default function getValidElements(children = []) {
-	return children.filter(element => element && isValidElement(element));
+	return children.filter(element => element && isValidElement(element)).map(element => {
+		if (!element.tag && element.text && element.text.trim()) {
+			return element.text.trim();
+		}
+
+		return element;
+	});
 };

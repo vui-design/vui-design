@@ -21,8 +21,8 @@ const VuiAffix = {
 			scrollContainer: null,
 			status: "none",
 			affixed: false,
-			styleAffix: undefined,
-			stylePlaceholder: undefined
+			stylePlaceholder: undefined,
+			styleAffix: undefined
 		};
 
 		return {
@@ -72,14 +72,14 @@ const VuiAffix = {
 		},
 		prepare() {
 			this.state.status = "prepare";
-			this.state.styleAffix = undefined;
 			this.state.stylePlaceholder = undefined;
+			this.state.styleAffix = undefined;
 			this.$forceUpdate();
 		},
 		measure() {
 			const { $refs: references, $props: props, state } = this;
 
-			if (state.status !== "prepare" || !references.affix || !references.placeholder || !props.getScrollContainer) {
+			if (state.status !== "prepare" || !references.container || !references.affix || !props.getScrollContainer) {
 				return;
 			}
 
@@ -93,35 +93,35 @@ const VuiAffix = {
 
 			const rect = {};
 
+			rect.container = getElementRect(references.container);
 			rect.scrollContainer = getElementRect(scrollContainer);
-			rect.placeholder = getElementRect(references.placeholder);
 
-			const top = getFixedTop(rect.placeholder, rect.scrollContainer, offsetTop);
-			const bottom = getFixedBottom(rect.placeholder, rect.scrollContainer, offsetBottom);
+			const top = getFixedTop(rect.container, rect.scrollContainer, offsetTop);
+			const bottom = getFixedBottom(rect.container, rect.scrollContainer, offsetBottom);
 			const newState = {};
 
 			if (!is.undefined(top)) {
+				newState.stylePlaceholder = {
+					width: rect.container.width + "px",
+					height: rect.container.height + "px"
+				};
 				newState.styleAffix = {
 					position: "fixed",
 					top: top,
-					width: rect.placeholder.width + "px",
-					height: rect.placeholder.height + "px"
-				};
-				newState.stylePlaceholder = {
-					width: rect.placeholder.width + "px",
-					height: rect.placeholder.height + "px"
+					width: rect.container.width + "px",
+					height: rect.container.height + "px"
 				};
 			}
 			else if (!is.undefined(bottom)) {
+				newState.stylePlaceholder = {
+					width: rect.container.width + "px",
+					height: rect.container.height + "px"
+				};
 				newState.styleAffix = {
 					position: "fixed",
 					bottom: bottom,
-					width: rect.placeholder.width + "px",
-					height: rect.placeholder.height + "px"
-				};
-				newState.stylePlaceholder = {
-					width: rect.placeholder.width + "px",
-					height: rect.placeholder.height + "px"
+					width: rect.container.width + "px",
+					height: rect.container.height + "px"
 				};
 			}
 
@@ -134,8 +134,8 @@ const VuiAffix = {
 
 			this.state.status = newState.status;
 			this.state.affixed = newState.affixed;
-			this.state.styleAffix = newState.styleAffix;
 			this.state.stylePlaceholder = newState.stylePlaceholder;
+			this.state.styleAffix = newState.styleAffix;
 		},
 		onUpdatePosition() {
 			this.prepare();
@@ -148,14 +148,14 @@ const VuiAffix = {
 				const offsetTop = this.getOffsetTop();
 				const offsetBottom = this.getOffsetBottom();
 
-				if (scrollContainer && references.placeholder) {
+				if (scrollContainer && references.container) {
 					const rect = {};
 
+					rect.container = getElementRect(references.container);
 					rect.scrollContainer = getElementRect(scrollContainer);
-					rect.placeholder = getElementRect(references.placeholder);
 
-					const top = getFixedTop(rect.placeholder, rect.scrollContainer, offsetTop);
-					const bottom = getFixedBottom(rect.placeholder, rect.scrollContainer, offsetBottom);
+					const top = getFixedTop(rect.container, rect.scrollContainer, offsetTop);
+					const bottom = getFixedBottom(rect.container, rect.scrollContainer, offsetBottom);
 
 					if ((!is.undefined(top) && state.styleAffix.top === top) || (!is.undefined(bottom) && state.styleAffix.bottom === bottom)) {
 						return;
@@ -201,13 +201,18 @@ const VuiAffix = {
 		let classes = {};
 
 		classes.el = {
-			[`${classNamePrefix}`]: state.styleAffix
+			[`${classNamePrefix}`]: state.affixed
 		};
 
 		return (
 			<VuiResizeObserver onResize={handleResize}>
-				<div ref="placeholder" style={state.stylePlaceholder}>
-					<div ref="affix" class={classes.el} style={state.styleAffix}>{slots.default}</div>
+				<div ref="container">
+					{
+						state.affixed && (
+							<div key="placeholder" ref="placeholder" style={state.stylePlaceholder}></div>
+						)
+					}
+					<div key="affix" ref="affix" class={classes.el} style={state.styleAffix}>{slots.default}</div>
 				</div>
 			</VuiResizeObserver>
 		);

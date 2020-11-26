@@ -1,40 +1,29 @@
 import Locale from "vui-design/mixins/locale";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiEmpty = {
 	name: "vui-empty",
-
 	mixins: [
 		Locale
 	],
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		image: {
-			type: String,
-			description: undefined
-		},
-		description: {
-			type: [String, Boolean],
-			default: true
-		}
+		classNamePrefix: PropTypes.string,
+		image: PropTypes.string,
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).def(true)
 	},
-
 	render() {
-		let { $slots: slots, $props: props, t: translate } = this;
+		const { $slots: slots, $props: props, t: translate } = this;
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
 		classes.elImage = `${classNamePrefix}-image`;
 		classes.elDescription = `${classNamePrefix}-description`;
-		classes.elMain = `${classNamePrefix}-main`;
+		classes.elContent = `${classNamePrefix}-content`;
 
 		// image
 		let image;
@@ -71,31 +60,23 @@ const VuiEmpty = {
 		let children = [];
 
 		children.push(
-			<div class={classes.elImage}>
-				{image}
-			</div>
+			<div class={classes.elImage}>{image}</div>
 		);
 
 		if (description) {
 			children.push(
-				<div class={classes.elDescription}>
-					{description}
-				</div>
+				<div class={classes.elDescription}>{description}</div>
 			);
 		}
 
 		if (slots.default) {
 			children.push(
-				<div class={classes.elMain}>
-					{slots.default}
-				</div>
+				<div class={classes.elContent}>{slots.default}</div>
 			);
 		}
 
 		return (
-			<div class={classes.el}>
-				{children}
-			</div>
+			<div class={classes.el}>{children}</div>
 		);
 	}
 };

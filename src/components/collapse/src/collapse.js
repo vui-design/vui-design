@@ -1,94 +1,96 @@
+import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
+import clone from "vui-design/utils/clone";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiCollapse = {
 	name: "vui-collapse",
-
 	provide() {
 		return {
 			vuiCollapse: this
 		};
 	},
-
 	model: {
 		prop: "value",
 		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-collapse"
-		},
-		value: {
-			type: [Array, String, Number],
-			default() {
-				return this.accordion ? undefined : [];
-			}
-		},
-		accordion: {
-			type: Boolean,
-			default: false
-		},
-		borderless: {
-			type: Boolean,
-			default: false
-		},
-		arrowAlign: {
-			type: String,
-			default: "left",
-			validator(value) {
-				return ["left", "right"].indexOf(value) > -1;
-			}
-		}
+		classNamePrefix: PropTypes.string,
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
+		accordion: PropTypes.bool.def(false),
+		bordered: PropTypes.bool.def(true),
+		arrowAlign: PropTypes.oneOf(["left", "right"]).def("left")
 	},
-
 	data() {
+		const { $props: props } = this;
+		const state = {};
+
+		if (props.accordion) {
+			state.value = is.array(props.value) ? undefined : props.value;
+		}
+		else {
+			state.value = is.array(props.value) ? props.value : [];
+		}
+
 		return {
-			currentValue: this.value
+			state
 		};
 	},
-
 	watch: {
 		value(value) {
-			this.currentValue = value;
+			const { $props: props } = this;
+
+			if (props.accordion) {
+				this.state.value = is.array(value) ? undefined : value;
+			}
+			else {
+				this.state.value = is.array(value) ? value : [];
+			}
 		}
 	},
-
 	methods: {
 		handleToggle(panel) {
-			let name = panel.name;
+			const { $props: props } = this;
+			const value = panel.value;
 
-			if (this.accordion) {
-				if (this.currentValue === name) {
-					this.currentValue = undefined;
+			if (props.accordion) {
+				if (this.state.value === value) {
+					this.state.value = undefined;
 				}
 				else {
-					this.currentValue = name;
+					this.state.value = value;
 				}
 			}
 			else {
-				let index = this.currentValue.indexOf(name);
+				const index = this.state.value.indexOf(value);
 
-				if (index > -1) {
-					this.currentValue.splice(index, 1);
+				if (index === -1) {
+					this.state.value.push(value);
 				}
 				else {
-					this.currentValue.push(name);
+					this.state.value.splice(index, 1);
 				}
 			}
 
-			this.$emit("input", this.currentValue);
-			this.$emit("change", this.currentValue);
+			this.$emit("input", clone(this.state.value));
+			this.$emit("change", clone(this.state.value));
 		}
 	},
-
 	render(h) {
-		let { $slots, classNamePrefix, borderless } = this;
-		let classes = {
+		const { $slots: slots, $props: props } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "collapse");
+		let classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-borderless`]: borderless
+			[`${classNamePrefix}-bordered`]: props.bordered
 		};
 
+		// render
 		return (
-			<div class={classes}>{$slots.default}</div>
+			<div class={classes.el}>{slots.default}</div>
 		);
 	}
 };

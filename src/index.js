@@ -11,7 +11,6 @@ import Header from "./components/header";
 import Sider from "./components/sider";
 import Content from "./components/content";
 import Footer from "./components/footer";
-import Separator from "./components/separator";
 import Space from "./components/space";
 // Navigation
 import Affix from "./components/affix";
@@ -46,6 +45,7 @@ import InputGroup from "./components/input-group";
 import InputNumber from "./components/input-number";
 import Radio from "./components/radio";
 import RadioGroup from "./components/radio-group";
+import Rate from "./components/rate";
 import Select from "./components/select";
 import Option from "./components/option";
 import OptionGroup from "./components/option-group";
@@ -116,7 +116,6 @@ const components = [
 	Sider,
 	Content,
 	Footer,
-	Separator,
 	Space,
 	// Navigation
 	Affix,
@@ -151,6 +150,7 @@ const components = [
 	InputNumber,
 	Radio,
 	RadioGroup,
+	Rate,
 	Select,
 	Option,
 	OptionGroup,
@@ -234,7 +234,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.29",
+	version: "1.0.30",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -251,7 +251,6 @@ export default {
 	Sider,
 	Content,
 	Footer,
-	Separator,
 	Space,
 	// Navigation
 	Affix,
@@ -286,6 +285,7 @@ export default {
 	InputNumber,
 	Radio,
 	RadioGroup,
+	Rate,
 	Select,
 	Option,
 	OptionGroup,

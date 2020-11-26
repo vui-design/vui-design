@@ -1,4 +1,4 @@
-import VuiPanel from "./src/panel";
+import VuiPanel from "../collapse/src/panel";
 
 VuiPanel.install = function(Vue) {
 	Vue.component(VuiPanel.name, VuiPanel);

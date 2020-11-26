@@ -155,6 +155,9 @@ const VuiModal = {
 				this.close();
 			}
 		},
+		handleBeforeEnter() {
+			this.$emit("beforeOpen");
+		},
 		handleEnter() {
 			this.$emit("open");
 			this.scrollbarEffect = addScrollbarEffect();
@@ -162,15 +165,15 @@ const VuiModal = {
 		handleAfterEnter() {
 			this.$emit("afterOpen");
 		},
+		handleBeforeLeave() {
+			this.$emit("beforeClose");
+		},
 		handleLeave() {
 			this.$emit("close");
 		},
 		handleAfterLeave() {
 			this.$emit("afterClose");
-			
-			if (this.scrollbarEffect) {
-				this.scrollbarEffect.remove();
-			}
+			this.scrollbarEffect && this.scrollbarEffect.remove();
 		}
 	},
 	beforeDestroy() {
@@ -180,7 +183,7 @@ const VuiModal = {
 	},
 	render() {
 		const { $slots: slots, $props: props, state, t: translate } = this;
-		const { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+		const { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 		const showHeader = slots.title || props.title;
 
 		// class
@@ -319,7 +322,7 @@ const VuiModal = {
 		children.push(
 			<transition appear name={props.animations[0]}>
 				<div ref="wrapper" v-show={state.visible} class={classes.elWrapper} style={styles.elWrapper} onClick={handleWrapperClick}>
-					<transition appear name={props.animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
+					<transition appear name={props.animations[1]} onBeforeEnter={handleBeforeEnter} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onBeforeLeave={handleBeforeLeave} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
 						<div ref="modal" v-show={state.visible} class={classes.el} style={styles.el}>
 							{header}
 							{body}

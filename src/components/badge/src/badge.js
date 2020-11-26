@@ -59,9 +59,7 @@ const VuiBadge = {
 			}
 
 			return (
-				<div class={classes.el}>
-					{children}
-				</div>
+				<div class={classes.el}>{children}</div>
 			);
 		}
 		else {
@@ -118,9 +116,7 @@ const VuiBadge = {
 			}
 
 			return (
-				<div class={classes.el}>
-					{children}
-				</div>
+				<div class={classes.el}>{children}</div>
 			);
 		}
 	}

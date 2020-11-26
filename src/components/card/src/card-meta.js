@@ -1,41 +1,56 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCardMeta = {
 	name: "vui-card-meta",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		description: {
-			type: String,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		avatar: PropTypes.string,
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		description: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 	},
-
-	isCardMeta: true,
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, title, description } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "card-meta");
+		const { $slots: slots, $props: props } = this;
 
+		// avatar
+		let avatar;
+
+		if (slots.avatar) {
+			avatar = slots.avatar;
+		}
+		else if (props.avatar) {
+			avatar = (
+				<VuiAvatar src={props.avatar} />
+			);
+		}
+
+		// title
+		const title = slots.title || props.title;
+
+		// description
+		const description = slots.description || props.description;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card-meta");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+		classes.elAvatar = `${classNamePrefix}-avatar`;
+		classes.elDetail = `${classNamePrefix}-detail`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elDescription = `${classNamePrefix}-description`;
+
+		// render
 		return (
-			<div class={`${classNamePrefix}`}>
+			<div class={classes.el}>
 				{
-					slots.avatar && (
-						<div class={`${classNamePrefix}-avatar`}>
-							{slots.avatar}
-						</div>
+					avatar && (
+						<div class={classes.elAvatar}>{avatar}</div>
 					)
 				}
-				<div class={`${classNamePrefix}-detail`}>
-					<div class={`${classNamePrefix}-title`}>{slots.title || title}</div>
-					<div class={`${classNamePrefix}-description`}>{slots.description || description}</div>
+				<div class={classes.elDetail}>
+					<div class={classes.elTitle}>{title}</div>
+					<div class={classes.elDescription}>{description}</div>
 				</div>
 			</div>
 		);

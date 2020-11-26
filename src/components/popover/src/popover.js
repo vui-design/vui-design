@@ -142,16 +142,30 @@ const VuiPopover = {
 
 			this.toggle(false);
 		},
-		handleBeforeEnter(el) {
+		handleBeforeEnter() {
 			this.$nextTick(() => this.createPopup());
+			this.$emit("beforeOpen");
 		},
-		handleAfterLeave(el) {
+		handleEnter() {
+			this.$emit("open");
+		},
+		handleAfterEnter() {
+			this.$emit("afterOpen");
+		},
+		handleBeforeLeave() {
+			this.$emit("beforeClose");
+		},
+		handleLeave() {
+			this.$emit("close");
+		},
+		handleAfterLeave() {
 			this.$nextTick(() => this.destroyPopup());
+			this.$emit("afterClose");
 		}
 	},
 	render() {
 		const { $slots: slots, $props: props, state } = this;
-		const { handleMouseEnter, handleMouseLeave, handleFocusin, handleFocusout, handleClick, handleOutClick, handleBeforeEnter, handleAfterLeave } = this;
+		const { handleMouseEnter, handleMouseLeave, handleFocusin, handleFocusout, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 
 		// title
 		const title = slots.title || props.title;
@@ -190,7 +204,7 @@ const VuiPopover = {
 					{slots.default}
 				</div>
 				<VuiLazyRender status={state.visible}>
-					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onBeforeLeave={handleBeforeLeave} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
 						<div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} style={styles.elPopup} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>
 							{
 								title && (

@@ -55,10 +55,16 @@ const createModalInstance = function(options) {
 					this[key] = options[key];
 				}
 			},
+			handleBeforeOpen() {
+
+			},
 			handleOpen() {
 
 			},
 			handleAfterOpen() {
+
+			},
+			handleBeforeClose() {
 
 			},
 			handleClose() {
@@ -71,10 +77,12 @@ const createModalInstance = function(options) {
 		},
 		render(h) {
 			const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
-			const { onCancel, onOk, onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
+			const { onCancel, onOk, onBeforeOpen, onOpen, onAfterOpen, onBeforeClose, onClose, onAfterClose, handleOpen, handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleClose, handleAfterClose } = this;
 
+			const beforeOpen = createChainedFunction(handleBeforeOpen.bind(this), onBeforeOpen);
 			const open = createChainedFunction(handleOpen.bind(this), onOpen);
 			const afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
+			const beforeClose = createChainedFunction(handleBeforeClose.bind(this), onBeforeClose);
 			const close = createChainedFunction(handleClose.bind(this), onClose);
 			const afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
 
@@ -103,8 +111,10 @@ const createModalInstance = function(options) {
 					getPopupContainer
 				},
 				on: {
+					beforeOpen,
 					open,
 					afterOpen,
+					beforeClose,
 					close,
 					afterClose
 				}

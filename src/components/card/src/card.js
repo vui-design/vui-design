@@ -1,83 +1,55 @@
 import VuiIcon from "vui-design/components/icon";
 import VuiRow from "vui-design/components/row";
 import VuiCol from "vui-design/components/col";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
+const gridCardLoadingBlocks = [
+	[20],
+	[8, 16],
+	[4, 18],
+	[12, 8],
+	[8, 8, 8]
+];
 
 const VuiCard = {
 	name: "vui-card",
-
 	components: {
 		VuiIcon,
 		VuiRow,
 		VuiCol
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		extra: {
-			type: String,
-			default: undefined
-		},
-		cover: {
-			type: String,
-			default: undefined
-		},
-		bordered: {
-			type: Boolean,
-			default: true
-		},
-		shadow: {
-			type: String,
-			default: "never",
-			validator: value => ["never", "always", "hover"].indexOf(value) > -1
-		},
-		headerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		bodyStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		footerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		loading: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		icon: PropTypes.string,
+		title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		extra: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		cover: PropTypes.string,
+		bordered: PropTypes.bool.def(true),
+		shadow: PropTypes.oneOf(["never", "hover", "always"]).def("never"),
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		footerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		loading: PropTypes.bool.def(false)
 	},
-
 	methods: {
-		hasCardGrids(children = []) {
+		withCardGrids(children = [], tagName = "vui-card-grid") {
 			let bool = false;
 
-			children.forEach(vNode => {
-				if (!vNode) {
+			children.forEach(element => {
+				if (!element) {
 					return;
 				}
 
-				const component = vNode.componentOptions;
+				const options = element.componentOptions;
 
-				if (!component || !component.Ctor || !component.Ctor.options) {
+				if (!options) {
 					return;
 				}
 
-				if (component.Ctor.options.isCardGrid) {
+				if (options && options.tag === tagName) {
 					bool = true;
 				}
 			});
@@ -85,10 +57,9 @@ const VuiCard = {
 			return bool;
 		}
 	},
-
 	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, bordered, shadow, headerStyle, bodyStyle, footerStyle, loading } = this;
-		let hasCardGrids = this.hasCardGrids(slots.default);
+		const { $slots: slots, $props: props } = this;
+		const withCardGrids = this.withCardGrids(slots.default);
 
 		// icon
 		let icon;
@@ -96,17 +67,17 @@ const VuiCard = {
 		if (slots.icon) {
 			icon = slots.icon;
 		}
-		else if (this.icon) {
+		else if (props.icon) {
 			icon = (
-				<VuiIcon type={this.icon} />
+				<VuiIcon type={props.icon} />
 			);
 		}
 
 		// title
-		let title = slots.title || this.title;
+		const title = slots.title || props.title;
 
 		// extra
-		let extra = slots.extra || this.extra;
+		const extra = slots.extra || props.extra;
 
 		// cover
 		let cover;
@@ -114,21 +85,21 @@ const VuiCard = {
 		if (slots.cover) {
 			cover = slots.cover;
 		}
-		else if (this.cover) {
+		else if (props.cover) {
 			cover = (
-				<img src={this.cover} />
+				<img src={props.cover} />
 			);
 		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "card");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-bordered`]: bordered,
-			[`${classNamePrefix}-shadow-${shadow}`]: shadow,
-			[`${classNamePrefix}-with-grid`]: hasCardGrids
+			[`${classNamePrefix}-bordered`]: props.bordered,
+			[`${classNamePrefix}-shadow-${props.shadow}`]: props.shadow,
+			[`${classNamePrefix}-with-grid`]: withCardGrids
 		};
 		classes.elHeader = `${classNamePrefix}-header`;
 		classes.elIcon = `${classNamePrefix}-icon`;
@@ -137,6 +108,7 @@ const VuiCard = {
 		classes.elCover = `${classNamePrefix}-cover`;
 		classes.elBody = `${classNamePrefix}-body`;
 		classes.elLoading = `${classNamePrefix}-loading`;
+		classes.elLoadingRow = `${classNamePrefix}-loading-row`;
 		classes.elLoadingBlock = `${classNamePrefix}-loading-block`;
 		classes.elActions = `${classNamePrefix}-actions`;
 		classes.elAction = `${classNamePrefix}-action`;
@@ -147,24 +119,28 @@ const VuiCard = {
 		let children = [];
 
 		if (icon || title || extra) {
+			let header = [];
+
+			if (icon) {
+				header.push(
+					<div class={classes.elIcon}>{icon}</div>
+				);
+			}
+
+			if (title) {
+				header.push(
+					<div class={classes.elTitle}>{title}</div>
+				);
+			}
+
+			if (extra) {
+				header.push(
+					<div class={classes.elExtra}>{extra}</div>
+				);
+			}
+
 			children.push(
-				<div class={classes.elHeader} style={headerStyle}>
-					{
-						icon && (
-							<div class={classes.elIcon}>{icon}</div>
-						)
-					}
-					{
-						title && (
-							<div class={classes.elTitle}>{title}</div>
-						)
-					}
-					{
-						extra && (
-							<div class={classes.elExtra}>{extra}</div>
-						)
-					}
-				</div>
+				<div class={classes.elHeader} style={props.headerStyle}>{header}</div>
 			);
 		}
 
@@ -174,70 +150,45 @@ const VuiCard = {
 			);
 		}
 
-		if (loading) {
-			if (slots.loading) {
-				children.push(
-					<div class={classes.elBody} style={bodyStyle}>{slots.loading}</div>
-				);
-			}
-			else {
-				children.push(
-					<div class={classes.elBody} style={bodyStyle}>
-						<div class={classes.elLoading}>
-							<VuiRow gutter={8}>
-								<VuiCol span={20}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-							</VuiRow>
-							<VuiRow gutter={8}>
-								<VuiCol span={8}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-								<VuiCol span={16}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-							</VuiRow>
-							<VuiRow gutter={8}>
-								<VuiCol span={4}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-								<VuiCol span={18}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-							</VuiRow>
-							<VuiRow gutter={8}>
-								<VuiCol span={12}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-								<VuiCol span={8}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-							</VuiRow>
-							<VuiRow gutter={8}>
-								<VuiCol span={8}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-								<VuiCol span={8}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-								<VuiCol span={8}>
-									<div class={classes.elLoadingBlock}></div>
-								</VuiCol>
-							</VuiRow>
-						</div>
-					</div>
-				);
-			}
+		let body;
+
+		if (!props.loading) {
+			body = slots.default;
+		}
+		else if (slots.loading) {
+			body = slots.loading;
 		}
 		else {
-			children.push(
-				<div class={classes.elBody} style={bodyStyle}>{slots.default}</div>
+			body = (
+				<div class={classes.elLoading}>
+					{
+						gridCardLoadingBlocks.map(row => {
+							return (
+								<VuiRow gutter={8} class={classes.elLoadingRow}>
+									{
+										row.map(col => {
+											return (
+												<VuiCol span={col}>
+													<div class={classes.elLoadingBlock}></div>
+												</VuiCol>
+											);
+										})
+									}
+								</VuiRow>
+							);
+						})
+					}
+				</div>
 			);
 		}
 
+		children.push(
+			<div class={classes.elBody} style={props.bodyStyle}>{body}</div>
+		);
+
 		if (slots.actions) {
+			const elements = getValidElements(slots.actions);
 			let actions = [];
-			let elements = getValidElements(slots.actions);
 
 			elements.forEach((element, index) => {
 				if (index > 0) {
@@ -258,7 +209,7 @@ const VuiCard = {
 
 		if (slots.footer) {
 			children.push(
-				<div class={classes.elFooter} style={footerStyle}>{slots.footer}</div>
+				<div class={classes.elFooter} style={props.footerStyle}>{slots.footer}</div>
 			);
 		}
 

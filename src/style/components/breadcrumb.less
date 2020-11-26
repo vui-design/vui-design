@@ -1,69 +1,63 @@
 @vui-breadcrumb: ~"@{vui}-breadcrumb";
-@vui-breadcrumb-item: ~"@{vui}-breadcrumb-item";
 
 .@{vui-breadcrumb} {
-	box-sizing:border-box;
-	font-size:@font-size;
-	line-height:@line-height;
-
-	.clearfix;
-}
-
-.@{vui-breadcrumb-item} {
-	float:left;
 	display:block;
 	box-sizing:border-box;
+	font-size:@breadcrumb-font-size;
+	line-height:@breadcrumb-line-height;
 
-	& &-link,
-	& a {
+	.clearfix;
+
+	&-item {
 		float:left;
-		cursor:pointer;
-		outline:none;
-		color:@font-secondary-color;
-		text-decoration:none;
-		transition:color 0.2s;
+		display:block;
+		box-sizing:border-box;
 
-		&:hover {
-			color:@link-hover-color;
+		&-link {
+			float:left;
+			cursor:text;
+			color:@breadcrumb-item-color;
 		}
-		&:active {
-			color:@link-active-color;
+
+		&-link i {
+			margin-right:@breadcrumb-item-icon-margin-right;
+			transform:scale(0.9);
 		}
-	}
 
-	& &-label {
-		float:left;
-		color:@font-secondary-color;
-	}
-
-	& &-separator {
-		float:left;
-		margin:0 8px;
-		color:@border-color;
-	}
-
-	& .vui-icon {
-		margin-right:5px;
-	}
-
-	&:last-child {
-		.@{vui-breadcrumb-item}-link,
-		a {
-			color:@font-color;
+		& a {
+			cursor:pointer;
+			outline:none;
+			text-decoration:none;
+			transition:color @transition-duration @transition-timing-function;
 
 			&:hover {
-				color:@link-hover-color;
+				color:@breadcrumb-item-hover-color;
 			}
 			&:active {
-				color:@link-active-color;
+				color:@breadcrumb-item-active-color;
 			}
 		}
 
-		.@{vui-breadcrumb-item}-label {
-			color:@font-color;
+		&-separator {
+			float:left;
+			margin:@breadcrumb-item-separator-margin;
+			color:@breadcrumb-item-separator-color;
 		}
 
-		.@{vui-breadcrumb-item}-separator {
+		&:last-child &-link {
+			color:@breadcrumb-last-item-color;
+		}
+
+		&:last-child a {
+			&:hover {
+				color:@breadcrumb-item-hover-color;
+			}
+			&:active {
+				color:@breadcrumb-item-active-color;
+			}
+		}
+
+		&:last-child &-separator {
 			display:none;
 		}
 	}

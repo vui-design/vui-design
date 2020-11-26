@@ -64,6 +64,20 @@
 // 阴影
 @box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 
+// 外边距
+@margin-xss: 4px;
+@margin-xs: 8px;
+@margin-sm: 12px;
+@margin-md: 16px;
+@margin-lg: 20px;
+
+// 内边距
+@padding-xss: 4px;
+@padding-xs: 8px;
+@padding-sm: 12px;
+@padding-md: 16px;
+@padding-lg: 20px;
+
 // 属性过度
 @transition-duration: 0.2s;
 @transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -243,11 +257,27 @@
 @space-size-sm: 8px;
 @space-size-md: 16px;
 @space-size-lg: 24px;
+@space-with-divider-size-sm: 8px;
+@space-with-divider-size-md: 12px;
+@space-with-divider-size-lg: 16px;
+@space-divider-width: 1px;
+@space-divider-height: @font-size;
 
 // 导航组件 --------------------------------------------------------------------------------
 
 // Affix
 @affix-zIndex: 10;
+
+// Breadcrumb
+@breadcrumb-font-size: @font-size;
+@breadcrumb-line-height: @line-height;
+@breadcrumb-item-color: @font-secondary-color;
+@breadcrumb-last-item-color: @font-color;
+@breadcrumb-item-hover-color: @link-hover-color;
+@breadcrumb-item-active-color: @link-active-color;
+@breadcrumb-item-icon-margin-right: 4px;
+@breadcrumb-item-separator-margin: 0 8px;
+@breadcrumb-item-separator-color: @border-color;
 
 // Menu
 @menu-collapsed-width: 80px;
@@ -323,6 +353,13 @@
 @radio-button-font-size-sm: 12px;
 @radio-button-font-size-md: 14px;
 @radio-button-font-size-lg: 16px;
+
+// Rate
+@rate-star-margin-right: @margin-xs;
+@rate-star-color: #f0f0f0;
+@rate-star-checked-color: @warning-color;
+@rate-star-size: 20px;
+@rate-star-hover-scale: scale(1.1);
 
 // Checkbox
 @vui-checkbox-size-sm: 14px;
@@ -469,6 +506,97 @@
 @badge-status-yellow-color: #fadb14;
 @badge-status-yellow-font-color: #595959;
 
+// Card
+@card-border-color: #f0f0f0;
+@card-border-radius: @border-radius;
+@card-background-color: @component-background-color;
+@card-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+@card-font-color: @font-color;
+@card-font-size: @font-size;
+@card-line-height: @line-height;
+@card-header-padding: 16px 20px;
+@card-header-font-color: @font-primary-color;
+@card-header-font-size: @font-size-lg;
+@card-body-padding: 20px;
+@card-footer-padding: 20px;
+@card-icon-margin-right: 10px;
+@card-extra-margin-left: 10px;
+@card-extra-font-color: @font-color;
+@card-extra-font-size: @font-size;
+@card-loading-block-gutter: 8px;
+@card-loading-block-height: 14px;
+@card-loading-block-border-radius: @border-radius;
+@card-loading-block-from-color: #f5f5f5;
+@card-loading-block-to-color: #f0f0f0;
+@card-grid-padding: 20px;
+@card-meta-avatar-margin-right: 16px;
+@card-meta-title-font-color: @font-primary-color;
+@card-meta-title-font-size: @font-size-lg;
+@card-meta-description-margin-top: 8px;
+@card-meta-description-font-color: @font-secondary-color;
+@card-meta-description-font-size: @font-size;
+@card-meta-description-line-clamp: 2;
+@card-action-padding: 16px 0;
+@card-action-color: @font-secondary-color;
+@card-action-hover-color: @link-hover-color;
+@card-action-active-color: @link-active-color;
+@card-action-font-size: @font-size;
+@card-action-divider-width: 1px;
+@card-action-divider-height: @card-action-font-size;
+
+// Cell
+@cell-border-color: #f3f3f3;
+@cell-background-color: #ffffff;
+@cell-hover-background-color: #f9f9f9;
+@cell-active-background-color: #f9f9f9;
+@cell-padding: 10px 16px;
+@cell-font-color: @font-color;
+@cell-font-size: @font-size;
+@cell-line-height: @line-height;
+@cell-icon-margin-right: 8px;
+@cell-extra-margin-left: 8px;
+@cell-extra-font-color: @font-secondary-color;
+@cell-arrow-margin-left: 4px;
+@cell-arrow-color: @font-secondary-color;
+@cell-arrow-size: @font-size-sm;
+@cell-checkmark-margin-left: 4px;
+@cell-checkmark-color: @font-secondary-color;
+@cell-checkmark-size: @font-size-sm;
+
+@cell-selected-background-color: #e6f7ff;
+@cell-selected-hover-background-color: #dcf4ff;
+@cell-selected-active-background-color: #dcf4ff;
+@cell-selected-border-color: #e1f2fa;
+@cell-selected-hover-border-color: #d8effa;
+@cell-selected-active-border-color: #d8effa;
+@cell-selected-font-color: @primary-color;
+
+@cell-disabled-font-color: @font-disabled-color;
+
+@cell-group-background-color: #fafafa;
+@cell-group-padding: 4px 16px;
+@cell-group-font-color: @font-disabled-color;
+@cell-group-font-size: @font-size-sm;
+@cell-group-line-height: 20px;
+
+// Collapse
+@collapse-border-color: #f0f0f0;
+@collapse-border-radius: @border-radius;
+@collapse-background-color: @component-background-color;
+@collapse-font-color: @font-color;
+@collapse-font-size: @font-size;
+@collapse-line-height: @line-height;
+
+@collapse-panel-header-background-color: #fafafa;
+@collapse-panel-header-padding: @padding-sm @padding-md;
+@collapse-panel-header-font-color: @font-primary-color;
+@collapse-panel-header-font-size: @font-size;
+@collapse-panel-header-line-height: @line-height;
+@collapse-panel-body-padding: @padding-md;
+@collapse-panel-arrow-margin: @margin-xs;
+@collapse-panel-extra-margin: @margin-xs;
+@collapse-panel-disabled-header-font-color: @font-disabled-color;
+
 // Descriptions
 @descriptions-line-height: @line-height;
 @descriptions-title-font-color: @font-primary-color;
@@ -477,16 +605,18 @@
 @descriptions-body-border-radius: @border-radius;
 @descriptions-item-label-font-color: @font-primary-color;
 @descriptions-item-label-colon-margin-left: 2px;
-@descriptions-item-label-colon-margin-right: 8px;
+@descriptions-item-label-colon-margin-right: @margin-xs;
 @descriptions-item-content-font-color: @font-color;
 @descriptions-cell-border-color: #f0f0f0;
 @descriptions-cell-background-color: #fafafa;
 
 // Empty
 @empty-image-height: 40px;
+@empty-description-margin-top: @margin-sm;
 @empty-description-font-color: @font-disabled-color;
 @empty-description-font-size: @font-size;
 @empty-description-line-height: @line-height;
+@empty-content-margin-top: @margin-lg;
 
 // Image
 @image-placeholder-background-color: #fafafa;

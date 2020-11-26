@@ -19,6 +19,7 @@ const VuiAvatar = {
 	props: {
 		classNamePrefix: PropTypes.string,
 		src: PropTypes.string,
+		replacement: PropTypes.string,
 		alt: PropTypes.string,
 		icon: PropTypes.string,
 		shape: PropTypes.oneOf(shapes),
@@ -61,10 +62,13 @@ const VuiAvatar = {
 		const { vuiAvatarGroup, $slots: slots, $props: props, state, $listeners: listeners } = this;
 		const { handleError } = this;
 
+		// src
+		const src = props.src || props.replacement;
+
 		// type
 		let type;
 
-		if (props.src) {
+		if (src) {
 			type = "image";
 		}
 		else if (slots.icon || props.icon) {
@@ -146,7 +150,7 @@ const VuiAvatar = {
 
 		if (type === "image") {
 			children = (
-				<img class={classes.elChildren} src={props.src} alt={props.alt} onError={handleError} />
+				<img class={classes.elChildren} src={src} alt={props.alt} onError={handleError} />
 			);
 		}
 		else if (type === "icon") {

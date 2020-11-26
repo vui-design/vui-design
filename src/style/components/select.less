@@ -127,7 +127,7 @@
 .vui-select-dropdown[data-placement="bottom-end"] { margin:5px 0; transform-origin:top right; }
 
 .vui-select-dropdown-scale-enter-active,
-.vui-select-dropdown-scale-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity 0.3s, transform 0.3s; }
+.vui-select-dropdown-scale-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity @transition-duration @transition-timing-function, transform @transition-duration @transition-timing-function; }
 .vui-select-dropdown-scale-enter,
 .vui-select-dropdown-scale-leave-active { opacity:0; transform:scaleY(0.8); }
 

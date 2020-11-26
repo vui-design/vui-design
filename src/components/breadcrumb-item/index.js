@@ -1,4 +1,4 @@
-import VuiBreadcrumbItem from "./src/breadcrumb-item";
+import VuiBreadcrumbItem from "../breadcrumb/src/breadcrumb-item";
 
 VuiBreadcrumbItem.install = function(Vue) {
 	Vue.component(VuiBreadcrumbItem.name, VuiBreadcrumbItem);

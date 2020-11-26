@@ -139,6 +139,12 @@ const VuiForm = {
 			});
 
 			fields.forEach(field => field.reset());
+		},
+		handleSubmit(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			this.$emit("submit", e);
 		}
 	},
 
@@ -151,7 +157,7 @@ const VuiForm = {
 		};
 
 		return (
-			<form class={classes}>
+			<form class={classes} onSubmit={this.handleSubmit}>
 				{slots.default}
 			</form>
 		);
