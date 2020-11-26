@@ -1,70 +1,30 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import padEnd from "vui-design/utils/padEnd";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiStatistic = {
 	name: "vui-statistic",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		extra: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		precision: {
-			type: Number,
-			default: undefined
-		},
-		prefix: {
-			type: String,
-			default: undefined
-		},
-		suffix: {
-			type: String,
-			default: undefined
-		},
-		formatter: {
-			type: Function,
-			default: undefined
-		},
-		decimalSeparator: {
-			type: String,
-			default: "."
-		},
-		groupSeparator: {
-			type: String,
-			default: ","
-		},
-		headerStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		bodyStyle: {
-			type: [String, Object],
-			default: undefined
-		},
-		footerStyle: {
-			type: [String, Object],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		title: PropTypes.string,
+		extra: PropTypes.string,
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		precision: PropTypes.number,
+		prefix: PropTypes.string,
+		suffix: PropTypes.string,
+		formatter: PropTypes.func,
+		decimalSeparator: PropTypes.string.def("."),
+		groupSeparator: PropTypes.string.def(","),
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		footerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 	},
-
 	render(h) {
-		let { $slots: slots, $props: props } = this;
+		const { $slots: slots, $props: props } = this;
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "statistic");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "statistic");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
@@ -78,16 +38,16 @@ const VuiStatistic = {
 		classes.elValue = `${classNamePrefix}-value`;
 
 		// title
-		let title = slots.title || props.title;
+		const title = slots.title || props.title;
 
 		// extra
-		let extra = slots.extra || props.extra;
+		const extra = slots.extra || props.extra;
 
 		// prefix
-		let prefix = slots.prefix || props.prefix;
+		const prefix = slots.prefix || props.prefix;
 
 		// suffix
-		let suffix = slots.suffix || props.suffix;
+		const suffix = slots.suffix || props.suffix;
 
 		// value
 		let value;
@@ -98,12 +58,12 @@ const VuiStatistic = {
 		else {
 			value = String(props.value);
 
-			let matched = value.match(/^(-?)(\d*)(\.(\d+))?$/);
+			const matched = value.match(/^(-?)(\d*)(\.(\d+))?$/);
 
 			if (matched) {
 				value = [];
 
-				let negative = matched[1];
+				const negative = matched[1];
 				let int = matched[2] || "0";
 				let decimal = matched[4] || "";
 
@@ -167,9 +127,7 @@ const VuiStatistic = {
 
 		if (slots.footer) {
 			children.push(
-				<div class={classes.elFooter} style={props.footerStyle}>
-					{slots.footer}
-				</div>
+				<div class={classes.elFooter} style={props.footerStyle}>{slots.footer}</div>
 			);
 		}
 

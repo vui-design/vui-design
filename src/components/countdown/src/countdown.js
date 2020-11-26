@@ -1,111 +1,160 @@
-import { parseToDate, formatter } from "./utils";
+import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import utils from "./utils";
 
 const VuiCountdown = {
 	name: "vui-countdown",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-countdown"
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		prefix: {
-			type: String,
-			default: undefined
-		},
-		suffix: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: [String, Number, Date],
-			default: undefined
-		},
-		duration: {
-			type: Number,
-			default: 1000
-		},
-		format: {
-			type: String,
-			default: "HH:mm:ss"
-		},
-		formatter: {
-			type: Function,
-			default: formatter
-		},
-		valueClassName: {
-			type: [String, Object, Array],
-			default: undefined
-		},
-		valueStyle: {
-			type: [String, Object, Array],
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		title: PropTypes.string,
+		extra: PropTypes.string,
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+		prefix: PropTypes.string,
+		suffix: PropTypes.string,
+		formatter: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("HH:mm:ss"),
+		milliseconds: PropTypes.number.def(1000 / 30),
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		footerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 	},
-
 	data() {
+		const state = {
+			value: undefined
+		};
+
 		return {
-			countdown: ""
+			state
 		};
 	},
-
 	methods: {
-		setTimeout() {
-			if (this.duration <= 0) {
+		start() {
+			const { $props: props } = this;
+
+			if (props.milliseconds <= 0) {
 				return;
 			}
 
-			let current = new Date();
-			let target = parseToDate(this.value);
+			window.clearInterval(this.countdown);
+			this.countdown = window.setInterval(() => {
+				const current = utils.now();
+				const target = utils.parser(props.value);
+				let value;
 
-			this.countdown = this.formatter(this.$createElement, current, target, this.format);
+				if (is.function(props.formatter)) {
+					value = props.formatter(current, target);
+				}
+				else {
+					value = utils.formatter(current, target, props.formatter);
+				}
 
-			if (current <= target) {
-				this.timeout = window.setTimeout(() => {
-					this.setTimeout();
-				}, this.duration);
-			}
-			else {
-				this.clearTimeout();
-			}
+				this.state.value = value;
+
+				if (current > target) {
+					this.stop();
+				}
+			}, props.milliseconds);
 		},
-		clearTimeout() {
-			if (!this.timeout) {
+		stop() {
+			const { $props: props } = this;
+
+			if (!this.countdown) {
 				return;
 			}
 
-			clearTimeout(this.timeout);
-			this.timeout = null;
+			window.clearInterval(this.countdown);
+			this.countdown = undefined;
 
-			this.$emit("finish");
+			const current = utils.now();
+			const target = utils.parser(props.value);
+
+			if (target < current) {
+				this.$emit("finish");
+			}
 		}
 	},
-
 	mounted() {
-		this.setTimeout();
+		this.start();
 	},
-
+	updated() {
+		this.start();
+	},
 	beforeDestroy() {
-		this.clearTimeout();
+		this.stop();
 	},
-
 	render(h) {
-		let { $slots, classNamePrefix, title, value, format, formatter, valueClassName, valueStyle } = this;
-		let prefix = $slots.prefix || this.prefix;
-		let suffix = $slots.suffix || this.suffix;
+		const { $slots: slots, $props: props, state } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "countdown");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+		classes.elHeader = `${classNamePrefix}-header`;
+		classes.elBody = `${classNamePrefix}-body`;
+		classes.elFooter = `${classNamePrefix}-footer`;
+		classes.elTitle = `${classNamePrefix}-title`;
+		classes.elExtra = `${classNamePrefix}-extra`;
+		classes.elPrefix = `${classNamePrefix}-prefix`;
+		classes.elSuffix = `${classNamePrefix}-suffix`;
+		classes.elValue = `${classNamePrefix}-value`;
+
+		// title
+		const title = slots.title || props.title;
+
+		// extra
+		const extra = slots.extra || props.extra;
+
+		// prefix
+		const prefix = slots.prefix || props.prefix;
+
+		// suffix
+		const suffix = slots.suffix || props.suffix;
+
+		// render
+		let children = [];
+
+		if (title || extra) {
+			children.push(
+				<div class={classes.elHeader} style={props.headerStyle}>
+					{
+						title && (
+							<div class={classes.elTitle}>{title}</div>
+						)
+					}
+					{
+						extra && (
+							<div class={classes.elExtra}>{extra}</div>
+						)
+					}
+				</div>
+			);
+		}
+
+		children.push(
+			<div class={classes.elBody} style={props.bodyStyle}>
+				{
+					prefix && (
+						<div class={classes.elPrefix}>{prefix}</div>
+					)
+				}
+				<div class={classes.elValue}>{state.value}</div>
+				{
+					suffix && (
+						<div class={classes.elSuffix}>{suffix}</div>
+					)
+				}
+			</div>
+		);
+
+		if (slots.footer) {
+			children.push(
+				<div class={classes.elFooter} style={props.footerStyle}>{slots.footer}</div>
+			);
+		}
 
 		return (
-			<div class={`${classNamePrefix}`}>
-				{title && <div class={`${classNamePrefix}-title`}>{title}</div>}
-				<div class={[`${classNamePrefix}-value`, valueClassName]} style={valueStyle}>
-					{prefix && <label class={`${classNamePrefix}-value-prefix`}>{prefix}</label>}
-					<label class={`${classNamePrefix}-value-main`}>{this.countdown}</label>
-					{suffix && <label class={`${classNamePrefix}-value-suffix`}>{suffix}</label>}
-				</div>
-			</div>
+			<div class={classes.el}>{children}</div>
 		);
 	}
 };

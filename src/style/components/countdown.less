@@ -1,0 +1,79 @@
+@vui-countdown: ~"@{vui}-countdown";
+
+.@{vui-countdown} {
+	display:block;
+	box-sizing:border-box;
+	line-height:@countdown-line-height;
+
+	&-header {
+		display:flex;
+		align-items:center; 
+		box-sizing:border-box;
+		margin-bottom:@countdown-header-margin-bottom;
+	}
+
+	&-body {
+		display:flex;
+		align-items:flex-end;
+		box-sizing:border-box;
+		color:@countdown-body-color;
+		font-size:@countdown-body-font-size;
+		font-family:@countdown-body-font-family;
+		line-height:1;
+	}
+
+	&-footer {
+		display:block;
+		box-sizing:border-box;
+		margin-top:@countdown-footer-margin-top;
+
+		.clearfix;
+	}
+
+	&-title {
+		flex:1;
+		display:block;
+		box-sizing:border-box;
+		color:@countdown-title-color;
+		font-size:@countdown-title-font-size;
+
+		.writeEllipsis;
+	}
+
+	&-extra {
+		display:block;
+		box-sizing:border-box;
+		margin-left:@countdown-extra-margin-left;
+		color:@countdown-extra-color;
+		font-size:@countdown-extra-font-size;
+	}
+
+	&-prefix {
+		display:block;
+		box-sizing:border-box;
+		margin-right:@countdown-prefix-margin-right;
+		font-size:@countdown-prefix-font-size;
+
+		i {
+			display:block;
+		}
+	}
+
+	&-suffix {
+		display:block;
+		box-sizing:border-box;
+		margin-left:@countdown-suffix-margin-left;
+		font-size:@countdown-suffix-font-size;
+
+		i {
+			display:block;
+		}
+	}
+
+	&-value {
+		cursor:inherit;
+		display:flex;
+		align-items:flex-end;
+		box-sizing:border-box;
+	}
+}

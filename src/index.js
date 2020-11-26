@@ -63,6 +63,7 @@ import CardMeta from "./components/card-meta";
 import Cell from "./components/cell";
 import CellGroup from "./components/cell-group";
 import Collapse from "./components/collapse";
+import Countdown from "./components/countdown";
 import Panel from "./components/panel";
 import Descriptions from "./components/descriptions";
 import Description from "./components/description";
@@ -168,6 +169,7 @@ const components = [
 	Cell,
 	CellGroup,
 	Collapse,
+	Countdown,
 	Panel,
 	Descriptions,
 	Description,
@@ -234,7 +236,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.0.30",
+	version: "1.1.0",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -303,6 +305,7 @@ export default {
 	Cell,
 	CellGroup,
 	Collapse,
+	Countdown,
 	Panel,
 	Descriptions,
 	Description,

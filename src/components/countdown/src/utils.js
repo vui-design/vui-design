@@ -10,48 +10,63 @@ const units = [
 	["S", 1]
 ];
 
-export function parseToDate(value) {
+export const now = () => new Date().getTime();
+
+export const parser = value => {
 	if (typeof value === "string") {
 		value = value.replace(/-/g,  "/");
 	}
 
-	let date = new Date(value);
+	const date = new Date(value);
+	const timestamp = date.getTime();
 
-	if (isNaN(date.getTime())) {
-		return null;
+	if (isNaN(timestamp)) {
+		return 0;
 	}
 
-	return date;
+	return timestamp;
 };
 
-export function formatTimeString(duration, format) {
-	let leftDuration = duration;
+export const formatter = (current, target, format = "HH:mm:ss") => {
+	return formatTimestamp(Math.max(target - current, 0), format);
+};
 
-	return units.reduce((current, [name, unit]) => {
+export const formatTimestamp = (duration, format) => {
+	let left = duration;
+
+	const regex = /\[[^\]]*\]/g;
+	const keepList = (format.match(regex) || []).map(string => string.slice(1, -1));
+	const template = format.replace(regex, "[]");
+
+	const replaced = units.reduce((current, [name, unit]) => {
 		if (current.indexOf(name) !== -1) {
-			let value = Math.floor(leftDuration / unit);
+			const value = Math.floor(left / unit);
 
-			leftDuration -= value * unit;
+			left  -= value * unit;
 
 			return current.replace(new RegExp(name + "+", "g"), match => {
-				let length = match.length;
+				const length = match.length;
 
 				return padStart(value.toString(), length, "0");
 			});
 		}
 
 		return current;
-	}, format);
-};
+	}, template);
 
-export function formatter(h, current, target, format) {
-	let difference = Math.max(target - current, 0);
+	let index = 0;
 
-	return formatTimeString(difference, format);
+	return replaced.replace(regex, () => {
+		const match = keepList[index];
+
+		index += 1;
+
+		return match;
+	});
 };
 
 export default {
-	parseToDate,
-	formatTimeString,
+	now,
+	parser,
 	formatter
 };

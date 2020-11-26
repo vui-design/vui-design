@@ -1,18 +1,21 @@
 @vui-statistic: ~"@{vui}-statistic";
 
 .@{vui-statistic} {
+	display:block;
 	box-sizing:border-box;
 	line-height:@statistic-line-height;
 
 	&-header {
 		display:flex;
 		align-items:center; 
+		box-sizing:border-box;
 		margin-bottom:@statistic-header-margin-bottom;
 	}
 
 	&-body {
 		display:flex;
 		align-items:flex-end;
+		box-sizing:border-box;
 		color:@statistic-body-color;
 		font-size:@statistic-body-font-size;
 		font-family:@statistic-body-font-family;
@@ -20,6 +23,8 @@
 	}
 
 	&-footer {
+		display:block;
+		box-sizing:border-box;
 		margin-top:@statistic-footer-margin-top;
 
 		.clearfix;
@@ -27,56 +32,58 @@
 
 	&-title {
 		flex:1;
-		overflow:hidden;
+		display:block;
+		box-sizing:border-box;
 		color:@statistic-title-color;
 		font-size:@statistic-title-font-size;
-		white-space:nowrap;
-		text-overflow:ellipsis;
+
+		.writeEllipsis;
 	}
 
 	&-extra {
-		margin-left:10px;
+		display:block;
+		box-sizing:border-box;
+		margin-left:@statistic-extra-margin-left;
 		color:@statistic-extra-color;
 		font-size:@statistic-extra-font-size;
 	}
 
 	&-prefix {
-		display:inline-block;
+		display:block;
+		box-sizing:border-box;
 		margin-right:@statistic-prefix-margin-right;
-		vertical-align:bottom;
 		font-size:@statistic-prefix-font-size;
 
-		.@{vui}-icon {
+		i {
 			display:block;
 		}
 	}
 
 	&-suffix {
-		display:inline-block;
+		display:block;
+		box-sizing:border-box;
 		margin-left:@statistic-suffix-margin-left;
-		vertical-align:bottom;
 		font-size:@statistic-suffix-font-size;
 
-		.@{vui}-icon {
+		i {
 			display:block;
 		}
 	}
 
 	&-value {
+		cursor:inherit;
 		display:flex;
 		align-items:flex-end;
-		cursor:inherit;
-		display:inline-block;
-		vertical-align:bottom;
+		box-sizing:border-box;
 
 		big {
-			display:inline-block;
-			vertical-align:bottom;
+			display:block;
+			box-sizing:border-box;
 			font-size:inherit;
 		}
 		small {
-			display:inline-block;
-			vertical-align:bottom;
+			display:block;
+			box-sizing:border-box;
 			font-size:@statistic-suffix-font-size;
 		}
 	}
