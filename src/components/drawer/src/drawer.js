@@ -261,14 +261,14 @@ const VuiDrawer = {
 			zIndex: state.zIndex
 		};
 
-		if (["top", "bottom"].indexOf(props.placement) > -1) {
+		if (["left", "right"].indexOf(props.placement) > -1) {
 			styles.el = {
-				height: is.string(props.height) ? props.height : `${props.height}px`
+				width: is.string(props.width) ? props.width : `${props.width}px`
 			};
 		}
 		else {
 			styles.el = {
-				width: is.string(props.height) ? props.height : `${props.height}px`
+				height: is.string(props.height) ? props.height : `${props.height}px`
 			};
 		}
 
