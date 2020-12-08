@@ -1,0 +1,138 @@
+@vui-timeroutine: ~"@{vui}-timeroutine";
+
+.@{vui-timeroutine} {
+	position:relative;
+	display:block;
+	box-sizing:border-box;
+	background-color:@timeroutine-background-color;
+	color:@timeroutine-font-color;
+	font-size:@timeroutine-font-size;
+	user-select:none;
+
+	table {
+		border-collapse:collapse;
+		border-spacing:0;
+	}
+
+	thead tr {
+		height:40px;
+	}
+
+	tbody tr {
+		height:32px;
+	}
+
+	th, td {
+		min-width:14px;
+		border:1px solid @timeroutine-border-color;
+		line-height:1;
+		text-align:center;
+	}
+
+	th {
+		color:@timeroutine-font-primary-color;
+	}
+
+	td {
+		color:@timeroutine-font-color;
+		transition:all @transition-duration @transition-timing-function;
+	}
+
+	tbody td:hover {
+		background-color:@timeroutine-time-hover-color;
+	}
+	tbody td.active {
+		background-color:@timeroutine-time-selected-color;
+	}
+
+	&-action {
+		display:block;
+		box-sizing:border-box;
+		padding:@padding-lg;
+
+		.clearfix;
+
+		&-tooltip {
+			float:left;
+
+			li {
+				float:left;
+				display:flex;
+				align-items:center;
+				line-height:1;
+
+				&:before {
+					content:"";
+					display:block;
+					box-sizing:border-box;
+					width:@timeroutine-font-size;
+					height:@timeroutine-font-size;
+					border:1px solid transparent;
+					border-radius:@border-radius;
+					margin-right:@margin-xs;
+				}
+
+				&:first-child:before {
+					border-color:@timeroutine-time-selected-color;
+					background-color:@timeroutine-time-selected-color;
+				}
+
+				&:last-child:before {
+					border-color:@timeroutine-border-color;
+					background-color:@timeroutine-background-color;
+				}
+			}
+
+			li + li {
+				margin-left:@margin-md;
+			}
+		}
+
+		&-placeholder {
+			float:left;
+			margin-left:@margin-lg;
+			color:@timeroutine-font-secondary-color;
+		}
+
+		&-clear {
+			float:right;
+		}
+	}
+
+	&-selected {
+		display:block;
+		box-sizing:border-box;
+		padding:0 @padding-lg @padding-lg @padding-lg;
+
+		dl {
+			display:flex;
+			box-sizing:border-box;
+			align-items:flex-start;
+			line-height:@line-height;
+		}
+		dl + dl {
+			margin-top:@margin-sm;
+		}
+
+		dt {
+			min-width:60px;
+			color:@timeroutine-font-primary-color;
+			text-align:left;
+		}
+
+		dd {
+			flex:1;
+			text-align:left;
+		}
+	}
+
+	&-selection {
+		position:absolute;
+		top:0;
+		left:0;
+		width:0;
+		height:0;
+		background-color:rgba(45,140,240,0.6);
+		pointer-events:none;
+	}
+}

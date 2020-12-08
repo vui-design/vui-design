@@ -9,7 +9,7 @@ import Locale from "vui-design/mixins/locale";
 import Popup from "vui-design/utils/popup";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
-import getEventTarget from "vui-design/utils/getEventTarget";
+import getElementByEvent from "vui-design/utils/getElementByEvent";
 
 const VuiTableFilter = {
 	name: "vui-table-filter",
@@ -137,7 +137,7 @@ const VuiTableFilter = {
 		},
 		handleClose(e) {
 			const { $el: el, $refs: references, $props: props } = this;
-			const target = getEventTarget(e);
+			const target = getElementByEvent(e);
 
 			if (!target || !references.dropdown) {
 				return;

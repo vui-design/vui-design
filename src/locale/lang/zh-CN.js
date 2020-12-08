@@ -66,6 +66,23 @@ export default {
 			year: "年",
 			years: "年"
 		},
+		timeroutine: {
+			week: "星期",
+			time: "时间",
+			weeks: {
+				sun: "星期日",
+				mon: "星期一",
+				tue: "星期二",
+				wed: "星期三",
+				thu: "星期四",
+				fri: "星期五",
+				sat: "星期六"
+			},
+			selected: "已选",
+			unselected: "未选",
+			placeholder: "可拖动鼠标选择时间段",
+			clear: "清空"
+		},
 		pagination: {
 			prevPage: "上一页",
 			nextPage: "下一页",

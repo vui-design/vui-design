@@ -51,6 +51,7 @@ import Option from "./components/option";
 import OptionGroup from "./components/option-group";
 import Switch from "./components/switch";
 import Textarea from "./components/textarea";
+import Timeroutine from "./components/timeroutine";
 // import Transfer from "./components/transfer";
 import Upload from "./components/upload";
 // Data Display
@@ -157,6 +158,7 @@ const components = [
 	OptionGroup,
 	Switch,
 	Textarea,
+	Timeroutine,
 	// Transfer,
 	Upload,
 	// Data Display
@@ -236,7 +238,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.1.1",
+	version: "1.2.1",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -293,6 +295,7 @@ export default {
 	OptionGroup,
 	Switch,
 	Textarea,
+	Timeroutine,
 	// Transfer,
 	Upload,
 	// Data Display

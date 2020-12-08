@@ -1,9 +1,11 @@
-export default function padStart(string, length, chars) {
+export default function padStart(value, length, chars) {
+	const string = String(value);
+
 	length = length >> 0;
 	chars = String(typeof chars !== "undefined" ? chars : " ");
 
 	if (string.length > length) {
-		return String(string);
+		return string;
 	}
 	else {
 		length = length - string.length;
@@ -12,6 +14,6 @@ export default function padStart(string, length, chars) {
 			chars += chars.repeat(length / chars.length);
 		}
 
-		return chars.slice(0, length) + String(string);
+		return chars.slice(0, length) + string;
 	}
 };

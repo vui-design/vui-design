@@ -66,6 +66,23 @@ export default {
 			year: " year",
 			years: " years"
 		},
+		timeroutine: {
+			week: "Week",
+			time: "Time",
+			weeks: {
+				sun: "Sunday",
+				mon: "Monday",
+				tue: "Tuesday",
+				wed: "Wednesday",
+				thu: "Thursday",
+				fri: "Friday",
+				sat: "Saturday"
+			},
+			selected: "Selected",
+			unselected: "Not selected",
+			placeholder: "Drag the mouse to select a time period",
+			clear: "Clear"
+		},
 		pagination: {
 			prevPage: "Previous Page",
 			nextPage: "Next Page",

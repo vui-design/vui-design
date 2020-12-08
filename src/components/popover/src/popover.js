@@ -4,7 +4,7 @@ import Outclick from "vui-design/directives/outclick";
 import Popup from "vui-design/utils/popup";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
-import getEventTarget from "vui-design/utils/getEventTarget";
+import getElementByEvent from "vui-design/utils/getElementByEvent";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiPopover = {
@@ -134,7 +134,7 @@ const VuiPopover = {
 			}
 
 			const { $refs: references } = this;
-			const target = getEventTarget(e);
+			const target = getElementByEvent(e);
 
 			if (!target || !references.popup || target === references.popup || references.popup.contains(target)) {
 				return;

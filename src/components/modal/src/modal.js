@@ -8,7 +8,7 @@ import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import merge from "vui-design/utils/merge";
 import addScrollbarEffect from "vui-design/utils/addScrollbarEffect";
-import getEventTarget from "vui-design/utils/getEventTarget";
+import getElementByEvent from "vui-design/utils/getElementByEvent";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiModal = {
@@ -103,7 +103,7 @@ const VuiModal = {
 		},
 		handleWrapperClick(e) {
 			const { $refs: references } = this;
-			const target = getEventTarget(e);
+			const target = getElementByEvent(e);
 
 			if (!target || !references.wrapper || target !== references.wrapper) {
 				return;

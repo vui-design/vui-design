@@ -11,7 +11,7 @@ import css from "vui-design/utils/css";
 import styleToObject from "vui-design/utils/styleToObject";
 import addScrollbarEffect from "vui-design/utils/addScrollbarEffect";
 import getStyle from "vui-design/utils/getStyle";
-import getEventTarget from "vui-design/utils/getEventTarget";
+import getElementByEvent from "vui-design/utils/getElementByEvent";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDrawer = {
@@ -139,7 +139,7 @@ const VuiDrawer = {
 		},
 		handleWrapperClick(e) {
 			const { $refs: references } = this;
-			const target = getEventTarget(e);
+			const target = getElementByEvent(e);
 
 			if (!target || !references.wrapper || target !== references.wrapper) {
 				return;
