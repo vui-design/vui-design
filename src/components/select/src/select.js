@@ -46,10 +46,6 @@ const VuiSelect = {
 			type: Function,
 			default: count => `+${count}`
 		},
-		allowCreate: {
-			type: Boolean,
-			default: false
-		},
 		searchable: {
 			type: Boolean,
 			default: false
@@ -62,6 +58,10 @@ const VuiSelect = {
 			type: String,
 			default: "children"
 		},
+		allowCreate: {
+			type: Boolean,
+			default: false
+		},
 		loading: {
 			type: Boolean,
 			default: false
@@ -72,6 +72,14 @@ const VuiSelect = {
 		},
 		notFoundText: {
 			type: String,
+			default: undefined
+		},
+		beforeSelect: {
+			type: Function,
+			default: undefined
+		},
+		beforeUnselect: {
+			type: Function,
 			default: undefined
 		},
 		autoClearKeyword: {

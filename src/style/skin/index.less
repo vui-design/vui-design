@@ -308,20 +308,60 @@
 
 // 数据录入 --------------------------------------------------------------------------------
 
+// Checkbox
+@checkbox-border-color: @border-color;
+@checkbox-border-radius: @border-radius;
+@checkbox-background-color: @component-background-color;
+@checkbox-color: @primary-color;
+@checkbox-font-color: @font-color;
+
+@checkbox-size-sm: 14px;
+@checkbox-size-md: 16px;
+@checkbox-size-lg: 18px;
+
+@checkbox-font-size-sm: 12px;
+@checkbox-font-size-md: 14px;
+@checkbox-font-size-lg: 16px;
+
+@checkbox-hover-border-color: tint(@primary-color, 10%);
+
+@checkbox-checked-border-color: @primary-color;
+@checkbox-checked-background-color: @primary-color;
+
+@checkbox-disabled-border-color: @border-color;
+@checkbox-disabled-background-color: shade(@component-background-color, 3.5%);
+@checkbox-disabled-color: shade(@border-color, 10%);
+@checkbox-disabled-font-color: @font-disabled-color;
+
+// Checkbox Button
+@checkbox-button-border-color: @border-color;
+@checkbox-button-border-radius: @border-radius;
+@checkbox-button-background-color: @component-background-color;
+@checkbox-button-font-color: @font-color;
+
+@checkbox-button-size-sm: 24px;
+@checkbox-button-size-md: 34px;
+@checkbox-button-size-lg: 44px;
+
+@checkbox-button-font-size-sm: 12px;
+@checkbox-button-font-size-md: 14px;
+@checkbox-button-font-size-lg: 16px;
+
+@checkbox-button-hover-font-color: tint(@primary-color, 10%);
+
+@checkbox-button-checked-border-color: @primary-color;
+@checkbox-button-checked-font-color: @primary-color;
+
+@checkbox-button-disabled-border-color: @border-color;
+@checkbox-button-disabled-background-color: shade(@component-background-color, 3.5%);
+@checkbox-button-disabled-font-color: @font-disabled-color;
+
 // Radio
 @radio-border-color: @border-color;
+@radio-border-radius: 50%;
 @radio-background-color: @component-background-color;
-@radio-input-color: @primary-color;
+@radio-color: @primary-color;
 @radio-font-color: @font-color;
-
-@radio-hover-border-color: tint(@primary-color, 10%);
-
-@radio-checked-border-color: @primary-color;
-
-@radio-disabled-border-color: @border-color;
-@radio-disabled-background-color: shade(@component-background-color, 3.5%);
-@radio-disabled-input-color: shade(@border-color, 10%);
-@radio-disabled-font-color: @font-disabled-color;
 
 @radio-size-sm: 14px;
 @radio-size-md: 16px;
@@ -331,11 +371,28 @@
 @radio-font-size-md: 14px;
 @radio-font-size-lg: 16px;
 
+@radio-hover-border-color: tint(@primary-color, 10%);
+
+@radio-checked-border-color: @primary-color;
+
+@radio-disabled-border-color: @border-color;
+@radio-disabled-background-color: shade(@component-background-color, 3.5%);
+@radio-disabled-color: shade(@border-color, 10%);
+@radio-disabled-font-color: @font-disabled-color;
+
 // Radio Button
 @radio-button-border-color: @border-color;
 @radio-button-border-radius: @border-radius;
 @radio-button-background-color: @component-background-color;
 @radio-button-font-color: @font-color;
+
+@radio-button-size-sm: 24px;
+@radio-button-size-md: 34px;
+@radio-button-size-lg: 44px;
+
+@radio-button-font-size-sm: 12px;
+@radio-button-font-size-md: 14px;
+@radio-button-font-size-lg: 16px;
 
 @radio-button-hover-font-color: tint(@primary-color, 10%);
 
@@ -346,68 +403,12 @@
 @radio-button-disabled-background-color: shade(@component-background-color, 3.5%);
 @radio-button-disabled-font-color: @font-disabled-color;
 
-@radio-button-size-sm: 24px;
-@radio-button-size-md: 34px;
-@radio-button-size-lg: 44px;
-
-@radio-button-font-size-sm: 12px;
-@radio-button-font-size-md: 14px;
-@radio-button-font-size-lg: 16px;
-
 // Rate
 @rate-star-margin-right: @margin-xs;
 @rate-star-color: #f0f0f0;
 @rate-star-checked-color: @warning-color;
 @rate-star-size: 20px;
 @rate-star-hover-scale: scale(1.1);
-
-// Checkbox
-@vui-checkbox-size-sm: 14px;
-@vui-checkbox-size-md: 16px;
-@vui-checkbox-size-lg: 18px;
-
-@vui-checkbox-font-size-sm: 12px;
-@vui-checkbox-font-size-md: 14px;
-@vui-checkbox-font-size-lg: 16px;
-
-@vui-checkbox-border-color: #e0e0e0;
-@vui-checkbox-background-color: #fff;
-@vui-checkbox-indeterminate-color: #2d8cf0;
-@vui-checkbox-input-color: #fff;
-@vui-checkbox-font-color: #595959;
-
-@vui-checkbox-hover-border-color: tint(#2d8cf0, 10%);
-
-@vui-checkbox-checked-border-color: #2d8cf0;
-@vui-checkbox-checked-background-color: #2d8cf0;
-
-@vui-checkbox-disabled-border-color: #e0e0e0;
-@vui-checkbox-disabled-background-color: shade(#fff, 3.5%);
-@vui-checkbox-disabled-indeterminate-color: shade(#e0e0e0, 10%);
-@vui-checkbox-disabled-input-color: shade(#e0e0e0, 10%);
-@vui-checkbox-disabled-font-color: tint(#000, 75%);
-
-// Checkbox Button
-@vui-checkbox-button-size-sm: 24px;
-@vui-checkbox-button-size-md: 34px;
-@vui-checkbox-button-size-lg: 44px;
-
-@vui-checkbox-button-font-size-sm: 12px;
-@vui-checkbox-button-font-size-md: 14px;
-@vui-checkbox-button-font-size-lg: 16px;
-
-@vui-checkbox-button-border-color: #e0e0e0;
-@vui-checkbox-button-background-color: #fff;
-@vui-checkbox-button-font-color: #595959;
-
-@vui-checkbox-button-hover-font-color: tint(#2d8cf0, 10%);
-
-@vui-checkbox-button-checked-border-color: #2d8cf0;
-@vui-checkbox-button-checked-font-color: #2d8cf0;
-
-@vui-checkbox-button-disabled-border-color: #e0e0e0;
-@vui-checkbox-button-disabled-background-color: shade(#fff, 3.5%);
-@vui-checkbox-button-disabled-font-color: tint(#000, 75%);
 
 // Switch
 @vui-switch-size-sm: 16px;

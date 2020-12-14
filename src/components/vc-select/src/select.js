@@ -86,10 +86,6 @@ const VcSelect = {
 			type: Function,
 			default: count => `+ ${count}`
 		},
-		allowCreate: {
-			type: Boolean,
-			default: false
-		},
 		searchable: {
 			type: Boolean,
 			default: false
@@ -102,6 +98,10 @@ const VcSelect = {
 			type: String,
 			default: "children"
 		},
+		allowCreate: {
+			type: Boolean,
+			default: false
+		},
 		loading: {
 			type: Boolean,
 			default: false
@@ -112,6 +112,14 @@ const VcSelect = {
 		},
 		notFoundText: {
 			type: String,
+			default: undefined
+		},
+		beforeSelect: {
+			type: Function,
+			default: undefined
+		},
+		beforeUnselect: {
+			type: Function,
 			default: undefined
 		},
 		autoClearKeyword: {
@@ -502,12 +510,32 @@ const VcSelect = {
 			this.$emit("search", e.target.value);
 		},
 		handleSelectionRemove(value) {
-			let index = this.defaultValue.findIndex(item => item.value === value);
+			let hook = true;
+			const callback = () => {
+				let index = this.defaultValue.findIndex(item => item.value === value);
 
-			this.defaultValue.splice(index, 1);
-			this.$emit("input", this.defaultValue.map(item => item.value));
-			this.$emit("change", this.defaultValue.map(item => item.value));
-			this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+				this.defaultValue.splice(index, 1);
+				this.$emit("input", this.defaultValue.map(item => item.value));
+				this.$emit("change", this.defaultValue.map(item => item.value));
+				this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+			};
+
+			if (is.function(this.beforeUnselect)) {
+				hook = this.beforeUnselect(value);
+			}
+
+			if (is.boolean(hook) && hook === false) {
+				return;
+			}
+
+			if (is.promise(hook)) {
+				hook.then(() => {
+					callback();
+				}).catch(error => {});
+			}
+			else {
+				callback();
+			}
 		},
 		handleSelectionClear(e) {
 			if (this.multiple) {
@@ -540,35 +568,96 @@ const VcSelect = {
 		handleOptionClick(option) {
 			if (this.multiple) {
 				let index = this.defaultValue.findIndex(item => item.value === option.value);
+				const callback = () => {
+					if (this.searchable && this.autoClearKeyword) {
+						this.keyword = "";
+						this.$emit("search", this.keyword);
+					}
+
+					this.$emit("input", this.defaultValue.map(item => item.value));
+					this.$emit("change", this.defaultValue.map(item => item.value));
+					this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+				};
 
 				if (index === -1) {
-					this.defaultValue.push({
-						...option
-					});
+					let hook = true;
+
+					if (is.function(this.beforeSelect)) {
+						hook = this.beforeSelect(option.value);
+					}
+
+					if (is.boolean(hook) && hook === false) {
+						return;
+					}
+
+					if (is.promise(hook)) {
+						hook.then(() => {
+							this.defaultValue.push({
+								...option
+							});
+							callback();
+						}).catch(error => {});
+					}
+					else {
+						this.defaultValue.push({
+							...option
+						});
+						callback();
+					}
 				}
 				else {
-					this.defaultValue.splice(index, 1);
-				}
+					let hook = true;
 
-				if (this.searchable && this.autoClearKeyword) {
-					this.keyword = "";
-					this.$emit("search", this.keyword);
-				}
+					if (is.function(this.beforeUnselect)) {
+						hook = this.beforeUnselect(option.value);
+					}
 
-				this.$emit("input", this.defaultValue.map(item => item.value));
-				this.$emit("change", this.defaultValue.map(item => item.value));
-				this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+					if (is.boolean(hook) && hook === false) {
+						return;
+					}
+
+					if (is.promise(hook)) {
+						hook.then(() => {
+							this.defaultValue.splice(index, 1);
+							callback();
+						}).catch(error => {});
+					}
+					else {
+						this.defaultValue.splice(index, 1);
+						callback();
+					}
+				}
 			}
 			else {
-				this.actived = false;
-				this.defaultValue = {
-					...option
+				const callback = () => {
+					this.actived = false;
+					this.defaultValue = {
+						...option
+					};
+					this.keyword = "";
+					this.$emit("search", this.keyword);
+					this.$emit("input", this.defaultValue.value);
+					this.$emit("change", this.defaultValue.value);
+					this.dispatch("vui-form-item", "change", this.defaultValue.value);
 				};
-				this.keyword = "";
-				this.$emit("search", this.keyword);
-				this.$emit("input", this.defaultValue.value);
-				this.$emit("change", this.defaultValue.value);
-				this.dispatch("vui-form-item", "change", this.defaultValue.value);
+				let hook = true;
+
+				if (is.function(this.beforeSelect)) {
+					hook = this.beforeSelect(option.value);
+				}
+
+				if (is.boolean(hook) && hook === false) {
+					return;
+				}
+
+				if (is.promise(hook)) {
+					hook.then(() => {
+						callback();
+					}).catch(error => {});
+				}
+				else {
+					callback();
+				}
 			}
 		}
 	},

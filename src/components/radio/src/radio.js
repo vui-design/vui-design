@@ -79,7 +79,7 @@ const VuiRadio = {
 		}
 	},
 	render() {
-		const { $vui: vui, vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
+		const { vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
 		// props & state
 		let type, name, label, value, size, focused, checked, disabled;
@@ -104,9 +104,6 @@ const VuiRadio = {
 		}
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
-		}
-		else if (vui && vui.size) {
-			size = vui.size;
 		}
 		else {
 			size = "medium";
@@ -154,12 +151,13 @@ const VuiRadio = {
 				change: this.handleChange
 			}
 		};
+		const radioInput = (
+			<input type="radio" name={name} value={value} checked={checked} disabled={disabled} {...radioInputProps} />
+		);
 
 		return (
 			<label class={classes.el}>
-				<div class={classes.elInput}>
-					<input type="radio" name={name} value={value} checked={checked} disabled={disabled} {...radioInputProps} />
-				</div>
+				<div class={classes.elInput}>{radioInput}</div>
 				{
 					label && (
 						<div class={classes.elLabel}>{label}</div>

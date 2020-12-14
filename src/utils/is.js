@@ -134,6 +134,11 @@ export const isPlainObject = function(value) {
 	return typeof constructor === "function" && funToString.call(constructor) === funToString.call(Object);
 };
 
+// 检查给定的值是否是 Promise 对象
+export function isPromise(value) {
+	return objToString.call(value) === "[object Promise]";
+};
+
 // 检查给定的值是否是 HTMLElement 元素
 export const isElement = function(value) {
 	return value && (value instanceof window.Node) && (value.nodeType === 1);
@@ -209,6 +214,7 @@ export default {
 	object: isObject,
 	plainObject: isPlainObject,
 	json: isPlainObject,
+	promise: isPromise,
 	element: isElement,
 	error: isError,
 	empty: isEmpty,

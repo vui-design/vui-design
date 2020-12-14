@@ -1,11 +1,9 @@
-import VuiCheckboxInput from "./components/input";
-import VuiCheckboxLabel from "./components/label";
 import Emitter from "vui-design/mixins/emitter";
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCheckbox = {
 	name: "vui-checkbox",
-
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -14,121 +12,98 @@ const VuiCheckbox = {
 			default: undefined
 		}
 	},
-
-	components: {
-		VuiCheckboxInput,
-		VuiCheckboxLabel
-	},
-
 	mixins: [
 		Emitter
 	],
-
 	inheritAttrs: false,
-
 	model: {
 		prop: "checked",
 		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: undefined,
-			validator: value => value === "button"
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		name: {
-			type: String,
-			default: undefined
-		},
-		label: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		indeterminate: {
-			type: Boolean,
-			default: false
-		},
-		checked: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.string,
+		name: PropTypes.string,
+		label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		indeterminate: PropTypes.bool.def(false),
+		checked: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		size: PropTypes.oneOf(["small", "medium", "large"])
 	},
-
 	data() {
+		const { $props: props } = this;
+
 		return {
-			defaultFocused: false,
-			defaultChecked: this.checked
+			state: {
+				focused: false,
+				checked: props.checked
+			}
 		};
 	},
-
 	watch: {
 		checked(value) {
-			if (this.defaultChecked === value) {
+			if (this.state.checked === value) {
 				return;
 			}
 
-			this.defaultChecked = value;
-			this.dispatch("vui-form-item", "change", this.defaultChecked);
+			this.state.checked = value;
+			this.dispatch("vui-form-item", "change", value);
 		}
 	},
 
 	methods: {
 		handleFocus(e) {
-			this.defaultFocused = true;
+			this.state.focused = true;
+			this.$emit("focus");
 		},
 		handleBlur(e) {
-			this.defaultFocused = false;
+			this.state.focused = false;
+			this.$emit("blur");
 		},
-		handleChange(data) {
-			if (this.disabled) {
+		handleChange(e) {
+			const { vuiCheckboxGroup, $props: props } = this;
+			const checked = e.target.checked;
+
+			if (props.disabled) {
 				return;
 			}
 
-			this.defaultChecked = data.checked;
-			this.$emit("input", this.defaultChecked);
-			this.$emit('change', this.defaultChecked);
-			this.dispatch("vui-form-item", "change", this.defaultChecked);
+			if (vuiCheckboxGroup) {
+				vuiCheckboxGroup.handleChange({
+					checked,
+					value: props.value
+				});
+			}
+			else {
+				this.state.checked = checked;
+				this.$emit("input", checked);
+				this.$emit('change', checked);
+				this.dispatch("vui-form-item", "change", checked);
+			}
 		}
 	},
 
 	render() {
-		let { $vui: vui, vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, classNamePrefix: customizedClassNamePrefix, label, value, indeterminate, defaultFocused, defaultChecked } = this;
-		let { handleFocus, handleBlur } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "checkbox");
+		const { vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
-		// type: vuiCheckboxGroup > self
-		let type;
+		// props & state
+		let type, name, label, value, size, focused, indeterminate, checked, disabled;
 
 		if (vuiCheckboxGroup) {
 			type = vuiCheckboxGroup.type;
+			name = vuiCheckboxGroup.name;
 		}
 		else {
-			type = this.type;
+			type = props.type;
+			name = props.name;
 		}
 
-		// size: self > vuiCheckboxGroup > vuiForm > vui
-		let size;
+		label = slots.default || props.label;
+		value = props.value;
 
-		if (this.size) {
-			size = this.size;
+		if (props.size) {
+			size = props.size;
 		}
 		else if (vuiCheckboxGroup && vuiCheckboxGroup.size) {
 			size = vuiCheckboxGroup.size;
@@ -136,38 +111,19 @@ const VuiCheckbox = {
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
-		else if (vui && vui.size) {
-			size = vui.size;
-		}
 		else {
 			size = "medium";
 		}
 
-		// name: vuiCheckboxGroup > self
-		let name;
+		focused = state.focused;
+		indeterminate = props.indeterminate;
 
 		if (vuiCheckboxGroup) {
-			name = vuiCheckboxGroup.name;
+			checked = vuiCheckboxGroup.state.value.indexOf(value) > -1;
 		}
 		else {
-			name = this.name;
+			checked = state.checked;
 		}
-
-		// focused
-		let focused = defaultFocused;
-
-		// checked: vuiCheckboxGroup > self
-		let checked;
-
-		if (vuiCheckboxGroup) {
-			checked = vuiCheckboxGroup.defaultValue.indexOf(value) > -1;
-		}
-		else {
-			checked = defaultChecked;
-		}
-
-		// disabled: vuiForm > vuiCheckboxGroup > self
-		let disabled;
 
 		if (vuiForm && vuiForm.disabled) {
 			disabled = vuiForm.disabled;
@@ -176,65 +132,61 @@ const VuiCheckbox = {
 			disabled = vuiCheckboxGroup.disabled;
 		}
 		else {
-			disabled = this.disabled;
+			disabled = props.disabled;
 		}
 
-		// handleChange
-		let handleChange;
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, type === "button" ? "checkbox-button" : "checkbox");
+		let classes = {};
 
-		if (vuiCheckboxGroup) {
-			handleChange = vuiCheckboxGroup.handleChange;
-		}
-		else {
-			handleChange = this.handleChange;
-		}
-
-		// theCheckboxInputOptions
-		let theCheckboxInputOptions = {
-			props: {
-				classNamePrefix,
-				type,
-				name,
-				value,
-				indeterminate,
-				checked,
-				disabled
-			},
-			attrs: {
-				...attrs
-			},
-			on: {
-				focus: handleFocus,
-				blur: handleBlur,
-				change: handleChange
-			}
-		};
-
-		// theCheckboxLabelOptions
-		let theCheckboxLabelOptions = {
-			props: {
-				classNamePrefix
-			}
-		};
-
-		// classes
-		let classes = {
-			[`${classNamePrefix}`]: !type,
-			[`${classNamePrefix}-${type}`]: type,
+		classes.el = {
+			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${size}`]: size,
 			[`${classNamePrefix}-focused`]: focused,
 			[`${classNamePrefix}-indeterminate`]: indeterminate,
 			[`${classNamePrefix}-checked`]: checked,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
+		classes.elInput = `${classNamePrefix}-input`;
+		classes.elLabel = `${classNamePrefix}-label`;
 
 		// render
+		const checkboxInputProps = {
+			attrs: attrs,
+			on: {
+				focus: this.handleFocus,
+				blur: this.handleBlur,
+				change: this.handleChange
+			}
+		};
+		const checkboxInput = [];
+
+		if (!type) {
+			checkboxInput.push(
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+					<path d="M0.020966 0l1023.958044 0 0 1024-1023.958044 0 0-1024Z"></path>
+				</svg>
+			);
+
+			checkboxInput.push(
+				<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1248 1024">
+					<path d="M123.800257 460.153135l291.677674 232.393077 726.28329-669.078427s48.722384-44.483585 91.293444-9.727389c12.638284 10.392563 27.272086 39.993364-5.653359 86.388252L469.106727 988.380911s-58.120238 79.570536-127.131004-0.831161L14.711914 545.710226s-38.829006-59.865554 9.72861-95.701892c16.463333-11.973111 53.713011-30.763938 99.360954 10.14358z"></path>
+				</svg>
+			);
+		}
+
+		checkboxInput.push(
+			<input type="checkbox" name={name} value={value} checked={checked} disabled={disabled} {...checkboxInputProps} />
+		);
+
 		return (
-			<label class={classes}>
-				<VuiCheckboxInput {...theCheckboxInputOptions} />
-				<VuiCheckboxLabel {...theCheckboxLabelOptions}>
-					{slots.default || label}
-				</VuiCheckboxLabel>
+			<label class={classes.el}>
+				<div class={classes.elInput}>{checkboxInput}</div>
+				{
+					label && (
+						<div class={classes.elLabel}>{label}</div>
+					)
+				}
 			</label>
 		);
 	}
