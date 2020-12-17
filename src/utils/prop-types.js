@@ -402,7 +402,7 @@ const VuePropTypes = {
 			}
 		});
 
-		Object.defineProperty(type, 'vuePropTypesIsLoose', {
+		Object.defineProperty(type, "vuePropTypesIsLoose", {
 			enumerable: false,
 			writable: true,
 			value: false
@@ -429,7 +429,7 @@ const createDefaultTypes = () => {
 		number: undefined,
 		integer: undefined,
 		array: undefined,
-		object: undefined,
+		object: undefined
 	};
 };
 

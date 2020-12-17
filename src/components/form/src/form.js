@@ -1,142 +1,161 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiForm = {
 	name: "vui-form",
-
 	provide() {
 		return {
 			vuiForm: this
 		};
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		layout: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical", "inline"].indexOf(value) > -1
-		},
-		model: {
-			type: Object,
-			default: undefined
-		},
-		rules: {
-			type: Object,
-			default: () => {}
-		},
-		labelWidth: {
-			type: [String, Number],
-			default: undefined
-		},
-		labelAlign: {
-			type: String,
-			default: undefined,
-			validator: value => ["left", "right"].indexOf(value) > -1
-		},
-		showMessage: {
-			type: Boolean,
-			default: true
-		},
-		hideRequiredMark: {
-			type: Boolean,
-			default: false
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		disabled: {
-			type: Boolean,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		layout: PropTypes.oneOf(["horizontal", "vertical", "inline"]).def("horizontal"),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		autocomplete: PropTypes.oneOf(["on", "off"]).def("off"),
+		model: PropTypes.object,
+		rules: PropTypes.object.def({}),
+		labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		labelAlign: PropTypes.oneOf(["left", "right"]),
+		requiredMark: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(["optional"])]).def(true),
+		colon: PropTypes.bool.def(true),
+		showMessage: PropTypes.bool.def(true),
+		disabled: PropTypes.bool
 	},
-
 	data() {
-		return {
+		const state = {
 			fields: []
 		};
-	},
 
+		return {
+			state
+		};
+	},
 	watch: {
 		rules() {
 			this.validate();
 		}
 	},
-
-	created() {
-		this.$on("form-item-add", field => {
-			if (field && field.prop) {
-				this.fields.push(field);
-			}
-		});
-		this.$on("form-item-remove", field => {
-			if (field && field.prop) {
-				this.fields.splice(this.fields.indexOf(field), 1);
-			}
-		});
-	},
-
 	methods: {
-		validate(callback) {
-			return new Promise(resolve => {
-				let valid = true;
-				let count = 0;
-
-				this.fields.forEach(field => {
-					field.validate("", errors => {
-						if (errors) {
-							valid = false;
-						}
-
-						count++;
-
-						if (count === this.fields.length) {
-							// all finish
-							resolve(valid);
-
-							if (is.function(callback)) {
-								callback(valid);
-							}
-						}
-					});
-				});
-			});
-		},
-		validateFields(props, callback) {
-			let array = [].concat(props);
-			let fields = this.fields.filter(field => {
-				return array.indexOf(field.prop) > -1;
-			});
-
-			fields.forEach(field => {
-				field.validate("", callback);
-			});
-		},
-		reset() {
-			if (!this.model) {
-				console.warn("[Vui warn][Form]: model is required for reset to work.");
+		registerField(field) {
+			if (!field || !field.prop) {
 				return;
 			}
 
-			let fields = this.fields;
+			const { state } = this;
+			const index = state.fields.indexOf(field);
 
-			fields.forEach(field => field.reset());
+			if (index > -1) {
+				return;
+			}
+
+			this.state.fields.push(field);
 		},
-		resetFields(props) {
-			if (!this.model) {
+		unregisterField(field) {
+			if (!field || !field.prop) {
+				return;
+			}
+
+			const { state } = this;
+			const index = state.fields.indexOf(field);
+
+			if (index === -1) {
+				return;
+			}
+
+			this.state.fields.splice(index, 1);
+		},
+		validate(callback) {
+			const { $props: props, state } = this;
+
+			if (!props.model) {
+				console.warn("[Vui Design warn][Form]: model is required for validate to work!");
+				return;
+			}
+
+			// 如果未设置回调函数，则创建一个 promise 对象，用于结尾返回
+			let promise;
+
+			if (!is.function(callback) && window.Promise) {
+				promise = new window.Promise((resolve, reject) => {
+					callback = valid => valid ? resolve(valid) : reject(valid);
+				});
+			}
+
+			// 如果需要验证的 fields 为空，则立即执行 callback
+			if (state.fields.length === 0 && is.function(callback)) {
+				callback(true);
+			}
+
+			let valid = true;
+			let count = 0;
+
+			// 循环验证
+			state.fields.forEach(field => {
+				field.validate("", (message, field) => {
+					if (message) {
+						valid = false;
+					}
+
+					count++;
+
+					if (count === state.fields.length && is.function(callback)) {
+						callback(valid, field);
+					}
+				});
+			});
+
+			// 返回 promise 对象
+			if (promise) {
+				return promise;
+			}
+		},
+		validateFields(fieldProps, callback) {
+			const { $props: props, state } = this;
+
+			if (!props.model) {
+				console.warn("[Vui Design warn][Form]: model is required for validateFields to work!");
+				return;
+			}
+
+			fieldProps = [].concat(fieldProps);
+
+			const fields = state.fields.filter(field => fieldProps.indexOf(field.prop) > -1);
+
+			if (fields.length === 0) {
+				console.warn("[Vui Design warn][Form]: please pass correct field props!");
+				return;
+			}
+
+			fields.forEach(field => field.validate("", callback));
+		},
+		reset() {
+			const { $props: props, state } = this;
+
+			if (!props.model) {
+				console.warn("[Vui Design warn][Form]: model is required for reset to work.");
+				return;
+			}
+
+			state.fields.forEach(field => field.reset());
+		},
+		resetFields(fieldProps) {
+			const { $props: props, state } = this;
+
+			if (!props.model) {
 				console.warn("[Vui warn][Form]: model is required for resetFields to work.");
 				return;
 			}
 
-			let array = [].concat(props);
-			let fields = this.fields.filter(field => {
-				return array.indexOf(field.prop) > -1;
-			});
+			fieldProps = [].concat(fieldProps);
+
+			const fields = state.fields.filter(field => fieldProps.indexOf(field.prop) > -1);
+
+			if (fields.length === 0) {
+				console.warn("[Vui Design warn][Form]: please pass correct field props!");
+				return;
+			}
 
 			fields.forEach(field => field.reset());
 		},
@@ -147,19 +166,21 @@ const VuiForm = {
 			this.$emit("submit", e);
 		}
 	},
-
 	render() {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, layout } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "form");
-		let classes = {
+		const { $slots: slots, $props: props } = this;
+		const { handleSubmit } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "form");
+		let classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${layout}`]: true
+			[`${classNamePrefix}-${props.layout}`]: true
 		};
 
 		return (
-			<form class={classes} onSubmit={this.handleSubmit}>
-				{slots.default}
-			</form>
+			<form class={classes.el} autocomplete={props.autocomplete} onSubmit={handleSubmit}>{slots.default}</form>
 		);
 	}
 };

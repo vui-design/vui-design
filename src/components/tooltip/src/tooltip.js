@@ -5,7 +5,7 @@ import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
+const colors = ["dark", "light", "blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
 const VuiTooltip = {
 	name: "vui-tooltip",
@@ -22,8 +22,7 @@ const VuiTooltip = {
 	props: {
 		classNamePrefix: PropTypes.string,
 		visible: PropTypes.bool.def(false),
-		theme: PropTypes.oneOf(["light", "dark"]).def("dark"),
-		color: PropTypes.string,
+		color: PropTypes.string.def("dark"),
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
@@ -115,7 +114,6 @@ const VuiTooltip = {
 		classes.elTrigger = `${classNamePrefix}-trigger`;
 		classes.elContent = {
 			[`${classNamePrefix}-content`]: true,
-			[`${classNamePrefix}-content-${props.theme}`]: props.theme && !withPresetColor && !withCustomColor,
 			[`${classNamePrefix}-content-${props.color}`]: withPresetColor
 		};
 		classes.elContentMain = `${classNamePrefix}-content-main`;

@@ -6,6 +6,9 @@ export default {
 		image: {
 			error: "Loading failed"
 		},
+		form: {
+			optional: "(optional)"
+		},
 		cascader: {
 			placeholder: "Select",
 			notFound: "No Data"

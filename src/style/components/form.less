@@ -1,94 +1,205 @@
 @vui-form: ~"@{vui}-form";
 
+.@{vui-form} {
+	display:block;
+	color:#595959;
+	font-size:14px;
+	line-height:@line-height;
 
-// --------------------------------------------------
-// form
-.vui-form {  }
+	&-group {
+		position:relative;
+		border:1px solid #e0e0e0;
+		border-radius:2px;
+		padding:30px;
 
+		&-title {
+			position:absolute;
+			top:0;
+			left:20px;
+			background-color:#fff;
+			padding:0 12px;
+			color:#595959;
+			font-size:14px;
+			line-height:@line-height;
+			transform:translateY(-50%);
+		}
 
-// --------------------------------------------------
-// form item
-.vui-form-item {  }
-.vui-form-item:before,
-.vui-form-item:after { content:""; display:block; width:100%; height:0; visibility:hidden; clear:both; }
-.vui-form-item-label { box-sizing:border-box; overflow:hidden; color:#595959; font-size:14px; line-height:1; white-space:nowrap; text-overflow:ellipsis; }
-.vui-form-item-control { position:relative; box-sizing:border-box; display:flex; flex-direction:column; color:#595959; font-size:14px; line-height:34px; }
-.vui-form-item-control-layout { position:relative; display:flex; align-items:center; min-height:34px; }
-.vui-form-item-control-layout-content { display:flex; flex:auto; max-width:100%; }
-.vui-form-item-control-message { position:absolute; top:100%; left:0; padding-top:5px; color:#ed5565; font-size:14px; line-height:1; }
+		& + & {
+			margin-top:30px;
+		}
+	}
 
+	&-item {
+		.clearfix;
 
-.vui-form-horizontal {  }
-.vui-form-horizontal .vui-form-item { display:block; margin-bottom:25px; }
-.vui-form-horizontal .vui-form-item:last-child { margin-bottom:0; }
-.vui-form-horizontal .vui-form-item-label { float:left; padding:10px 15px 10px 0; }
-.vui-form-horizontal .vui-form-item-control {  }
-.vui-form-horizontal .vui-form-item-control-layout {  }
-.vui-form-horizontal .vui-form-item-control-layout-content {  }
-.vui-form-horizontal .vui-form-item-control-message {  }
+		&-label {
+			display:flex;
+			align-items:center;
+			overflow:hidden;
+			color:#262626;
 
+			&-left {
+				justify-content:flex-start;
+			}
 
-.vui-form-vertical {  }
-.vui-form-vertical .vui-form-item { display:block; margin-bottom:25px; }
-.vui-form-vertical .vui-form-item:last-child { margin-bottom:0; }
-.vui-form-vertical .vui-form-item-label { display:block; margin-bottom:10px; }
-.vui-form-vertical .vui-form-item-control {  }
-.vui-form-vertical .vui-form-item-control-layout {  }
-.vui-form-vertical .vui-form-item-control-layout-content {  }
-.vui-form-vertical .vui-form-item-control-message {  }
+			&-right {
+				justify-content:flex-end;
+			}
 
+			&-required {
+				flex-shrink:0;
+				display:block;
+				margin-right:4px;
+				color:#ed5565;
+				font-family:SimSun, sans-serif;
+			}
 
-.vui-form-inline {  }
-.vui-form-inline .vui-form-item { display:inline-block; margin-right:15px; vertical-align:top; }
-.vui-form-inline .vui-form-item:last-child { margin-right:0; }
-.vui-form-inline .vui-form-item-label { float:left; padding:10px 15px 10px 0; }
-.vui-form-inline .vui-form-item-control { float:left; }
-.vui-form-inline .vui-form-item-control-layout {  }
-.vui-form-inline .vui-form-item-control-layout-content {  }
-.vui-form-inline .vui-form-item-control-message {  }
+			&-optional {
+				flex-shrink:0;
+				display:block;
+				margin-left:4px;
+				color:#8c8c8c;
+			}
 
+			&-content {
+				flex-shrink:1;
+				display:block;
+				overflow:hidden;
+				white-space:nowrap;
+				text-overflow:ellipsis;
+			}
 
-@keyframes vuiFormItemMessageFadeIn {
-	0% { opacity: 0; }
-	100% { opacity: 1; }
+			&-description {
+				color:#8c8c8c;
+			}
+
+			&-tooltip {
+				flex-shrink:0;
+				display:block;
+				margin-left:4px;
+				color:#8c8c8c;
+
+				i {
+					display:block;
+				}
+			}
+
+			&-colon {
+				flex-shrink:0;
+				display:block;
+				margin-left:2px;
+			}
+		}
+
+		&-control {
+			position:relative;
+
+			&-layout {
+				display:flex;
+				align-items:center;
+				min-height:34px;
+
+				&-content {
+					flex:1;
+					max-width:100%;
+				}
+			}
+
+			&-extra {
+				margin-top:12px;
+				color:#8c8c8c;
+			}
+
+			&-message {
+				position:absolute;
+				top:100%;
+				left:0;
+				width:100%;
+				padding:2px 0;
+				color:#ed5565;
+				line-height:20px;
+
+				&-fade-enter-active { animation:vuiFormItemControlMessageFadeIn @animation-in-duration @animation-in-timing-function both; }
+				&-fade-leave-active { animation:vuiFormItemControlMessageFadeOut @animation-out-duration @animation-out-timing-function both; }
+			}
+		}
+	}
+
+	&-horizontal &-item {
+		display:block;
+		margin-bottom:24px;
+
+		&:last-child {
+			margin-bottom:0;
+		}
+
+		&-label {
+			float:left;
+			height:34px;
+			padding-right:12px;
+		}
+	}
+
+	&-vertical &-item {
+		display:block;
+		margin-bottom:24px;
+
+		&:last-child {
+			margin-bottom:0;
+		}
+
+		&-label {
+			margin-bottom:12px;
+		}
+	}
+
+	&-inline {
+		display:flex;
+		flex-wrap:wrap;
+		align-items:flex-start;
+	}
+	&-inline &-item {
+		flex-shrink:0;
+		display:flex;
+		flex-wrap:nowrap;
+		align-items:flex-start;
+		margin-right:16px; 
+
+		&:last-child {
+			margin-right:0;
+		}
+
+		&-label {
+			height:34px;
+			padding-right:12px;
+		}
+	}
 }
 
-@keyframes vuiFormItemMessageFadeOut {
+@keyframes vuiFormItemControlMessageFadeIn {
+	0% { opacity:0; }
+	100% { opacity:1; }
+}
+
+@keyframes vuiFormItemControlMessageFadeOut {
 	0% { opacity:1; }
 	100% { opacity:0; }
 }
-
-.vui-form-item-control-message-fade-enter-active { animation:vuiFormItemMessageFadeIn @animation-in-duration @animation-in-timing-function both; }
-.vui-form-item-control-message-fade-leave-active { animation:vuiFormItemMessageFadeOut @animation-out-duration @animation-out-timing-function both; }
-
-
-// --------------------------------------------------
-// form item required
-.vui-form-item-required .vui-form-item-label-mark { display:inline-block; margin-right:5px; color:#ed5565; font-size:14px; font-family:SimSun, sans-serif; line-height:1; }
-
-
-// --------------------------------------------------
-// form item error
-.vui-form-item-error {  }
-
 
 .vui-form-item-error .vui-input .vui-input-main input { border-color:#ed5565; }
 .vui-form-item-error .vui-input .vui-input-main input:hover { border-color:#ed5565; }
 .vui-form-item-error .vui-input .vui-input-main input:focus { border-color:#ed5565; box-shadow:0 0 0 2px fade(tint(#ed5565, 10%), 15); }
 .vui-form-item-error .vui-input .vui-input-main input:disabled { border-color:#ed5565; }
 
-
 .vui-form-item-error .vui-input-number { border-color:#ed5565; }
 .vui-form-item-error .vui-input-number:hover { border-color:#ed5565; }
 .vui-form-item-error .vui-input-number.vui-input-number-focused { border-color:#ed5565; box-shadow:0 0 0 2px fade(tint(#ed5565, 10%), 15); }
 .vui-form-item-error .vui-input-number.vui-input-number-disabled { border-color:#ed5565; }
 
-
 .vui-form-item-error .vui-textarea .vui-textarea-main textarea { border-color:#ed5565; }
 .vui-form-item-error .vui-textarea .vui-textarea-main textarea:hover { border-color:#ed5565; }
 .vui-form-item-error .vui-textarea .vui-textarea-main textarea:focus { border-color:#ed5565; box-shadow:0 0 0 2px fade(tint(#ed5565, 10%), 15); }
 .vui-form-item-error .vui-textarea .vui-textarea-main textarea:disabled { border-color:#ed5565; }
-
 
 .vui-form-item-error .vui-select .vui-select-selection { border-color:#ed5565; }
 .vui-form-item-error .vui-select .vui-select-selection-arrow { color:#ed5565; }
@@ -101,7 +212,6 @@
 .vui-form-item-error .vui-select-disabled .vui-select-selection { border-color:#ed5565; }
 .vui-form-item-error .vui-select-disabled .vui-select-selection-arrow { color:#ed5565; }
 
-
 .vui-form-item-error .vui-cascader .vui-cascader-selection { border-color:#ed5565; }
 .vui-form-item-error .vui-cascader .vui-cascader-selection-arrow { color:#ed5565; }
 .vui-form-item-error .vui-cascader-hovered .vui-cascader-selection { border-color:#ed5565; }
@@ -112,4 +222,3 @@
 .vui-form-item-error .vui-cascader-actived .vui-cascader-selection-arrow { color:#ed5565; }
 .vui-form-item-error .vui-cascader-disabled .vui-cascader-selection { border-color:#ed5565; }
 .vui-form-item-error .vui-cascader-disabled .vui-cascader-selection-arrow { color:#ed5565; }
-

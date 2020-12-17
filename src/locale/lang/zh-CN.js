@@ -6,6 +6,9 @@ export default {
 		image: {
 			error: "加载失败"
 		},
+		form: {
+			optional: "（可选）"
+		},
 		cascader: {
 			placeholder: "请选择",
 			notFound: "暂无数据"

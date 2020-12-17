@@ -39,6 +39,7 @@ import Checkbox from "./components/checkbox";
 import CheckboxGroup from "./components/checkbox-group";
 import Datepicker from "./components/datepicker";
 import Form from "./components/form";
+import FormGroup from "./components/form-group";
 import FormItem from "./components/form-item";
 import Input from "./components/input";
 import InputGroup from "./components/input-group";
@@ -146,6 +147,7 @@ const components = [
 	CheckboxGroup,
 	Datepicker,
 	Form,
+	FormGroup,
 	FormItem,
 	Input,
 	InputGroup,
@@ -238,7 +240,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.2.2",
+	version: "1.2.3",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -283,6 +285,7 @@ export default {
 	CheckboxGroup,
 	Datepicker,
 	Form,
+	FormGroup,
 	FormItem,
 	Input,
 	InputGroup,
