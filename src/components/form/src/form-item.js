@@ -287,6 +287,7 @@ const VuiFormItem = {
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
+			[`${classNamePrefix}-without-label`]: !label.children,
 			[`${classNamePrefix}-required`]: isRequired,
 			[`${classNamePrefix}-error`]: state.validator.status === "error",
 			[`${classNamePrefix}-validating`]: state.validator.status === "validating"

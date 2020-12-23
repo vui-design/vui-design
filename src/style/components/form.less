@@ -123,6 +123,12 @@
 				&-fade-leave-active { animation:vuiFormItemControlMessageFadeOut @animation-out-duration @animation-out-timing-function both; }
 			}
 		}
+
+		&-without-label &-control {
+			&-layout {
+				min-height:unset;
+			}
+		}
 	}
 
 	&-horizontal &-item {

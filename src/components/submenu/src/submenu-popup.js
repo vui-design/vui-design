@@ -1,4 +1,3 @@
-import VuiLazyRender from "vui-design/components/lazy-render";
 import Portal from "vui-design/directives/portal";
 import Popup from "vui-design/utils/popup";
 import is from "vui-design/utils/is";
@@ -6,10 +5,6 @@ import getStyle from "vui-design/utils/getStyle";
 
 const VuiSubmenuPopup = {
 	name: "vui-submenu-popup",
-
-	components: {
-		VuiLazyRender
-	},
 
 	directives: {
 		Portal
@@ -179,22 +174,20 @@ const VuiSubmenuPopup = {
 					{$slots.title && <div class={`${classNamePrefix}-title`}>{$slots.title}</div>}
 					<i class={mode === "horizontal" && level === 1 ? `${classNamePrefix}-arrow-vertical` : `${classNamePrefix}-arrow-horizontal`}></i>
 				</div>
-				<VuiLazyRender status={open}>
-					<transition
-						name={animation}
-						onBeforeEnter={handleBodyBeforeEnter}
-						onEnter={handleBodyEnter}
-						onAfterEnter={handleBodyAfterEnter}
-						onBeforeLeave={handleBodyBeforeLeave}
-						onLeave={handleBodyLeave}
-						onAfterLeave={handleBodyAfterLeave}
-						appear
-					>
-						<div ref="body" v-portal={portal} v-show={open} class={`${classNamePrefix}-body`} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
-							{$slots.default}
-						</div>
-					</transition>
-				</VuiLazyRender>
+				<transition
+					name={animation}
+					onBeforeEnter={handleBodyBeforeEnter}
+					onEnter={handleBodyEnter}
+					onAfterEnter={handleBodyAfterEnter}
+					onBeforeLeave={handleBodyBeforeLeave}
+					onLeave={handleBodyLeave}
+					onAfterLeave={handleBodyAfterLeave}
+					appear
+				>
+					<div ref="body" v-portal={portal} v-show={open} class={`${classNamePrefix}-body`} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
+						{$slots.default}
+					</div>
+				</transition>
 			</div>
 		);
 	}
