@@ -218,12 +218,30 @@
 		}
 	}
 
+	&:after {
+		position:absolute;
+		top:1px;
+		right:1px;
+		content:"";
+		display:block;
+		width:0;
+		height:0;
+		border-style:solid;
+		border-color:@checkbox-button-border-color @checkbox-button-border-color transparent transparent;
+		border-radius:@checkbox-button-border-radius;
+		transition:all @transition-duration @transition-timing-function;
+	}
+
 	// size
 	&-small {
 		height:@checkbox-button-size-sm;
 		padding:0 8px;
 		font-size:@checkbox-button-font-size-sm;
 		line-height:@checkbox-button-size-sm - 2px;
+
+		&:after {
+			border-width:3px;
+		}
 	}
 
 	&-medium {
@@ -231,6 +249,10 @@
 		padding:0 14px;
 		font-size:@checkbox-button-font-size-md;
 		line-height:@checkbox-button-size-md - 2px;
+
+		&:after {
+			border-width:4px;
+		}
 	}
 
 	&-large {
@@ -238,6 +260,10 @@
 		padding:0 20px;
 		font-size:@checkbox-button-font-size-lg;
 		line-height:@checkbox-button-size-lg - 2px;
+
+		&:after {
+			border-width:5px;
+		}
 	}
 
 	// hovered
@@ -257,6 +283,10 @@
 		z-index:3 !important;
 		border-color:@checkbox-button-checked-border-color;
 		color:@checkbox-button-checked-font-color !important;
+
+		&:after {
+			border-color:@checkbox-button-checked-border-color @checkbox-button-checked-border-color transparent transparent;
+		}
 	}
 
 	// focused & checked
@@ -272,6 +302,10 @@
 		border-color:@checkbox-button-disabled-border-color;
 		background-color:@checkbox-button-disabled-background-color;
 		color:@checkbox-button-disabled-font-color !important;
+
+		&:after {
+			border-color:@checkbox-button-disabled-border-color @checkbox-button-disabled-border-color transparent transparent;
+		}
 	}
 
 	// checked & disabled

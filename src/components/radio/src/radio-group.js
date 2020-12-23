@@ -31,6 +31,7 @@ const VuiRadioGroup = {
 		classNamePrefix: PropTypes.string,
 		type: PropTypes.string,
 		size: PropTypes.oneOf(["small", "medium", "large"]),
+		minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		vertical: PropTypes.bool.def(false),
 		name: PropTypes.string.def(() => guid()),
 		options: PropTypes.array.def(() => []),

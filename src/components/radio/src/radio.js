@@ -1,5 +1,6 @@
 import Emitter from "vui-design/mixins/emitter";
 import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiRadio = {
@@ -26,9 +27,10 @@ const VuiRadio = {
 		name: PropTypes.string,
 		label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		checked: PropTypes.bool.def(false),
-		disabled: PropTypes.bool.def(false),
-		size: PropTypes.oneOf(["small", "medium", "large"])
+		disabled: PropTypes.bool.def(false)
 	},
 	data() {
 		const { $props: props } = this;
@@ -82,7 +84,7 @@ const VuiRadio = {
 		const { vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
 		// props & state
-		let type, name, label, value, size, focused, checked, disabled;
+		let type, name, label, value, size, minWidth, focused, checked, disabled;
 
 		if (vuiRadioGroup) {
 			type = vuiRadioGroup.type;
@@ -107,6 +109,13 @@ const VuiRadio = {
 		}
 		else {
 			size = "medium";
+		}
+
+		if (props.minWidth) {
+			minWidth = props.minWidth;
+		}
+		else if (vuiRadioGroup && vuiRadioGroup.minWidth) {
+			minWidth = vuiRadioGroup.minWidth;
 		}
 
 		focused = state.focused;
@@ -142,6 +151,15 @@ const VuiRadio = {
 		classes.elInput = `${classNamePrefix}-input`;
 		classes.elLabel = `${classNamePrefix}-label`;
 
+		// style
+		let styles = {};
+
+		if (type === "button" && minWidth) {
+			styles.el = {
+				minWidth: is.string(minWidth) ? minWidth : `${minWidth}px`
+			};
+		}
+
 		// render
 		const radioInputProps = {
 			attrs: attrs,
@@ -156,7 +174,7 @@ const VuiRadio = {
 		);
 
 		return (
-			<label class={classes.el}>
+			<label class={classes.el} style={styles.el}>
 				<div class={classes.elInput}>{radioInput}</div>
 				{
 					label && (

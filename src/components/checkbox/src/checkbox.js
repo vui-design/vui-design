@@ -1,5 +1,6 @@
 import Emitter from "vui-design/mixins/emitter";
 import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCheckbox = {
@@ -26,10 +27,11 @@ const VuiCheckbox = {
 		name: PropTypes.string,
 		label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		indeterminate: PropTypes.bool.def(false),
 		checked: PropTypes.bool.def(false),
-		disabled: PropTypes.bool.def(false),
-		size: PropTypes.oneOf(["small", "medium", "large"])
+		disabled: PropTypes.bool.def(false)
 	},
 	data() {
 		const { $props: props } = this;
@@ -88,7 +90,7 @@ const VuiCheckbox = {
 		const { vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
 		// props & state
-		let type, name, label, value, size, focused, indeterminate, checked, disabled;
+		let type, name, label, value, size, minWidth, focused, indeterminate, checked, disabled;
 
 		if (vuiCheckboxGroup) {
 			type = vuiCheckboxGroup.type;
@@ -113,6 +115,13 @@ const VuiCheckbox = {
 		}
 		else {
 			size = "medium";
+		}
+
+		if (props.minWidth) {
+			minWidth = props.minWidth;
+		}
+		else if (vuiCheckboxGroup && vuiCheckboxGroup.minWidth) {
+			minWidth = vuiCheckboxGroup.minWidth;
 		}
 
 		focused = state.focused;
@@ -150,6 +159,15 @@ const VuiCheckbox = {
 		classes.elInput = `${classNamePrefix}-input`;
 		classes.elLabel = `${classNamePrefix}-label`;
 
+		// style
+		let styles = {};
+
+		if (type === "button" && minWidth) {
+			styles.el = {
+				minWidth: is.string(minWidth) ? minWidth : `${minWidth}px`
+			};
+		}
+
 		// render
 		const checkboxInputProps = {
 			attrs: attrs,
@@ -180,7 +198,7 @@ const VuiCheckbox = {
 		);
 
 		return (
-			<label class={classes.el}>
+			<label class={classes.el} style={styles.el}>
 				<div class={classes.elInput}>{checkboxInput}</div>
 				{
 					label && (
