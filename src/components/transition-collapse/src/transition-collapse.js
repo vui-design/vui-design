@@ -1,18 +1,18 @@
 const VuiTransitionCollapse = {
 	name: "vui-transition-collapse",
-
 	props: {
 		animation: {
 			type: String,
 			default: "vui-transition-collapse"
 		}
 	},
-
 	methods: {
 		handleBeforeEnter(el) {
-			// el.style.height = "0px";
+			el.style.height = "0px";
 		},
 		handleEnter(el) {
+			el.style.height = el.scrollHeight + "px";
+			// 重复一次才能正确设置 height 高度，why？
 			el.style.height = el.scrollHeight + "px";
 		},
 		handleAfterEnter(el) {
@@ -20,36 +20,34 @@ const VuiTransitionCollapse = {
 		},
 		handleBeforeLeave(el) {
 			el.style.height = el.scrollHeight + "px";
+			// 重复一次才能正确设置 height 高度，why？
+			el.style.height = el.scrollHeight + "px";
 		},
 		handleLeave(el) {
-			// el.style.height = "0px";
+			el.style.height = "0px";
 		},
 		handleAfterLeave(el) {
 			el.style.height = "";
 		}
 	},
-
 	render(h) {
-		let { $slots: slots, $props: props } = this;
-		let { handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
-		let attributes = {
+		const { $slots: slots, $props: props } = this;
+		const attributes = {
 			props: {
 				name: props.animation
 			},
 			on: {
-				beforeEnter: handleBeforeEnter,
-				enter: handleEnter,
-				afterEnter: handleAfterEnter,
-				beforeLeave: handleBeforeLeave,
-				leave: handleLeave,
-				afterLeave: handleAfterLeave
+				beforeEnter: this.handleBeforeEnter,
+				enter: this.handleEnter,
+				afterEnter: this.handleAfterEnter,
+				beforeLeave: this.handleBeforeLeave,
+				leave: this.handleLeave,
+				afterLeave: this.handleAfterLeave
 			}
 		};
 
 		return (
-			<transition {...attributes}>
-				{slots.default}
-			</transition>
+			<transition {...attributes}>{slots.default}</transition>
 		);
 	}
 };
