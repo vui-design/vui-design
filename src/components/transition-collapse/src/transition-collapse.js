@@ -1,10 +1,12 @@
+import PropTypes from "vui-design/utils/prop-types";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
 const VuiTransitionCollapse = {
 	name: "vui-transition-collapse",
 	props: {
-		animation: {
-			type: String,
-			default: "vui-transition-collapse"
-		}
+		classNamePrefix: PropTypes.string,
+		visible: PropTypes.bool.def(false),
+		animation: PropTypes.string.def("vui-transition-collapse")
 	},
 	methods: {
 		handleBeforeEnter(el) {
@@ -32,6 +34,16 @@ const VuiTransitionCollapse = {
 	},
 	render(h) {
 		const { $slots: slots, $props: props } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "transition-collapse");
+		let classes = {};
+
+		classes.el = {
+			[`${classNamePrefix}`]: true
+		};
+
+		// transition attributes
 		const attributes = {
 			props: {
 				name: props.animation
@@ -47,7 +59,9 @@ const VuiTransitionCollapse = {
 		};
 
 		return (
-			<transition {...attributes}>{slots.default}</transition>
+			<transition {...attributes}>
+				<div v-show={props.visible} class={classes.el}>{slots.default}</div>
+			</transition>
 		);
 	}
 };

@@ -53,7 +53,6 @@ const VuiCheckbox = {
 			this.dispatch("vui-form-item", "change", value);
 		}
 	},
-
 	methods: {
 		handleFocus(e) {
 			this.state.focused = true;
@@ -85,7 +84,6 @@ const VuiCheckbox = {
 			}
 		}
 	},
-
 	render() {
 		const { vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
