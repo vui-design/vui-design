@@ -1,0 +1,111 @@
+@vui-choose-group: ~"@{vui}-choose-group";
+
+.@{vui-choose-group} {
+	display:inline-block;
+	box-sizing:border-box;
+	vertical-align:middle;
+	font-size:0;
+	white-space:nowrap;
+
+	.vui-radio + .vui-radio,
+	.vui-radio + .vui-checkbox {
+		margin-left:16px;
+	}
+
+	.vui-radio-button {
+		&:first-child {
+			border-radius:@radio-button-border-radius 0 0 @radio-button-border-radius;
+		}
+		&:last-child {
+			border-radius:0 @radio-button-border-radius @radio-button-border-radius 0;
+		}
+		&:not(:first-child):not(:last-child) {
+			border-radius:0;
+		}
+	}
+	.vui-radio-button + .vui-radio-button,
+	.vui-radio-button + .vui-checkbox-button {
+		margin-left:-1px;
+	}
+
+	&-vertical {
+		.vui-radio {
+			display:block;
+		}
+		.vui-radio + .vui-radio,
+		.vui-radio + .vui-checkbox {
+			margin-left:0;
+			margin-top:16px;
+		}
+
+		.vui-radio-button {
+			display:block;
+
+			&:first-child {
+				border-radius:@radio-button-border-radius @radio-button-border-radius 0 0;
+			}
+			&:last-child {
+				border-radius:0 0 @radio-button-border-radius @radio-button-border-radius;
+			}
+			&:not(:first-child):not(:last-child) {
+				border-radius:0;
+			}
+		}
+		.vui-radio-button + .vui-radio-button,
+		.vui-radio-button + .vui-checkbox-button {
+			margin-left:0;
+			margin-top:-1px;
+		}
+	}
+
+	.vui-checkbox + .vui-radio,
+	.vui-checkbox + .vui-checkbox {
+		margin-left:16px;
+	}
+
+	.vui-checkbox-button {
+		&:first-child {
+			border-radius:@checkbox-button-border-radius 0 0 @checkbox-button-border-radius;
+		}
+		&:last-child {
+			border-radius:0 @checkbox-button-border-radius @checkbox-button-border-radius 0;
+		}
+		&:not(:first-child):not(:last-child) {
+			border-radius:0;
+		}
+	}
+	.vui-checkbox-button + .vui-radio-button,
+	.vui-checkbox-button + .vui-checkbox-button {
+		margin-left:-1px;
+	}
+
+	&-vertical {
+		.vui-checkbox {
+			display:block;
+		}
+		.vui-checkbox + .vui-radio,
+		.vui-checkbox + .vui-checkbox {
+			margin-left:0;
+			margin-top:16px;
+		}
+
+		.vui-checkbox-button {
+			display:block;
+
+			&:first-child {
+				border-radius:@checkbox-button-border-radius @checkbox-button-border-radius 0 0;
+			}
+			&:last-child {
+				border-radius:0 0 @checkbox-button-border-radius @checkbox-button-border-radius;
+			}
+			&:not(:first-child):not(:last-child) {
+				border-radius:0;
+			}
+		}
+		.vui-checkbox-button + .vui-radio-button,
+		.vui-checkbox-button + .vui-checkbox-button {
+			margin-left:0;
+			margin-top:-1px;
+		}
+	}
+}

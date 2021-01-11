@@ -11,6 +11,9 @@ const VuiRadio = {
 		},
 		vuiRadioGroup: {
 			default: undefined
+		},
+		vuiChooseGroup: {
+			default: undefined
 		}
 	},
 	mixins: [
@@ -62,7 +65,7 @@ const VuiRadio = {
 			this.$emit("blur");
 		},
 		handleChange(e) {
-			const { vuiRadioGroup, $props: props } = this;
+			const { vuiRadioGroup, vuiChooseGroup, $props: props } = this;
 			const checked = e.target.checked;
 
 			if (props.disabled) {
@@ -70,7 +73,10 @@ const VuiRadio = {
 			}
 
 			if (vuiRadioGroup) {
-				vuiRadioGroup.handleChange(props.value);
+				vuiRadioGroup.handleChange(checked, props.value);
+			}
+			else if (vuiChooseGroup) {
+				vuiChooseGroup.handleChange("radio", checked, props.value);
 			}
 			else {
 				this.state.checked = checked;
@@ -81,7 +87,7 @@ const VuiRadio = {
 		}
 	},
 	render() {
-		const { vuiForm, vuiRadioGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
+		const { vuiForm, vuiRadioGroup, vuiChooseGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
 		// props & state
 		let type, name, label, value, size, minWidth, focused, checked, disabled;
@@ -89,6 +95,10 @@ const VuiRadio = {
 		if (vuiRadioGroup) {
 			type = vuiRadioGroup.type;
 			name = vuiRadioGroup.name;
+		}
+		else if (vuiChooseGroup) {
+			type = vuiChooseGroup.type;
+			name = vuiChooseGroup.name;
 		}
 		else {
 			type = props.type;
@@ -104,6 +114,9 @@ const VuiRadio = {
 		else if (vuiRadioGroup && vuiRadioGroup.size) {
 			size = vuiRadioGroup.size;
 		}
+		else if (vuiChooseGroup && vuiChooseGroup.size) {
+			size = vuiChooseGroup.size;
+		}
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
@@ -117,11 +130,17 @@ const VuiRadio = {
 		else if (vuiRadioGroup && vuiRadioGroup.minWidth) {
 			minWidth = vuiRadioGroup.minWidth;
 		}
+		else if (vuiChooseGroup && vuiChooseGroup.minWidth) {
+			minWidth = vuiChooseGroup.minWidth;
+		}
 
 		focused = state.focused;
 
 		if (vuiRadioGroup) {
 			checked = value === vuiRadioGroup.state.value;
+		}
+		else if (vuiChooseGroup) {
+			checked = !is.array(vuiChooseGroup.state.value) && value === vuiChooseGroup.state.value;
 		}
 		else {
 			checked = state.checked;
@@ -132,6 +151,9 @@ const VuiRadio = {
 		}
 		else if (vuiRadioGroup && vuiRadioGroup.disabled) {
 			disabled = vuiRadioGroup.disabled;
+		}
+		else if (vuiChooseGroup && vuiChooseGroup.disabled) {
+			disabled = vuiChooseGroup.disabled;
 		}
 		else {
 			disabled = props.disabled;

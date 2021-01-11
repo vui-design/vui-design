@@ -37,6 +37,7 @@ import TabPanel from "./components/tab-panel";
 import Cascader from "./components/cascader";
 import Checkbox from "./components/checkbox";
 import CheckboxGroup from "./components/checkbox-group";
+import ChooseGroup from "./components/choose-group";
 import Datepicker from "./components/datepicker";
 import Form from "./components/form";
 import FormGroup from "./components/form-group";
@@ -145,6 +146,7 @@ const components = [
 	Cascader,
 	Checkbox,
 	CheckboxGroup,
+	ChooseGroup,
 	Datepicker,
 	Form,
 	FormGroup,
@@ -240,7 +242,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.2.8",
+	version: "1.2.9",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,
@@ -283,6 +285,7 @@ export default {
 	Cascader,
 	Checkbox,
 	CheckboxGroup,
+	ChooseGroup,
 	Datepicker,
 	Form,
 	FormGroup,

@@ -1,3 +1,4 @@
+import VuiRadio from "vui-design/components/radio";
 import VuiCheckbox from "vui-design/components/checkbox";
 import Emitter from "vui-design/mixins/emitter";
 import PropTypes from "vui-design/utils/prop-types";
@@ -5,8 +6,8 @@ import is from "vui-design/utils/is";
 import guid from "vui-design/utils/guid";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const VuiCheckboxGroup = {
-	name: "vui-checkbox-group",
+const VuiChooseGroup = {
+	name: "vui-choose-group",
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -14,10 +15,11 @@ const VuiCheckboxGroup = {
 	},
 	provide() {
 		return {
-			vuiCheckboxGroup: this
+			vuiChooseGroup: this
 		};
 	},
 	components: {
+		VuiRadio,
 		VuiCheckbox
 	},
 	mixins: [
@@ -35,7 +37,8 @@ const VuiCheckboxGroup = {
 		vertical: PropTypes.bool.def(false),
 		name: PropTypes.string.def(() => guid()),
 		options: PropTypes.array.def(() => []),
-		value: PropTypes.array.def(() => []),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
+		fallback: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
 		disabled: PropTypes.bool.def(false)
 	},
 	data() {
@@ -58,14 +61,34 @@ const VuiCheckboxGroup = {
 		}
 	},
 	methods: {
-		handleChange(checked, value) {
-			let nextValue = [...this.state.value];
+		handleChange(type, checked, value) {
+			const { $props: props, state } = this;
+			let nextValue = is.array(state.value) ? [...state.value] : state.value;
 
-			if (checked) {
-				nextValue.push(value);
+			if (type === "radio") {
+				nextValue = checked ? value : props.fallback;
 			}
-			else {
-				nextValue.splice(nextValue.indexOf(value), 1);
+			else if (type === "checkbox") {
+				if (checked) {
+					if (is.array(nextValue)) {
+						nextValue.push(value);
+					}
+					else {
+						nextValue = [value];
+					}
+				}
+				else {
+					if (is.array(nextValue)) {
+						nextValue.splice(nextValue.indexOf(value), 1);
+					}
+					else {
+						nextValue = [];
+					}
+				}
+
+				if (nextValue.length === 0) {
+					nextValue = props.fallback;
+				}
 			}
 
 			this.state.value = nextValue;
@@ -78,7 +101,7 @@ const VuiCheckboxGroup = {
 		const { $slots: slots, $props: props, state } = this;
 
 		// class
-		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "checkbox-group");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choose-group");
 		let classes = {};
 
 		classes.el = {
@@ -90,15 +113,19 @@ const VuiCheckboxGroup = {
 		let children;
 
 		if (props.options && props.options.length > 0) {
-			children = props.options.map(option => {
-				if (is.object(option)) {
+			children = props.options.map((option, index) => {
+				if (!is.object(option)) {
+					return;
+				}
+
+				if (option.type === "radio") {
 					return (
-						<VuiCheckbox key={option.value} value={option.value} disabled={option.disabled}>{option.label}</VuiCheckbox>
+						<VuiRadio key={is.boolean(option.value) ? index : option.value} value={option.value} disabled={option.disabled}>{option.label}</VuiRadio>
 					);
 				}
-				else if (is.string(option) || is.number(option)) {
+				else if (option.type === "checkbox") {
 					return (
-						<VuiCheckbox key={option} value={option}>{option}</VuiCheckbox>
+						<VuiCheckbox key={option.value} value={option.value} disabled={option.disabled}>{option.label}</VuiCheckbox>
 					);
 				}
 			});
@@ -113,4 +140,4 @@ const VuiCheckboxGroup = {
 	}
 };
 
-export default VuiCheckboxGroup;
+export default VuiChooseGroup;

@@ -58,11 +58,13 @@ const VuiRadioGroup = {
 		}
 	},
 	methods: {
-		handleChange(value) {
-			this.state.value = value;
-			this.$emit("input", value);
-			this.$emit('change', value);
-			this.dispatch("vui-form-item", "change", value);
+		handleChange(checked, value) {
+			const nextValue = checked ? value : undefined;
+
+			this.state.value = nextValue;
+			this.$emit("input", nextValue);
+			this.$emit('change', nextValue);
+			this.dispatch("vui-form-item", "change", nextValue);
 		}
 	},
 	render() {

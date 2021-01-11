@@ -11,6 +11,9 @@ const VuiCheckbox = {
 		},
 		vuiCheckboxGroup: {
 			default: undefined
+		},
+		vuiChooseGroup: {
+			default: undefined
 		}
 	},
 	mixins: [
@@ -63,7 +66,7 @@ const VuiCheckbox = {
 			this.$emit("blur");
 		},
 		handleChange(e) {
-			const { vuiCheckboxGroup, $props: props } = this;
+			const { vuiCheckboxGroup, vuiChooseGroup, $props: props } = this;
 			const checked = e.target.checked;
 
 			if (props.disabled) {
@@ -71,10 +74,10 @@ const VuiCheckbox = {
 			}
 
 			if (vuiCheckboxGroup) {
-				vuiCheckboxGroup.handleChange({
-					checked,
-					value: props.value
-				});
+				vuiCheckboxGroup.handleChange(checked, props.value);
+			}
+			else if (vuiChooseGroup) {
+				vuiChooseGroup.handleChange("checkbox", checked, props.value);
 			}
 			else {
 				this.state.checked = checked;
@@ -85,7 +88,7 @@ const VuiCheckbox = {
 		}
 	},
 	render() {
-		const { vuiForm, vuiCheckboxGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
+		const { vuiForm, vuiCheckboxGroup, vuiChooseGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
 
 		// props & state
 		let type, name, label, value, size, minWidth, focused, indeterminate, checked, disabled;
@@ -93,6 +96,10 @@ const VuiCheckbox = {
 		if (vuiCheckboxGroup) {
 			type = vuiCheckboxGroup.type;
 			name = vuiCheckboxGroup.name;
+		}
+		else if (vuiChooseGroup) {
+			type = vuiChooseGroup.type;
+			name = vuiChooseGroup.name;
 		}
 		else {
 			type = props.type;
@@ -108,6 +115,9 @@ const VuiCheckbox = {
 		else if (vuiCheckboxGroup && vuiCheckboxGroup.size) {
 			size = vuiCheckboxGroup.size;
 		}
+		else if (vuiChooseGroup && vuiChooseGroup.size) {
+			size = vuiChooseGroup.size;
+		}
 		else if (vuiForm && vuiForm.size) {
 			size = vuiForm.size;
 		}
@@ -121,12 +131,18 @@ const VuiCheckbox = {
 		else if (vuiCheckboxGroup && vuiCheckboxGroup.minWidth) {
 			minWidth = vuiCheckboxGroup.minWidth;
 		}
+		else if (vuiChooseGroup && vuiChooseGroup.minWidth) {
+			minWidth = vuiChooseGroup.minWidth;
+		}
 
 		focused = state.focused;
 		indeterminate = props.indeterminate;
 
 		if (vuiCheckboxGroup) {
 			checked = vuiCheckboxGroup.state.value.indexOf(value) > -1;
+		}
+		else if (vuiChooseGroup) {
+			checked = is.array(vuiChooseGroup.state.value) && vuiChooseGroup.state.value.indexOf(value) > -1;
 		}
 		else {
 			checked = state.checked;
@@ -137,6 +153,9 @@ const VuiCheckbox = {
 		}
 		else if (vuiCheckboxGroup && vuiCheckboxGroup.disabled) {
 			disabled = vuiCheckboxGroup.disabled;
+		}
+		else if (vuiChooseGroup && vuiChooseGroup.disabled) {
+			disabled = vuiChooseGroup.disabled;
 		}
 		else {
 			disabled = props.disabled;
