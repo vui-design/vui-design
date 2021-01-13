@@ -1,72 +1,49 @@
 import VuiIcon from "vui-design/components/icon";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import utils from "./utils";
 
 export default {
 	name: "vui-cascader-selection",
-
+	inject: {
+		vuiCascader: {
+			default: undefined
+		}
+	},
 	componetns: {
 		VuiIcon
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		placeholder: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: Array,
-			default: undefined
-		},
-		keyNames: {
-			type: Object,
-			default: () => ({ label: "label", value: "value", children: "children" })
-		},
-		formatter: {
-			type: Function,
-			default: (labels, options) => labels.join(" / ")
-		},
-		searchable: {
-			type: Boolean,
-			default: false
-		},
-		keyword: {
-			type: String,
-			default: undefined
-		},
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		focused: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		placeholder: PropTypes.string,
+		value: PropTypes.array,
+		optionKeys: PropTypes.object.def(utils.optionKeys),
+		formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
+		searchable: PropTypes.bool.def(false),
+		keyword: PropTypes.string,
+		clearable: PropTypes.bool.def(false),
+		focused: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false)
 	},
-
 	methods: {
 		focus() {
-			let { $refs: refs } = this;
+			const { $refs: references } = this;
 
-			refs.input && refs.input.focus();
+			if (references.input) {
+				references.input.focus();
+			}
 		},
 		blur() {
-			let { $refs: refs } = this;
+			const { $refs: references } = this;
 
-			refs.input && refs.input.blur();
+			if (references.input) {
+				references.input.blur();
+			}
 		},
-
 		handleMouseenter(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -75,7 +52,7 @@ export default {
 			this.$emit("mouseenter", e);
 		},
 		handleMouseleave(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -84,17 +61,17 @@ export default {
 			this.$emit("mouseleave", e);
 		},
 		handleMousedown(e) {
-			let { $refs: refs, $props: props } = this;
+			const { $refs: references, $props: props } = this;
 
-			if (e.target === refs.input || props.disabled) {
+			if (e.target === references.input || props.disabled) {
 				return;
 			}
 
-			e.preventDefault();
 			this.focus();
+			e.preventDefault();
 		},
 		handleClick(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -103,7 +80,7 @@ export default {
 			this.$emit("click", e);
 		},
 		handleFocus(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -112,7 +89,7 @@ export default {
 			this.$emit("focus", e);
 		},
 		handleBlur(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -121,7 +98,7 @@ export default {
 			this.$emit("blur", e);
 		},
 		handleKeydown(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -130,7 +107,7 @@ export default {
 			this.$emit("keydown", e);
 		},
 		handleInput(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
@@ -139,30 +116,29 @@ export default {
 			this.$emit("input", e);
 		},
 		handleClear(e) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
 			}
 
-			e.stopPropagation();
 			this.$emit("clear", e);
+			e.stopPropagation();
 		}
 	},
-
 	render() {
-		let { $props: props } = this;
-		let { handleMouseenter, handleMouseleave, handleMousedown, handleClick, handleFocus, handleBlur, handleKeydown, handleInput, handleClear } = this;
+		const { vuiCascader, $props: props } = this;
+		const { handleMouseenter, handleMouseleave, handleMousedown, handleClick, handleFocus, handleBlur, handleKeydown, handleInput, handleClear } = this;
 
 		// value
-		let labels = props.value.map(option => option[props.keyNames.label]);
-		let value = props.formatter(labels, clone(props.value));
+		const labels = props.value.map(option => option[props.optionKeys.label]);
+		const value = props.formatter(labels, clone(props.value));
 
 		// showBtnClear
-		let showBtnClear = props.clearable && props.value.length > 0;
+		const showBtnClear = vuiCascader.state.focused && props.clearable && (keyword || props.value.length > 0);
 
-		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader-selection");
+		// classes
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "selection");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
@@ -172,7 +148,7 @@ export default {
 		classes.elArraw = `${classNamePrefix}-arrow`;
 		classes.elBtnClear = `${classNamePrefix}-btn-clear`;
 
-		// style
+		// styles
 		let styles = {};
 
 		styles.el = {

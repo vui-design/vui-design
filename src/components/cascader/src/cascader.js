@@ -1,20 +1,19 @@
 import VuiLazyRender from "vui-design/components/lazy-render";
-import VuiCascaderSelection from "./components/selection";
-import VuiCascaderDropdown from "./components/dropdown";
-import VuiCascaderMenuList from "./components/menu-list";
-import VuiCascaderMenu from "./components/menu";
+import VuiCascaderSelection from "./cascader-selection";
+import VuiCascaderDropdown from "./cascader-dropdown";
+import VuiCascaderMenuList from "./cascader-menu-list";
+import VuiCascaderMenu from "./cascader-menu";
+import VuiCascaderEmpty from "./cascader-empty";
 import Emitter from "vui-design/mixins/emitter";
 import Locale from "vui-design/mixins/locale";
-import Portal from "vui-design/directives/portal";
-import Popup from "vui-design/utils/popup";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import { getDerivedValueFromProps } from "./utils";
+import utils from "./utils";
 
 const VuiCascader = {
 	name: "vui-cascader",
-
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -23,200 +22,161 @@ const VuiCascader = {
 			default: undefined
 		}
 	},
-
 	provide() {
 		return {
 			vuiCascader: this
 		};
 	},
-
 	components: {
 		VuiLazyRender,
 		VuiCascaderSelection,
 		VuiCascaderDropdown,
 		VuiCascaderMenuList,
-		VuiCascaderMenu
+		VuiCascaderMenu,
+		VuiCascaderEmpty
 	},
-
 	mixins: [
 		Emitter,
 		Locale
 	],
-
-	directives: {
-		Portal
-	},
-
 	model: {
 		prop: "value",
 		event: "input"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		placeholder: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: Array,
-			default: () => []
-		},
-		options: {
-			type: Array,
-			default: () => []
-		},
-		keyNames: {
-			type: Object,
-			default: () => ({ label: "label", value: "value", children: "children" })
-		},
-		formatter: {
-			type: Function,
-			default: (labels, options) => labels.join(" / ")
-		},
-		searchable: {
-			type: Boolean,
-			default: false
-		},
-		filter: {
-			type: [Boolean, Function],
-			default: true
-		},
-		filterOptionProp: {
-			type: String,
-			default: "children"
-		},
-		loading: {
-			type: Boolean,
-			default: false
-		},
-		loadingText: {
-			type: String,
-			default: undefined
-		},
-		notFoundText: {
-			type: String,
-			default: undefined
-		},
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		changeOnSelect: {
-			type: Boolean,
-			default: false
-		},
-		placement: {
-			type: String,
-			default: "bottom-start",
-			validator: value => ["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"].indexOf(value) > -1
-		},
-		animation: {
-			type: String,
-			default: "vui-cascader-dropdown-scale"
-		},
-		getPopupContainer: {
-			type: Function,
-			default: () => document.body
-		}
+		classNamePrefix: PropTypes.string,
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.array,
+		options: PropTypes.array.def([]),
+		expandTrigger: PropTypes.oneOf(["click", "hover"]).def("click"),
+		optionKeys: PropTypes.object.def(utils.optionKeys),
+		formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
+		changeOnSelect: PropTypes.bool.def(false),
+		searchable: PropTypes.bool.def(false),
+		filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
+		filterOptionProp: PropTypes.string.def("label"),
+		loading: PropTypes.bool.def(false),
+		loadingText: PropTypes.string,
+		notFoundText: PropTypes.string,
+		clearable: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+		dropdownAutoWidth: PropTypes.bool.def(false),
+		animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
+		getPopupContainer: PropTypes.any.def(() => document.body)
 	},
-
 	data() {
-		let { $props: props } = this;
+		const { $props: props } = this;
+		const optionKeys = utils.getOptionKeys(props.optionKeys);
 
 		return {
 			state: {
 				hovered: false,
 				focused: false,
 				actived: false,
+				searching: false,
 				keyword: "",
-				value: getDerivedValueFromProps({
+				value: this.getDerivedStateValueFromProps({
 					value: props.value,
 					options: props.options,
-					keyName: props.keyNames.value
-				})
+					optionKeys: optionKeys
+				}),
+				options: []
 			}
 		};
 	},
-
 	watch: {
 		value(value) {
-			let { $props: props } = this;
+			const { $props: props } = this;
+			const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-			this.state.value = getDerivedValueFromProps({
-				value,
+			this.state.value = this.getDerivedStateValueFromProps({
+				value: value,
 				options: props.options,
-				keyName: props.keyNames.value
+				optionKeys: optionKeys
 			});
 		},
-		defaultValue(value) {
-			this.$nextTick(() => this.updatePopup());
-		},
 		options(value) {
-			let { $props: props } = this;
+			const { $props: props } = this;
+			const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-			this.state.value = getDerivedValueFromProps({
+			this.state.value = this.getDerivedStateValueFromProps({
 				value: props.value,
 				options: value,
-				keyName: props.keyNames.value
+				optionKeys: optionKeys
 			});
 		}
 	},
-
 	methods: {
+		getDropdownReference() {
+			return this.$refs.selection.$el;
+		},
+		getDerivedStateValueFromProps(props) {
+			let value = clone(props.value);
+			let result = [];
+
+			if (!value.length) {
+				return result;
+			}
+
+			const { value: valueKey, children: childrenKey } = props.optionKeys;
+			const target = value.shift();
+			const option = props.options.find(option => option[valueKey] === target);
+
+			if (option) {
+				result = result.concat(clone(option));
+
+				if (option[childrenKey]) {
+					result = result.concat(this.getDerivedStateValueFromProps({
+						value: value,
+						options: option[childrenKey],
+						optionKeys: props.optionKeys
+					}));
+				}
+			}
+
+			return result;
+		},
+		getFilteredOptions(state, props) {
+			const optionKeys = utils.getOptionKeys(props.optionKeys);
+			const options = utils.flatten(null, props.options, optionKeys);
+			const predicate = is.function(props.filter) ? props.filter : utils.filter;
+			let list = [];
+
+			options.forEach(option => {
+				if (!props.changeOnSelect && !option.leaf) {
+					return;
+				}
+
+				if (!predicate(state.keyword, option, optionKeys[props.filterOptionProp])) {
+					return;
+				}
+
+				let item = {
+					...option
+				};
+
+				item[optionKeys.label] = item[optionKeys.label].replace(new RegExp(state.keyword, "g"), "<b>" + state.keyword + "</b>");
+
+				list.push(item);
+			});
+
+			return list;
+		},
 		focus() {
 			this.$refs.selection && this.$refs.selection.focus();
 		},
 		blur() {
 			this.$refs.selection && this.$refs.selection.blur();
 		},
+		handleDropdownBeforeOpen() {
 
-		createPopup() {
-			if (is.server || this.popup) {
-				return;
-			}
-
-			let reference = this.$refs.selection.$el;
-			let target = this.$refs.dropdown.$el;
-			let settings = {
-				placement: this.placement
-			};
-
-			if (!reference || !target || !settings.placement) {
-				return;
-			}
-
-			this.popup = new Popup(reference, target, settings);
-			this.popup.target.style.zIndex = Popup.nextZIndex();
 		},
-		updatePopup() {
-			if (is.server || !this.popup) {
-				return;
-			}
-
-			this.popup.update();
+		handleDropdownAfterClose() {
+			this.state.searching = false;
+			this.state.options = [];
 		},
-		destroyPopup() {
-			if (is.server || !this.popup) {
-				return;
-			}
-
-			this.popup.destroy();
-			this.popup = null;
-		},
-
 		handleSelectionMouseenter(e) {
 			this.state.hovered = true;
 			this.$emit("mouseenter", e);
@@ -226,19 +186,20 @@ const VuiCascader = {
 			this.$emit("mouseleave", e);
 		},
 		handleSelectionClick(e) {
-			this.state.actived = !this.state.actived;
+			const { $props: props, state } = this;
+
+			this.state.actived = props.searchable ? true : !state.actived;
 		},
 		handleSelectionFocus(e) {
 			this.state.focused = true;
 			this.$emit("focus", e);
 		},
 		handleSelectionBlur(e) {
-			let keyword = "";
+			const keyword = "";
 
 			this.state.focused = false;
 			this.state.actived = false;
 			this.state.keyword = keyword;
-			this.$emit("search", keyword);
 			this.$emit("blur", e);
 		},
 		handleSelectionKeydown(e) {
@@ -251,62 +212,68 @@ const VuiCascader = {
 		},
 		handleSelectionInput(e) {
 			if (/^composition(start|update)?$/g.test(e.type)) {
-				this.isComposition = true;
+				this.compositing = true;
 			}
 			else if (/^composition(end)?$/g.test(e.type)) {
-				this.isComposition = false;
+				this.compositing = false;
 			}
 
-			if (this.isComposition) {
+			if (this.compositing) {
 				return;
 			}
 
-			let keyword = e.target.value;
+			const { $props: props, state } = this;
+			const keyword = e.target.value;
+			const searching = keyword !== "";
 
 			this.state.actived = true;
+			this.state.searching = searching;
 			this.state.keyword = keyword;
-			this.$emit("search", keyword);
+			this.state.options = searching ? this.getFilteredOptions(state, props) : [];
 		},
 		handleSelectionClear(e) {
-			let value = [];
+			const keyword = "";
+			const value = [];
 
+			this.state.keyword = keyword;
 			this.state.value = value;
 			this.$emit("input", value);
 			this.$emit("change", value);
 			this.dispatch("vui-form-item", "change", value);
 		},
-
-		handleDropdownBeforeEnter(e) {
-			this.$nextTick(() => this.createPopup());
-		},
-		handleDropdownAfterLeave(e) {
-			this.$nextTick(() => this.destroyPopup());
-		},
-
 		handleMenuListSelect(options) {
-			let { $props: props } = this;
-			let lastOption = options[options.length - 1];
-			let keyword = "";
-			let value = options.map(option => option[props.keyNames.value]);
+			const { $props: props } = this;
+			const optionKeys = utils.getOptionKeys(props.optionKeys);
+			const option = options[options.length - 1];
+			const keyword = "";
+			const value = options.map(option => option[optionKeys.value]);
 
-			this.state.actived = lastOption && lastOption.children && lastOption.children.length > 0;
+			this.state.actived = option && option.children && option.children.length > 0;
 			this.state.keyword = keyword;
 			this.state.value = options;
+			this.$emit("input", value);
+			this.$emit("change", value);
+			this.dispatch("vui-form-item", "change", value);
+		},
+		handleMenuSelect(level, data) {
+			const { $props: props } = this;
+			const optionKeys = utils.getOptionKeys(props.optionKeys);
+			const keyword = "";
+			const value = data.path.map(option => option[optionKeys.value]);
 
-			this.$emit("search", keyword);
+			this.state.actived = false;
+			this.state.keyword = keyword;
+			this.state.value = data.path;
 			this.$emit("input", value);
 			this.$emit("change", value);
 			this.dispatch("vui-form-item", "change", value);
 		}
 	},
-
 	render(h) {
-		const { $vui: vui, vuiForm, vuiInputGroup } = this;
-		const { $slots: slots, t: translate, state, $props: props } = this;
+		const { $vui: vui, vuiForm, vuiInputGroup, $slots: slots, $props: props, state, t: translate } = this;
 		const { handleSelectionMouseenter, handleSelectionMouseleave, handleSelectionClick, handleSelectionFocus, handleSelectionBlur, handleSelectionKeydown, handleSelectionInput, handleSelectionClear } = this;
-		const { handleDropdownBeforeEnter, handleDropdownAfterLeave, handleOptionHover, handleOptionClick } = this;
-		const { handleMenuListSelect } = this;
-		const portal = props.getPopupContainer();
+		const { handleDropdownBeforeOpen, handleDropdownAfterClose } = this;
+		const { handleMenuListSelect, handleMenuSelect } = this;
 
 		// size: self > vuiInputGroup > vuiForm > vui
 		let size;
@@ -340,8 +307,29 @@ const VuiCascader = {
 			disabled = props.disabled;
 		}
 
+		// optionKeys
+		const optionKeys = utils.getOptionKeys(props.optionKeys);
+
+		// options
+		let options = [];
+
+		if (state.searching) {
+			options = state.options;
+		}
+		else {
+			options = props.options;
+		}
+
+		// dropdownVisible
+		let dropdownVisible = state.actived;
+		const notFound = options.length === 0;
+
+		if (props.searchable && props.filter === false && !props.loading && state.keyword === "" && notFound) {
+			dropdownVisible = false;
+		}
+
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader");
 		let classes = {};
 
 		classes.el = {
@@ -353,38 +341,53 @@ const VuiCascader = {
 			[`${classNamePrefix}-disabled`]: disabled
 		};
 
+		// render
+		let menu;
 
-
-
-
-
-
-
-
-
-
-
-
-		// dropdownVisible
-		let dropdownVisible = state.actived;
-		let notFound = props.options.length === 0;
-
-		if (props.searchable && props.filter === false && !props.loading && state.keyword === "" && notFound) {
-			dropdownVisible = false;
+		if (notFound) {
+			menu = (
+				<VuiCascaderEmpty
+					classNamePrefix={classNamePrefix}
+					notFoundText={props.notFoundText}
+				/>
+			);
+		}
+		else {
+			if (state.searching) {
+				menu = (
+					<VuiCascaderMenu
+						classNamePrefix={classNamePrefix}
+						value={state.value[state.value.length - 1]}
+						options={options}
+						optionKeys={optionKeys}
+						dangerouslyUseHTMLString={true}
+						onSelect={handleMenuSelect}
+					/>
+				);
+			}
+			else {
+				menu = (
+					<VuiCascaderMenuList
+						classNamePrefix={classNamePrefix}
+						value={state.value}
+						options={options}
+						optionKeys={optionKeys}
+						expandTrigger={props.expandTrigger}
+						changeOnSelect={props.changeOnSelect}
+						onSelect={handleMenuListSelect}
+					/>
+				);
+			}
 		}
 
-		// showMenuList
-		let showMenuList = props.options.length > 0 && (!props.searchable || (props.searchable && state.keyword === ""));
-
-		// render
 		return (
 			<div class={classes.el}>
 				<VuiCascaderSelection
 					ref="selection"
-					classNamePrefix={props.classNamePrefix}
+					classNamePrefix={classNamePrefix}
 					placeholder={props.placeholder || translate("vui.cascader.placeholder")}
 					value={state.value}
-					keyNames={props.keyNames}
+					optionKeys={optionKeys}
 					formatter={props.formatter}
 					searchable={props.searchable}
 					keyword={state.keyword}
@@ -401,15 +404,20 @@ const VuiCascader = {
 					onClear={handleSelectionClear}
 				/>
 				<VuiLazyRender status={dropdownVisible}>
-					<transition appear name={props.animation} onBeforeEnter={handleDropdownBeforeEnter} onAfterLeave={handleDropdownAfterLeave}>
-						<VuiCascaderDropdown ref="dropdown" v-portal={portal} v-show={dropdownVisible} classNamePrefix={props.classNamePrefix}>
-							{
-								showMenuList && (
-									<VuiCascaderMenuList classNamePrefix={props.classNamePrefix} value={state.value} options={props.options} keyNames={props.keyNames} changeOnSelect={props.changeOnSelect} visible={dropdownVisible} onSelect={handleMenuListSelect} />
-								)
-							}
-						</VuiCascaderDropdown>
-					</transition>
+					<VuiCascaderDropdown
+						ref="dropdown"
+						classNamePrefix={classNamePrefix}
+						visible={dropdownVisible}
+						placement={props.placement}
+						autoWidth={props.dropdownAutoWidth}
+						animation={props.animation}
+						getPopupReference={this.getDropdownReference}
+						getPopupContainer={props.getPopupContainer}
+						onBeforeOpen={handleDropdownBeforeOpen}
+						onAfterClose={handleDropdownAfterClose}
+					>
+						{menu}
+					</VuiCascaderDropdown>
 				</VuiLazyRender>
 			</div>
 		);
