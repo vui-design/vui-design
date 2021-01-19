@@ -1,30 +1,22 @@
+import is from "vui-design/utils/is";
 import guid from "vui-design/utils/guid";
 import clone from "vui-design/utils/clone";
 import getTargetByPath from "vui-design/utils/getTargetByPath";
-import is from "vui-design/utils/is";
 
 /**
-* 将字符串转义成正则表达式
-* @param {String} value 字符串
+* 默认配置
 */
-export const createRegexer = (value) => {
-	return new RegExp(String(value).replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i");
-};
+const defaults = {
+	filter: (keyword, option, property) => {
+		if (!keyword) {
+			return true;
+		}
 
-/**
-* 默认的选项筛选函数
-* @param {Object} option 选项
-* @param {String} keyword 关键字
-* @param {String} property 查询属性
-*/
-export const defaultOptionFilter = (option, keyword, property) => {
-	if (!keyword) {
-		return true;
+		const string = String(keyword);
+		const value = option[property];
+
+		return new RegExp(string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i").test(value);
 	}
-
-	const comparator = createRegexer(keyword);
-
-	return comparator.test(option[property]);
 };
 
 /**
@@ -32,22 +24,22 @@ export const defaultOptionFilter = (option, keyword, property) => {
 * @param {Object} option 选项
 * @param {String} property 查询属性
 */
-const getRowKey = (option, property) => {
-	let rowKey;
+const getOptionKey = (option, property) => {
+	let optionKey;
 
 	if (is.string(property)) {
 		const target = getTargetByPath(option, property);
 
-		rowKey = target.value;
+		optionKey = target.value;
 	}
 	else if (is.function(property)) {
-		rowKey = property(clone(option));
+		optionKey = property(clone(option));
 	}
 	else {
-		rowKey = guid();
+		optionKey = guid();
 	}
 
-	return rowKey;
+	return optionKey;
 };
 
 /**
@@ -58,11 +50,11 @@ const getRowKey = (option, property) => {
 * @param {String} property 查询属性
 */
 export const getFilteredOptions = (options, keyword, filter, property) => {
+	const predicate = is.function(filter) ? filter : defaults.filter;
 	let array = [];
-	let iterator = is.function(filter) ? filter : defaultOptionFilter;
 
 	options.forEach(option => {
-		if (!iterator(keyword, option, property)) {
+		if (!predicate(keyword, option, property)) {
 			return;
 		}
 
@@ -74,6 +66,6 @@ export const getFilteredOptions = (options, keyword, filter, property) => {
 
 // 默认导出指定接口
 export default {
-	getRowKey,
+	getOptionKey,
 	getFilteredOptions
 };

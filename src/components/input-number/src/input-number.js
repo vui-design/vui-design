@@ -86,6 +86,10 @@ const VuiInputNumber = {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		validator: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -213,7 +217,10 @@ const VuiInputNumber = {
 			this.state.value = value;
 			this.$emit("input", value);
 			this.$emit("change", value);
-			this.dispatch("vui-form-item", "change", value);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		},
 
 		increase(value, step) {
@@ -246,7 +253,10 @@ const VuiInputNumber = {
 		handleBlur(e) {
 			this.state.focused = false;
 			this.$emit("blur", e);
-			this.dispatch("vui-form-item", "blur", this.state.value);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "blur", this.state.value);
+			}
 		},
 		handleKeydown(e) {
 			let { $props: props } = this;

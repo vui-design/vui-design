@@ -65,6 +65,10 @@ const VuiTextarea = {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		validator: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -82,7 +86,10 @@ const VuiTextarea = {
 
 			this.defaultValue = value;
 			this.resizeTextarea();
-			this.dispatch("vui-form-item", "form-change", this.defaultValue);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", this.defaultValue);
+			}
 		}
 	},
 

@@ -36,7 +36,8 @@ const VuiRadioGroup = {
 		name: PropTypes.string.def(() => guid()),
 		options: PropTypes.array.def(() => []),
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -49,22 +50,31 @@ const VuiRadioGroup = {
 	},
 	watch: {
 		value(value) {
-			if (this.state.value === value) {
+			const { $props: props, state } = this;
+
+			if (state.value === value) {
 				return;
 			}
 
 			this.state.value = value;
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	methods: {
 		handleChange(checked, value) {
+			const { $props: props } = this;
 			const nextValue = checked ? value : undefined;
 
 			this.state.value = nextValue;
 			this.$emit("input", nextValue);
 			this.$emit('change', nextValue);
-			this.dispatch("vui-form-item", "change", nextValue);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", nextValue);
+			}
 		}
 	},
 	render() {

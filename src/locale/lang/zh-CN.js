@@ -86,6 +86,10 @@ export default {
 			placeholder: "可拖动鼠标选择时间段",
 			clear: "清空"
 		},
+		transfer: {
+			search: "请输入搜索内容",
+			notFound: "暂无数据"
+		},
 		pagination: {
 			prevPage: "上一页",
 			nextPage: "下一页",

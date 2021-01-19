@@ -86,6 +86,10 @@ export default {
 			placeholder: "Drag the mouse to select a time period",
 			clear: "Clear"
 		},
+		transfer: {
+			search: "Please enter search content",
+			notFound: "No Data"
+		},
 		pagination: {
 			prevPage: "Previous Page",
 			nextPage: "Next Page",

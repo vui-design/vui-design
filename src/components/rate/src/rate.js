@@ -28,7 +28,8 @@ const VuiRate = {
 		tooltips: PropTypes.array.def([]),
 		allowHalf: PropTypes.bool.def(false),
 		clearable: PropTypes.bool.def(true),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -89,7 +90,10 @@ const VuiRate = {
 			this.state.mouseentered = undefined;
 			this.$emit("input", this.state.value);
 			this.$emit("change", this.state.value);
-			this.dispatch("vui-form-item", "change", this.state.value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", this.state.value);
+			}
 		}
 	},
 	render() {

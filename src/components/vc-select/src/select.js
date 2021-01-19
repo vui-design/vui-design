@@ -146,6 +146,10 @@ const VcSelect = {
 		getPopupContainer: {
 			type: Function,
 			default: () => document.body
+		},
+		validator: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -517,7 +521,10 @@ const VcSelect = {
 				this.defaultValue.splice(index, 1);
 				this.$emit("input", this.defaultValue.map(item => item.value));
 				this.$emit("change", this.defaultValue.map(item => item.value));
-				this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+
+				if (this.validator) {
+					this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+				}
 			};
 
 			if (is.function(this.beforeUnselect)) {
@@ -542,13 +549,19 @@ const VcSelect = {
 				this.defaultValue = [];
 				this.$emit("input", []);
 				this.$emit("change", []);
-				this.dispatch("vui-form-item", "change", []);
+
+				if (this.validator) {
+					this.dispatch("vui-form-item", "change", []);
+				}
 			}
 			else {
 				this.defaultValue = undefined;
 				this.$emit("input", undefined);
 				this.$emit("change", undefined);
-				this.dispatch("vui-form-item", "change", undefined);
+
+				if (this.validator) {
+					this.dispatch("vui-form-item", "change", undefined);
+				}
 			}
 		},
 
@@ -576,7 +589,10 @@ const VcSelect = {
 
 					this.$emit("input", this.defaultValue.map(item => item.value));
 					this.$emit("change", this.defaultValue.map(item => item.value));
-					this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+
+					if (this.validator) {
+						this.dispatch("vui-form-item", "change", this.defaultValue.map(item => item.value));
+					}
 				};
 
 				if (index === -1) {
@@ -638,7 +654,10 @@ const VcSelect = {
 					this.$emit("search", this.keyword);
 					this.$emit("input", this.defaultValue.value);
 					this.$emit("change", this.defaultValue.value);
-					this.dispatch("vui-form-item", "change", this.defaultValue.value);
+
+					if (this.validator) {
+						this.dispatch("vui-form-item", "change", this.defaultValue.value);
+					}
 				};
 				let hook = true;
 

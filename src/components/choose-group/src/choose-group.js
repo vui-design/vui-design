@@ -39,7 +39,8 @@ const VuiChooseGroup = {
 		options: PropTypes.array.def(() => []),
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
 		fallback: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -52,12 +53,17 @@ const VuiChooseGroup = {
 	},
 	watch: {
 		value(value) {
-			if (this.state.value === value) {
+			const { $props: props, state } = this;
+
+			if (state.value === value) {
 				return;
 			}
 
 			this.state.value = value;
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	methods: {
@@ -94,7 +100,10 @@ const VuiChooseGroup = {
 			this.state.value = nextValue;
 			this.$emit("input", nextValue);
 			this.$emit('change', nextValue);
-			this.dispatch("vui-form-item", "change", nextValue);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", nextValue);
+			}
 		}
 	},
 	render() {

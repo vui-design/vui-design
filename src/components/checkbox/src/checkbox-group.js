@@ -36,7 +36,8 @@ const VuiCheckboxGroup = {
 		name: PropTypes.string.def(() => guid()),
 		options: PropTypes.array.def(() => []),
 		value: PropTypes.array.def(() => []),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -49,17 +50,23 @@ const VuiCheckboxGroup = {
 	},
 	watch: {
 		value(value) {
-			if (this.state.value === value) {
+			const { $props: props, state } = this;
+
+			if (state.value === value) {
 				return;
 			}
 
 			this.state.value = value;
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	methods: {
 		handleChange(checked, value) {
-			let nextValue = [...this.state.value];
+			const { $props: props, state } = this;
+			let nextValue = [...state.value];
 
 			if (checked) {
 				nextValue.push(value);
@@ -71,7 +78,10 @@ const VuiCheckboxGroup = {
 			this.state.value = nextValue;
 			this.$emit("input", nextValue);
 			this.$emit('change', nextValue);
-			this.dispatch("vui-form-item", "change", nextValue);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", nextValue);
+			}
 		}
 	},
 	render() {

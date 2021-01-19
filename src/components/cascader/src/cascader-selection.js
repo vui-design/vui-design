@@ -24,6 +24,7 @@ export default {
 		searchable: PropTypes.bool.def(false),
 		keyword: PropTypes.string,
 		clearable: PropTypes.bool.def(false),
+		hovered: PropTypes.bool.def(false),
 		focused: PropTypes.bool.def(false),
 		disabled: PropTypes.bool.def(false)
 	},
@@ -135,7 +136,7 @@ export default {
 		const value = props.formatter(labels, clone(props.value));
 
 		// showBtnClear
-		const showBtnClear = vuiCascader.state.focused && props.clearable && (keyword || props.value.length > 0);
+		const showBtnClear = vuiCascader.state.hovered && props.clearable && (props.keyword || props.value.length > 0);
 
 		// classes
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "selection");

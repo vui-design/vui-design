@@ -1,5 +1,6 @@
 import VuiSwitchInput from "./components/input";
 import VuiSwitchLabel from "./components/label";
+import Emitter from "vui-design/mixins/emitter";
 
 const VuiSwitch = {
 	name: "vui-switch",
@@ -14,6 +15,10 @@ const VuiSwitch = {
 		VuiSwitchInput,
 		VuiSwitchLabel
 	},
+
+	mixins: [
+		Emitter
+	],
 
 	inheritAttrs: false,
 
@@ -45,6 +50,10 @@ const VuiSwitch = {
 		loading: {
 			type: Boolean,
 			default: false
+		},
+		validator: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -78,6 +87,10 @@ const VuiSwitch = {
 			this.state.checked = checked;
 			this.$emit("input", checked);
 			this.$emit('change', checked);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", checked);
+			}
 		}
 	},
 

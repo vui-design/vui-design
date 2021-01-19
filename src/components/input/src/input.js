@@ -81,6 +81,10 @@ const VuiInput = {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		validator: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -98,7 +102,10 @@ const VuiInput = {
 			}
 
 			this.defaultValue = value;
-			this.dispatch("vui-form-item", "change", this.defaultValue);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", this.defaultValue);
+			}
 		}
 	},
 
@@ -121,7 +128,10 @@ const VuiInput = {
 		},
 		handleBlur(e) {
 			this.$emit("blur", e);
-			this.dispatch("vui-form-item", "blur", this.defaultValue);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "blur", this.defaultValue);
+			}
 		},
 		handleKeydown(e) {
 			this.$emit("keydown", e);
@@ -135,7 +145,10 @@ const VuiInput = {
 		handleInput(e) {
 			this.defaultValue = e.target.value;
 			this.$emit("input", this.defaultValue);
-			this.dispatch("vui-form-item", "change", this.defaultValue);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", this.defaultValue);
+			}
 		},
 		handleClear(e) {
 			this.defaultValue = "";
@@ -143,7 +156,10 @@ const VuiInput = {
 			this.$emit("clear", e);
 			this.$emit("input", this.defaultValue);
 			this.$emit("change", e);
-			this.dispatch("vui-form-item", "change", this.defaultValue);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", this.defaultValue);
+			}
 		},
 		handleToggle(e) {
 			this.showPassword = !this.showPassword;

@@ -33,7 +33,8 @@ const VuiRadio = {
 		size: PropTypes.oneOf(["small", "medium", "large"]),
 		minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		checked: PropTypes.bool.def(false),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -47,12 +48,17 @@ const VuiRadio = {
 	},
 	watch: {
 		checked(value) {
-			if (this.state.checked === value) {
+			const { $props: props, state } = this;
+
+			if (state.checked === value) {
 				return;
 			}
 
 			this.state.checked = value;
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	methods: {
@@ -82,7 +88,10 @@ const VuiRadio = {
 				this.state.checked = checked;
 				this.$emit("input", checked);
 				this.$emit('change', checked);
-				this.dispatch("vui-form-item", "change", checked);
+
+				if (props.validator) {
+					this.dispatch("vui-form-item", "change", checked);
+				}
 			}
 		}
 	},

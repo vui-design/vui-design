@@ -188,6 +188,10 @@ const VuiDatepicker = {
 		scrollDuration: {
 			type: Number,
 			default: 100
+		},
+		validator: {
+			type: Boolean,
+			default: true
 		}
 	},
 
@@ -208,7 +212,10 @@ const VuiDatepicker = {
 			this.stateValue = value;
 			this.$emit("input", value);
 			this.$emit("change", value);
-			this.dispatch("vui-form-item", "change", value);
+
+			if (this.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 

@@ -45,7 +45,8 @@ const VuiSider = {
 		collapsed: PropTypes.bool.def(false),
 		collapsedWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(80),
 		showTrigger: PropTypes.bool.def(true),
-		trigger: PropTypes.string
+		trigger: PropTypes.string,
+		showScrollbar: PropTypes.bool.def(false)
 	},
 	data() {
 		const { $props: props } = this;
@@ -114,7 +115,7 @@ const VuiSider = {
 		}
 
 		// scrollbarSize
-		const scrollbarSize = getScrollbarSize();
+		const scrollbarSize = props.showScrollbar ? 0 : getScrollbarSize();
 
 		// showTrigger
 		const showTrigger = (props.collapsible || state.matches) && props.showTrigger;

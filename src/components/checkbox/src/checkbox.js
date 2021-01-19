@@ -34,7 +34,8 @@ const VuiCheckbox = {
 		minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		indeterminate: PropTypes.bool.def(false),
 		checked: PropTypes.bool.def(false),
-		disabled: PropTypes.bool.def(false)
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -48,12 +49,17 @@ const VuiCheckbox = {
 	},
 	watch: {
 		checked(value) {
-			if (this.state.checked === value) {
+			const { $props: props, state } = this;
+
+			if (state.checked === value) {
 				return;
 			}
 
 			this.state.checked = value;
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	methods: {
@@ -83,7 +89,10 @@ const VuiCheckbox = {
 				this.state.checked = checked;
 				this.$emit("input", checked);
 				this.$emit('change', checked);
-				this.dispatch("vui-form-item", "change", checked);
+
+				if (props.validator) {
+					this.dispatch("vui-form-item", "change", checked);
+				}
 			}
 		}
 	},

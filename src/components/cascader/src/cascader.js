@@ -56,15 +56,14 @@ const VuiCascader = {
 		searchable: PropTypes.bool.def(false),
 		filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
 		filterOptionProp: PropTypes.string.def("label"),
-		loading: PropTypes.bool.def(false),
-		loadingText: PropTypes.string,
 		notFoundText: PropTypes.string,
 		clearable: PropTypes.bool.def(false),
 		disabled: PropTypes.bool.def(false),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
 		dropdownAutoWidth: PropTypes.bool.def(false),
 		animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
-		getPopupContainer: PropTypes.any.def(() => document.body)
+		getPopupContainer: PropTypes.any.def(() => document.body),
+		validator: PropTypes.bool.def(true)
 	},
 	data() {
 		const { $props: props } = this;
@@ -232,14 +231,20 @@ const VuiCascader = {
 			this.state.options = searching ? this.getFilteredOptions(state, props) : [];
 		},
 		handleSelectionClear(e) {
+			const { $props: props } = this;
 			const keyword = "";
 			const value = [];
 
+			this.state.searching = false;
 			this.state.keyword = keyword;
 			this.state.value = value;
+			this.state.options = [];
 			this.$emit("input", value);
 			this.$emit("change", value);
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		},
 		handleMenuListSelect(options) {
 			const { $props: props } = this;
@@ -253,7 +258,10 @@ const VuiCascader = {
 			this.state.value = options;
 			this.$emit("input", value);
 			this.$emit("change", value);
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		},
 		handleMenuSelect(level, data) {
 			const { $props: props } = this;
@@ -266,7 +274,10 @@ const VuiCascader = {
 			this.state.value = data.path;
 			this.$emit("input", value);
 			this.$emit("change", value);
-			this.dispatch("vui-form-item", "change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
 	render(h) {
@@ -321,12 +332,7 @@ const VuiCascader = {
 		}
 
 		// dropdownVisible
-		let dropdownVisible = state.actived;
-		const notFound = options.length === 0;
-
-		if (props.searchable && props.filter === false && !props.loading && state.keyword === "" && notFound) {
-			dropdownVisible = false;
-		}
+		const dropdownVisible = state.actived;
 
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader");
@@ -344,7 +350,7 @@ const VuiCascader = {
 		// render
 		let menu;
 
-		if (notFound) {
+		if (options.length === 0) {
 			menu = (
 				<VuiCascaderEmpty
 					classNamePrefix={classNamePrefix}
@@ -392,6 +398,7 @@ const VuiCascader = {
 					searchable={props.searchable}
 					keyword={state.keyword}
 					clearable={props.clearable}
+					hovered={state.hovered}
 					focused={props.searchable && state.actived}
 					disabled={disabled}
 					onMouseenter={handleSelectionMouseenter}

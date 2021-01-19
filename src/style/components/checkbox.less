@@ -2,17 +2,19 @@
 
 .@{vui-checkbox} {
 	cursor:pointer;
-	display:inline-block;
+	display:inline-flex;
+	align-items:center;
 	box-sizing:border-box;
+	max-width:100%;
 	vertical-align:middle;
 	color:@checkbox-font-color;
-	line-height:0;
+	line-height:1.42857143;
 	white-space:nowrap;
 
 	&-input {
 		position:relative;
 		cursor:inherit;
-		display:inline-block;
+		display:block;
 		box-sizing:border-box;
 		border:1px solid @checkbox-border-color;
 		border-radius:@checkbox-border-radius;
@@ -56,11 +58,14 @@
 	}
 
 	&-label {
+		flex:1;
 		cursor:inherit;
-		display:inline-block;
+		display:block;
 		box-sizing:border-box;
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
 		vertical-align:middle;
-		line-height:1;
 	}
 
 	// size
