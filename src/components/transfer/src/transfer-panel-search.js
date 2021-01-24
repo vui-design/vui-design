@@ -49,7 +49,7 @@ const VuiTransferPanelSearch = {
 		// placeholder
 		const placeholder = props.placeholder ? props.placeholder : this.t("vui.transfer.search");
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "search");
 		let classes = {};
 

@@ -21,7 +21,7 @@ const VuiTransferPanelBodyEmpty = {
 		// description
 		const description = props.description ? props.description : this.t("vui.transfer.notFound");
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
 		let classes = {};
 

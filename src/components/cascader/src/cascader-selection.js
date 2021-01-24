@@ -18,7 +18,7 @@ export default {
 	props: {
 		classNamePrefix: PropTypes.string,
 		placeholder: PropTypes.string,
-		value: PropTypes.array,
+		value: PropTypes.array.def([]),
 		optionKeys: PropTypes.object.def(utils.optionKeys),
 		formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
 		searchable: PropTypes.bool.def(false),
@@ -136,7 +136,7 @@ export default {
 		const value = props.formatter(labels, clone(props.value));
 
 		// showBtnClear
-		const showBtnClear = vuiCascader.state.hovered && props.clearable && (props.keyword || props.value.length > 0);
+		const showBtnClear = props.clearable && !props.disabled && props.hovered && (props.keyword || props.value.length > 0);
 
 		// classes
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "selection");
@@ -194,10 +194,11 @@ export default {
 						onInput={handleInput}
 					/>
 				</div>
-				<i class={classes.elArraw}></i>
 				{
-					showBtnClear && (
+					showBtnClear ? (
 						<VuiIcon type="crossmark-circle-filled" class={classes.elBtnClear} onClick={handleClear} />
+					) : (
+						<i class={classes.elArraw}></i>
 					)
 				}
 			</div>

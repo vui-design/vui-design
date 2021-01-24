@@ -51,7 +51,7 @@ const VuiTransferPanel = {
 	},
 	methods: {
 		getPanelHeader(props) {
-			// classes
+			// class
 			const classNamePrefix = `${props.classNamePrefix}-header`;
 			let classes = {};
 
@@ -148,7 +148,7 @@ const VuiTransferPanel = {
 			);
 		},
 		getPanelBody(scopedSlot, props) {
-			// classes
+			// class
 			const classNamePrefix = `${props.classNamePrefix}-body`;
 			let classes = {};
 
@@ -189,7 +189,7 @@ const VuiTransferPanel = {
 			);
 		},
 		getPanelFooter(scopedSlot, props) {
-			// classes
+			// class
 			const classNamePrefix = `${props.classNamePrefix}-footer`;
 			let classes = {};
 
@@ -240,7 +240,7 @@ const VuiTransferPanel = {
 			options = utils.getFilteredOptions(options, state.keyword, props.filter, props.filterOptionProp);
 		}
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "panel");
 		let classes = {};
 

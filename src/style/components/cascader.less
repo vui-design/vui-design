@@ -20,35 +20,36 @@
 .vui-cascader .vui-cascader-selection-arrow { position:absolute; cursor:inherit; height:2px; color:#bfbfbf; transition:top 0.2s, right 0.2s; }
 .vui-cascader .vui-cascader-selection-arrow:before { content:""; top:0; left:0; position:absolute; height:2px; background-color:currentColor; transform:rotate(45deg) scaleY(0.5); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
 .vui-cascader .vui-cascader-selection-arrow:after { content:""; top:0; right:0; position:absolute; height:2px; background-color:currentColor; transform:rotate(-45deg) scaleY(0.5); transform-origin:center center; transition:background-color 0.2s, transform 0.2s; }
-.vui-cascader .vui-cascader-selection-btn-clear { position:absolute; cursor:pointer; display:block; border-radius:50%; background-color:#fff; color:#bfbfbf; opacity:0; transition:top 0.2s, right 0.2s, opacity 0.2s; }
+.vui-cascader .vui-cascader-selection-btn-clear { position:absolute; cursor:pointer; display:block; border-radius:50%; background-color:#fff; color:#bfbfbf; opacity:0; transition:top 0.2s, right 0.2s, opacity 0.2s, color 0.2s; }
+.vui-cascader .vui-cascader-selection-btn-clear:hover { color:#595959; }
 
 .vui-cascader-small .vui-cascader-selection { height:24px; }
-.vui-cascader-small .vui-cascader-selection-placeholder { height:22px; padding:0 22px 0 6px; font-size:12px; line-height:22px; }
-.vui-cascader-small .vui-cascader-selection-value { height:22px; padding:0 22px 0 6px; font-size:12px; line-height:22px; }
-.vui-cascader-small .vui-cascader-selection-input { height:22px; padding:0 22px 0 6px; font-size:12px; }
+.vui-cascader-small .vui-cascader-selection-placeholder { height:22px; padding:0 24px 0 6px; font-size:12px; line-height:22px; }
+.vui-cascader-small .vui-cascader-selection-value { height:22px; padding:0 24px 0 6px; font-size:12px; line-height:22px; }
+.vui-cascader-small .vui-cascader-selection-input { height:22px; padding:0 24px 0 6px; font-size:12px; }
 .vui-cascader-small .vui-cascader-selection-input input {  }
-.vui-cascader-small .vui-cascader-selection-arrow { top:10px; right:6px; width:10px; }
+.vui-cascader-small .vui-cascader-selection-arrow { top:10px; right:7px; width:10px; }
 .vui-cascader-small .vui-cascader-selection-arrow:before { width:6px; }
 .vui-cascader-small .vui-cascader-selection-arrow:after { width:6px; }
-.vui-cascader-small .vui-cascader-selection-btn-clear { top:5px; right:6px; font-size:10px; }
+.vui-cascader-small .vui-cascader-selection-btn-clear { top:5px; right:6px; font-size:12px; }
 .vui-cascader-medium .vui-cascader-selection { height:34px; }
-.vui-cascader-medium .vui-cascader-selection-placeholder { height:32px; padding:0 28px 0 8px; font-size:14px; line-height:32px; }
-.vui-cascader-medium .vui-cascader-selection-value { height:32px; padding:0 28px 0 8px; font-size:14px; line-height:32px; }
-.vui-cascader-medium .vui-cascader-selection-input { height:32px; padding:0 28px 0 8px; font-size:14px; }
+.vui-cascader-medium .vui-cascader-selection-placeholder { height:32px; padding:0 30px 0 8px; font-size:14px; line-height:32px; }
+.vui-cascader-medium .vui-cascader-selection-value { height:32px; padding:0 30px 0 8px; font-size:14px; line-height:32px; }
+.vui-cascader-medium .vui-cascader-selection-input { height:32px; padding:0 30px 0 8px; font-size:14px; }
 .vui-cascader-medium .vui-cascader-selection-input input {  }
-.vui-cascader-medium .vui-cascader-selection-arrow { top:15px; right:8px; width:12px; }
+.vui-cascader-medium .vui-cascader-selection-arrow { top:15px; right:9px; width:12px; }
 .vui-cascader-medium .vui-cascader-selection-arrow:before { width:7px; }
 .vui-cascader-medium .vui-cascader-selection-arrow:after { width:7px; }
-.vui-cascader-medium .vui-cascader-selection-btn-clear { top:10px; right:8px; font-size:12px; }
+.vui-cascader-medium .vui-cascader-selection-btn-clear { top:9px; right:8px; font-size:14px; }
 .vui-cascader-large .vui-cascader-selection { height:44px; }
-.vui-cascader-large .vui-cascader-selection-placeholder { height:42px; padding:0 34px 0 10px; font-size:16px; line-height:42px; }
-.vui-cascader-large .vui-cascader-selection-value { height:42px; padding:0 34px 0 10px; font-size:16px; line-height:42px; }
-.vui-cascader-large .vui-cascader-selection-input { height:42px; padding:0 34px 0 10px; font-size:16px; }
+.vui-cascader-large .vui-cascader-selection-placeholder { height:42px; padding:0 36px 0 10px; font-size:16px; line-height:42px; }
+.vui-cascader-large .vui-cascader-selection-value { height:42px; padding:0 36px 0 10px; font-size:16px; line-height:42px; }
+.vui-cascader-large .vui-cascader-selection-input { height:42px; padding:0 36px 0 10px; font-size:16px; }
 .vui-cascader-large .vui-cascader-selection-input input {  }
-.vui-cascader-large .vui-cascader-selection-arrow { top:20px; right:10px; width:14px; }
+.vui-cascader-large .vui-cascader-selection-arrow { top:20px; right:11px; width:14px; }
 .vui-cascader-large .vui-cascader-selection-arrow:before { width:8px; }
 .vui-cascader-large .vui-cascader-selection-arrow:after { width:8px; }
-.vui-cascader-large .vui-cascader-selection-btn-clear { top:14px; right:10px; font-size:14px; }
+.vui-cascader-large .vui-cascader-selection-btn-clear { top:13px; right:10px; font-size:16px; }
 
 .vui-cascader-hovered .vui-cascader-selection { border-color:tint(#2d8cf0, 10%); }
 .vui-cascader-hovered .vui-cascader-selection-value {  }
@@ -69,7 +70,7 @@
 .vui-cascader-actived .vui-cascader-selection-arrow:before { transform:rotate(-45deg) scaleY(0.5); }
 .vui-cascader-actived .vui-cascader-selection-arrow:after { transform:rotate(45deg) scaleY(0.5); }
 
-.vui-cascader-disabled .vui-cascader-selection { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 3.5%); }
+.vui-cascader-disabled .vui-cascader-selection { cursor:not-allowed; border-color:@border-color; background-color:shade(@component-background-color, 2%); }
 .vui-cascader-disabled .vui-cascader-selection-value { border-color:#e6e6e6; color:#bfbfbf; }
 .vui-cascader-disabled .vui-cascader-selection-arrow {  }
 .vui-cascader-disabled .vui-cascader-selection-arrow:before {  }

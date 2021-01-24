@@ -19,7 +19,7 @@ const VuiSubmenuPopup = {
 			type: String,
 			default: undefined
 		},
-		theme: {
+		color: {
 			type: String,
 			default: undefined
 		},
@@ -152,7 +152,7 @@ const VuiSubmenuPopup = {
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, mode, theme, level, indent, open, selected, disabled, animation, getPopupContainer } = this;
+		let { $slots, classNamePrefix, mode, color, level, indent, open, selected, disabled, animation, getPopupContainer } = this;
 		let { handleHeaderMouseenter, handleHeaderMouseleave, handleBodyMouseenter, handleBodyMouseleave, handleBodyBeforeEnter, handleBodyEnter, handleBodyAfterEnter, handleBodyBeforeLeave, handleBodyLeave, handleBodyAfterLeave } = this;
 		let classes = {
 			[`${classNamePrefix}`]: true,

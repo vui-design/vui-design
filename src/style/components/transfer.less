@@ -4,34 +4,34 @@
 	display:flex;
 	align-items:center;
 	box-sizing:border-box;
-	line-height:1.42857143;
+	color:@transfer-font-color;
+	font-size:@transfer-font-size;
+	line-height:@transfer-line-height;
 
 	&-panel {
 		display:flex;
 		flex-direction:column;
 		box-sizing:border-box;
-		width:200px;
-		height:251px;
-		border:1px solid #e0e0e0;
-		border-radius:2px;
+		width:@transfer-panel-width;
+		height:@transfer-panel-height;
+		border:1px solid @transfer-panel-border-color;
+		border-radius:@transfer-panel-border-radius;
 
 		&-with-search {
-			height:310px;
+			height:@transfer-panel-with-search-height;
 		}
 
 		&-header {
 			display:flex;
 			align-items:center;
 			box-sizing:border-box;
-			border-bottom:1px solid #f0f0f0;
-			padding:12px;
-			color:#595959;
-			font-size:14px;
+			border-bottom:1px solid @transfer-panel-header-border-color;
+			padding:@transfer-panel-header-padding;
 
 			&-checkbox {
 				display:block;
 				box-sizing:border-box;
-				margin-right:8px;
+				margin-right:@padding-xs;
 
 				label {
 					display:block;
@@ -48,15 +48,15 @@
 			&-selection {
 				display:block;
 				box-sizing:border-box;
-				margin-left:8px;
+				margin-left:@padding-xs;
 			}
 		}
 
 		&-search {
 			display:block;
 			box-sizing:border-box;
-			border-bottom:1px solid #f0f0f0;
-			padding:12px;
+			border-bottom:1px solid @transfer-panel-search-border-color;
+			padding:@transfer-panel-search-padding;
 		}
 
 		&-body {
@@ -76,27 +76,28 @@
 					flex-flow:row nowrap;
 					justify-content:flex-start;
 					align-items:center;
-					height:34px;
-					padding:0 12px;
-					transition:all 0.2s;
+					height:@transfer-panel-body-list-item-height;
+					padding:@transfer-panel-body-list-item-padding;
+					transition:all @transition-duration @transition-timing-function;
 
 					&:hover {
-						background-color:#fafafa;
+						background-color:@transfer-panel-body-list-item-hover-background-color;
 					}
 
 					&-checked {
-						background-color:#e6f7ff;
+						background-color:@transfer-panel-body-list-item-checked-background-color;
 
 						&:hover {
-							background-color:#dcf4ff;
+							background-color:@transfer-panel-body-list-item-checked-hover-background-color;
 						}
 					}
 
 					&-disabled {
-						background-color:transparent;
+						cursor:not-allowed;
+						background-color:@transfer-panel-body-list-item-disabled-background-color;
 
 						&:hover {
-							background-color:transparent;
+							background-color:@transfer-panel-body-list-item-disabled-hover-background-color;
 						}
 					}
 				}
@@ -114,10 +115,8 @@
 		&-footer {
 			display:block;
 			box-sizing:border-box;
-			border-top:1px solid #f0f0f0;
-			padding:8px 12px;
-			color:#595959;
-			font-size:14px;
+			border-top:1px solid @transfer-panel-footer-border-color;
+			padding:@transfer-panel-footer-padding;
 		}
 	}
 
@@ -125,7 +124,7 @@
 		display:flex;
 		flex-direction:column;
 		box-sizing:border-box;
-		margin:0 16px;
+		margin:@transfer-operation-margin;
 
 		&-button {
 			display:block;
@@ -137,7 +136,7 @@
 		}
 
 		&-button + &-button {
-			margin-top:16px;
+			margin-top:@transfer-operation-button-margin-top;
 		}
 	}
 }

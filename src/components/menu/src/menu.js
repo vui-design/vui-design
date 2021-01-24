@@ -1,48 +1,28 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+
+const colors = ["light", "dark"];
 
 const VuiMenu = {
 	name: "vui-menu",
-
 	provide() {
 		return {
 			vuiMenu: this
 		};
 	},
-
 	model: {
 		prop: "selectedName",
-		event: "select",
+		event: "select"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		mode: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical", "inline"].indexOf(value) > -1
-		},
-		theme: {
-			type: String,
-			default: "light",
-			validator: value => ["light", "dark"].indexOf(value) > -1
-		},
-		collapsed: {
-			type: Boolean,
-			default: false
-		},
-		openNames: {
-			type: Array,
-			default: () => []
-		},
-		selectedName: {
-			type: String,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		mode: PropTypes.oneOf(["horizontal", "vertical", "inline"]).def("horizontal"),
+		theme: PropTypes.string,
+		color: PropTypes.string.def("light"),
+		collapsed: PropTypes.bool.def(false),
+		openNames: PropTypes.array.def([]),
+		selectedName: PropTypes.string
 	},
-
 	data() {
 		return {
 			defaultOpenNames: this.mode === "inline" && !this.collapsed ? this.openNames : [],
@@ -51,7 +31,6 @@ const VuiMenu = {
 			mapMenuItems: {}
 		};
 	},
-
 	watch: {
 		mode(value) {
 			if (value === "inline" && !this.collapsed) {
@@ -81,7 +60,6 @@ const VuiMenu = {
 			this.defaultSelectedName = value;
 		}
 	},
-
 	methods: {
 		addSubmenu(submenu) {
 			this.$set(this.mapSubmenus, submenu.name, submenu);
@@ -95,7 +73,6 @@ const VuiMenu = {
 		removeMenuItem(menuItem) {
 			this.$delete(this.mapMenuItems, menuItem.name);
 		},
-
 		open(name) {
 			let index = this.defaultOpenNames.indexOf(name);
 
@@ -127,12 +104,16 @@ const VuiMenu = {
 			this.$emit("select", name);
 		}
 	},
-
 	render(h) {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, mode, theme, collapsed } = this;
+		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, mode, collapsed } = this;
 
-		// Direction
+		// direction
 		const direction = mode === "horizontal" ? "horizontal" : "vertical";
+
+		// color
+		const color = this.theme || this.color;
+		const withPresetColor = color && colors.indexOf(color) > -1;
+		const withCustomColor = color && colors.indexOf(color) === -1;
 
 		// Class
 		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "menu");
@@ -140,13 +121,22 @@ const VuiMenu = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-root`]: true,
 			[`${classNamePrefix}-${direction}`]: direction,
-			[`${classNamePrefix}-${theme}`]: theme,
+			[`${classNamePrefix}-${color}`]: withPresetColor,
 			[`${classNamePrefix}-collapsed`]: mode === "inline" && collapsed
 		};
 
+		// style
+		let styles = {};
+
+		if (withCustomColor) {
+			styles.el = {
+				backgroundColor: color
+			};
+		}
+
 		// Render
 		return (
-			<div class={classes}>{slots.default}</div>
+			<div class={classes} style={styles.el}>{slots.default}</div>
 		);
 	}
 };

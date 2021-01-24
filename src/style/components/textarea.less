@@ -1,13 +1,77 @@
 @vui-textarea: ~"@{vui}-textarea";
 
+.@{vui-textarea} {
+	position:relative;
+	display:inline-block;
+	width:100%;
+	vertical-align:middle;
 
-.vui-textarea { display:inline-block; width:100%; vertical-align:middle; }
-.vui-textarea .vui-textarea-main { position:relative; }
-.vui-textarea .vui-textarea-main textarea { position:relative; appearance:none; outline:none; display:block; box-sizing:border-box; width:100%; min-width:100%; max-width:100%; border:@border-width @border-style @border-color; border-radius:@border-radius; background-color:@component-background-color; margin:0; padding:6px 8px; color:@font-color; font-size:@font-size; font-family:@font-family; line-height:@line-height; transition:all @transition-duration, height 0s; }
-.vui-textarea .vui-textarea-main textarea:hover { z-index:1; border-color:tint(#2d8cf0, 10%); }
-.vui-textarea .vui-textarea-main textarea:focus { z-index:2; border-color:tint(#2d8cf0, 10%); box-shadow:0 0 0 2px fade(tint(#2d8cf0, 10%), 15); }
-.vui-textarea .vui-textarea-main textarea:disabled { cursor:not-allowed; border-color:@border-color; background-color:shade(@background-color, 3.5%); color:@font-disabled-color; }
-.vui-textarea .vui-textarea-main .vui-textarea-main-btn-clear { position:absolute; top:10px; right:9px; z-index:3; cursor:pointer; display:block; color:@font-secondary-color; line-height:1; transition:all @transition-duration; }
-.vui-textarea .vui-textarea-main .vui-textarea-main-btn-clear:hover { color:@font-color; }
-.vui-textarea .vui-textarea-main .vui-textarea-main-statistic { position:absolute; bottom:5px; right:5px; z-index:3; pointer-events:none; color:@font-secondary-color; font-size:12px; line-height:1; }
+	&-input {
+		appearance:none;
+		outline:none;
+		display:block;
+		box-sizing:border-box;
+		width:100%;
+		min-width:100%;
+		max-width:100%;
+		border:1px solid @textarea-border-color;
+		border-radius:@textarea-border-radius;
+		background-color:@component-background-color;
+		margin:0;
+		padding:6px 8px;
+		color:@textarea-font-color;
+		font-size:@textarea-font-size;
+		font-family:@textarea-font-family;
+		line-height:@textarea-line-height;
+		transition:all @transition-duration @transition-timing-function, height 0s;
+	}
 
+	&-btn-clear {
+		position:absolute;
+		top:10px;
+		right:8px;
+		z-index:3;
+		cursor:pointer;
+		display:block;
+		color:@textarea-btn-clear-color;
+		line-height:1;
+		transition:all @transition-duration @transition-timing-function;
+
+		svg {
+			display:block;
+		}
+
+		&:hover {
+			color:@textarea-btn-clear-hover-color;
+		}
+	}
+
+	&-statistic {
+		position:absolute;
+		bottom:@margin-xs;
+		right:@margin-xs;
+		z-index:3;
+		pointer-events:none;
+		color:@font-secondary-color;
+		font-size:@textarea-statistic-font-size;
+		line-height:1;
+	}
+
+	&-hovered &-input {
+		z-index:1;
+		border-color:@textarea-hover-border-color;
+	}
+
+	&-focused &-input {
+		z-index:2;
+		border-color:@textarea-focus-border-color;
+		box-shadow:@textarea-focus-box-shadow;
+	}
+
+	&-disabled &-input {
+		cursor:not-allowed;
+		border-color:@textarea-disabled-border-color;
+		background-color:@textarea-disabled-background-color;
+		color:@textarea-disabled-font-color;
+	}
+}

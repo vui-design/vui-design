@@ -29,7 +29,7 @@ const VuiTransferOperation = {
 		const arrowRightDisabled = props.disabled || props.arrowRightDisabled;
 		const arrowLeftDisabled = props.disabled || props.arrowLeftDisabled;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "operation");
 		let classes = {};
 

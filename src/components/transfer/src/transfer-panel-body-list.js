@@ -60,7 +60,7 @@ const VuiTransferPanelBodyList = {
 		const { $props: props, state } = this;
 		const { handleSelect } = this;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
 		let classes = {};
 

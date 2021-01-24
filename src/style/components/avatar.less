@@ -75,7 +75,7 @@
 
 		&-item,
 		&-placeholder {
-			margin-left:-8px;
+			margin-left:-@margin-xs;
 		}
 
 		&-item:first-child {
@@ -88,21 +88,12 @@
 	}
 
 	&-group &-group-placeholder & {
-		background-color:#fde3cf;
-		color:#f56a00;
+		background-color:@avatar-placeholder-background-color;
+		color:@avatar-placeholder-font-color;
 	}
 
 	&-group-tooltip-content {
-		display:flex;
+		display:block;
 		box-sizing:border-box;
-		align-items:center;
-
-		& > div {
-			margin-left:4px;
-
-			&:first-child {
-				margin-left:0;
-			}
-		}
 	}
 }

@@ -49,7 +49,7 @@ const VuiTransferPanelBodyListItem = {
 		// disabled
 		const disabled = props.disabled;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
 		let classes = {};
 

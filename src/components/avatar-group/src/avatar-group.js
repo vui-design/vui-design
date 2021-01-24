@@ -1,5 +1,6 @@
 import VuiTooltip from "vui-design/components/tooltip";
 import VuiAvatar from "vui-design/components/avatar";
+import VuiSpace from "vui-design/components/space";
 import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import getValidElements from "vui-design/utils/getValidElements";
@@ -13,7 +14,8 @@ const VuiAvatarGroup = {
 	},
 	components: {
 		VuiTooltip,
-		VuiAvatar
+		VuiAvatar,
+		VuiSpace
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
@@ -54,9 +56,11 @@ const VuiAvatarGroup = {
 		if (maxCount && overflowedCount > 0) {
 			children.push(
 				<div class={classes.elPlaceholder}>
-					<VuiTooltip theme={props.maxTooltipTheme} placement={props.maxTooltipPlacement}>
+					<VuiTooltip color={props.maxTooltipTheme} placement={props.maxTooltipPlacement}>
 						<VuiAvatar>&#43;{overflowedCount}</VuiAvatar>
-						<div slot="content" class={classes.elTooltipContent}>{avatars.slice(maxCount)}</div>
+						<div slot="content" class={classes.elTooltipContent}>
+							<VuiSpace size="small">{avatars.slice(maxCount)}</VuiSpace>
+						</div>
 					</VuiTooltip>
 				</div>
 			);

@@ -27,6 +27,8 @@ const dimensions = {
 	xl: "1600px"
 };
 
+const colors = ["light", "dark"];
+
 const VuiSider = {
 	name: "vui-sider",
 	components: {
@@ -38,7 +40,8 @@ const VuiSider = {
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
-		theme: PropTypes.oneOf(["light", "dark"]).def("light"),
+		theme: PropTypes.string,
+		color: PropTypes.string.def("light"),
 		breakpoint: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl", "xxl"]),
 		width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(200),
 		collapsible: PropTypes.bool.def(false),
@@ -120,13 +123,18 @@ const VuiSider = {
 		// showTrigger
 		const showTrigger = (props.collapsible || state.matches) && props.showTrigger;
 
+		// color
+		const color = props.theme || props.color;
+		const withPresetColor = color && colors.indexOf(color) > -1;
+		const withCustomColor = color && colors.indexOf(color) === -1;
+
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-sider");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${props.theme}`]: props.theme,
+			[`${classNamePrefix}-${color}`]: withPresetColor,
 			[`${classNamePrefix}-with-trigger`]: showTrigger
 		};
 		classes.elChildren = `${classNamePrefix}-children`;
@@ -145,6 +153,10 @@ const VuiSider = {
 		styles.elChildrenScrollbar = {
 			marginRight: `-${scrollbarSize}px`
 		};
+
+		if (withCustomColor) {
+			styles.el.backgroundColor = color;
+		}
 
 		// render
 		let children = [];

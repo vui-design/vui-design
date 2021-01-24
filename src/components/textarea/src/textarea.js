@@ -1,5 +1,6 @@
 import VuiIcon from "vui-design/components/icon";
 import Emitter from "vui-design/mixins/emitter";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import merge from "vui-design/utils/merge";
 import css from "vui-design/utils/css";
@@ -8,91 +9,59 @@ import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTextarea = {
 	name: "vui-textarea",
-
 	inject: {
 		vuiForm: {
 			default: undefined
 		}
 	},
-
 	components: {
 		VuiIcon
 	},
-
 	mixins: [
 		Emitter
 	],
-
 	inheritAttrs: false,
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		placeholder: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		maxLength: {
-			type: [String, Number],
-			default: undefined
-		},
-		rows: {
-			type: [String, Number],
-			default: 4
-		},
-		autosize: {
-			type: [Boolean, Object],
-			default: false
-		},
-		resize: {
-			type: Boolean,
-			default: false
-		},
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		validator: {
-			type: Boolean,
-			default: true
-		}
+		classNamePrefix: PropTypes.string,
+		placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(4),
+		autosize: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
+		resize: PropTypes.bool.def(false),
+		clearable: PropTypes.bool.def(false),
+		readonly: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
-
 	data() {
+		const { $props: props } = this;
+		const state = {
+			hovered: false,
+			focused: false,
+			value: props.value
+		};
+
 		return {
-			defaultValue: this.value
+			state
 		};
 	},
-
 	watch: {
 		value(value) {
-			if (this.defaultValue === value) {
+			const { $props: props, state } = this;
+
+			if (state.value === value) {
 				return;
 			}
 
-			this.defaultValue = value;
+			this.state.value = value;
 			this.resizeTextarea();
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", this.defaultValue);
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
 			}
 		}
 	},
-
 	methods: {
 		focus() {
 			this.$refs.textarea.focus();
@@ -100,79 +69,146 @@ const VuiTextarea = {
 		blur() {
 			this.$refs.textarea.blur();
 		},
-
 		resizeTextarea() {
 			if (is.server) {
 				return;
 			}
 
 			this.$nextTick(() => {
+				const { $refs: references, $props: props } = this;
 				let styles = null;
 
-				if (!this.autosize) {
+				if (!props.autosize) {
 					styles = {
-						minHeight: getTextareaSize(this.$refs.textarea).minHeight
+						minHeight: getTextareaSize(references.textarea).minHeight
 					};
 				}
 				else {
-					let { minRows, maxRows } = this.autosize;
+					const { minRows, maxRows } = props.autosize;
 
-					styles = getTextareaSize(this.$refs.textarea, minRows, maxRows);
+					styles = getTextareaSize(references.textarea, minRows, maxRows);
 				}
 
-				css(this.$refs.textarea, merge(styles, {
-					resize: this.resize ? "vertical" : "none"
+				css(references.textarea, merge(styles, {
+					resize: props.resize ? "vertical" : "none"
 				}));
 			});
 		},
-
 		handleMouseenter(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = true;
 			this.$emit("mouseenter", e);
 		},
 		handleMouseleave(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = false;
 			this.$emit("mouseleave", e);
 		},
 		handleFocus(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.focused = true;
 			this.$emit("focus", e);
 		},
 		handleBlur(e) {
+			const { $props: props, state } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.focused = false;
 			this.$emit("blur", e);
-			this.dispatch("vui-form-item", "blur", this.defaultValue);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "blur", state.value);
+			}
 		},
 		handleKeydown(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.$emit("keydown", e);
 		},
 		handleKeyup(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.$emit("keyup", e);
 		},
-		handleChange(e) {
-			this.$emit("change", e);
-		},
 		handleInput(e) {
-			this.defaultValue = e.target.value;
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			const value = e.target.value;
+
+			this.state.value = value;
 			this.resizeTextarea();
-			this.$emit("input", this.defaultValue);
-			this.dispatch("vui-form-item", "change", this.defaultValue);
+			this.$emit("input", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
+		},
+		handleChange(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.$emit("change", e);
 		},
 		handleClear(e) {
-			this.defaultValue = "";
-			this.focus();
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			const value = "";
+
+			this.state.value = value;
 			this.resizeTextarea();
+			this.focus();
 			this.$emit("clear", e);
-			this.$emit("input", this.defaultValue);
+			this.$emit("input", value);
 			this.$emit("change", e);
-			this.dispatch("vui-form-item", "change", this.defaultValue);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
 		}
 	},
-
 	mounted() {
 		this.resizeTextarea();
 	},
-
 	render(h) {
-		let { $vui: vui, vuiForm, $attrs: attrs, $listeners: listeners, classNamePrefix: customizedClassNamePrefix, placeholder, defaultValue, maxLength, rows, autosize, clearable, readonly } = this;
-		let { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeyup, handleChange, handleInput, handleClear } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "textarea");
+		const { vuiForm, $listeners: listeners, $attrs: attrs, $props: props, state } = this;
+		const { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeyup, handleChange, handleInput, handleClear } = this;
 
 		// disabled: vuiForm > self
 		let disabled;
@@ -181,52 +217,59 @@ const VuiTextarea = {
 			disabled = vuiForm.disabled;
 		}
 		else {
-			disabled = this.disabled;
+			disabled = props.disabled;
 		}
 
-		// classes
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "textarea");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
+			[`${classNamePrefix}-hovered`]: state.hovered,
+			[`${classNamePrefix}-focused`]: state.focused,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
-		classes.elMain = `${classNamePrefix}-main`;
-		classes.elMainBtnClear = `${classNamePrefix}-main-btn-clear`;
-		classes.elMainStatistic = `${classNamePrefix}-main-statistic`;
+		classes.elInput = `${classNamePrefix}-input`;
+		classes.elBtnClear = `${classNamePrefix}-btn-clear`;
+		classes.elStatistic = `${classNamePrefix}-statistic`;
 
-		// render
-		let nativeTextareaProps = {
+		// input
+		const elInputProps = {
 			ref: "textarea",
 			attrs: {
 				...attrs,
-				placeholder,
-				maxLength,
-				rows,
-				readonly,
-				disabled
+				placeholder: props.placeholder,
+				maxLength: props.maxLength,
+				rows: props.rows,
+				readonly: props.readonly,
+				disabled: disabled,
+				class: classes.elInput
 			},
 			on: {
 				...listeners,
-				mouseenter: handleMouseenter,
-				mouseleave: handleMouseleave,
 				focus: handleFocus,
 				blur: handleBlur,
 				keydown: handleKeydown,
 				keyup: handleKeyup,
-				change: handleChange,
-				input: handleInput
+				input: handleInput,
+				change: handleChange
 			}
 		};
 
+		const input = (
+			<textarea {...elInputProps} value={state.value} />
+		);
+
+		// btnClear
 		let btnClear;
 
-		if (clearable && !readonly && !disabled && defaultValue !== "") {
-			let btnClearProps = {
+		if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
+			const elBtnClearProps = {
 				props: {
 					type: "crossmark-circle-filled"
 				},
-				class: classes.elMainBtnClear,
+				class: classes.elBtnClear,
 				on: {
 					mousedown: e => e.preventDefault(),
 					click: handleClear
@@ -234,34 +277,27 @@ const VuiTextarea = {
 			};
 
 			btnClear = (
-				<VuiIcon {...btnClearProps} />
+				<VuiIcon {...elBtnClearProps} />
 			);
 		}
 
+		// statistic
 		let statistic;
 
-		if (maxLength) {
-			let length = 0;
-
-			if (is.string(defaultValue)) {
-				length = defaultValue.length;
-			}
-			else if (is.number(defaultValue)) {
-				length = String(defaultValue).length;
-			}
+		if (props.maxLength) {
+			const length = String(state.value).length;
 
 			statistic = (
-				<label class={classes.elMainStatistic}>{`${length}/${maxLength}`}</label>
+				<label class={classes.elStatistic}>{`${length}/${props.maxLength}`}</label>
 			);
 		}
 
+		// render
 		return (
-			<div class={classes.el}>
-				<div class={classes.elMain}>
-					<textarea {...nativeTextareaProps} value={defaultValue} />
-					{btnClear}
-					{statistic}
-				</div>
+			<div class={classes.el} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
+				{input}
+				{btnClear}
+				{statistic}
 			</div>
 		);
 	}

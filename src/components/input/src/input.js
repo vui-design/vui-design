@@ -1,10 +1,10 @@
 import VuiIcon from "vui-design/components/icon";
 import Emitter from "vui-design/mixins/emitter";
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiInput = {
 	name: "vui-input",
-
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -13,102 +13,57 @@ const VuiInput = {
 			default: undefined
 		}
 	},
-
 	components: {
 		VuiIcon
 	},
-
 	mixins: [
 		Emitter
 	],
-
 	inheritAttrs: false,
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "text"
-		},
-		prepend: {
-			type: String,
-			default: undefined
-		},
-		append: {
-			type: String,
-			default: undefined
-		},
-		prefix: {
-			type: String,
-			default: undefined
-		},
-		suffix: {
-			type: String,
-			default: undefined
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		placeholder: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		maxLength: {
-			type: [String, Number],
-			default: undefined
-		},
-		clearable: {
-			type: Boolean,
-			default: false
-		},
-		showPasswordToggler: {
-			type: Boolean,
-			default: false
-		},
-		readonly: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		validator: {
-			type: Boolean,
-			default: true
-		}
+		classNamePrefix: PropTypes.string,
+		type: PropTypes.string.def("text"),
+		prepend: PropTypes.string,
+		append: PropTypes.string,
+		prefix: PropTypes.string,
+		suffix: PropTypes.string,
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		clearable: PropTypes.bool.def(false),
+		readonly: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
-
 	data() {
+		const { $props: props } = this;
+		const state = {
+			hovered: false,
+			focused: false,
+			plaintext: false,
+			value: props.value
+		};
+
 		return {
-			showPassword: false,
-			defaultValue: this.value
+			state
 		};
 	},
-
 	watch: {
 		value(value) {
-			if (this.defaultValue === value) {
+			const { $props: props, state } = this;
+
+			if (state.value === value) {
 				return;
 			}
 
-			this.defaultValue = value;
+			this.state.value = value;
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", this.defaultValue);
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
 			}
 		}
 	},
-
 	methods: {
 		focus() {
 			this.$refs.input.focus();
@@ -116,76 +71,135 @@ const VuiInput = {
 		blur() {
 			this.$refs.input.blur();
 		},
-
 		handleMouseenter(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = true;
 			this.$emit("mouseenter", e);
 		},
 		handleMouseleave(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = false;
 			this.$emit("mouseleave", e);
 		},
 		handleFocus(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.focused = true;
 			this.$emit("focus", e);
 		},
 		handleBlur(e) {
+			const { $props: props, state } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.focused = false;
 			this.$emit("blur", e);
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "blur", this.defaultValue);
+			if (props.validator) {
+				this.dispatch("vui-form-item", "blur", state.value);
 			}
 		},
 		handleKeydown(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.$emit("keydown", e);
 		},
 		handleKeyup(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.$emit("keyup", e);
 		},
-		handleChange(e) {
-			this.$emit("change", e);
-		},
 		handleInput(e) {
-			this.defaultValue = e.target.value;
-			this.$emit("input", this.defaultValue);
+			const { $props: props } = this;
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", this.defaultValue);
+			if (props.disabled) {
+				return;
+			}
+
+			const value = e.target.value;
+
+			this.state.value = value;
+			this.$emit("input", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
 			}
 		},
+		handleChange(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.$emit("change", e);
+		},
 		handleClear(e) {
-			this.defaultValue = "";
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			const value = "";
+
+			this.state.value = value;
 			this.focus();
 			this.$emit("clear", e);
-			this.$emit("input", this.defaultValue);
+			this.$emit("input", value);
 			this.$emit("change", e);
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", this.defaultValue);
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
 			}
 		},
 		handleToggle(e) {
-			this.showPassword = !this.showPassword;
+			this.state.plaintext = !this.state.plaintext;
 		}
 	},
-
 	render(h) {
-		let { $vui: vui, vuiForm, vuiInputGroup, $slots: slots, $attrs: attrs, $listeners: listeners, classNamePrefix: customizedClassNamePrefix, placeholder, defaultValue, maxLength, clearable, showPasswordToggler, readonly } = this;
-		let { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeypress, handleKeyup, handleChange, handleInput, handleClear, handleToggle } = this;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "input");
+		const { $vui: vui, vuiForm, vuiInputGroup, $slots: slots, $listeners: listeners, $attrs: attrs, $props: props, state  } = this;
+		const { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeypress, handleKeyup, handleChange, handleInput, handleClear, handleToggle } = this;
 
 		// type
 		let type;
 
-		if (this.type === "password" && this.showPassword) {
+		if (props.type === "password" && state.plaintext) {
 			type = "text";
 		}
 		else {
-			type = this.type;
+			type = props.type;
 		}
 
 		// size: self > vuiInputGroup > vuiForm > vui
 		let size;
 
-		if (this.size) {
-			size = this.size;
+		if (props.size) {
+			size = props.size;
 		}
 		else if (vuiInputGroup && vuiInputGroup.size) {
 			size = vuiInputGroup.size;
@@ -210,42 +224,45 @@ const VuiInput = {
 			disabled = vuiInputGroup.disabled;
 		}
 		else {
-			disabled = this.disabled;
+			disabled = props.disabled;
 		}
 
-		// classes
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${size}`]: size,
+			[`${classNamePrefix}-hovered`]: state.hovered,
+			[`${classNamePrefix}-focused`]: state.focused,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
 		classes.elPrepend = `${classNamePrefix}-prepend`;
 		classes.elAppend = `${classNamePrefix}-append`;
-		classes.elMain = `${classNamePrefix}-main`;
-		classes.elPrefix = `${classNamePrefix}-main-prefix`;
-		classes.elSuffix = `${classNamePrefix}-main-suffix`;
+		classes.elPrefix = `${classNamePrefix}-prefix`;
+		classes.elSuffix = `${classNamePrefix}-suffix`;
+		classes.elInput = `${classNamePrefix}-input`;
 		classes.elBtnToggle = `${classNamePrefix}-btn-toggle`;
 		classes.elBtnClear = `${classNamePrefix}-btn-clear`;
 
 		// render
-		let prepend = slots.prepend || this.prepend;
-		let append = slots.append || this.append;
+		const prepend = slots.prepend || props.prepend;
+		const append = slots.append || props.append;
 		let prefix;
 		let suffix;
 
 		if (slots.prefix) {
 			prefix = slots.prefix;
 		}
-		else if (this.prefix) {
+		else if (props.prefix) {
 			prefix = (
-				<VuiIcon type={this.prefix} />
+				<VuiIcon type={props.prefix} />
 			);
 		}
 
-		if (clearable && !readonly && !disabled && defaultValue !== "") {
-			let btnClearProps = {
+		if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
+			const elBtnClearProps = {
 				props: {
 					type: "crossmark-circle-filled"
 				},
@@ -257,13 +274,13 @@ const VuiInput = {
 			};
 
 			suffix = (
-				<VuiIcon {...btnClearProps} />
+				<VuiIcon {...elBtnClearProps} />
 			);
 		}
-		else if (this.type === "password" && showPasswordToggler && !readonly && !disabled) {
-			let btnToggleProps = {
+		else if (props.type === "password" && !props.readonly && !disabled) {
+			const elBtnToggleProps = {
 				props: {
-					type: this.showPassword ? "eye-off" : "eye"
+					type: state.plaintext ? "eye-off" : "eye"
 				},
 				class: classes.elBtnToggle,
 				on: {
@@ -273,27 +290,30 @@ const VuiInput = {
 			};
 
 			suffix = (
-				<VuiIcon {...btnToggleProps} />
+				<VuiIcon {...elBtnToggleProps} />
 			);
 		}
 		else if (slots.suffix) {
 			suffix = slots.suffix;
 		}
-		else if (this.suffix) {
+		else if (props.suffix) {
 			suffix = (
-				<VuiIcon type={this.suffix} />
+				<VuiIcon type={props.suffix} />
 			);
 		}
 
-		let nativeInputProps = {
+		const elInputProps = {
 			ref: "input",
 			attrs: {
-				...attrs
+				...attrs,
+				type: type,
+				placeholder: props.placeholder,
+				maxLength: props.maxLength,
+				readonly: props.readonly,
+				disabled: disabled
 			},
 			on: {
 				...listeners,
-				mouseenter: handleMouseenter,
-				mouseleave: handleMouseleave,
 				focus: handleFocus,
 				blur: handleBlur,
 				keydown: handleKeydown,
@@ -310,13 +330,13 @@ const VuiInput = {
 						<div class={classes.elPrepend}>{prepend}</div>
 					)
 				}
-				<div class={classes.elMain}>
+				<div class={classes.elInput} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
 					{
 						prefix && (
 							<div class={classes.elPrefix}>{prefix}</div>
 						)
 					}
-					<input ref="input" {...nativeInputProps} type={type} placeholder={placeholder} value={defaultValue} maxLength={maxLength} readonly={readonly} disabled={disabled} />
+					<input {...elInputProps} value={state.value} />
 					{
 						suffix && (
 							<div class={classes.elSuffix}>{suffix}</div>

@@ -47,7 +47,7 @@ const VuiCascader = {
 		classNamePrefix: PropTypes.string,
 		size: PropTypes.oneOf(["small", "medium", "large"]),
 		placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		value: PropTypes.array,
+		value: PropTypes.array.def([]),
 		options: PropTypes.array.def([]),
 		expandTrigger: PropTypes.oneOf(["click", "hover"]).def("click"),
 		optionKeys: PropTypes.object.def(utils.optionKeys),

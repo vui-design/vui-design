@@ -255,7 +255,7 @@ const VuiSubmenu = {
 				<VuiSubmenuInline
 					classNamePrefix={classNamePrefix}
 					mode={vuiMenu.mode}
-					theme={vuiMenu.theme}
+					color={vuiMenu.theme || vuiMenu.color}
 					level={level}
 					indent={indent}
 					open={isOpen}
@@ -266,7 +266,7 @@ const VuiSubmenu = {
 				>
 					{icon && <template slot="icon">{icon}</template>}
 					{title && <template slot="title">{title}</template>}
-					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-inline`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme}`]}>{slots.default}</div>
+					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-inline`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme || vuiMenu.color}`]}>{slots.default}</div>
 				</VuiSubmenuInline>
 			);
 		}
@@ -277,7 +277,7 @@ const VuiSubmenu = {
 				<VuiSubmenuPopup
 					classNamePrefix={classNamePrefix}
 					mode={vuiMenu.mode}
-					theme={vuiMenu.theme}
+					color={vuiMenu.theme || vuiMenu.color}
 					level={level}
 					indent={indent}
 					open={isOpen}
@@ -289,7 +289,7 @@ const VuiSubmenu = {
 				>
 					{icon && <template slot="icon">{icon}</template>}
 					{title && <template slot="title">{title}</template>}
-					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-popup`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme}`]}>{slots.default}</div>
+					<div class={[`${menuClassNamePrefix}`, `${menuClassNamePrefix}-popup`, `${menuClassNamePrefix}-vertical`, `${menuClassNamePrefix}-${vuiMenu.theme || vuiMenu.color}`]}>{slots.default}</div>
 				</VuiSubmenuPopup>
 			);
 		}

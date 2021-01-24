@@ -131,7 +131,7 @@
 @button-default-active-background-color: #fff;
 @button-default-active-font-color: shade(#2d8cf0, 10%);
 @button-default-disabled-border-color: #e0e0e0;
-@button-default-disabled-background-color: shade(#fff, 3.5%);
+@button-default-disabled-background-color: shade(@component-background-color, 2%);
 @button-default-disabled-font-color: tint(#000, 75%);
 
 @button-primary-border-color: #2d8cf0;
@@ -144,7 +144,7 @@
 @button-primary-active-background-color: shade(#2d8cf0, 10%);
 @button-primary-active-font-color: #fff;
 @button-primary-disabled-border-color: #e0e0e0;
-@button-primary-disabled-background-color: shade(#fff, 3.5%);
+@button-primary-disabled-background-color: shade(@component-background-color, 2%);
 @button-primary-disabled-font-color: tint(#000, 75%);
 
 @button-info-border-color: #5bc0de;
@@ -157,7 +157,7 @@
 @button-info-active-background-color: shade(#5bc0de, 10%);
 @button-info-active-font-color: #fff;
 @button-info-disabled-border-color: #e0e0e0;
-@button-info-disabled-background-color: shade(#fff, 3.5%);
+@button-info-disabled-background-color: shade(@component-background-color, 2%);
 @button-info-disabled-font-color: tint(#000, 75%);
 
 @button-warning-border-color: #faad14;
@@ -170,7 +170,7 @@
 @button-warning-active-background-color: shade(#faad14, 10%);
 @button-warning-active-font-color: #fff;
 @button-warning-disabled-border-color: #e0e0e0;
-@button-warning-disabled-background-color: shade(#fff, 3.5%);
+@button-warning-disabled-background-color: shade(@component-background-color, 2%);
 @button-warning-disabled-font-color: tint(#000, 75%);
 
 @button-success-border-color: #52c41a;
@@ -183,7 +183,7 @@
 @button-success-active-background-color: shade(#52c41a, 10%);
 @button-success-active-font-color: #fff;
 @button-success-disabled-border-color: #e0e0e0;
-@button-success-disabled-background-color: shade(#fff, 3.5%);
+@button-success-disabled-background-color: shade(@component-background-color, 2%);
 @button-success-disabled-font-color: tint(#000, 75%);
 
 @button-error-border-color: #ed5565;
@@ -196,7 +196,7 @@
 @button-error-active-background-color: shade(#ed5565, 10%);
 @button-error-active-font-color: #fff;
 @button-error-disabled-border-color: #e0e0e0;
-@button-error-disabled-background-color: shade(#fff, 3.5%);
+@button-error-disabled-background-color: shade(@component-background-color, 2%);
 @button-error-disabled-font-color: tint(#000, 75%);
 
 @button-dashed-border-color: #e0e0e0;
@@ -209,7 +209,7 @@
 @button-dashed-active-background-color: #fff;
 @button-dashed-active-font-color: shade(#2d8cf0, 10%);
 @button-dashed-disabled-border-color: #e0e0e0;
-@button-dashed-disabled-background-color: shade(#fff, 3.5%);
+@button-dashed-disabled-background-color: shade(@component-background-color, 2%);
 @button-dashed-disabled-font-color: tint(#000, 75%);
 
 @button-text-border-color: transparent;
@@ -329,7 +329,7 @@
 @checkbox-checked-background-color: @primary-color;
 
 @checkbox-disabled-border-color: @border-color;
-@checkbox-disabled-background-color: shade(@component-background-color, 3.5%);
+@checkbox-disabled-background-color: shade(@component-background-color, 2%);
 @checkbox-disabled-color: shade(@border-color, 10%);
 @checkbox-disabled-font-color: @font-disabled-color;
 
@@ -353,8 +353,42 @@
 @checkbox-button-checked-font-color: @primary-color;
 
 @checkbox-button-disabled-border-color: @border-color;
-@checkbox-button-disabled-background-color: shade(@component-background-color, 3.5%);
+@checkbox-button-disabled-background-color: shade(@component-background-color, 2%);
 @checkbox-button-disabled-font-color: @font-disabled-color;
+
+// Input
+@input-border-color: @border-color;
+@input-border-radius: @border-radius;
+@input-background-color: @component-background-color;
+@input-font-color: @font-color;
+@input-font-family: @font-family;
+@input-line-height: @line-height;
+
+@input-size-sm: 24px;
+@input-size-md: 34px;
+@input-size-lg: 44px;
+
+@input-padding-sm: @padding-xs - 2px;
+@input-padding-md: @padding-xs;
+@input-padding-lg: @padding-xs + 2px;
+
+@input-font-size-sm: 12px;
+@input-font-size-md: 14px;
+@input-font-size-lg: 16px;
+
+@input-addon-background-color: #fafafa;
+@input-affix-color: @font-disabled-color;
+@input-btn-clear-color: @font-disabled-color;
+@input-btn-clear-hover-color: @font-color;
+@input-btn-toggle-color: @font-disabled-color;
+@input-btn-toggle-hover-color: @font-color;
+
+@input-hover-border-color: tint(@primary-color, 10%);
+@input-focus-border-color: tint(@primary-color, 10%);
+@input-focus-box-shadow: 0 0 0 2px fade(tint(@primary-color, 10%), 15);
+@input-disabled-border-color: @border-color;
+@input-disabled-background-color: shade(@component-background-color, 2%);
+@input-disabled-font-color: @font-disabled-color;
 
 // Radio
 @radio-border-color: @border-color;
@@ -376,7 +410,7 @@
 @radio-checked-border-color: @primary-color;
 
 @radio-disabled-border-color: @border-color;
-@radio-disabled-background-color: shade(@component-background-color, 3.5%);
+@radio-disabled-background-color: shade(@component-background-color, 2%);
 @radio-disabled-color: shade(@border-color, 10%);
 @radio-disabled-font-color: @font-disabled-color;
 
@@ -400,7 +434,7 @@
 @radio-button-checked-font-color: @primary-color;
 
 @radio-button-disabled-border-color: @border-color;
-@radio-button-disabled-background-color: shade(@component-background-color, 3.5%);
+@radio-button-disabled-background-color: shade(@component-background-color, 2%);
 @radio-button-disabled-font-color: @font-disabled-color;
 
 // Rate
@@ -409,6 +443,56 @@
 @rate-star-checked-color: @warning-color;
 @rate-star-size: 20px;
 @rate-star-hover-scale: scale(1.1);
+
+// Textarea
+@textarea-border-color: @border-color;
+@textarea-border-radius: @border-radius;
+@textarea-font-color: @font-color;
+@textarea-font-size: @font-size;
+@textarea-font-family: @font-family;
+@textarea-line-height: @line-height;
+
+@textarea-btn-clear-color: @font-disabled-color;
+@textarea-btn-clear-hover-color: @font-color;
+@textarea-statistic-font-color: @font-secondary-color;
+@textarea-statistic-font-size: @font-size-sm;
+
+@textarea-hover-border-color: tint(@primary-color, 10%);
+@textarea-focus-border-color: tint(@primary-color, 10%);
+@textarea-focus-box-shadow: 0 0 0 2px fade(tint(@primary-color, 10%), 15);
+@textarea-disabled-border-color: @border-color;
+@textarea-disabled-background-color: shade(@component-background-color, 2%);
+@textarea-disabled-font-color: @font-disabled-color;
+
+// Transfer
+@transfer-font-color: @font-color;
+@transfer-font-size: @font-size;
+@transfer-line-height: @line-height;
+@transfer-panel-width: 200px;
+@transfer-panel-height: 251px;
+@transfer-panel-with-search-height: 310px;
+@transfer-panel-border-color: @border-color;
+@transfer-panel-border-radius: @border-radius;
+@transfer-panel-header-border-color: #f0f0f0;
+@transfer-panel-header-padding: @padding-sm;
+@transfer-panel-search-border-color: #f0f0f0;
+@transfer-panel-search-padding: @padding-sm;
+@transfer-panel-footer-border-color: #f0f0f0;
+@transfer-panel-footer-padding: @padding-xs @padding-sm;
+@transfer-panel-body-list-item-height: 34px;
+@transfer-panel-body-list-item-padding: 0 @padding-sm;
+@transfer-panel-body-list-item-hover-background-color: #fafafa;
+@transfer-panel-body-list-item-checked-background-color: #e6f7ff;
+@transfer-panel-body-list-item-checked-hover-background-color: #dcf4ff;
+@transfer-panel-body-list-item-disabled-background-color: transparent;
+@transfer-panel-body-list-item-disabled-hover-background-color: transparent;
+@transfer-operation-margin: 0 @margin-md;
+@transfer-operation-button-margin-top: @margin-md;
+
+
+
+
+
 
 // Switch
 @vui-switch-size-sm: 16px;
@@ -426,11 +510,6 @@
 @vui-switch-color: #ccc;
 
 @vui-switch-checked-color: #2d8cf0;
-
-// Input 输入框
-@input-size: 34px;
-@input-size-lg: 44px;
-@input-size-sm: 24px;
 
 // Timeroutine
 @timeroutine-border-color: #f0f0f0;
@@ -455,6 +534,8 @@
 @avatar-font-size-sm: @avatar-size-sm / 2;
 @avatar-font-size-md: @avatar-size-md / 2;
 @avatar-font-size-lg: @avatar-size-lg / 2;
+@avatar-placeholder-background-color: #fde3cf;
+@avatar-placeholder-font-color: #f56a00;
 
 // Badge
 @badge-dot-size: 6px;

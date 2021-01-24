@@ -10,7 +10,7 @@ const VuiSubmenuInline = {
 			type: String,
 			default: undefined
 		},
-		theme: {
+		color: {
 			type: String,
 			default: undefined
 		},
@@ -70,7 +70,7 @@ const VuiSubmenuInline = {
 	},
 
 	render(h) {
-		let { $slots, classNamePrefix, theme, indent, open, selected, disabled, animation } = this;
+		let { $slots, classNamePrefix, color, indent, open, selected, disabled, animation } = this;
 		let { handleHeaderClick, handleBodyBeforeEnter, handleBodyEnter, handleBodyAfterEnter, handleBodyBeforeLeave, handleBodyLeave, handleBodyAfterLeave } = this;
 		let classes = {
 			[`${classNamePrefix}`]: true,

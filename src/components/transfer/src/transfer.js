@@ -186,7 +186,7 @@ const VuiTransfer = {
 		const arrowRightDisabled = state.sourceSelectedKeys.length === 0;
 		const arrowLeftDisabled = state.targetSelectedKeys.length === 0;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "transfer");
 		let classes = {};
 
