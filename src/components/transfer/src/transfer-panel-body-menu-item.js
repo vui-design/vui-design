@@ -4,8 +4,8 @@ import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiTransferPanelBodyListItem = {
-	name: "vui-transfer-panel-body-list-item",
+const VuiTransferPanelBodyMenuItem = {
+	name: "vui-transfer-panel-body-menu-item",
 	components: {
 		VuiCheckbox
 	},
@@ -14,37 +14,37 @@ const VuiTransferPanelBodyListItem = {
 		data: PropTypes.object.def({}),
 		optionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
 		selectedKeys: PropTypes.array.def([]),
-		option: PropTypes.func.def(option => option.key),
+		formatter: PropTypes.func.def(option => option.key),
 		disabled: PropTypes.bool.def(false)
 	},
 	methods: {
 		handleChange(checked) {
 			const { $props: props } = this;
-			const key = utils.getOptionKey(props.data, props.optionKey);
+			const optionKey = utils.getOptionKey(props.data, props.optionKey);
 
 			if (props.disabled) {
 				return;
 			}
 
-			this.$emit("click", checked, key);
+			this.$emit("click", checked, optionKey);
 		}
 	},
 	render() {
 		const { $props: props, state } = this;
 		const { handleChange } = this;
 
-		// key
-		const key = utils.getOptionKey(props.data, props.optionKey);
+		// optionKey
+		const optionKey = utils.getOptionKey(props.data, props.optionKey);
 
 		// content
-		let content = props.option(clone(props.data));
+		let content = props.formatter(clone(props.data));
 
 		if (!content) {
-			content = key;
+			content = optionKey;
 		}
 
 		// checked
-		const checked = props.selectedKeys.indexOf(key) > -1;
+		const checked = props.selectedKeys.indexOf(optionKey) > -1;
 
 		// disabled
 		const disabled = props.disabled;
@@ -70,4 +70,4 @@ const VuiTransferPanelBodyListItem = {
 	}
 };
 
-export default VuiTransferPanelBodyListItem;
+export default VuiTransferPanelBodyMenuItem;

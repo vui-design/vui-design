@@ -3,8 +3,8 @@ import Locale from "vui-design/mixins/locale";
 import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-export default {
-	name: "vui-cascader-empty",
+const VuiMultipleCascaderEmpty = {
+	name: "vui-multiple-cascader-empty",
 	components: {
 		VuiEmpty
 	},
@@ -13,11 +13,13 @@ export default {
 	],
 	props: {
 		classNamePrefix: PropTypes.string,
-		notFoundText: PropTypes.string
+		description: PropTypes.string
 	},
-	render(h) {
-		const { $props: props, t: translate } = this;
-		const notFoundText = props.notFoundText || translate("vui.cascader.notFound");
+	render() {
+		const { $props: props } = this;
+
+		// description
+		const description = props.description ? props.description : this.t("vui.multipleCascader.notFound");
 
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
@@ -28,8 +30,10 @@ export default {
 		// render
 		return (
 			<div class={classes.el}>
-				<VuiEmpty size="small" description={notFoundText} />
+				<VuiEmpty description={description} />
 			</div>
 		);
 	}
 };
+
+export default VuiMultipleCascaderEmpty;

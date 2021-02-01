@@ -13,6 +13,10 @@ export default {
 			placeholder: "请选择",
 			notFound: "暂无数据"
 		},
+		multipleCascader: {
+			notFound: "暂无数据",
+			clear: "清空"
+		},
 		select: {
 			placeholder: "请选择",
 			loading: "加载中...",

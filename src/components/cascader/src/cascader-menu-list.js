@@ -123,7 +123,7 @@ export default {
 		const { $props: props, state } = this;
 		const { handleSelect } = this;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu-list");
 		let classes = {};
 

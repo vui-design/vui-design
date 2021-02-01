@@ -30,11 +30,11 @@ const VuiTransfer = {
 		titles: PropTypes.array.def(["", ""]),
 		operations: PropTypes.array.def([]),
 		panelStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.func]),
-		data: PropTypes.array.def([]),
+		options: PropTypes.array.def([]),
 		optionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
 		selectedKeys: PropTypes.array.def([]),
 		targetKeys: PropTypes.array.def([]),
-		option: PropTypes.func.def(option => option.key),
+		formatter: PropTypes.func.def(option => option.key),
 		showSelectAll: PropTypes.bool.def(true),
 		searchable: PropTypes.bool.def(false),
 		filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
@@ -80,15 +80,15 @@ const VuiTransfer = {
 			const left = [];
 			const right = new Array(state.targetKeys.length);
 
-			props.data.forEach(item => {
-				const optionKey = utils.getOptionKey(item, props.optionKey);
+			props.options.forEach(option => {
+				const optionKey = utils.getOptionKey(option, props.optionKey);
 				const index = state.targetKeys.indexOf(optionKey);
 
 				if (index === -1) {
-					left.push(item);
+					left.push(option);
 				}
 				else {
-					right[index] = item;
+					right[index] = option;
 				}
 			});
 
@@ -142,8 +142,8 @@ const VuiTransfer = {
 			const { $props: props, state } = this;
 			const selectedKeys = direction === "right" ? state.sourceSelectedKeys : state.targetSelectedKeys;
 			const moveKeys = selectedKeys.filter(selectedKey => {
-				const disabled = props.data.some(item => {
-					return selectedKey === utils.getOptionKey(item, props.optionKey) && item.disabled;
+				const disabled = props.options.some(option => {
+					return selectedKey === utils.getOptionKey(option, props.optionKey) && option.disabled;
 				});
 
 				return !disabled;
@@ -199,14 +199,13 @@ const VuiTransfer = {
 		return (
 			<div class={classes.el}>
 				<VuiTransferPanel
-					key="left"
 					classNamePrefix={classNamePrefix}
 					direction="left"
 					title={props.titles[0]}
-					data={dataSource.left}
+					options={dataSource.left}
 					optionKey={props.optionKey}
 					selectedKeys={state.sourceSelectedKeys}
-					option={scopedSlots.option || props.option}
+					formatter={scopedSlots.formatter || props.formatter}
 					body={scopedSlots.body}
 					footer={scopedSlots.footer}
 					showSelectAll={props.showSelectAll}
@@ -221,7 +220,6 @@ const VuiTransfer = {
 					onSelect={handleLeftSelect}
 				/>
 				<VuiTransferOperation
-					key="operation"
 					classNamePrefix={classNamePrefix}
 					disabled={props.disabled}
 					arrowRightText={props.operations[0]}
@@ -232,14 +230,13 @@ const VuiTransfer = {
 					moveToLeft={handleMoveToLeft}
 				/>
 				<VuiTransferPanel
-					key="right"
 					classNamePrefix={classNamePrefix}
 					direction="right"
 					title={props.titles[1]}
-					data={dataSource.right}
+					options={dataSource.right}
 					optionKey={props.optionKey}
 					selectedKeys={state.targetSelectedKeys}
-					option={scopedSlots.option || props.option}
+					formatter={scopedSlots.formatter || props.formatter}
 					body={scopedSlots.body}
 					footer={scopedSlots.footer}
 					showSelectAll={props.showSelectAll}

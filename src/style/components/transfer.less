@@ -26,6 +26,7 @@
 			align-items:center;
 			box-sizing:border-box;
 			border-bottom:1px solid @transfer-panel-header-border-color;
+			background-color: @transfer-panel-header-background-color;
 			padding:@transfer-panel-header-padding;
 
 			&-checkbox {
@@ -65,7 +66,7 @@
 			box-sizing:border-box;
 			overflow:auto;
 
-			&-list {
+			&-menu {
 				flex:auto;
 				display:block;
 				box-sizing:border-box;
@@ -76,28 +77,28 @@
 					flex-flow:row nowrap;
 					justify-content:flex-start;
 					align-items:center;
-					height:@transfer-panel-body-list-item-height;
-					padding:@transfer-panel-body-list-item-padding;
+					height:@transfer-panel-body-menu-item-height;
+					padding:@transfer-panel-body-menu-item-padding;
 					transition:all @transition-duration @transition-timing-function;
 
 					&:hover {
-						background-color:@transfer-panel-body-list-item-hover-background-color;
+						background-color:@transfer-panel-body-menu-item-hover-background-color;
 					}
 
 					&-checked {
-						background-color:@transfer-panel-body-list-item-checked-background-color;
+						background-color:@transfer-panel-body-menu-item-checked-background-color;
 
 						&:hover {
-							background-color:@transfer-panel-body-list-item-checked-hover-background-color;
+							background-color:@transfer-panel-body-menu-item-checked-hover-background-color;
 						}
 					}
 
 					&-disabled {
 						cursor:not-allowed;
-						background-color:@transfer-panel-body-list-item-disabled-background-color;
+						background-color:@transfer-panel-body-menu-item-disabled-background-color;
 
 						&:hover {
-							background-color:@transfer-panel-body-list-item-disabled-hover-background-color;
+							background-color:@transfer-panel-body-menu-item-disabled-hover-background-color;
 						}
 					}
 				}

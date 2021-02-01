@@ -122,7 +122,7 @@ export default {
 		const { $slots: slots, $props: props } = this;
 		const { handleBeforeOpen, handleAfterClose, handleMousedown } = this;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown");
 		let classes = {};
 

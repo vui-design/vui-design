@@ -1,6 +1,6 @@
 import VuiCheckbox from "vui-design/components/checkbox";
 import VuiTransferPanelSearch from "./transfer-panel-search";
-import VuiTransferPanelBodyList from "./transfer-panel-body-list";
+import VuiTransferPanelBodyMenu from "./transfer-panel-body-menu";
 import VuiTransferPanelBodyEmpty from "./transfer-panel-body-empty";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
@@ -13,17 +13,17 @@ const VuiTransferPanel = {
 	components: {
 		VuiCheckbox,
 		VuiTransferPanelSearch,
-		VuiTransferPanelBodyList,
+		VuiTransferPanelBodyMenu,
 		VuiTransferPanelBodyEmpty
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
 		direction: PropTypes.string,
 		title: PropTypes.string,
-		data: PropTypes.array.def([]),
+		options: PropTypes.array.def([]),
 		optionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
 		selectedKeys: PropTypes.array.def([]),
-		option: PropTypes.func.def(option => option.key),
+		formatter: PropTypes.func.def(option => option.key),
 		body: PropTypes.func,
 		footer: PropTypes.func,
 		showSelectAll: PropTypes.bool.def(true),
@@ -69,32 +69,32 @@ const VuiTransferPanel = {
 
 			if (props.showSelectAll) {
 				const options = props.options.filter(option => !option.disabled);
-				const keys = options.map(option => utils.getOptionKey(option, props.optionKey));
+				const optionKeys = options.map(option => utils.getOptionKey(option, props.optionKey));
 
 				let checked = false;
 				let indeterminate = false;
 				const disabled = props.disabled || options.length === 0;
 
 				if (length > 0 && selectedLength > 0) {
-					checked = keys.every(key => props.selectedKeys.indexOf(key) > -1);
-					indeterminate = keys.some(key => props.selectedKeys.indexOf(key) > -1);
+					checked = optionKeys.every(optionKey => props.selectedKeys.indexOf(optionKey) > -1);
+					indeterminate = optionKeys.some(optionKey => props.selectedKeys.indexOf(optionKey) > -1);
 				}
 
 				const onChange = checked => {
 					let selectedKeys = clone(props.selectedKeys);
 
 					if (checked) {
-						keys.forEach(key => {
-							const index = selectedKeys.indexOf(key);
+						optionKeys.forEach(optionKey => {
+							const index = selectedKeys.indexOf(optionKey);
 
 							if (index === -1) {
-								selectedKeys.push(key);
+								selectedKeys.push(optionKey);
 							}
 						});
 					}
 					else {
-						keys.forEach(key => {
-							const index = selectedKeys.indexOf(key);
+						optionKeys.forEach(optionKey => {
+							const index = selectedKeys.indexOf(optionKey);
 
 							if (index > -1) {
 								selectedKeys.splice(index, 1);
@@ -161,12 +161,12 @@ const VuiTransferPanel = {
 			if (!content) {
 				if (props.options.length) {
 					content = (
-						<VuiTransferPanelBodyList
+						<VuiTransferPanelBodyMenu
 							classNamePrefix={classNamePrefix}
-							data={props.options}
+							options={props.options}
 							optionKey={props.optionKey}
 							selectedKeys={props.selectedKeys}
-							option={props.option}
+							formatter={props.formatter}
 							disabled={props.disabled}
 							onSelect={props.onSelect}
 						/>
@@ -234,7 +234,7 @@ const VuiTransferPanel = {
 		const { handleSelectAll, handleSearch, handleScroll, handleSelect } = this;
 
 		// options
-		let options = props.data;
+		let options = props.options;
 
 		if (props.searchable && state.keyword && props.filter) {
 			options = utils.getFilteredOptions(options, state.keyword, props.filter, props.filterOptionProp);
@@ -277,11 +277,10 @@ const VuiTransferPanel = {
 		const theBodyProps = {
 			classNamePrefix,
 			direction: props.direction,
-			data: props.data,
 			options,
 			optionKey: props.optionKey,
 			selectedKeys: state.selectedKeys,
-			option: props.option,
+			formatter: props.formatter,
 			searchable: props.searchable,
 			keyword: state.keyword,
 			disabled: props.disabled,
@@ -295,7 +294,6 @@ const VuiTransferPanel = {
 		const theFooterProps = {
 			classNamePrefix,
 			direction: props.direction,
-			data: props.data,
 			options,
 			disabled: props.disabled,
 			locale: props.locale

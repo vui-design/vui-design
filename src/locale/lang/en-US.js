@@ -13,6 +13,10 @@ export default {
 			placeholder: "Select",
 			notFound: "No Data"
 		},
+		multipleCascader: {
+			notFound: "No Data",
+			clear: "Clear"
+		},
 		select: {
 			placeholder: "Select",
 			loading: "Loading...",

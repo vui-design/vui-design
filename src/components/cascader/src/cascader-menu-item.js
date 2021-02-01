@@ -95,7 +95,7 @@ export default {
 		const selected = vuiCascaderMenu.state.click === value;
 		const disabled = props.data[disabledKey];
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu-item");
 		let classes = {};
 
@@ -106,7 +106,7 @@ export default {
 			[`${classNamePrefix}-disabled`]: disabled
 		};
 		classes.elLabel = `${classNamePrefix}-label`;
-		classes.elIcon = `${classNamePrefix}-icon`;
+		classes.elArrow = `${classNamePrefix}-arrow`;
 
 		// render
 		let children = [];
@@ -137,7 +137,7 @@ export default {
 
 		if (props.data[childrenKey]) {
 			children.push(
-				<VuiIcon type="chevron-right" class={classes.elIcon} />
+				<VuiIcon type="chevron-right" class={classes.elArrow} />
 			);
 		}
 

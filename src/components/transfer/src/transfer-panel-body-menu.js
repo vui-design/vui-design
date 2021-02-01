@@ -1,20 +1,20 @@
-import VuiTransferPanelBodyListItem from "./transfer-panel-body-list-item";
+import VuiTransferPanelBodyMenuItem from "./transfer-panel-body-menu-item";
 import PropTypes from "vui-design/utils/prop-types";
 import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiTransferPanelBodyList = {
-	name: "vui-transfer-panel-body-list",
+const VuiTransferPanelBodyMenu = {
+	name: "vui-transfer-panel-body-menu",
 	components: {
-		VuiTransferPanelBodyListItem
+		VuiTransferPanelBodyMenuItem
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
-		data: PropTypes.array.def([]),
+		options: PropTypes.array.def([]),
 		optionKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
 		selectedKeys: PropTypes.array.def([]),
-		option: PropTypes.func.def(option => option.key),
+		formatter: PropTypes.func.def(option => option.key),
 		disabled: PropTypes.bool.def(false)
 	},
 	data() {
@@ -33,18 +33,18 @@ const VuiTransferPanelBodyList = {
 		}
 	},
 	methods: {
-		handleSelect(checked, key) {
+		handleSelect(checked, optionKey) {
 			const { $props: props } = this;
 
 			if (props.disabled) {
 				return;
 			}
 
-			const index = this.state.selectedKeys.indexOf(key);
+			const index = this.state.selectedKeys.indexOf(optionKey);
 
 			if (checked) {
 				if (index === -1) {
-					this.state.selectedKeys.push(key);
+					this.state.selectedKeys.push(optionKey);
 				}
 			}
 			else {
@@ -61,7 +61,7 @@ const VuiTransferPanelBodyList = {
 		const { handleSelect } = this;
 
 		// class
-		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
@@ -70,18 +70,18 @@ const VuiTransferPanelBodyList = {
 		return (
 			<div class={classes.el}>
 				{
-					props.data.map(item => {
-						const key = utils.getOptionKey(item, props.optionKey);
+					props.options.map(option => {
+						const optionKey = utils.getOptionKey(option, props.optionKey);
 
 						return (
-							<VuiTransferPanelBodyListItem
-								key={key}
+							<VuiTransferPanelBodyMenuItem
+								key={optionKey}
 								classNamePrefix={classNamePrefix}
-								data={item}
+								data={option}
 								optionKey={props.optionKey}
 								selectedKeys={props.selectedKeys}
-								option={props.option}
-								disabled={props.disabled || item.disabled}
+								formatter={props.formatter}
+								disabled={props.disabled || option.disabled}
 								onClick={handleSelect}
 							/>
 						);
@@ -92,4 +92,4 @@ const VuiTransferPanelBodyList = {
 	}
 };
 
-export default VuiTransferPanelBodyList;
+export default VuiTransferPanelBodyMenu;

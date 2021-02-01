@@ -138,7 +138,7 @@ export default {
 		// showBtnClear
 		const showBtnClear = props.clearable && !props.disabled && props.hovered && (props.keyword || props.value.length > 0);
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "selection");
 		let classes = {};
 
@@ -149,7 +149,7 @@ export default {
 		classes.elArraw = `${classNamePrefix}-arrow`;
 		classes.elBtnClear = `${classNamePrefix}-btn-clear`;
 
-		// styles
+		// style
 		let styles = {};
 
 		styles.el = {

@@ -77,7 +77,7 @@ export default {
 		const { $props: props } = this;
 		const { handleOptionMouseenter, handleOptionClick } = this;
 
-		// classes
+		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
 		let classes = {};
 
