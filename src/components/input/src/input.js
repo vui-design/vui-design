@@ -306,6 +306,8 @@ const VuiInput = {
 			ref: "input",
 			attrs: {
 				...attrs,
+				autocomplete: "off",
+				spellcheck: false,
 				type: type,
 				placeholder: props.placeholder,
 				maxLength: props.maxLength,

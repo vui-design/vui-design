@@ -1,6 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
 import Emitter from "vui-design/mixins/emitter";
 import Longpress from "vui-design/directives/longpress";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getNumberPrecision from "vui-design/utils/getNumberPrecision";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
@@ -12,7 +13,6 @@ const regexp = {
 
 const VuiInputNumber = {
 	name: "vui-input-number",
-
 	inject: {
 		vuiForm: {
 			default: undefined
@@ -21,133 +21,65 @@ const VuiInputNumber = {
 			default: undefined
 		}
 	},
-
 	components: {
 		VuiIcon
 	},
-
 	mixins: [
 		Emitter
 	],
-
 	directives: {
 		Longpress
 	},
-
 	inheritAttrs: false,
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		placeholder: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: Number,
-			default: undefined
-		},
-		min: {
-			type: Number,
-			default: -Infinity
-		},
-		max: {
-			type: Number,
-			default: Infinity
-		},
-		step: {
-			type: Number,
-			default: 1
-		},
-		precision: {
-			type: Number,
-			default: undefined,
-			validator: value => value >= 0
-		},
-		formatter: {
-			type: Function,
-			default: undefined
-		},
-		parser: {
-			type: Function,
-			default: undefined
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		readonly: {
-			type: Boolean,
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		validator: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.number,
+		min: PropTypes.number.def(-Infinity),
+		max: PropTypes.number.def(Infinity),
+		step: PropTypes.number.def(1),
+		precision: PropTypes.number,
+		formatter: PropTypes.func,
+		parser: PropTypes.func,
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		readonly: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
+		validator: PropTypes.bool.def(true)
 	},
-
 	data() {
-		let { $props: props } = this;
-		let value = this.getDerivedValueFromProps(props);
+		const { $props: props } = this;
+		const state = {
+			hovered: false,
+			focused: false,
+			value: this.getStateValueFromProps(props)
+		};
 
 		return {
-			state: {
-				focused: false,
-				value
-			}
+			state
 		};
 	},
-
 	watch: {
 		value() {
-			let { state, $props: props } = this;
-			let value = this.getDerivedValueFromProps(props);
+			const { $props: props } = this;
 
-			if (state.value === value) {
-				return;
-			}
-
-			this.setStateValue(value);
+			this.setStateValueFromProps(props);
 		},
 		min() {
-			let { state, $props: props } = this;
-			let value = this.getDerivedValueFromProps(props);
+			const { $props: props } = this;
 
-			if (state.value === value) {
-				return;
-			}
-
-			this.setStateValue(value);
+			this.setStateValueFromProps(props);
 		},
 		max() {
-			let { state, $props: props } = this;
-			let value = this.getDerivedValueFromProps(props);
+			const { $props: props } = this;
 
-			if (state.value === value) {
-				return;
-			}
-
-			this.setStateValue(value);
+			this.setStateValueFromProps(props);
 		},
 		precision() {
-			let { state, $props: props } = this;
-			let value = this.getDerivedValueFromProps(props);
+			const { $props: props } = this;
 
-			if (state.value === value) {
-				return;
-			}
-
-			this.setStateValue(value);
+			this.setStateValueFromProps(props);
 		}
 	},
-
 	methods: {
 		focus() {
 			this.$refs.input.focus();
@@ -155,8 +87,7 @@ const VuiInputNumber = {
 		blur() {
 			this.$refs.input.blur();
 		},
-
-		getDerivedValueFromProps(props) {
+		getStateValueFromProps(props) {
 			let value;
 
 			if (is.number(props.value)) {
@@ -170,10 +101,19 @@ const VuiInputNumber = {
 
 			return this.getStateValue(value);
 		},
+		setStateValueFromProps(props) {
+			const { state } = this;
+			const value = this.getStateValueFromProps(props);
 
+			if (state.value === value) {
+				return;
+			}
+
+			this.setStateValue(value);
+		},
 		getPrecision() {
-			let { $props: props } = this;
-			let map = {
+			const { $props: props } = this;
+			const map = {
 				value: getNumberPrecision(props.value),
 				step: getNumberPrecision(props.step)
 			};
@@ -195,9 +135,8 @@ const VuiInputNumber = {
 
 			return parseFloat(Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision));
 		},
-
 		getStateValue(value) {
-			let { $props: props } = this;
+			const { $props: props } = this;
 
 			if (is.number(value) && is.number(props.precision)) {
 				value = this.setPrecision(value, props.precision);
@@ -222,7 +161,6 @@ const VuiInputNumber = {
 				this.dispatch("vui-form-item", "change", value);
 			}
 		},
-
 		increase(value, step) {
 			value = value || 0;
 
@@ -230,7 +168,7 @@ const VuiInputNumber = {
 				return this.state.value;
 			}
 
-			let factor = Math.pow(10, this.getPrecision());
+			const factor = Math.pow(10, this.getPrecision());
 
 			return this.setPrecision((factor * value + factor * step) / factor);
 		},
@@ -241,26 +179,57 @@ const VuiInputNumber = {
 				return this.state.value;
 			}
 
-			let factor = Math.pow(10, this.getPrecision());
+			const factor = Math.pow(10, this.getPrecision());
 
 			return this.setPrecision((factor * value - factor * step) / factor);
 		},
+		handleMouseenter(e) {
+			const { $props: props } = this;
 
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = true;
+			this.$emit("mouseenter", e);
+		},
+		handleMouseleave(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
+			this.state.hovered = false;
+			this.$emit("mouseleave", e);
+		},
 		handleFocus(e) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.state.focused = true;
 			this.$emit("focus", e);
 		},
 		handleBlur(e) {
+			const { $props: props, state } = this;
+
+			if (props.disabled) {
+				return;
+			}
+
 			this.state.focused = false;
 			this.$emit("blur", e);
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "blur", this.state.value);
+			if (props.validator) {
+				this.dispatch("vui-form-item", "blur", state.value);
 			}
 		},
 		handleKeydown(e) {
-			let { $props: props } = this;
-			let keyCode = e.keyCode;
+			const { $props: props } = this;
+			const keyCode = e.keyCode;
 
 			if (keyCode === 38) {
 				e.preventDefault();
@@ -286,7 +255,7 @@ const VuiInputNumber = {
 			this.$emit("keyup", e);
 		},
 		handleInput(e) {
-			let { state, $props: props } = this;
+			const { $props: props, state } = this;
 			let value = e.target.value;
 
 			if (is.function(props.parser)) {
@@ -352,9 +321,9 @@ const VuiInputNumber = {
 			this.handleInput(e);
 		},
 		handleIncrease() {
-			let { state, $props: props } = this;
-			let value = this.increase(state.value, props.step);
-			let disabledBtnIncrease = value > props.max;
+			const { $props: props, state } = this;
+			const value = this.increase(state.value, props.step);
+			const disabledBtnIncrease = value > props.max;
 
 			if (!state.focused) {
 				this.focus();
@@ -367,9 +336,9 @@ const VuiInputNumber = {
 			this.setStateValue(value);
 		},
 		handleDecrease() {
-			let { state, $props: props } = this;
-			let value = this.decrease(state.value, props.step);
-			let disabledBtnDecrease = value < props.min;
+			const { state, $props: props } = this;
+			const value = this.decrease(state.value, props.step);
+			const disabledBtnDecrease = value < props.min;
 
 			if (!state.focused) {
 				this.focus();
@@ -388,11 +357,9 @@ const VuiInputNumber = {
 			e.preventDefault();
 		}
 	},
-
 	render(h) {
-		let { $vui: vui, vuiForm, vuiInputGroup } = this;
-		let { state, $props: props, $attrs: attrs, $listeners: listeners } = this;
-		let { handleFocus, handleBlur, handleKeydown, handleKeyup, handleInput, handleChange, handleIncrease, handleDecrease, handleIncreaseMousedown, handleDecreaseMousedown } = this;
+		const { $vui: vui, vuiForm, vuiInputGroup, $listeners: listeners, $attrs: attrs, $props: props, state } = this;
+		const { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeyup, handleInput, handleChange, handleIncrease, handleDecrease, handleIncreaseMousedown, handleDecreaseMousedown } = this;
 
 		// size: self > vuiInputGroup > vuiForm > vui
 		let size;
@@ -413,19 +380,6 @@ const VuiInputNumber = {
 			size = "medium";
 		}
 
-		// readonly: vuiForm > vuiInputGroup > self
-		let readonly;
-
-		if (vuiForm && vuiForm.readonly) {
-			readonly = vuiForm.readonly;
-		}
-		else if (vuiInputGroup && vuiInputGroup.readonly) {
-			readonly = vuiInputGroup.readonly;
-		}
-		else {
-			readonly = props.readonly;
-		}
-
 		// disabled: vuiForm > vuiInputGroup > self
 		let disabled;
 
@@ -439,11 +393,11 @@ const VuiInputNumber = {
 			disabled = props.disabled;
 		}
 
-		// 
-		let disabledBtnIncrease = this.increase(state.value, props.step) > props.max;
+		// disabled increase button
+		const disabledBtnIncrease = this.increase(state.value, props.step) > props.max;
 
-		// 
-		let disabledBtnDecrease = this.decrease(state.value, props.step) < props.min;
+		// disabled decrease button
+		const disabledBtnDecrease = this.decrease(state.value, props.step) < props.min;
 
 		// value
 		let value = state.value;
@@ -457,12 +411,13 @@ const VuiInputNumber = {
 		}
 
 		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input-number");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input-number");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${size}`]: size,
+			[`${classNamePrefix}-hovered`]: state.hovered,
 			[`${classNamePrefix}-focused`]: state.focused,
 			[`${classNamePrefix}-disabled`]: disabled
 		};
@@ -480,9 +435,17 @@ const VuiInputNumber = {
 		};
 
 		// render
-		let attributes = {
+		const elInputProps = {
+			ref: "input",
 			attrs: {
-				...attrs
+				...attrs,
+				type: "text",
+				autocomplete: "off",
+				spellcheck: false,
+				placeholder: props.placeholder,
+				readonly: props.readonly,
+				disabled: disabled,
+				class: classes.elInput
 			},
 			on: {
 				...listeners,
@@ -496,10 +459,10 @@ const VuiInputNumber = {
 		};
 
 		return (
-			<div class={classes.el}>
-				<input ref="input" type="text" autocomplete="off" spellcheck="false" {...attributes} class={classes.elInput} placeholder={props.placeholder} value={value} readonly={readonly} disabled={disabled} />
+			<div class={classes.el} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
+				<input {...elInputProps} value={value} />
 				{
-					!readonly && !disabled && (
+					!props.readonly && !disabled && (
 						<div class={classes.elTrigger}>
 							<div class={classes.elBtnIncrease} v-longpress={handleIncrease} onMousedown={handleIncreaseMousedown}>
 								<VuiIcon type="chevron-up" />

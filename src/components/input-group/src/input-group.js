@@ -1,42 +1,32 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiInputGroup = {
 	name: "vui-input-group",
-
 	provide() {
 		return {
 			vuiInputGroup: this
 		};
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		compact: {
-			type: Boolean,
-			default: false
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		compact: PropTypes.bool.def(false),
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		disabled: PropTypes.bool.def(false)
 	},
-
 	render() {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, compact } = this;
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "input-group");
-		const classes = {
+		const { $slots: slots, $props: props } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input-group");
+		const classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-compact`]: compact
+			[`${classNamePrefix}-compact`]: props.compact
 		};
 
+		// render
 		return (
 			<div class={classes}>{slots.default}</div>
 		);
