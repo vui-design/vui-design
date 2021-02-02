@@ -76,7 +76,7 @@ const createModalInstance = function(options) {
 			}
 		},
 		render(h) {
-			const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, backdrop, backdropClassName, animations, getPopupContainer } = this;
+			const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, headerStyle, bodyStyle, footerStyle, backdrop, backdropClassName, animations, getPopupContainer } = this;
 			const { onCancel, onOk, onBeforeOpen, onOpen, onAfterOpen, onBeforeClose, onClose, onAfterClose, handleOpen, handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleClose, handleAfterClose } = this;
 
 			const beforeOpen = createChainedFunction(handleBeforeOpen.bind(this), onBeforeOpen);
@@ -104,6 +104,9 @@ const createModalInstance = function(options) {
 					centered,
 					width,
 					className,
+					headerStyle,
+					bodyStyle,
+					footerStyle,
 					backdrop,
 					backdropClassName,
 					clickBackdropToClose: false,

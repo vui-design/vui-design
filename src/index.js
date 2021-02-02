@@ -244,7 +244,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-	version: "1.3.3",
+	version: "1.3.4",
 	install,
 	locale: locale.use,
 	i18n: locale.i18n,

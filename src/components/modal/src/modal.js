@@ -47,6 +47,9 @@ const VuiModal = {
 		centered: PropTypes.bool.def(false),
 		width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(500),
 		className: PropTypes.string,
+		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		footerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 		backdrop: PropTypes.bool.def(true),
 		backdropClassName: PropTypes.string,
 		clickBackdropToClose: PropTypes.bool.def(true),
@@ -247,7 +250,7 @@ const VuiModal = {
 
 		if (showHeader) {
 			header = (
-				<div class={classes.elHeader}>
+				<div class={classes.elHeader} style={props.headerStyle}>
 					<div class={classes.elTitle}>{slots.title || props.title}</div>
 				</div>
 			);
@@ -256,7 +259,7 @@ const VuiModal = {
 		let body;
 
 		body = (
-			<div class={classes.elBody}>{slots.default}</div>
+			<div class={classes.elBody} style={props.bodyStyle}>{slots.default}</div>
 		);
 
 		let footer;
@@ -264,7 +267,7 @@ const VuiModal = {
 		if (props.showFooter) {
 			if (slots.footer) {
 				footer = (
-					<div class={classes.elFooter}>{slots.footer}</div>
+					<div class={classes.elFooter} style={props.footerStyle}>{slots.footer}</div>
 				);
 			}
 			else {
@@ -304,7 +307,7 @@ const VuiModal = {
 				}
 
 				footer = (
-					<div class={classes.elFooter}>{buttons}</div>
+					<div class={classes.elFooter} style={props.footerStyle}>{buttons}</div>
 				);
 			}
 		}

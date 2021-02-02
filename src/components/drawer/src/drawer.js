@@ -358,7 +358,7 @@ const VuiDrawer = {
 				}
 
 				footer = (
-					<div class={classes.elFooter}>{buttons}</div>
+					<div class={classes.elFooter} style={props.footerStyle}>{buttons}</div>
 				);
 			}
 		}
