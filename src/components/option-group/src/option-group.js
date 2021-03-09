@@ -1,19 +1,11 @@
+import PropTypes from "vui-design/utils/prop-types";
+
 const VuiOptionGroup = {
-	name: "vui-option-group",
-
-	props: {
-		label: {
-			type: String,
-			default: undefined,
-			required: true
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
-	},
-
-	isOptionGroup: true
+  name: "vui-option-group",
+  props: {
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    disabled: PropTypes.bool.def(false)
+  }
 };
 
 export default VuiOptionGroup;

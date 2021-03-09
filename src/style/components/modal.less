@@ -1,190 +1,193 @@
 @vui-modal: ~"@{vui}-modal";
 
 .@{vui-modal} {
-	&-backdrop {
-		.backdrop;
-	}
+  &-backdrop {
+    .backdrop;
+  }
 
-	&-wrapper {
-		position:fixed;
-		z-index:2000;
-		top:0;
-		bottom:0;
-		left:0;
-		right:0;
-		overflow:auto;
+  &-wrapper {
+    position:fixed;
+    z-index:2000;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:auto;
 
-		&-centered {
-			text-align:center;
+    &-centered {
+      text-align:center;
 
-			&:before, &:after {
-				content:"";
-				display:inline-block;
-				width:0;
-				height:100%;
-				overflow:hidden;
-				vertical-align:middle;
-			}
-		}
-	}
+      &:before,
+      &:after {
+        content:"";
+        display:inline-block;
+        width:0;
+        height:100%;
+        overflow:hidden;
+        vertical-align:middle;
+      }
+    }
+  }
 
-	& {
-		position:relative;
-		display:block;
-		border-radius:@modal-border-radius;
-		background-color:@modal-background-color;
-		box-shadow:@modal-box-shadow;
-		margin:0 auto;
+  & {
+    position:relative;
+    display:block;
+    border-radius:@modal-border-radius;
+    background-color:@modal-background-color;
+    box-shadow:@modal-box-shadow;
+    margin:0 auto;
 
-		&-centered {
-			display:inline-block;
-			vertical-align:middle;
-		}
-	}
+    &-centered {
+      display:inline-block;
+      vertical-align:middle;
+    }
+  }
 
-	&-header {
-		border-bottom:@modal-header-border-bottom;
-		padding:@modal-header-padding;
-	}
+  &-header {
+    border-bottom:@modal-header-border-bottom;
+    padding:@modal-header-padding;
+  }
 
-	&-title {
-		padding-right:@font-size-sm + 20px;
-		color:@font-primary-color;
-		font-size:@font-size-lg;
-		text-align:left;
-		line-height:@line-height;
-		.writeBreak;
-	}
+  &-title {
+    padding-right:@font-size-sm + 20px;
+    color:@font-primary-color;
+    font-size:@font-size-lg;
+    text-align:left;
+    line-height:@line-height;
 
-	&-body {
-		padding:@modal-body-padding;
-		color:@font-color;
-		font-size:@font-size;
-		text-align:left;
-		line-height:@line-height;
-		.writeBreak;
-	}
-	&-with-notice &-body {
-		padding:@modal-body-padding + 10px;
-	}
+    .writeBreak;
+  }
 
-	&-footer {
-		border-top:@modal-footer-border-top;
-		padding:@modal-footer-padding;
-		text-align:right;
-	}
-	&-footer button + button {
-		margin-left:10px;
-	}
-	&-with-notice &-footer {
-		border-top:none;
-		padding:@modal-footer-padding + 10px;
-		padding-top:0;
-	}
+  &-body {
+    padding:@modal-body-padding;
+    color:@font-color;
+    font-size:@font-size;
+    text-align:left;
+    line-height:@line-height;
 
-	&-btn-close {
-		position:absolute;
-		top:0;
-		right:0;
-		cursor:pointer;
-		padding:@modal-header-padding;
-		color:@font-secondary-color;
-		font-size:@font-size-sm;
-		text-align:center;
-		line-height:1;
-		transition:color @transition-duration @transition-timing-function;
+    .writeBreak;
+  }
+  &-with-notice &-body {
+    padding:@modal-body-padding + 10px;
+  }
 
-		&:hover {
-			color:@font-color;
-		}
-	}
-	&-with-header &-btn-close {
-		line-height:floor(@font-size-lg * @line-height);
-	}
+  &-footer {
+    border-top:@modal-footer-border-top;
+    padding:@modal-footer-padding;
+    text-align:right;
+  }
+  &-footer button + button {
+    margin-left:10px;
+  }
+  &-with-notice &-footer {
+    border-top:none;
+    padding:@modal-footer-padding + 10px;
+    padding-top:0;
+  }
 
-	&-notice {
-		position:relative;
-		padding-left:floor(@font-size-lg * @line-height) + 10px;
-		color:@font-color;
-		font-size:@font-size;
-		line-height:@line-height;
+  &-btn-close {
+    position:absolute;
+    top:0;
+    right:0;
+    cursor:pointer;
+    padding:@modal-header-padding;
+    color:@font-secondary-color;
+    font-size:@font-size-sm;
+    text-align:center;
+    line-height:1;
+    transition:color @transition-duration @transition-timing-function;
 
-		&-icon {
-			position:absolute;
-			top:0;
-			left:0;
-			font-size:floor(@font-size-lg * @line-height);
-			line-height:1;
+    &:hover {
+      color:@font-color;
+    }
+  }
+  &-with-header &-btn-close {
+    line-height:floor(@font-size-lg * @line-height);
+  }
 
-			i {
-				display:block;
-			}
-		}
-		&-info &-icon {
-			color:@primary-color;
-		}
-		&-warning &-icon {
-			color:@warning-color;
-		}
-		&-success &-icon {
-			color:@success-color;
-		}
-		&-error &-icon {
-			color:@error-color;
-		}
-		&-confirm &-icon {
-			color:@warning-color;
-		}
+  &-notice {
+    position:relative;
+    padding-left:floor(@font-size-lg * @line-height) + 10px;
+    color:@font-color;
+    font-size:@font-size;
+    line-height:@line-height;
 
-		&-title {
-			color:@font-primary-color;
-			font-size:@font-size-lg;
-		}
+    &-icon {
+      position:absolute;
+      top:0;
+      left:0;
+      font-size:floor(@font-size-lg * @line-height);
+      line-height:1;
 
-		&-description {
-			margin-top:8px;
-		}
-	}
+      i {
+        display:block;
+      }
+    }
+    &-info &-icon {
+      color:@primary-color;
+    }
+    &-warning &-icon {
+      color:@warning-color;
+    }
+    &-success &-icon {
+      color:@success-color;
+    }
+    &-error &-icon {
+      color:@error-color;
+    }
+    &-confirm &-icon {
+      color:@warning-color;
+    }
 
-	@media (max-width: @screen-sm-max) {
-		& {
-			width:auto !important;
-			margin-left:10px;
-			margin-right:10px;
-		}
-	}
+    &-title {
+      color:@font-primary-color;
+      font-size:@font-size-lg;
+    }
 
-	&-backdrop-fade-enter-active {
-		animation:vuiModalBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
-	}
-	&-backdrop-fade-leave-active {
-		animation:vuiModalBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
-	}
+    &-description {
+      margin-top:8px;
+    }
+  }
 
-	&-zoom-enter-active {
-		animation:vuiModalZoomIn @animation-in-duration @animation-in-timing-function both;
-	}
-	&-zoom-leave-active { 
-		animation:vuiModalZoomOut @animation-out-duration @animation-out-timing-function both;
-	}
+  @media (max-width: @screen-sm-max) {
+    & {
+      width:auto !important;
+      margin-left:10px;
+      margin-right:10px;
+    }
+  }
+
+  &-backdrop-fade-enter-active {
+    animation:vuiModalBackdropFadeIn @animation-in-duration @animation-in-timing-function both;
+  }
+  &-backdrop-fade-leave-active {
+    animation:vuiModalBackdropFadeOut @animation-out-duration @animation-out-timing-function both;
+  }
+
+  &-zoom-enter-active {
+    animation:vuiModalZoomIn @animation-in-duration @animation-in-timing-function both;
+  }
+  &-zoom-leave-active { 
+    animation:vuiModalZoomOut @animation-out-duration @animation-out-timing-function both;
+  }
 }
 
 @keyframes vuiModalBackdropFadeIn {
-	0% { opacity:0; }
-	100% { opacity:1; }
+  0% { opacity:0; }
+  100% { opacity:1; }
 }
 @keyframes vuiModalBackdropFadeOut {
-	0% { opacity:1; }
-	30% { opacity:1; }
-	100% { opacity:0; }
+  0% { opacity:1; }
+  30% { opacity:1; }
+  100% { opacity:0; }
 }
 
 @keyframes vuiModalZoomIn {
-	0% { transform:scale(0.8); }
-	100% { transform:scale(1); }
+  0% { transform:scale(0.6); }
+  100% { transform:scale(1); }
 }
 @keyframes vuiModalZoomOut {
-	0% { transform:scale(1); }
-	30% { transform:scale(1); }
-	100% { transform:scale(0.8); }
+  0% { transform:scale(1); }
+  30% { transform:scale(1.04); }
+  100% { transform:scale(0.6); }
 }

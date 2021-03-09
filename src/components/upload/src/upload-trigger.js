@@ -200,6 +200,8 @@ const VuiUploadTrigger = {
 				return;
 			}
 
+			files = Array.prototype.slice.call(files);
+
 			if (this.accept) {
 				files = files.filter(file => {
 					let name = file.name;
@@ -224,8 +226,6 @@ const VuiUploadTrigger = {
 					});
 				});
 			}
-
-			files = Array.prototype.slice.call(files);
 
 			if (!this.multiple) {
 				files = files.slice(0, 1);

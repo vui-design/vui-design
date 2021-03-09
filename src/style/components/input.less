@@ -1,234 +1,233 @@
 @vui-input: ~"@{vui}-input";
 
 .@{vui-input} {
-	display:inline-table;
-	box-sizing:border-box;
-	border-collapse:separate;
-	border-spacing:0;
-	width:100%;
-	vertical-align:middle;
-	line-height:normal;
+  display:inline-table;
+  box-sizing:border-box;
+  border-collapse:separate;
+  border-spacing:0;
+  width:100%;
+  vertical-align:middle;
+  line-height:normal;
 
-	&-prepend,
-	&-append {
-		display:table-cell;
-		box-sizing:border-box;
-		width:1px;
-		border:1px solid @input-border-color;
-		background-color:@input-addon-background-color;
-		vertical-align:middle;
-		color:@input-font-color;
-		font-family:@input-font-family;
-		margin:0;
-		text-align:center;
-		line-height:normal;
-		white-space:nowrap;
-		transition:all @transition-duration @transition-timing-function;
-	}
-	&-prepend {
-		border-right-width:0;
-		border-top-left-radius:@input-border-radius;
-		border-bottom-left-radius:@input-border-radius;
-	}
-	&-append {
-		border-left-width:0;
-		border-top-right-radius:@input-border-radius;
-		border-bottom-right-radius:@input-border-radius;
-	}
+  &-prepend,
+  &-append {
+    display:table-cell;
+    box-sizing:border-box;
+    width:1px;
+    border:1px solid @input-border-color;
+    background-color:@input-addon-background-color;
+    vertical-align:middle;
+    color:@input-font-color;
+    font-family:@input-font-family;
+    margin:0;
+    text-align:center;
+    line-height:normal;
+    white-space:nowrap;
+    transition:all @transition-duration @transition-timing-function;
+  }
+  &-prepend {
+    border-right-width:0;
+    border-top-left-radius:@input-border-radius;
+    border-bottom-left-radius:@input-border-radius;
+  }
+  &-append {
+    border-left-width:0;
+    border-top-right-radius:@input-border-radius;
+    border-bottom-right-radius:@input-border-radius;
+  }
 
-	&-prefix,
-	&-suffix {
-		position:absolute;
-		top:50%;
-		z-index:3;
-		display:flex;
-		justify-content:center;
-		align-items:center;
-		box-sizing:border-box;
-		color:@input-affix-color;
-		line-height:1;
-		transform:translate(0, -50%);
-		transition:all @transition-duration @transition-timing-function;
+  &-prefix,
+  &-suffix {
+    position:absolute;
+    top:50%;
+    z-index:3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    color:@input-affix-color;
+    line-height:1;
+    transform:translate(0, -50%);
+    transition:all @transition-duration @transition-timing-function;
 
-		i,
-		svg {
-			display:block;
-		}
-	}
+    i,
+    svg {
+      display:block;
+    }
+  }
 
-	&-input {
-		position:relative;
-		display:table-cell;
-		box-sizing:border-box;
-		width:100%;
+  &-input {
+  position:relative;
+  display:table-cell;
+  box-sizing:border-box;
+  width:100%;
 
-		input {
-			appearance:none;
-			outline:none;
-			display:block;
-			box-sizing:border-box;
-			width:100%;
-			border:1px solid @input-border-color;
-			border-radius:@input-border-radius;
-			background-color:@input-background-color;
-			margin:0;
-			color:@input-font-color;
-			font-family:@input-font-family;
-			line-height:normal;
-			transition:all @transition-duration @transition-timing-function;
-		}
+  input {
+    appearance:none;
+    outline:none;
+    display:block;
+    box-sizing:border-box;
+    width:100%;
+    border:1px solid @input-border-color;
+    border-radius:@input-border-radius;
+    background-color:@input-background-color;
+    margin:0;
+    color:@input-font-color;
+    font-family:@input-font-family;
+    line-height:normal;
+    transition:all @transition-duration @transition-timing-function;
+    }
 
-		&:not(:first-child) input {
-			border-top-left-radius:0;
-			border-bottom-left-radius:0;
-		}
-		&:not(:last-child) input {
-			border-top-right-radius:0;
-			border-bottom-right-radius:0;
-		}
-	}
+    &:not(:first-child) input {
+      border-top-left-radius:0;
+      border-bottom-left-radius:0;
+    }
+    &:not(:last-child) input {
+      border-top-right-radius:0;
+      border-bottom-right-radius:0;
+    }
+  }
 
-	&-btn-clear,
-	&-btn-toggle {
-		cursor:pointer;
-		color:@input-btn-clear-color;
-		transition:all @transition-duration @transition-timing-function;
+  &-btn-clear,
+  &-btn-toggle {
+    cursor:pointer;
+    color:@input-btn-clear-color;
+    transition:all @transition-duration @transition-timing-function;
 
-		&:hover {
-			color:@input-btn-clear-hover-color;
-		}
-	}
-	&-btn-clear {
-		color:@input-btn-clear-color;
+    &:hover {
+      color:@input-btn-clear-hover-color;
+    }
+  }
+  &-btn-clear {
+    color:@input-btn-clear-color;
 
-		&:hover {
-			color:@input-btn-clear-hover-color;
-		}
-	}
-	&-btn-toggle {
-		color:@input-btn-toggle-color;
+    &:hover {
+      color:@input-btn-clear-hover-color;
+    }
+  }
+  &-btn-toggle {
+    color:@input-btn-toggle-color;
 
-		&:hover {
-			color:@input-btn-toggle-hover-color;
-		}
-	}
+    &:hover {
+      color:@input-btn-toggle-hover-color;
+    }
+  }
 
-	&-small &-prepend,
-	&-small &-append {
-		height:@input-size-sm;
-		padding:0 @input-padding-sm;
-		font-size:@input-font-size-sm;
-	}
-	&-small &-prefix,
-	&-small &-suffix {
-		font-size:@input-font-size-sm;
-	}
-	&-small &-prefix {
-		left:@input-padding-sm + 1px;
-	}
-	&-small &-suffix {
-		right:@input-padding-sm + 1px;
-	}
-	&-small &-input {
-		input {
-			height:@input-size-sm;
-			padding:0 @input-padding-sm;
-			font-size:@input-font-size-sm;
+  &-small &-prepend,
+  &-small &-append {
+    height:@input-size-sm;
+    padding:0 @input-padding-sm;
+    font-size:@input-font-size-sm;
+  }
+  &-small &-prefix,
+  &-small &-suffix {
+    font-size:@input-font-size-sm;
+  }
+  &-small &-prefix {
+    left:@input-padding-sm + 1px;
+  }
+  &-small &-suffix {
+    right:@input-padding-sm + 1px;
+  }
+  &-small &-input {
+    input {
+      height:@input-size-sm;
+      padding:0 @input-padding-sm;
+      font-size:@input-font-size-sm;
 
-			&:not(:first-child) {
-				padding-left:@input-padding-sm * 2 + @input-font-size-sm;
-			}
-			&:not(:last-child) {
-				padding-right:@input-padding-sm * 2 + @input-font-size-sm;
-			}
-		}
-	}
+      &:not(:first-child) {
+        padding-left:@input-padding-sm * 2 + @input-font-size-sm;
+      }
+      &:not(:last-child) {
+        padding-right:@input-padding-sm * 2 + @input-font-size-sm;
+      }
+    }
+  }
 
-	&-medium &-prepend,
-	&-medium &-append {
-		height:@input-size-md;
-		padding:0 @input-padding-md;
-		font-size:@input-font-size-md;
-	}
-	&-medium &-prefix,
-	&-medium &-suffix {
-		font-size:@input-font-size-md;
-	}
-	&-medium &-prefix {
-		left:@input-padding-md + 1px;
-	}
-	&-medium &-suffix {
-		right:@input-padding-md + 1px;
-	}
-	&-medium &-input {
-		input {
-			height:@input-size-md;
-			padding:0 @input-padding-md;
-			font-size:@input-font-size-md;
+  &-medium &-prepend,
+  &-medium &-append {
+    height:@input-size-md;
+    padding:0 @input-padding-md;
+    font-size:@input-font-size-md;
+  }
+  &-medium &-prefix,
+  &-medium &-suffix {
+    font-size:@input-font-size-md;
+  }
+  &-medium &-prefix {
+    left:@input-padding-md + 1px;
+  }
+  &-medium &-suffix {
+    right:@input-padding-md + 1px;
+  }
+  &-medium &-input {
+    input {
+      height:@input-size-md;
+      padding:0 @input-padding-md;
+      font-size:@input-font-size-md;
 
-			&:not(:first-child) {
-				padding-left:@input-padding-md * 2 + @input-font-size-md;
-			}
-			&:not(:last-child) {
-				padding-right:@input-padding-md * 2 + @input-font-size-md;
-			}
-		}
-	}
+      &:not(:first-child) {
+        padding-left:@input-padding-md * 2 + @input-font-size-md;
+      }
+      &:not(:last-child) {
+        padding-right:@input-padding-md * 2 + @input-font-size-md;
+      }
+    }
+  }
 
-	&-large &-prepend,
-	&-large &-append {
-		height:@input-size-lg;
-		padding:0 @input-padding-lg;
-		font-size:@input-font-size-lg;
-	}
-	&-large &-prefix,
-	&-large &-suffix {
-		font-size:@input-font-size-lg;
-	}
-	&-large &-prefix {
-		left:@input-padding-lg + 1px;
-	}
-	&-large &-suffix {
-		right:@input-padding-lg + 1px;
-	}
-	&-large &-input {
-		input {
-			height:@input-size-lg;
-			padding:0 @input-padding-lg;
-			font-size:@input-font-size-lg;
+  &-large &-prepend,
+  &-large &-append {
+    height:@input-size-lg;
+    padding:0 @input-padding-lg;
+    font-size:@input-font-size-lg;
+  }
+  &-large &-prefix,
+  &-large &-suffix {
+    font-size:@input-font-size-lg;
+  }
+  &-large &-prefix {
+    left:@input-padding-lg + 1px;
+  }
+  &-large &-suffix {
+    right:@input-padding-lg + 1px;
+  }
+  &-large &-input {
+    input {
+      height:@input-size-lg;
+      padding:0 @input-padding-lg;
+      font-size:@input-font-size-lg;
 
-			&:not(:first-child) {
-				padding-left:@input-padding-lg * 2 + @input-font-size-lg;
-			}
-			&:not(:last-child) {
-				padding-right:@input-padding-lg * 2 + @input-font-size-lg;
-			}
-		}
-	}
+      &:not(:first-child) {
+        padding-left:@input-padding-lg * 2 + @input-font-size-lg;
+      }
+      &:not(:last-child) {
+        padding-right:@input-padding-lg * 2 + @input-font-size-lg;
+      }
+    }
+  }
 
-	&-hovered &-input {
-		z-index:1;
+  &-hovered &-input {
+    z-index:1;
 
-		input {
-			border-color:@input-hover-border-color;
-		}
-	}
+    input {
+      border-color:@input-hover-border-color;
+    }
+  }
 
-	&-focused &-input {
-		z-index:2;
+  &-focused &-input {
+    z-index:2;
 
-		input {
-			border-color:@input-focus-border-color;
-			box-shadow:@input-focus-box-shadow;
-		}
-	}
+    input {
+      border-color:@input-focus-border-color;
+    }
+  }
 
-	&-disabled &-input {
-		input {
-			cursor:not-allowed;
-			border-color:@input-disabled-border-color;
-			background-color:@input-disabled-background-color;
-			color:@input-disabled-font-color;
-		}
-	}
+  &-disabled &-input {
+    input {
+      cursor:not-allowed;
+      border-color:@input-disabled-border-color;
+      background-color:@input-disabled-background-color;
+      color:@input-disabled-font-color;
+    }
+  }
 }

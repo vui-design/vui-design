@@ -6,143 +6,143 @@ import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
 export default {
-	name: "vui-cascader-menu-item",
-	inject: {
-		vuiCascader: {
-			default: undefined
-		},
-		vuiCascaderDropdown: {
-			default: undefined
-		},
-		vuiCascaderMenuList: {
-			default: undefined
-		},
-		vuiCascaderMenu: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon
-	},
-	props: {
-		classNamePrefix: PropTypes.string,
-		data: PropTypes.object.def({}),
-		optionKeys: PropTypes.object.def(utils.optionKeys),
-		dangerouslyUseHTMLString: PropTypes.bool.def(false)
-	},
-	computed: {
-		visible() {
-			return this.vuiCascaderDropdown.visible;
-		}
-	},
-	watch: {
-		visible: {
-			immediate: true,
-			handler(value) {
-				const { vuiCascaderMenu, $el: element, $props: props } = this;
-				const { $el: containter } = vuiCascaderMenu;
+  name: "vui-cascader-menu-item",
+  inject: {
+    vuiCascader: {
+      default: undefined
+    },
+    vuiCascaderDropdown: {
+      default: undefined
+    },
+    vuiCascaderMenuList: {
+      default: undefined
+    },
+    vuiCascaderMenu: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    data: PropTypes.object.def({}),
+    optionKeys: PropTypes.object.def(utils.optionKeys),
+    dangerouslyUseHTMLString: PropTypes.bool.def(false)
+  },
+  computed: {
+    visible() {
+      return this.vuiCascaderDropdown.visible;
+    }
+  },
+  watch: {
+    visible: {
+      immediate: true,
+      handler(value) {
+        const { vuiCascaderMenu, $el: element, $props: props } = this;
+        const { $el: containter } = vuiCascaderMenu;
 
-				if (!value) {
-					return;
-				}
+        if (!value) {
+          return;
+        }
 
-				if (vuiCascaderMenu.state.mouseenter !== props.data[props.optionKeys.value]) {
-					return;
-				}
+        if (vuiCascaderMenu.state.mouseenter !== props.data[props.optionKeys.value]) {
+          return;
+        }
 
-				if (!containter || !element) {
-					return;
-				}
+        if (!containter || !element) {
+          return;
+        }
 
-				scrollIntoView(containter, element);
-			}
-		}
-	},
-	methods: {
-		handleMouseenter(e) {
-			const { $props: props } = this;
-			const disabled = props.data[props.optionKeys.disabled];
+        scrollIntoView(containter, element);
+      }
+    }
+  },
+  methods: {
+    handleMouseenter(e) {
+      const { $props: props } = this;
+      const disabled = props.data[props.optionKeys.disabled];
 
-			if (disabled) {
-				return;
-			}
+      if (disabled) {
+        return;
+      }
 
-			this.$emit("mouseenter", clone(props.data));
-		},
-		handleClick(e) {
-			const { $props: props } = this;
-			const disabled = props.data[props.optionKeys.disabled];
+      this.$emit("mouseenter", clone(props.data));
+    },
+    handleClick(e) {
+      const { $props: props } = this;
+      const disabled = props.data[props.optionKeys.disabled];
 
-			if (disabled) {
-				return;
-			}
+      if (disabled) {
+        return;
+      }
 
-			this.$emit("click", clone(props.data));
-		}
-	},
-	render(h) {
-		const { vuiCascader, vuiCascaderMenu, $props: props } = this;
-		const { handleMouseenter, handleClick } = this;
+      this.$emit("click", clone(props.data));
+    }
+  },
+  render(h) {
+    const { vuiCascader, vuiCascaderMenu, $props: props } = this;
+    const { handleMouseenter, handleClick } = this;
 
-		// optionKeys
-		const { label: labelKey, value: valueKey, children: childrenKey, disabled: disabledKey } = props.optionKeys;
+    // optionKeys
+    const { label: labelKey, value: valueKey, children: childrenKey, disabled: disabledKey } = props.optionKeys;
 
-		// value
-		const value = props.data[valueKey];
+    // value
+    const value = props.data[valueKey];
 
-		// status
-		const hovered = vuiCascaderMenu.state.mouseenter === value;
-		const selected = vuiCascaderMenu.state.click === value;
-		const disabled = props.data[disabledKey];
+    // status
+    const hovered = vuiCascaderMenu.state.mouseenter === value;
+    const selected = vuiCascaderMenu.state.click === value;
+    const disabled = props.data[disabledKey];
 
-		// class
-		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu-item");
-		let classes = {};
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu-item");
+    let classes = {};
 
-		classes.el = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-hovered`]: hovered,
-			[`${classNamePrefix}-selected`]: selected,
-			[`${classNamePrefix}-disabled`]: disabled
-		};
-		classes.elLabel = `${classNamePrefix}-label`;
-		classes.elArrow = `${classNamePrefix}-arrow`;
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-hovered`]: hovered,
+      [`${classNamePrefix}-selected`]: selected,
+      [`${classNamePrefix}-disabled`]: disabled
+    };
+    classes.elLabel = `${classNamePrefix}-label`;
+    classes.elArrow = `${classNamePrefix}-arrow`;
 
-		// render
-		let children = [];
+    // render
+    let children = [];
 
-		if (props.dangerouslyUseHTMLString) {
-			children.push(
-				<div class={classes.elLabel} domPropsInnerHTML={props.data[labelKey]}></div>
-			);
-		}
-		else {
-			const scopedSlot = vuiCascader.$scopedSlots.option;
-			let label;
+    if (props.dangerouslyUseHTMLString) {
+      children.push(
+        <div class={classes.elLabel} domPropsInnerHTML={props.data[labelKey]}></div>
+      );
+    }
+    else {
+      const scopedSlot = vuiCascader.$scopedSlots.option;
+      let label;
 
-			if (scopedSlot) {
-				label = scopedSlot({
-					option: clone(props.data),
-					optionKeys: clone(props.optionKeys)
-				});
-			}
-			else {
-				label = props.data[labelKey];
-			}
+      if (scopedSlot) {
+        label = scopedSlot({
+          option: clone(props.data),
+          optionKeys: clone(props.optionKeys)
+        });
+      }
+      else {
+        label = props.data[labelKey];
+      }
 
-			children.push(
-				<div class={classes.elLabel}>{label}</div>
-			);
-		}
+      children.push(
+        <div class={classes.elLabel}>{label}</div>
+      );
+    }
 
-		if (props.data[childrenKey]) {
-			children.push(
-				<VuiIcon type="chevron-right" class={classes.elArrow} />
-			);
-		}
+    if (props.data[childrenKey]) {
+      children.push(
+        <VuiIcon type="chevron-right" class={classes.elArrow} />
+      );
+    }
 
-		return (
-			<div class={classes.el} onMouseenter={handleMouseenter} onClick={handleClick}>{children}</div>
-		);
-	}
+    return (
+      <div class={classes.el} onMouseenter={handleMouseenter} onClick={handleClick}>{children}</div>
+    );
+  }
 };

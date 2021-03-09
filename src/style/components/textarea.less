@@ -1,77 +1,76 @@
 @vui-textarea: ~"@{vui}-textarea";
 
 .@{vui-textarea} {
-	position:relative;
-	display:inline-block;
-	width:100%;
-	vertical-align:middle;
+  position:relative;
+  display:inline-block;
+  width:100%;
+  vertical-align:middle;
 
-	&-input {
-		appearance:none;
-		outline:none;
-		display:block;
-		box-sizing:border-box;
-		width:100%;
-		min-width:100%;
-		max-width:100%;
-		border:1px solid @textarea-border-color;
-		border-radius:@textarea-border-radius;
-		background-color:@component-background-color;
-		margin:0;
-		padding:6px 8px;
-		color:@textarea-font-color;
-		font-size:@textarea-font-size;
-		font-family:@textarea-font-family;
-		line-height:@textarea-line-height;
-		transition:all @transition-duration @transition-timing-function, height 0s;
-	}
+  &-input {
+    appearance:none;
+    outline:none;
+    display:block;
+    box-sizing:border-box;
+    width:100%;
+    min-width:100%;
+    max-width:100%;
+    border:1px solid @textarea-border-color;
+    border-radius:@textarea-border-radius;
+    background-color:@component-background-color;
+    margin:0;
+    padding:6px 8px;
+    color:@textarea-font-color;
+    font-size:@textarea-font-size;
+    font-family:@textarea-font-family;
+    line-height:@textarea-line-height;
+    transition:all @transition-duration @transition-timing-function, height 0s;
+  }
 
-	&-btn-clear {
-		position:absolute;
-		top:10px;
-		right:8px;
-		z-index:3;
-		cursor:pointer;
-		display:block;
-		color:@textarea-btn-clear-color;
-		line-height:1;
-		transition:all @transition-duration @transition-timing-function;
+  &-btn-clear {
+    position:absolute;
+    top:10px;
+    right:8px;
+    z-index:3;
+    cursor:pointer;
+    display:block;
+    color:@textarea-btn-clear-color;
+    line-height:1;
+    transition:all @transition-duration @transition-timing-function;
 
-		svg {
-			display:block;
-		}
+    svg {
+      display:block;
+    }
 
-		&:hover {
-			color:@textarea-btn-clear-hover-color;
-		}
-	}
+    &:hover {
+      color:@textarea-btn-clear-hover-color;
+    }
+  }
 
-	&-statistic {
-		position:absolute;
-		bottom:@margin-xs;
-		right:@margin-xs;
-		z-index:3;
-		pointer-events:none;
-		color:@font-secondary-color;
-		font-size:@textarea-statistic-font-size;
-		line-height:1;
-	}
+  &-statistic {
+    position:absolute;
+    bottom:@margin-xs;
+    right:@margin-xs;
+    z-index:3;
+    pointer-events:none;
+    color:@font-secondary-color;
+    font-size:@textarea-statistic-font-size;
+    line-height:1;
+  }
 
-	&-hovered &-input {
-		z-index:1;
-		border-color:@textarea-hover-border-color;
-	}
+  &-hovered &-input {
+    z-index:1;
+    border-color:@textarea-hover-border-color;
+  }
 
-	&-focused &-input {
-		z-index:2;
-		border-color:@textarea-focus-border-color;
-		box-shadow:@textarea-focus-box-shadow;
-	}
+  &-focused &-input {
+    z-index:2;
+    border-color:@textarea-focus-border-color;
+  }
 
-	&-disabled &-input {
-		cursor:not-allowed;
-		border-color:@textarea-disabled-border-color;
-		background-color:@textarea-disabled-background-color;
-		color:@textarea-disabled-font-color;
-	}
+  &-disabled &-input {
+    cursor:not-allowed;
+    border-color:@textarea-disabled-border-color;
+    background-color:@textarea-disabled-background-color;
+    color:@textarea-disabled-font-color;
+  }
 }

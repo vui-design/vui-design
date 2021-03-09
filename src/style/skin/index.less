@@ -80,14 +80,14 @@
 
 // 属性过度
 @transition-duration: 0.2s;
-@transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+@transition-timing-function: cubic-bezier(0.23,1,0.32,1);
 
 // 动画
 @animation-in-duration: 0.2s;
-@animation-in-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+@animation-in-timing-function: cubic-bezier(0.23,1,0.32,1);
 
 @animation-out-duration: 0.2s;
-@animation-out-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+@animation-out-timing-function: cubic-bezier(0.23,1,0.32,1);
 
 // 媒体查询
 @screen-xs: 480px;
@@ -385,7 +385,6 @@
 
 @input-hover-border-color: tint(@primary-color, 10%);
 @input-focus-border-color: tint(@primary-color, 10%);
-@input-focus-box-shadow: 0 0 0 2px fade(tint(@primary-color, 10%), 15);
 @input-disabled-border-color: @border-color;
 @input-disabled-background-color: shade(@component-background-color, 2%);
 @input-disabled-font-color: @font-disabled-color;
@@ -490,7 +489,6 @@
 
 @textarea-hover-border-color: tint(@primary-color, 10%);
 @textarea-focus-border-color: tint(@primary-color, 10%);
-@textarea-focus-box-shadow: 0 0 0 2px fade(tint(@primary-color, 10%), 15);
 @textarea-disabled-border-color: @border-color;
 @textarea-disabled-background-color: shade(@component-background-color, 2%);
 @textarea-disabled-font-color: @font-disabled-color;

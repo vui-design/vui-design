@@ -1,23 +1,12 @@
+import PropTypes from "vui-design/utils/prop-types";
+
 const VuiOption = {
-	name: "vui-option",
-
-	props: {
-		label: {
-			type: [String, Number],
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined,
-			required: true
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
-	},
-
-	isOption: true
+  name: "vui-option",
+  props: {
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
+    disabled: PropTypes.bool.def(false)
+  }
 };
 
 export default VuiOption;
