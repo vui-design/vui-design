@@ -1,190 +1,171 @@
-import VcTabs from "vui-design/components/vc-tabs";
+import VuiTabsTab from "./tabs-tab";
+import VuiTabsPanel from "./tabs-panel";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiTabs = {
-	name: "vui-tabs",
-	components: {
-		VcTabs
-	},
-	model: {
-		prop: "activeKey",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: PropTypes.string,
-		type: PropTypes.oneOf(["line", "card"]).def("line"),
-		size: PropTypes.oneOf(["small", "medium", "large"]),
-		activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		addable: PropTypes.bool.def(false),
-		closable: PropTypes.bool.def(false),
-		editable: PropTypes.bool.def(false),
-		animated: PropTypes.bool.def(true),
-		headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-		bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-	},
-	methods: {
-		getDerivedTabpanels(tabsProps, nodes, tagName = "vui-tab-panel") {
-			let tabpanels = [];
+  name: "vui-tabs",
+  provide() {
+    return {
+      vuiTabs: this
+    };
+  },
+  components: {
+    VuiTabsTab,
+    VuiTabsPanel
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["line", "card"]).def("line"),
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    tabpanels: PropTypes.array.def([]),
+    extra: PropTypes.any,
+    addable: PropTypes.bool.def(false),
+    closable: PropTypes.bool.def(false),
+    editable: PropTypes.bool.def(false),
+    animated: PropTypes.bool.def(true),
+    headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  },
+  data() {
+    const { $props: props } = this;
+    const state = {
+      activeKey: props.activeKey
+    };
 
-			if (!nodes) {
-				return tabpanels;
-			}
+    return {
+      state
+    };
+  },
+  watch: {
+    activeKey(value) {
+      this.state.activeKey = value;
+    }
+  },
+  methods: {
+    handleChange(tabpanel) {
+      if (tabpanel.disabled) {
+        return;
+      }
 
-			nodes.forEach(node => {
-				if (!node) {
-					return;
-				}
+      this.state.activeKey = tabpanel.key;
+      this.$emit("input", this.state.activeKey);
+      this.$emit("change", this.state.activeKey);
+    },
+    handleAdd(e) {
+      this.$emit("add");
+    },
+    handleClose(tabpanel) {
+      if (tabpanel.disabled) {
+        return;
+      }
 
-				const options = node.componentOptions;
+      this.$emit("close", tabpanel.key);
+    }
+  },
+  render() {
+    const { $vui: vui, $props: props, state } = this;
+    const { handleChange, handleAdd, handleClose } = this;
 
-				if (!options) {
-					return;
-				}
+    // size
+    let size;
 
-				const { tag, propsData: props, children: elements } = options;
+    if (props.size) {
+      size = props.size;
+    }
+    else if (vui && vui.size) {
+      size = vui.size;
+    }
+    else {
+      size = "medium";
+    }
 
-				if (tag === tagName && is.json(props)) {
-					let tabpanel = {
-						...props,
-						index: tabpanels.length
-					};
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tabs");
+    let classes = {};
 
-					// 设置 panel 的唯一 key 值
-					const key = node.key;
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${props.type}`]: true,
+      [`${classNamePrefix}-${size}`]: size,
+      [`${classNamePrefix}-animated`]: props.animated
+    };
+    classes.elHeader = `${classNamePrefix}-header`;
+    classes.elHeaderContent = `${classNamePrefix}-header-content`;
+    classes.elExtra = `${classNamePrefix}-extra`;
+    classes.elBtnAdd = `${classNamePrefix}-btn-add`;
+    classes.elBody = `${classNamePrefix}-body` ;
+    classes.elBodyContent = `${classNamePrefix}-body-content`;
 
-					if (is.effective(key)) {
-						tabpanel.key = key;
-					}
-					else {
-						tabpanel.key = tabpanel.index;
-					}
+    // style
+    let styles = {};
+    let x = props.tabpanels.findIndex(tabpanel => tabpanel.key === state.activeKey);
 
-					// 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 tabs 的 closable 或 editable 属性
-					const closable = props.closable;
+    if (x > -1) {
+      x = x === 0 ? `0%` : `-${x * 100}%`;
 
-					if (closable === false) {
-						tabpanel.closable = false;
-					}
-					else {
-						tabpanel.closable = tabsProps.closable || tabsProps.editable;
-					}
+      styles.elBodyContent = {
+        transform: `translateX(${x}) translateZ(0px)`
+      };
+    }
 
-					// 设置 panel 的禁用属性
-					const disabled = props.disabled;
+    // extra
+    let extra;
 
-					if (disabled === undefined || disabled === null || disabled === false) {
-						tabpanel.disabled = false;
-					}
-					else {
-						tabpanel.disabled = true;
-					}
+    if (props.extra) {
+      extra = (
+        <div class={classes.elExtra}>{props.extra}</div>
+      );
+    }
+    else if (props.addable || props.editable) {
+      extra = (
+        <div class={classes.elExtra}>
+          <a href="javascript:;" class={classes.elBtnAdd} onClick={handleAdd}></a>
+        </div>
+      );
+    }
 
-					// 分离 panel 的内容元素，因为内容可能包含了图标或标题等自定义插槽
-					if (elements) {
-						elements.forEach(element => {
-							if (!element) {
-								return;
-							}
-
-							if (element.data && element.data.slot) {
-								const slot = element.data.slot;
-
-								// icon
-								if (slot === "icon") {
-									if (element.data.attrs) {
-										delete element.data.attrs.slot;
-									}
-
-									if (element.tag === "template") {
-										if (is.array(tabpanel.icon)) {
-											tabpanel.icon.push.apply(tabpanel.icon, element.children);
-										}
-										else {
-											tabpanel.icon = element.children;
-										}
-									}
-									else {
-										if (is.array(tabpanel.icon)) {
-											tabpanel.icon.push(element);
-										}
-										else {
-											tabpanel.icon = [element];
-										}
-									}
-								}
-								else if (slot === "title") {
-									if (element.data.attrs) {
-										delete element.data.attrs.slot;
-									}
-
-									if (element.tag === "template") {
-										if (is.array(tabpanel.title)) {
-											tabpanel.title.push.apply(tabpanel.icon, element.children);
-										}
-										else {
-											tabpanel.title = element.children;
-										}
-									}
-									else {
-										if (is.array(tabpanel.title)) {
-											tabpanel.title.push(element);
-										}
-										else {
-											tabpanel.title = [element];
-										}
-									}
-								}
-							}
-							else {
-								if (is.array(tabpanel.children)) {
-									tabpanel.children.push(element);
-								}
-								else {
-									tabpanel.children = [element];
-								}
-							}
-						});
-					}
-
-					tabpanels.push(tabpanel);
-				}
-			});
-
-			return tabpanels;
-		}
-	},
-	render(h) {
-		const { $slots: slots, $props: props, $listeners: listeners } = this;
-
-		let activeKey = props.activeKey;
-		const tabpanels = this.getDerivedTabpanels(props, slots.default);
-
-		if (!is.effective(activeKey)) {
-			const enabledTabpanels = tabpanels.filter(tabpanel => !tabpanel.disabled);
-			const tabpanel = enabledTabpanels[0];
-
-			if (tabpanel) {
-				activeKey = tabpanel.key;
-			}
-		}
-
-		const attributes = {
-			props: {
-				...props,
-				activeKey,
-				tabpanels,
-				extra: slots.extra
-			},
-			on: {
-				...listeners
-			}
-		};
-
-		return (
-			<VcTabs {...attributes} />
-		);
-	}
+    // render
+    return (
+      <div class={classes.el}>
+        <div class={classes.elHeader} style={props.headerStyle}>
+          <div class={classes.elHeaderContent}>
+            {
+              props.tabpanels.map(tabpanel => {
+                return (
+                  <VuiTabsTab
+                    classNamePrefix={classNamePrefix}
+                    key={tabpanel.key}
+                    data={tabpanel}
+                    onClick={handleChange}
+                    onClose={handleClose}
+                  />
+                );
+              })
+            }
+          </div>
+          {extra}
+        </div>
+        <div class={classes.elBody} style={props.bodyStyle}>
+          <div class={classes.elBodyContent} style={styles.elBodyContent}>
+            {
+              props.tabpanels.map(tabpanel => {
+                return (
+                  <VuiTabsPanel
+                    classNamePrefix={classNamePrefix}
+                    key={tabpanel.key}
+                    data={tabpanel}
+                  />
+                );
+              })
+            }
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default VuiTabs;

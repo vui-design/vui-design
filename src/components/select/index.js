@@ -59,7 +59,9 @@ const VuiSelectWrapper = {
       on: listeners
     };
 
-    return <VuiSelect {...attributes} />;
+    return (
+      <VuiSelect {...attributes} />
+    );
   }
 };
 
