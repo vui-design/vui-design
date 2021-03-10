@@ -109,22 +109,22 @@
 	&-popup[data-placement="right-end"] &-popup-arrow { bottom:10px; }
 
 	&-popup[data-placement^="top"]&-popup-scale-enter-active,
-	&-popup[data-placement^="top"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+	&-popup[data-placement^="top"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity @transition-duration @transition-timing-function, transform @transition-duration @transition-timing-function; }
 	&-popup[data-placement^="top"]&-popup-scale-enter,
 	&-popup[data-placement^="top"]&-popup-scale-leave-active { opacity:0; transform:scale(0.90); }
 
 	&-popup[data-placement^="bottom"]&-popup-scale-enter-active,
-	&-popup[data-placement^="bottom"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+	&-popup[data-placement^="bottom"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity @transition-duration @transition-timing-function, transform @transition-duration @transition-timing-function; }
 	&-popup[data-placement^="bottom"]&-popup-scale-enter,
 	&-popup[data-placement^="bottom"]&-popup-scale-leave-active { opacity:0; transform:scale(0.90); }
 
 	&-popup[data-placement^="left"]&-popup-scale-enter-active,
-	&-popup[data-placement^="left"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+	&-popup[data-placement^="left"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity @transition-duration @transition-timing-function, transform @transition-duration @transition-timing-function; }
 	&-popup[data-placement^="left"]&-popup-scale-enter,
 	&-popup[data-placement^="left"]&-popup-scale-leave-active { opacity:0; transform:scale(0.95); }
 
 	&-popup[data-placement^="right"]&-popup-scale-enter-active,
-	&-popup[data-placement^="right"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity 0.3s cubic-bezier(0.23,1,0.32,1), transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+	&-popup[data-placement^="right"]&-popup-scale-leave-active { opacity:1; transform:scale(1); transition:opacity @transition-duration @transition-timing-function, transform @transition-duration @transition-timing-function; }
 	&-popup[data-placement^="right"]&-popup-scale-enter,
 	&-popup[data-placement^="right"]&-popup-scale-leave-active { opacity:0; transform:scale(0.95); }
 }

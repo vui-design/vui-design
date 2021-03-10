@@ -2,10 +2,10 @@
 
 .mx-datepicker { width:100%; }
 
-.mx-datepicker-input { border:1px solid #e0e0e0; border-radius:2px; box-shadow:none; transition:all 0.2s; }
+.mx-datepicker-input { border:1px solid #e0e0e0; border-radius:2px; box-shadow:none; padding-left:8px; transition:all 0.2s; }
 .mx-datepicker-input:hover, .mx-datepicker-input:focus { border-color:#2d8cf0; }
 .mx-datepicker-input:hover {  }
-.mx-datepicker-input:focus { box-shadow:0 0 0 2px rgba(66, 151, 242, 0.15); }
+.mx-datepicker-input:focus {  }
 
 .mx-icon-calendar, .mx-icon-clear { width:12px; height:12px; font-size:12px; text-align:center; line-height:12px; transition:all 0.2s; }
 
@@ -20,7 +20,7 @@
 .mx-table-date .today { color:#2d8cf0; }
 .mx-calendar-content .cell.active { background-color:#2d8cf0; }
 
-.mx-zoom-in-down-enter-active, .mx-zoom-in-down-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity 0.3s, transform 0.3s; }
+.mx-zoom-in-down-enter-active, .mx-zoom-in-down-leave-active { pointer-events:none; opacity:1; transform:scaleY(1); transition:opacity 0.2s cubic-bezier(0.23,1,0.32,1), transform 0.2s cubic-bezier(0.23,1,0.32,1); }
 .mx-zoom-in-down-enter, .mx-zoom-in-down-leave-to { opacity:0; -webkit-transform:scaleY(0.8); transform:scaleY(0.8); }
 
 .mx-form-item-error .mx-datepicker-input { border-color:#ed5565 !important; }
