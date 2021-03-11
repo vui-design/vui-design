@@ -38,6 +38,10 @@ const VuiButton = {
 			default: "default",
 			validator: value => ["default", "primary", "info", "warning", "success", "error", "dashed", "text"].indexOf(value) > -1
 		},
+		block: {
+			type: Boolean,
+			default: false
+		},
 		icon: {
 			type: String,
 			default: undefined
@@ -153,6 +157,7 @@ const VuiButton = {
 		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-${type}`]: type,
+			[`${classNamePrefix}-block`]: props.block,
 			[`${classNamePrefix}-${shape}`]: shape,
 			[`${classNamePrefix}-${size}`]: size,
 			[`${classNamePrefix}-loading`]: props.loading,

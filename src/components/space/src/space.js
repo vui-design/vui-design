@@ -11,7 +11,8 @@ const VuiSpace = {
     classNamePrefix: PropTypes.string,
     block: PropTypes.bool.def(false),
     direction: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
-    align: PropTypes.oneOf(["start", "center", "end"]).def("center"),
+    justify: PropTypes.oneOf(["start", "center", "end", "around", "between"]).def("start"),
+    align: PropTypes.oneOf(["start", "center", "end", "baseline", "stretch"]).def("center"),
     divider: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
     size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def("medium")
   },
@@ -39,7 +40,8 @@ const VuiSpace = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-block`]: props.block,
       [`${classNamePrefix}-${props.direction}`]: props.direction,
-      [`${classNamePrefix}-${props.align}`]: isHorizontal && props.align,
+      [`${classNamePrefix}-justify-${props.justify}`]: isHorizontal && props.justify,
+      [`${classNamePrefix}-align-${props.align}`]: isHorizontal && props.align,
       [`${classNamePrefix}-with-divider`]: isHorizontal && divider,
       [`${classNamePrefix}-${props.size}`]: withPresetSize
     };
