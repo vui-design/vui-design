@@ -9,7 +9,7 @@
 @info-color: #5bc0de;
 @warning-color: #faad14;
 @success-color: #52c41a;
-@error-color: #ed5565;
+@error-color: #ff4d4f;
 
 @processing-color: #2d8cf0;
 
@@ -113,9 +113,16 @@
 // 通用组件 --------------------------------------------------------------------------------
 
 // Button
+@button-border-width: 1px;
+@button-border-radius: @border-radius;
+
 @button-size-sm: 24px;
 @button-size-md: 34px;
 @button-size-lg: 44px;
+
+@button-padding-size-sm: 8px;
+@button-padding-size-md: 14px;
+@button-padding-size-lg: 20px;
 
 @button-font-size-sm: 12px;
 @button-font-size-md: 14px;
@@ -186,14 +193,14 @@
 @button-success-disabled-background-color: shade(@component-background-color, 2%);
 @button-success-disabled-font-color: tint(#000, 75%);
 
-@button-error-border-color: #ed5565;
-@button-error-background-color: #ed5565;
+@button-error-border-color: #ff4d4f;
+@button-error-background-color: #ff4d4f;
 @button-error-font-color: #fff;
-@button-error-hover-border-color: tint(#ed5565, 10%);
-@button-error-hover-background-color: tint(#ed5565, 10%);
+@button-error-hover-border-color: tint(#ff4d4f, 10%);
+@button-error-hover-background-color: tint(#ff4d4f, 10%);
 @button-error-hover-font-color: #fff;
-@button-error-active-border-color: shade(#ed5565, 10%);
-@button-error-active-background-color: shade(#ed5565, 10%);
+@button-error-active-border-color: shade(#ff4d4f, 10%);
+@button-error-active-background-color: shade(#ff4d4f, 10%);
 @button-error-active-font-color: #fff;
 @button-error-disabled-border-color: #e0e0e0;
 @button-error-disabled-background-color: shade(@component-background-color, 2%);
@@ -201,7 +208,7 @@
 
 @button-dashed-border-color: #e0e0e0;
 @button-dashed-background-color: #fff;
-@button-dashed-font-color: #666;
+@button-dashed-font-color: #595959;
 @button-dashed-hover-border-color: tint(#2d8cf0, 10%);
 @button-dashed-hover-background-color: #fff;
 @button-dashed-hover-font-color: tint(#2d8cf0, 10%);
@@ -214,7 +221,7 @@
 
 @button-text-border-color: transparent;
 @button-text-background-color: transparent;
-@button-text-font-color: #666;
+@button-text-font-color: #595959;
 @button-text-hover-border-color: transparent;
 @button-text-hover-background-color: transparent;
 @button-text-hover-font-color: tint(#2d8cf0, 10%);
@@ -826,8 +833,8 @@
 @tag-success-border-color: #52c41a;
 @tag-success-background-color: #52c41a;
 @tag-success-font-color: #fff;
-@tag-error-border-color: #ed5565;
-@tag-error-background-color: #ed5565;
+@tag-error-border-color: #ff4d4f;
+@tag-error-background-color: #ff4d4f;
 @tag-error-font-color: #fff;
 @tag-blue-border-color: #97cdff;
 @tag-blue-background-color: #f3f9ff;

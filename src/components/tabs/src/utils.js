@@ -1,9 +1,10 @@
 import is from "vui-design/utils/is";
 
 /**
-* 从 children 中解析获取 tabpanels 面板列表
+* 从 children 中解析获取面板列表
+* @param {Object} tabs 父组件
 * @param {Array} children 子组件
-* @param {Boolean} parent 父级
+* @param {String} tagName 组件名称
 */
 export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-panel") => {
   let tabpanels = [];

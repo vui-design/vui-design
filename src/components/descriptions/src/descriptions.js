@@ -1,70 +1,275 @@
-import VcDescriptions from "vui-design/components/vc-descriptions";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
+import range from "vui-design/utils/range";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDescriptions = {
-	name: "vui-descriptions",
-	components: {
-		VcDescriptions
-	},
-	props: {
-		classNamePrefix: PropTypes.string,
-		layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
-		bordered: PropTypes.bool.def(false),
-		fixed: PropTypes.bool.def(false),
-		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
-		columns: PropTypes.number.def(3),
-		colon: PropTypes.bool,
-		labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-		labelAlign: PropTypes.oneOf(["left", "center", "right"]),
-		title: PropTypes.any,
-		extra: PropTypes.any
-	},
-	methods: {
-		getDerivedDataFromChildren(children, tagName = "vui-description") {
-			let data = [];
+  name: "vui-descriptions",
+  props: {
+    classNamePrefix: PropTypes.string,
+    layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+    bordered: PropTypes.bool.def(false),
+    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+    columns: PropTypes.number.def(3),
+    data: PropTypes.array.def([]),
+    colon: PropTypes.bool,
+    labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    labelAlign: PropTypes.oneOf(["left", "center", "right"]),
+    title: PropTypes.any,
+    extra: PropTypes.any,
+    equivalent: PropTypes.bool.def(false)
+  },
+  methods: {
+    getColumns() {
+      const { $props: props } = this;
+      const isMaybeDouble = props.layout === "horizontal" && props.bordered;
+      const columns = range(0, isMaybeDouble ? props.columns * 2 : props.columns);
 
-			if (!children) {
-				return data;
-			}
+      return columns;
+    },
+    getRows() {
+      const { $props: props } = this;
+      let rows = [];
+      let cols = null;
+      let spans = null;
 
-			children.forEach(element => {
-				if (!element) {
-					return;
-				}
+      props.data.forEach((item, index) => {
+        if (!cols) {
+          cols = [];
+          spans = props.columns;
+          rows.push(cols);
+        }
 
-				const options = element.componentOptions;
+        const isLastItem = index === props.data.length - 1;
+        let isLastSpanSame = true;
 
-				if (!options) {
-					return;
-				}
+        if (isLastItem) {
+          isLastSpanSame = !item.span || item.span === spans;
+          item.span = spans;
+        }
 
-				if (options && options.propsData && options.tag === tagName) {
-					data.push({
-						...options.propsData,
-						children: options.children
-					});
-				}
-			});
+        cols.push(item);
 
-			return data;
-		}
-	},
-	render() {
-		const { $slots: slots, $props: props, getDerivedDataFromChildren } = this;
-		const attributes = {
-			props: {
-				...props,
-				title: slots.title || props.title,
-				extra: slots.extra || props.extra,
-				data: getDerivedDataFromChildren(slots.default)
-			}
-		};
+        const { span = 1 } = item;
 
-		return (
-			<VcDescriptions {...attributes} />
-		);
-	}
+        spans = spans - span;
+
+        if (spans <= 0) {
+          cols = null;
+
+          if (!(spans === 0 && isLastSpanSame)) {
+            console.warn("[Vui warn][Descriptions]: sum of column \"span\" in a line not match \"columns\" of descriptions.");
+          }
+        }
+      });
+
+      return rows;
+    },
+    getColgroup(h) {
+      const columns = this.getColumns();
+
+      return (
+          <colgroup>
+            {this.getColgroupChildren(h, columns)}
+          </colgroup>
+      );
+    },
+    getColgroupChildren(h, columns) {
+      const { $props: props } = this;
+      const isMaybeDouble = props.layout === "horizontal" && props.bordered;
+
+      let cols = [];
+
+      columns.forEach((column, columnIndex) => {
+        const width = isMaybeDouble && columnIndex % 2 === 0 ? props.labelWidth : undefined;
+
+        cols.push(
+          <col key={columnIndex} width={width} />
+        );
+      });
+
+      return cols;
+    },
+    getTbody(h) {
+      const rows = this.getRows();
+
+      return (
+        <tbody>
+          {this.getTbodyChildren(h, rows)}
+        </tbody>
+      );
+    },
+    getTbodyChildren(h, rows) {
+      const { $props: props } = this;
+
+      let colon = props.colon;
+
+      if (colon === undefined && !props.bordered) {
+        colon = true;
+      }
+
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "descriptions");
+      let classes = {};
+
+      classes.elItemLabel = {
+        [`${classNamePrefix}-item-label`]: true,
+        [`${classNamePrefix}-item-label-colon`]: colon
+      };
+      classes.elItemContent = `${classNamePrefix}-item-content`;
+
+      let trs = [];
+
+      rows.forEach((row, rowIndex) => {
+        if (props.layout === "horizontal") {
+          let body = [];
+
+          if (props.bordered) {
+            row.forEach((column, columnIndex) => {
+              const span = column.span || 1;
+              let labelStyle = {};
+
+              if (props.labelAlign) {
+                labelStyle.textAlign = props.labelAlign;
+              }
+
+              body.push(
+                <th class={classes.elItemLabel} style={labelStyle}>{column.label}</th>
+              );
+
+              body.push(
+                <td class={classes.elItemContent} colSpan={span * 2 - 1}>{column.children}</td>
+              );
+            });
+          }
+          else {
+            row.forEach((column, columnIndex) => {
+              const span = column.span || 1;
+
+              body.push(
+                <td colSpan={span}>
+                  {
+                    column.label && (
+                      <label class={classes.elItemLabel}>{column.label}</label>
+                    )
+                  }
+                  <label class={classes.elItemContent}>{column.children}</label>
+                </td>
+              );
+            });
+          }
+
+          trs.push(
+            <tr>{body}</tr>
+          );
+        }
+        else if (props.layout === "vertical") {
+          let header = [];
+          let body = [];
+
+          if (props.bordered) {
+            row.forEach((column, columnIndex) => {
+              const span = column.span || 1;
+
+              header.push(
+                <th class={classes.elItemLabel} colSpan={span}>{column.label}</th>
+              );
+
+              body.push(
+                <td class={classes.elItemContent} colSpan={span}>{column.children}</td>
+              );
+            });
+          }
+          else {
+            row.forEach((column, columnIndex) => {
+              const span = column.span || 1;
+
+              header.push(
+                <th colSpan={span}>
+                  <label class={classes.elItemLabel}>{column.label}</label>
+                </th>
+              );
+
+              body.push(
+                <td colSpan={span}>
+                  <label class={classes.elItemContent}>{column.children}</label>
+                </td>
+              );
+            });
+          }
+
+          trs.push(
+            <tr>{header}</tr>
+          );
+
+          trs.push(
+            <tr>{body}</tr>
+          );
+        }
+      });
+
+      return trs;
+    }
+  },
+  render(h) {
+    const { $props: props } = this;
+
+    // table layout
+    const isTableLayoutFixed = !props.bordered || (props.bordered && props.equivalent);
+
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "descriptions");
+    let classes = {};
+
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-bordered`]: props.bordered,
+      [`${classNamePrefix}-${props.size}`]: props.size
+    };
+    classes.elHeader = `${classNamePrefix}-header`;
+    classes.elTitle = `${classNamePrefix}-title`;
+    classes.elExtra = `${classNamePrefix}-extra`;
+    classes.elBody = `${classNamePrefix}-body`;
+
+    // style
+    let style = {};
+
+    style.elTable = {
+      tableLayout: isTableLayoutFixed ? "fixed" : "auto"
+    };
+
+    // render
+    let header = [];
+
+    if (props.title) {
+      header.push(
+        <div class={classes.elTitle}>{props.title}</div>
+      );
+    }
+
+    if (props.extra) {
+      header.push(
+        <div class={classes.elExtra}>{props.extra}</div>
+      );
+    }
+
+    const body = (
+      <table style={style.elTable}>
+        {this.getColgroup(h)}
+        {this.getTbody(h)}
+      </table>
+    );
+
+    return (
+      <div class={classes.el}>
+        {
+          !!header.length && (
+            <div class={classes.elHeader}>{header}</div>
+          )
+        }
+        <div class={classes.elBody}>{body}</div>
+      </div>
+    );
+  }
 };
 
 export default VuiDescriptions;
