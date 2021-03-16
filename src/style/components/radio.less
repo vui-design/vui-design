@@ -154,48 +154,31 @@
 			background-color:@radio-disabled-color;
 		}
 	}
-}
 
-@vui-radio-button: ~"@{vui}-radio-button";
-
-.@{vui-radio-button} {
-	position:relative;
-	cursor:pointer;
-	display:inline-block;
-	box-sizing:border-box;
-	border:1px solid @radio-button-border-color;
-	border-radius:@radio-button-border-radius;
-	background-color:@radio-button-background-color;
-	margin:0;
-	vertical-align:middle;
-	color:@radio-button-font-color;
-	font-weight:400;
-	white-space:nowrap;
-	text-align:center;
-	transition:all @transition-duration @transition-timing-function;
-
-	&-input {
-		position:absolute;
-		top:0;
-		bottom:0;
-		left:0;
-		right:0;
-		z-index:-1;
-		cursor:inherit;
-		display:block;
+	// button
+	&-button {
+		position:relative;
+		cursor:pointer;
+		display:inline-block;
 		box-sizing:border-box;
-		width:100%;
-		height:100%;
+		border:1px solid @radio-button-border-color;
+		border-radius:@radio-button-border-radius;
+		background-color:@radio-button-background-color;
 		margin:0;
-		padding:0;
-		opacity:0;
+		vertical-align:middle;
+		color:@radio-button-font-color;
+		font-weight:400;
+		white-space:nowrap;
+		text-align:center;
+		transition:all @transition-duration @transition-timing-function;
 
-		input[type="radio"] {
+		&-input {
 			position:absolute;
 			top:0;
 			bottom:0;
 			left:0;
 			right:0;
+			z-index:-1;
 			cursor:inherit;
 			display:block;
 			box-sizing:border-box;
@@ -204,67 +187,83 @@
 			margin:0;
 			padding:0;
 			opacity:0;
-			appearance:none;
+
+			input[type="radio"] {
+				position:absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				cursor:inherit;
+				display:block;
+				box-sizing:border-box;
+				width:100%;
+				height:100%;
+				margin:0;
+				padding:0;
+				opacity:0;
+				appearance:none;
+			}
 		}
-	}
 
-	// hovered
-	&:hover {
-		z-index:1;
-		color:@radio-button-hover-font-color;
-	}
+		// hovered
+		&:hover {
+			z-index:1;
+			color:@radio-button-hover-font-color;
+		}
 
-	// focused
-	&-focused {
-		z-index:2 !important;
-		color:@radio-button-hover-font-color !important;
-	}
+		// focused
+		&-focused {
+			z-index:2 !important;
+			color:@radio-button-hover-font-color !important;
+		}
 
-	// checked
-	&-checked {
-		z-index:3 !important;
-		border-color:@radio-button-checked-border-color;
-		color:@radio-button-checked-font-color !important;
-	}
+		// checked
+		&-checked {
+			z-index:3 !important;
+			border-color:@radio-button-checked-border-color;
+			color:@radio-button-checked-font-color !important;
+		}
 
-	// focused & checked
-	&-focused&-checked {
-		z-index:4 !important;
-	}
+		// focused & checked
+		&-focused&-checked {
+			z-index:4 !important;
+		}
 
-	// disabled
-	&-disabled {
-		z-index:0 !important;
-		cursor:not-allowed;
-		border-color:@radio-button-disabled-border-color;
-		background-color:@radio-button-disabled-background-color;
-		color:@radio-button-disabled-font-color !important;
-	}
+		// disabled
+		&-disabled {
+			z-index:0 !important;
+			cursor:not-allowed;
+			border-color:@radio-button-disabled-border-color;
+			background-color:@radio-button-disabled-background-color;
+			color:@radio-button-disabled-font-color !important;
+		}
 
-	// checked & disabled
-	&-checked&-disabled {
-		background-color:shade(@radio-button-disabled-background-color, 5%);
-	}
+		// checked & disabled
+		&-checked&-disabled {
+			background-color:shade(@radio-button-disabled-background-color, 5%);
+		}
 
-	// size
-	&-small {
-		height:@radio-button-size-sm;
-		padding:0 8px;
-		font-size:@radio-button-font-size-sm;
-		line-height:@radio-button-size-sm - 2px;
-	}
+		// size
+		&-small {
+			height:@radio-button-size-sm;
+			padding:0 8px;
+			font-size:@radio-button-font-size-sm;
+			line-height:@radio-button-size-sm - 2px;
+		}
 
-	&-medium {
-		height:@radio-button-size-md;
-		padding:0 14px;
-		font-size:@radio-button-font-size-md;
-		line-height:@radio-button-size-md - 2px;
-	}
+		&-medium {
+			height:@radio-button-size-md;
+			padding:0 14px;
+			font-size:@radio-button-font-size-md;
+			line-height:@radio-button-size-md - 2px;
+		}
 
-	&-large {
-		height:@radio-button-size-lg;
-		padding:0 20px;
-		font-size:@radio-button-font-size-lg;
-		line-height:@radio-button-size-lg - 2px;
+		&-large {
+			height:@radio-button-size-lg;
+			padding:0 20px;
+			font-size:@radio-button-font-size-lg;
+			line-height:@radio-button-size-lg - 2px;
+		}
 	}
 }

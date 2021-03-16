@@ -87,13 +87,16 @@ const VuiCheckboxGroup = {
 	render() {
 		const { $slots: slots, $props: props, state } = this;
 
+		// direction
+		const direction = props.vertical ? "vertical" : "horizontal";
+
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "checkbox-group");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-vertical`]: props.vertical
+			[`${classNamePrefix}-${direction}`]: true
 		};
 
 		// render
