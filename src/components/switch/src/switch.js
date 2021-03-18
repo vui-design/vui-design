@@ -40,7 +40,7 @@ const VuiSwitch = {
 			}
 		},
 		checked: {
-			type: Boolean,
+			type: [Boolean, String, Number],
 			default: false
 		},
 		disabled: {
@@ -51,6 +51,14 @@ const VuiSwitch = {
 			type: Boolean,
 			default: false
 		},
+        trueValue: {
+            type: [Boolean, String, Number],
+            default: true
+        },
+        falseValue: {
+            type: [Boolean, String, Number],
+            default: false
+        },
 		validator: {
 			type: Boolean,
 			default: true
@@ -83,13 +91,15 @@ const VuiSwitch = {
 			if (this.disabled || this.loading) {
 				return;
 			}
+          
+            const value = checked ? this.trueValue : this.falseValue;
 
-			this.state.checked = checked;
-			this.$emit("input", checked);
-			this.$emit('change', checked);
+			this.state.checked = value;
+			this.$emit("input", value);
+			this.$emit('change', value);
 
 			if (this.validator) {
-				this.dispatch("vui-form-item", "change", checked);
+				this.dispatch("vui-form-item", "change", value);
 			}
 		}
 	},
@@ -118,7 +128,7 @@ const VuiSwitch = {
 		let focused = state.focused;
 
 		// 属性 checked
-		let checked = state.checked;
+		let checked = state.checked === this.trueValue;
 
 		// 属性 disabled 优先级：vuiForm > self
 		let disabled;

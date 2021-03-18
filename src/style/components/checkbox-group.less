@@ -1,57 +1,57 @@
 @vui-checkbox-group: ~"@{vui}-checkbox-group";
 
 .@{vui-checkbox-group} {
-	display:inline-block;
-	box-sizing:border-box;
-	vertical-align:middle;
-	font-size:0;
-	white-space:nowrap;
+  display:inline-block;
+  box-sizing:border-box;
+  vertical-align:middle;
+  font-size:0;
+  white-space:nowrap;
 
-	&-horizontal {
-		.vui-checkbox + .vui-checkbox {
-			margin-left:16px;
-		}
+  &-horizontal {
+    .vui-checkbox + .vui-checkbox {
+      margin-left:16px;
+    }
 
-		.vui-checkbox-button {
-			border-radius:0;
+    .vui-checkbox-button {
+      border-radius:0;
 
-			&:first-child {
-				border-top-left-radius:@checkbox-button-border-radius;
-				border-bottom-left-radius:@checkbox-button-border-radius;
-			}
-			&:last-child {
-				border-top-right-radius:@checkbox-button-border-radius;
-				border-bottom-right-radius:@checkbox-button-border-radius;
-			}
-		}
-		.vui-checkbox-button + .vui-checkbox-button {
-			margin-left:-1px;
-		}
-	}
+      &:first-child {
+        border-top-left-radius:@checkbox-button-border-radius;
+        border-bottom-left-radius:@checkbox-button-border-radius;
+      }
+      &:last-child {
+        border-top-right-radius:@checkbox-button-border-radius;
+        border-bottom-right-radius:@checkbox-button-border-radius;
+      }
+    }
+    .vui-checkbox-button + .vui-checkbox-button {
+      margin-left:-1px;
+    }
+  }
 
-	&-vertical {
-		.vui-checkbox {
-			display:flex;
-		}
-		.vui-checkbox + .vui-checkbox {
-			margin-top:16px;
-		}
+  &-vertical {
+    .vui-checkbox {
+      display:flex;
+    }
+    .vui-checkbox + .vui-checkbox {
+      margin-top:16px;
+    }
 
-		.vui-checkbox-button {
-			display:block;
-			border-radius:0;
+    .vui-checkbox-button {
+      display:block;
+      border-radius:0;
 
-			&:first-child {
-				border-top-left-radius:@checkbox-button-border-radius;
-				border-top-right-radius:@checkbox-button-border-radius;
-			}
-			&:last-child {
-				border-bottom-left-radius:@checkbox-button-border-radius;
-				border-bottom-right-radius:@checkbox-button-border-radius;
-			}
-		}
-		.vui-checkbox-button + .vui-checkbox-button {
-			margin-top:-1px;
-		}
-	}
+      &:first-child {
+        border-top-left-radius:@checkbox-button-border-radius;
+        border-top-right-radius:@checkbox-button-border-radius;
+      }
+      &:last-child {
+        border-bottom-left-radius:@checkbox-button-border-radius;
+        border-bottom-right-radius:@checkbox-button-border-radius;
+      }
+    }
+    .vui-checkbox-button + .vui-checkbox-button {
+      margin-top:-1px;
+    }
+  }
 }
