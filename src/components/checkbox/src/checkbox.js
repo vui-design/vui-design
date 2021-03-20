@@ -35,8 +35,8 @@ const VuiCheckbox = {
     indeterminate: PropTypes.bool.def(false),
     checked: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
     disabled: PropTypes.bool.def(false),
-    trueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(true),
-    falseValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
+    checkedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(true),
+    uncheckedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
     validator: PropTypes.bool.def(true)
   },
   data() {
@@ -89,7 +89,7 @@ const VuiCheckbox = {
         vuiChooseGroup.handleChange("checkbox", checked, props.value);
       }
       else {
-        const value = checked ? props.trueValue : props.falseValue;
+        const value = checked ? props.checkedValue : props.uncheckedValue;
 
         this.state.checked = value;
         this.$emit("input", value);
@@ -103,6 +103,7 @@ const VuiCheckbox = {
   },
   render() {
     const { vuiForm, vuiCheckboxGroup, vuiChooseGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
+    const { handleFocus, handleBlur, handleChange } = this;
 
     // props & state
     let type, name, label, value, size, minWidth, focused, indeterminate, checked, disabled;
@@ -159,7 +160,7 @@ const VuiCheckbox = {
       checked = is.array(vuiChooseGroup.state.value) && vuiChooseGroup.state.value.indexOf(value) > -1;
     }
     else {
-      checked = state.checked === props.trueValue;
+      checked = state.checked === props.checkedValue;
     }
 
     if (vuiForm && vuiForm.disabled) {
@@ -203,9 +204,9 @@ const VuiCheckbox = {
     const checkboxInputProps = {
       attrs: attrs,
       on: {
-        focus: this.handleFocus,
-        blur: this.handleBlur,
-        change: this.handleChange
+        focus: handleFocus,
+        blur: handleBlur,
+        change: handleChange
       }
     };
     const checkboxInput = [];

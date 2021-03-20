@@ -1,190 +1,224 @@
-import VuiSwitchInput from "./components/input";
-import VuiSwitchLabel from "./components/label";
 import Emitter from "vui-design/mixins/emitter";
+import PropTypes from "vui-design/utils/prop-types";
+import is from "vui-design/utils/is";
+import colours from "vui-design/utils/colours";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiSwitch = {
-	name: "vui-switch",
+  name: "vui-switch",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
+  },
+  mixins: [
+    Emitter
+  ],
+  model: {
+    prop: "checked",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    checked: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
+    disabled: PropTypes.bool.def(false),
+    loading: PropTypes.bool.def(false),
+    checkedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(true),
+    uncheckedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
+    checkedColor: PropTypes.string,
+    uncheckedColor: PropTypes.string,
+    checkedText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    uncheckedText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    beforeChange: PropTypes.func,
+    validator: PropTypes.bool.def(true)
+  },
+  data() {
+    const { $props: props } = this;
+    const state = {
+      focused: false,
+      checked: this.checked
+    };
 
-	inject: {
-		vuiForm: {
-			default: undefined
-		}
-	},
+    return {
+      state
+    };
+  },
+  watch: {
+    checked(value) {
+      const { $props: props, state } = this;
 
-	components: {
-		VuiSwitchInput,
-		VuiSwitchLabel
-	},
+      if (state.checked === value) {
+        return;
+      }
 
-	mixins: [
-		Emitter
-	],
+      this.state.checked = value;
 
-	inheritAttrs: false,
+      if (props.validator) {
+        this.dispatch("vui-form-item", "change", value);
+      }
+    }
+  },
+  methods: {
+    handleFocus(e) {
+      const { $props: props } = this;
 
-	model: {
-		prop: "checked",
-		event: "input"
-	},
+      if (props.disabled || props.loading) {
+        return;
+      }
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-switch"
-		},
-		size: {
-			type: String,
-			default: undefined,
-			validator(value) {
-				return ["small", "large", "medium"].indexOf(value) > -1;
-			}
-		},
-		checked: {
-			type: [Boolean, String, Number],
-			default: false
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
-		loading: {
-			type: Boolean,
-			default: false
-		},
-        trueValue: {
-            type: [Boolean, String, Number],
-            default: true
-        },
-        falseValue: {
-            type: [Boolean, String, Number],
-            default: false
-        },
-		validator: {
-			type: Boolean,
-			default: true
-		}
-	},
+      this.state.focused = true;
+      this.$emit("focus");
+    },
+    handleBlur(e) {
+      const { $props: props } = this;
 
-	data() {
-		return {
-			state: {
-				focused: false,
-				checked: this.checked
-			}
-		};
-	},
+      if (props.disabled || props.loading) {
+        return;
+      }
 
-	watch: {
-		checked(value) {
-			this.state.checked = value;
-		}
-	},
+      this.state.focused = false;
+      this.$emit("blur");
+    },
+    handleChange(e) {
+      const { $props: props, state } = this;
 
-	methods: {
-		handleFocus(e) {
-			this.state.focused = true;
-		},
-		handleBlur(e) {
-			this.state.focused = false;
-		},
-		handleChange(checked) {
-			if (this.disabled || this.loading) {
-				return;
-			}
-          
-            const value = checked ? this.trueValue : this.falseValue;
+      if (props.disabled || props.loading) {
+        return;
+      }
 
-			this.state.checked = value;
-			this.$emit("input", value);
-			this.$emit('change', value);
+      const checked = state.checked === props.checkedValue;
+      const oldValue = checked ? props.checkedValue : props.uncheckedValue;
+      const newValue = checked ? props.uncheckedValue : props.checkedValue;
+      const callback = () => {
+        this.state.checked = newValue;
+        this.$emit("input", newValue);
+        this.$emit('change', newValue);
 
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", value);
-			}
-		}
-	},
+        if (props.validator) {
+          this.dispatch("vui-form-item", "change", newValue);
+        }
+      };
+      let hook = true;
 
-	render() {
-		let { $vui, vuiForm, $slots, $attrs, classNamePrefix, loading, state } = this;
-		let { handleFocus, handleBlur, handleChange } = this;
+      if (is.function(props.beforeChange)) {
+        hook = props.beforeChange(checked, oldValue);
+      }
 
-		// 属性 size 优先级：self > vuiForm > $vui
-		let size;
+      if (is.promise(hook)) {
+        hook.then(() => callback()).catch(error => {});
+      }
+      else if (is.boolean(hook) && hook === false) {
+        return;
+      }
+      else {
+        callback();
+      }
+    }
+  },
+  render() {
+    const { vuiForm, $slots: slots, $props: props, state } = this;
+    const { handleFocus, handleBlur, handleChange } = this;
 
-		if (this.size) {
-			size = this.size;
-		}
-		else if (vuiForm && vuiForm.size) {
-			size = vuiForm.size;
-		}
-		else if ($vui && $vui.size) {
-			size = $vui.size;
-		}
-		else {
-			size = "medium";
-		}
+    // size
+    let size;
 
-		// 属性 focused
-		let focused = state.focused;
+    if (props.size) {
+      size = props.size;
+    }
+    else if (vuiForm && vuiForm.size) {
+      size = vuiForm.size;
+    }
+    else {
+      size = "medium";
+    }
 
-		// 属性 checked
-		let checked = state.checked === this.trueValue;
+    // focused
+    const focused = state.focused;
 
-		// 属性 disabled 优先级：vuiForm > self
-		let disabled;
+    // checked
+    const checked = state.checked === props.checkedValue;
 
-		if (vuiForm && vuiForm.disabled) {
-			disabled = vuiForm.disabled;
-		}
-		else {
-			disabled = this.disabled;
-		}
+    // disabled
+    let disabled;
 
-		// theSwitchInputOptions
-		let theSwitchInputOptions = {
-			props: {
-				classNamePrefix,
-				checked,
-				disabled,
-				loading
-			},
-			attrs: {
-				...$attrs
-			},
-			on: {
-				focus: handleFocus,
-				blur: handleBlur,
-				change: handleChange
-			}
-		};
+    if (vuiForm && vuiForm.disabled) {
+      disabled = vuiForm.disabled;
+    }
+    else {
+      disabled = props.disabled;
+    }
 
-		// theSwitchLabelOptions
-		let theSwitchLabelOptions = {
-			props: {
-				classNamePrefix
-			}
-		};
+    // loading
+    const loading = props.loading;
 
-		// classes
-		let classes = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${size}`]: size,
-			[`${classNamePrefix}-focused`]: focused,
-			[`${classNamePrefix}-checked`]: checked,
-			[`${classNamePrefix}-disabled`]: disabled,
-			[`${classNamePrefix}-loading`]: loading
-		};
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "switch");
+    let classes = {};
 
-		// render
-		return (
-			<label class={classes}>
-				<VuiSwitchInput {...theSwitchInputOptions} />
-				<VuiSwitchLabel {...theSwitchLabelOptions}>
-					{checked ? $slots.checked : $slots.unchecked}
-				</VuiSwitchLabel>
-			</label>
-		);
-	}
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${size}`]: size,
+      [`${classNamePrefix}-focused`]: focused,
+      [`${classNamePrefix}-checked`]: checked,
+      [`${classNamePrefix}-disabled`]: disabled,
+      [`${classNamePrefix}-loading`]: loading
+    };
+    classes.elInput = `${classNamePrefix}-input`;
+    classes.elInputSpin = `${classNamePrefix}-input-spin`;
+    classes.elLabel = `${classNamePrefix}-label`;
+
+    // style
+    let color = checked ? props.checkedColor : props.uncheckedColor;
+    let styles = {};
+
+    if (color) {
+      if (loading || disabled) {
+        color = colours.rgba2hex(colours.hex2rgba(color, 0.6));
+      }
+
+      styles.el = {
+        backgroundColor: color
+      };
+
+      if (loading) {
+        styles.elInputSpin = {
+          borderBottomColor: color
+        };
+      }
+    }
+
+    // render
+    let label;
+
+    if (checked) {
+      label = slots.checkedText || props.checkedText;
+    }
+    else {
+      label = slots.uncheckedText || props.uncheckedText;
+    }
+
+    return (
+      <button
+        type="button"
+        class={classes.el}
+        style={styles.el}
+        disabled={disabled || loading}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onClick={handleChange}
+      >
+        <div class={classes.elInput}>
+          <div class={classes.elInputSpin} style={styles.elInputSpin} />
+        </div>
+        {
+          label !== undefined && (
+            <div class={classes.elLabel}>{label}</div>
+          )
+        }
+      </button>
+    );
+  }
 };
 
 export default VuiSwitch;

@@ -34,8 +34,8 @@ const VuiRadio = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
     checked: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
     disabled: PropTypes.bool.def(false),
-    trueValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(true),
-    falseValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
+    checkedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(true),
+    uncheckedValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]).def(false),
     validator: PropTypes.bool.def(true)
   },
   data() {
@@ -88,7 +88,7 @@ const VuiRadio = {
         vuiChooseGroup.handleChange("radio", checked, props.value);
       }
       else {
-        const value = checked ? props.trueValue : props.falseValue;
+        const value = checked ? props.checkedValue : props.uncheckedValue;
   
         this.state.checked = value;
         this.$emit("input", value);
@@ -102,7 +102,8 @@ const VuiRadio = {
   },
   render() {
     const { vuiForm, vuiRadioGroup, vuiChooseGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
-
+    const { handleFocus, handleBlur, handleChange } = this;
+  
     // props & state
     let type, name, label, value, size, minWidth, focused, checked, disabled;
 
@@ -157,7 +158,7 @@ const VuiRadio = {
       checked = !is.array(vuiChooseGroup.state.value) && value === vuiChooseGroup.state.value;
     }
     else {
-      checked = state.checked === props.trueValue;
+      checked = state.checked === props.checkedValue;
     }
 
     if (vuiForm && vuiForm.disabled) {
@@ -200,9 +201,9 @@ const VuiRadio = {
     const radioInputProps = {
       attrs: attrs,
       on: {
-        focus: this.handleFocus,
-        blur: this.handleBlur,
-        change: this.handleChange
+        focus: handleFocus,
+        blur: handleBlur,
+        change: handleChange
       }
     };
     const radioInput = (
