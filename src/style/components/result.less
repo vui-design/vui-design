@@ -1,81 +1,77 @@
 @vui-result: ~"@{vui}-result";
 
 .@{vui-result} {
-	display:block;
-	box-sizing:border-box;
-	padding:@result-padding;
+  display:block;
+  box-sizing:border-box;
+  padding:@result-padding;
 
-	&-icon {
-		display:block;
-		box-sizing:border-box;
-		margin-bottom:@result-icon-margin-bottom;
-		text-align:center;
+  &-icon {
+    display:block;
+    box-sizing:border-box;
+    margin-bottom:@result-icon-margin-bottom;
+    text-align:center;
 
-		i {
-			font-size:@result-icon-font-size;
-		}
-	}
+    i {
+      font-size:@result-icon-font-size;
+    }
+  }
 
-	&-title {
-		display:block;
-		box-sizing:border-box;
-		color:@result-title-font-color;
-		font-size:@result-title-font-size;
-		text-align:center;
-		line-height:@result-title-line-height;
-	}
+  &-title {
+    display:block;
+    box-sizing:border-box;
+    color:@result-title-font-color;
+    font-size:@result-title-font-size;
+    text-align:center;
+    line-height:@result-title-line-height;
+  }
 
-	&-description {
-		display:block;
-		box-sizing:border-box;
-		margin-top:@result-description-margin-top;
-		color:@result-description-font-color;
-		font-size:@result-description-font-size;
-		text-align:center;
-		line-height:@result-description-line-height;
-	}
+  &-description {
+    display:block;
+    box-sizing:border-box;
+    margin-top:@result-description-margin-top;
+    color:@result-description-font-color;
+    font-size:@result-description-font-size;
+    text-align:center;
+    line-height:@result-description-line-height;
+  }
 
-	&-content {
-		display:block;
-		box-sizing:border-box;
-		border-radius:@result-content-border-radius;
-		background-color:@result-content-background-color;
-		margin-top:@result-content-margin-top;
-		padding:@result-content-padding;
-	}
+  &-content {
+    display:block;
+    box-sizing:border-box;
+    border-radius:@result-content-border-radius;
+    background-color:@result-content-background-color;
+    margin-top:@result-content-margin-top;
+    padding:@result-content-padding;
+  }
 
-	&-extra {
-		display:block;
-		box-sizing:border-box;
-		margin-top:@result-extra-margin-top;
-		text-align:center;
+  &-extra {
+      display:block;
+      box-sizing:border-box;
+      margin-top:@result-extra-margin-top;
+      text-align:center;
+  }
 
-		button, a {
-			margin:0 4px;
-		}
-	}
+  &-info &-icon {
+    i {
+      color:@primary-color;
+    }
+  }
 
-	&-info &-icon {
-		i {
-			color:@primary-color;
-		}
-	}
+  &-warning &-icon {
+    i {
+      color:@warning-color;
+    }
+  }
 
-	&-warning &-icon {
-		i {
-			color:@warning-color;
-		}
-	}
+  &-success &-icon {
+    i {
+      color:@success-color;
+    }
+  }
 
-	&-success &-icon {
-		i {
-			color:@success-color;
-		}
-	}
-
-	&-error &-icon {
-		i {
-			color:@error-color;
-		}
-	}
+  &-error &-icon {
+    i {
+      color:@error-color;
+    }
+  }
 }

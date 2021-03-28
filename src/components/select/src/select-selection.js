@@ -114,14 +114,14 @@ export default {
 
       this.$emit("input", e);
     },
-    handleDeselect(e, value) {
+    handleDeselect(e, item) {
       const { $props: props } = this;
 
       if (props.disabled) {
         return;
       }
 
-      this.$emit("deselect", value);
+      this.$emit("deselect", item);
       e.stopPropagation();
     },
     handleClear(e) {
@@ -278,7 +278,7 @@ export default {
             <div class={classes.elItemContent}>{item[props.backfillOptionProp]}</div>
             {
               showItemBtnDeselect && !item.disabled && (
-                <div class={classes.elItemBtnDeselect} onClick={e => handleDeselect(e, item.value)}>
+                <div class={classes.elItemBtnDeselect} onClick={e => handleDeselect(e, item)}>
                   <VuiIcon type="crossmark" />
                 </div>
               )
