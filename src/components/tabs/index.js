@@ -21,7 +21,7 @@ const VuiTabsWrapper = {
     addable: PropTypes.bool.def(false),
     closable: PropTypes.bool.def(false),
     editable: PropTypes.bool.def(false),
-    animated: PropTypes.bool.def(true),
+    destroyOnHide: PropTypes.bool.def(false),
     headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
   },
@@ -58,7 +58,7 @@ const VuiTabsWrapper = {
 };
 
 VuiTabsWrapper.install = function(Vue) {
-	Vue.component(VuiTabsWrapper.name, VuiTabsWrapper);
+  Vue.component(VuiTabsWrapper.name, VuiTabsWrapper);
 };
 
 export default VuiTabsWrapper;

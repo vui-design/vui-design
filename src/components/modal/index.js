@@ -77,14 +77,13 @@ const createModalInstance = function(options) {
     },
     render(h) {
       const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, headerStyle, bodyStyle, footerStyle, backdrop, backdropClassName, animations, getPopupContainer } = this;
-      const { onCancel, onOk, onBeforeOpen, onOpen, onAfterOpen, onBeforeClose, onClose, onAfterClose, handleOpen, handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleClose, handleAfterClose } = this;
 
-      const beforeOpen = createChainedFunction(handleBeforeOpen.bind(this), onBeforeOpen);
-      const open = createChainedFunction(handleOpen.bind(this), onOpen);
-      const afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
-      const beforeClose = createChainedFunction(handleBeforeClose.bind(this), onBeforeClose);
-      const close = createChainedFunction(handleClose.bind(this), onClose);
-      const afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+      const beforeOpen = createChainedFunction(this.handleBeforeOpen.bind(this), this.beforeOpen || this.onBeforeOpen);
+      const open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
+      const afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
+      const beforeClose = createChainedFunction(this.handleBeforeClose.bind(this), this.beforeClose || this.onBeforeClose);
+      const close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
+      const afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
 
       // attrs
       let attrs = {
@@ -123,12 +122,18 @@ const createModalInstance = function(options) {
         }
       };
 
-      if (is.function(onCancel)) {
-        attrs.on.cancel = onCancel;
+      if (is.function(this.cancel)) {
+        attrs.on.cancel = this.cancel;
+      }
+      else if (is.function(this.onCancel)) {
+        attrs.on.cancel = this.onCancel;
       }
 
-      if (is.function(onOk)) {
-        attrs.on.ok = onOk;
+      if (is.function(this.ok)) {
+        attrs.on.ok = this.ok;
+      }
+      else if (is.function(this.onOk)) {
+        attrs.on.ok = this.onOk;
       }
 
       // title

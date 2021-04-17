@@ -77,7 +77,7 @@
     text-align:right;
   }
   &-footer button + button {
-    margin-left:10px;
+    margin-left:@margin-md;
   }
   &-with-notice &-footer {
     border-top:none;
@@ -89,6 +89,7 @@
     position:absolute;
     top:0;
     right:0;
+    z-index:2000;
     cursor:pointer;
     padding:@modal-header-padding;
     color:@font-secondary-color;
@@ -97,12 +98,20 @@
     line-height:1;
     transition:color @transition-duration @transition-timing-function;
 
+    i {
+      display:block;
+    }
+
     &:hover {
       color:@font-color;
     }
   }
   &-with-header &-btn-close {
     line-height:floor(@font-size-lg * @line-height);
+
+    i {
+      display:inline-block;
+    }
   }
 
   &-notice {

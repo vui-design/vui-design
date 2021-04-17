@@ -135,12 +135,11 @@ const createMessageInstance = options => {
 		},
 		render(h) {
 			const { type, content, icon, closable, closeText, top, visible, animation, getPopupContainer } = this;
-			const { onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
 
-			const open = createChainedFunction(handleOpen.bind(this), onOpen);
-			const afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
-			const close = createChainedFunction(handleClose.bind(this), onClose);
-			const afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+			const open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
+			const afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
+			const close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
+			const afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
 
 			const attrs = {
 				props: {

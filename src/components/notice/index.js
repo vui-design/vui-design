@@ -155,12 +155,11 @@ const createNoticeInstance = options => {
 		},
 		render(h) {
 			let { type, title, description, icon, closable, closeText, placement, top, bottom, visible, animation, getPopupContainer } = this;
-			let { onOpen, onAfterOpen, onClose, onAfterClose, handleOpen, handleAfterOpen, handleClose, handleAfterClose } = this;
 
-			let open = createChainedFunction(handleOpen.bind(this), onOpen);
-			let afterOpen = createChainedFunction(handleAfterOpen.bind(this), onAfterOpen);
-			let close = createChainedFunction(handleClose.bind(this), onClose);
-			let afterClose = createChainedFunction(handleAfterClose.bind(this), onAfterClose);
+			let open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
+			let afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
+			let close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
+			let afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
 
 			let attrs = {
 				props: {

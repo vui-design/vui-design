@@ -25,7 +25,7 @@ const VuiTabs = {
     addable: PropTypes.bool.def(false),
     closable: PropTypes.bool.def(false),
     editable: PropTypes.bool.def(false),
-    animated: PropTypes.bool.def(true),
+    destroyOnHide: PropTypes.bool.def(false),
     headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
   },
@@ -89,8 +89,7 @@ const VuiTabs = {
     classes.el = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-${props.type}`]: true,
-      [`${classNamePrefix}-${size}`]: size,
-      [`${classNamePrefix}-animated`]: props.animated
+      [`${classNamePrefix}-${size}`]: size
     };
     classes.elHeader = `${classNamePrefix}-header`;
     classes.elHeaderContent = `${classNamePrefix}-header-content`;
@@ -98,18 +97,6 @@ const VuiTabs = {
     classes.elBtnAdd = `${classNamePrefix}-btn-add`;
     classes.elBody = `${classNamePrefix}-body` ;
     classes.elBodyContent = `${classNamePrefix}-body-content`;
-
-    // style
-    let styles = {};
-    let x = props.tabpanels.findIndex(tabpanel => tabpanel.key === state.activeKey);
-
-    if (x > -1) {
-      x = x === 0 ? `0%` : `-${x * 100}%`;
-
-      styles.elBodyContent = {
-        transform: `translateX(${x}) translateZ(0px)`
-      };
-    }
 
     // extra
     let extra;
@@ -149,7 +136,7 @@ const VuiTabs = {
           {extra}
         </div>
         <div class={classes.elBody} style={props.bodyStyle}>
-          <div class={classes.elBodyContent} style={styles.elBodyContent}>
+          <div class={classes.elBodyContent}>
             {
               props.tabpanels.map(tabpanel => {
                 return (
@@ -157,6 +144,7 @@ const VuiTabs = {
                     classNamePrefix={classNamePrefix}
                     key={tabpanel.key}
                     data={tabpanel}
+                    destroyOnHide={props.destroyOnHide}
                   />
                 );
               })

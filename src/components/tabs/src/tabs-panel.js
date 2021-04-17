@@ -10,11 +10,15 @@ const VuiTabsPanel = {
   },
   props: {
     classNamePrefix: PropTypes.string,
-    data: PropTypes.object.def({})
+    data: PropTypes.object.def({}),
+    destroyOnHide: PropTypes.bool.def(false)
   },
   render() {
     const { vuiTabs, $props: props } = this;
     const { state: vuiTabsState } = vuiTabs;
+
+    // active
+    const active = props.data.key === vuiTabsState.activeKey;
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "panel");
@@ -22,15 +26,21 @@ const VuiTabsPanel = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
-      [`${classNamePrefix}-active`]: props.data.key === vuiTabsState.activeKey,
+      [`${classNamePrefix}-active`]: active,
       [`${classNamePrefix}-disabled`]: props.data.disabled
     };
     classes.elContent = `${classNamePrefix}-content`;
 
     // render
+    let content = props.data.children;
+    
+    if (!active && props.destroyOnHide) {
+      content = null;
+    }
+
     return (
       <div class={classes.el}>
-        <div class={classes.elContent}>{props.data.children}</div>
+        <div class={classes.elContent}>{content}</div>
       </div>
     );
   }
