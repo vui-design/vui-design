@@ -296,6 +296,7 @@ const VuiUpload = {
 				onProgress={handleProgress}
 				onSuccess={handleSuccess}
 				onError={handleError}
+				onRemove={handleRemove}
 			>
 				{$slots.trigger || $slots.default}
 			</VuiUploadTrigger>
