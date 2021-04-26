@@ -63,7 +63,7 @@ const VuiTransferPanelBodyMenuItem = {
 
 		// render
 		return (
-			<VuiCheckbox class={classes.el} checked={checked} disabled={disabled} onChange={handleChange}>
+			<VuiCheckbox class={classes.el} checked={checked} disabled={disabled} validator={false} onChange={handleChange}>
 				{content}
 			</VuiCheckbox>
 		);

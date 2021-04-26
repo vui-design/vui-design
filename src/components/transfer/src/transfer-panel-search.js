@@ -60,7 +60,7 @@ const VuiTransferPanelSearch = {
 		// render
 		return (
 			<div class={classes.el}>
-				<VuiInput suffix="search" value={state.value} placeholder={placeholder} clearable={props.clearable} disabled={props.disabled} onInput={handleInput} />
+				<VuiInput suffix="search" value={state.value} placeholder={placeholder} clearable={props.clearable} disabled={props.disabled} validator={false} onInput={handleInput} />
 			</div>
 		);
 	}

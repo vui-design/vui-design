@@ -6,7 +6,7 @@ import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
 import flatten from "vui-design/utils/flatten";
 import getTargetByPath from "vui-design/utils/getTargetByPath";
-import utils from "../utils";
+import utils from "./utils";
 
 const VuiTableTbody = {
 	name: "vui-table-tbody",
@@ -470,6 +470,7 @@ const VuiTableTbody = {
 					let btnSelectionAttributes = {
 						class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
 						props: {
+							validator: false,
 							checked: isRowSelected
 						},
 						on: {

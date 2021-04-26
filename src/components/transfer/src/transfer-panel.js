@@ -107,7 +107,7 @@ const VuiTransferPanel = {
 
 				content.push(
 					<div class={classes.elCheckbox}>
-						<VuiCheckbox checked={checked} indeterminate={indeterminate} disabled={disabled} onChange={onChange} />
+						<VuiCheckbox checked={checked} indeterminate={indeterminate} disabled={disabled} validator={false} onChange={onChange} />
 					</div>
 				);
 			}

@@ -1,10 +1,10 @@
 import VuiCheckbox from "vui-design/components/checkbox";
-import VuiTableFilter from "./filter";
+import VuiTableFilter from "./table-filter";
 import is from "vui-design/utils/is";
 import clone from "vui-design/utils/clone";
 import flatten from "vui-design/utils/flatten";
 import getTargetByPath from "vui-design/utils/getTargetByPath";
-import utils from "../utils";
+import utils from "./utils";
 
 const VuiTableThead = {
 	name: "vui-table-thead",
@@ -331,6 +331,7 @@ const VuiTableThead = {
 								indeterminate={status.indeterminate}
 								checked={status.checked}
 								disabled={status.disabled}
+								validator={false}
 								onChange={this.handleSelectAll}
 							/>
 						);
