@@ -1,20 +1,20 @@
-import VuiMultipleCascaderSourceList from "./multiple-cascader-source-list";
-import VuiMultipleCascaderTarget from "./multiple-cascader-target";
+import VuiCascadeSelectorSourceList from "./cascade-selector-source-list";
+import VuiCascadeSelectorTarget from "./cascade-selector-target";
 import Emitter from "vui-design/mixins/emitter";
 import PropTypes from "vui-design/utils/prop-types";
 import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const VuiMultipleCascader = {
-	name: "vui-multiple-cascader",
+const VuiCascadeSelector = {
+	name: "vui-cascade-selector",
 	inject: {
 		vuiForm: {
 			default: undefined
 		}
 	},
 	components: {
-		VuiMultipleCascaderSourceList,
-		VuiMultipleCascaderTarget
+		VuiCascadeSelectorSourceList,
+		VuiCascadeSelectorTarget
 	},
 	mixins: [
 		Emitter
@@ -109,7 +109,7 @@ const VuiMultipleCascader = {
 		const body = scopedSlots.body;
 
 		// class
-		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "multiple-cascader");
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascade-selector");
 		let classes = {};
 
 		classes.el = {
@@ -120,7 +120,7 @@ const VuiMultipleCascader = {
 		// render
 		return (
 			<div class={classes.el}>
-				<VuiMultipleCascaderSourceList
+				<VuiCascadeSelectorSourceList
 					classNamePrefix={classNamePrefix}
 					title={props.title}
 					value={state.value}
@@ -136,7 +136,7 @@ const VuiMultipleCascader = {
 				/>
 				{
 					props.showTargetPanel && (
-						<VuiMultipleCascaderTarget
+						<VuiCascadeSelectorTarget
 							classNamePrefix={classNamePrefix}
 							title={props.title}
 							value={state.value}
@@ -158,4 +158,4 @@ const VuiMultipleCascader = {
 	}
 };
 
-export default VuiMultipleCascader;
+export default VuiCascadeSelector;

@@ -82,11 +82,11 @@ const VuiFormItem = {
   },
   watch: {
     message(value) {
-      this.validator.status = value ? "error" : "";
-      this.validator.message = value;
+      this.state.validator.status = value ? "error" : "";
+      this.state.validator.message = value;
     },
     validateStatus(value) {
-      this.validator.status = value;
+      this.state.validator.status = value;
     }
   },
   methods: {

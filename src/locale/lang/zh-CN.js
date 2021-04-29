@@ -13,7 +13,7 @@ export default {
 			placeholder: "请选择",
 			notFound: "暂无数据"
 		},
-		multipleCascader: {
+		cascadeSelector: {
 			notFound: "暂无数据",
 			clear: "清空"
 		},

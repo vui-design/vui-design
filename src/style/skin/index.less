@@ -315,6 +315,37 @@
 
 // 数据录入 --------------------------------------------------------------------------------
 
+// Cascade Selector
+@cascade-selector-font-color: @font-color;
+@cascade-selector-font-size: @font-size;
+@cascade-selector-line-height: @line-height;
+@cascade-selector-panel-width: 200px;
+@cascade-selector-panel-height: 251px;
+@cascade-selector-panel-border-color: @border-color;
+@cascade-selector-panel-border-radius: @border-radius;
+@cascade-selector-panel-header-border-color: #f0f0f0;
+@cascade-selector-panel-header-background-color: shade(@component-background-color, 2%);
+@cascade-selector-panel-header-padding: @padding-sm;
+@cascade-selector-panel-header-checkbox-margin-right: @margin-xs;
+@cascade-selector-panel-header-extra-margin-left: @margin-xs;
+@cascade-selector-panel-body-menu-padding: 6px 0;
+@cascade-selector-panel-body-menu-item-height: 34px;
+@cascade-selector-panel-body-menu-item-border-radius: @border-radius;
+@cascade-selector-panel-body-menu-item-padding: 0 @padding-sm;
+@cascade-selector-panel-body-menu-item-hover-background-color: shade(@component-background-color, 2%);
+@cascade-selector-panel-body-menu-item-expanded-font-color: @primary-color;
+@cascade-selector-panel-body-menu-item-expanded-hover-font-color: @primary-color;
+@cascade-selector-panel-body-menu-item-checked-font-color: @primary-color;
+@cascade-selector-panel-body-menu-item-checked-hover-font-color: @primary-color;
+@cascade-selector-panel-body-menu-item-checked-background-color: #e6f7ff;
+@cascade-selector-panel-body-menu-item-checked-hover-background-color: #dcf4ff;
+@cascade-selector-panel-body-menu-item-disabled-background-color: transparent;
+@cascade-selector-panel-body-menu-item-disabled-hover-background-color: transparent;
+@cascade-selector-panel-body-menu-item-checkbox-margin-right: 8px;
+@cascade-selector-panel-body-menu-item-arrow-margin-left: 8px;
+@cascade-selector-panel-body-menu-item-arrow-color: rgba(0,0,0,0.25);
+@cascade-selector-panel-body-menu-item-arrow-size: 12px;
+
 // Checkbox
 @checkbox-border-color: @border-color;
 @checkbox-border-radius: @border-radius;
@@ -395,37 +426,6 @@
 @input-disabled-border-color: @border-color;
 @input-disabled-background-color: shade(@component-background-color, 2%);
 @input-disabled-font-color: @font-disabled-color;
-
-// Multiple Cascader
-@multiple-cascader-font-color: @font-color;
-@multiple-cascader-font-size: @font-size;
-@multiple-cascader-line-height: @line-height;
-@multiple-cascader-panel-width: 200px;
-@multiple-cascader-panel-height: 251px;
-@multiple-cascader-panel-border-color: @border-color;
-@multiple-cascader-panel-border-radius: @border-radius;
-@multiple-cascader-panel-header-border-color: #f0f0f0;
-@multiple-cascader-panel-header-background-color: shade(@component-background-color, 2%);
-@multiple-cascader-panel-header-padding: @padding-sm;
-@multiple-cascader-panel-header-checkbox-margin-right: @margin-xs;
-@multiple-cascader-panel-header-extra-margin-left: @margin-xs;
-@multiple-cascader-panel-body-menu-padding: 6px 0;
-@multiple-cascader-panel-body-menu-item-height: 34px;
-@multiple-cascader-panel-body-menu-item-border-radius: @border-radius;
-@multiple-cascader-panel-body-menu-item-padding: 0 @padding-sm;
-@multiple-cascader-panel-body-menu-item-hover-background-color: shade(@component-background-color, 2%);
-@multiple-cascader-panel-body-menu-item-expanded-font-color: @primary-color;
-@multiple-cascader-panel-body-menu-item-expanded-hover-font-color: @primary-color;
-@multiple-cascader-panel-body-menu-item-checked-font-color: @primary-color;
-@multiple-cascader-panel-body-menu-item-checked-hover-font-color: @primary-color;
-@multiple-cascader-panel-body-menu-item-checked-background-color: #e6f7ff;
-@multiple-cascader-panel-body-menu-item-checked-hover-background-color: #dcf4ff;
-@multiple-cascader-panel-body-menu-item-disabled-background-color: transparent;
-@multiple-cascader-panel-body-menu-item-disabled-hover-background-color: transparent;
-@multiple-cascader-panel-body-menu-item-checkbox-margin-right: 8px;
-@multiple-cascader-panel-body-menu-item-arrow-margin-left: 8px;
-@multiple-cascader-panel-body-menu-item-arrow-color: rgba(0,0,0,0.25);
-@multiple-cascader-panel-body-menu-item-arrow-size: 12px;
 
 // Radio
 @radio-border-color: @border-color;

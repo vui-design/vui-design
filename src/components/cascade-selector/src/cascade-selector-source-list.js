@@ -1,18 +1,18 @@
-import VuiMultipleCascaderSource from "./multiple-cascader-source";
+import VuiCascadeSelectorSource from "./cascade-selector-source";
 import PropTypes from "vui-design/utils/prop-types";
 import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiMultipleCascaderSourceList = {
-	name: "vui-multiple-cascader-source-list",
+const VuiCascadeSelectorSourceList = {
+	name: "vui-cascade-selector-source-list",
 	provide() {
 		return {
-			vuiMultipleCascaderSourceList: this
+			vuiCascadeSelectorSourceList: this
 		};
 	},
 	components: {
-		VuiMultipleCascaderSource
+		VuiCascadeSelectorSource
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
@@ -95,7 +95,7 @@ const VuiMultipleCascaderSourceList = {
 
 		return (
 			<div class={classes.el}>
-				<VuiMultipleCascaderSource
+				<VuiCascadeSelectorSource
 					classNamePrefix={props.classNamePrefix}
 					title={props.title}
 					selectedKeys={selectedKeys}
@@ -114,4 +114,4 @@ const VuiMultipleCascaderSourceList = {
 	}
 };
 
-export default VuiMultipleCascaderSourceList;
+export default VuiCascadeSelectorSourceList;

@@ -12,7 +12,7 @@ const VuiRadio = {
     vuiRadioGroup: {
       default: undefined
     },
-    vuiChooseGroup: {
+    vuiMutexGroup: {
       default: undefined
     }
   },
@@ -74,7 +74,7 @@ const VuiRadio = {
       this.$emit("blur");
     },
     handleChange(e) {
-      const { vuiRadioGroup, vuiChooseGroup, $props: props } = this;
+      const { vuiRadioGroup, vuiMutexGroup, $props: props } = this;
       const checked = e.target.checked;
 
       if (props.disabled) {
@@ -84,8 +84,8 @@ const VuiRadio = {
       if (vuiRadioGroup) {
         vuiRadioGroup.handleChange(checked, props.value);
       }
-      else if (vuiChooseGroup) {
-        vuiChooseGroup.handleChange("radio", checked, props.value);
+      else if (vuiMutexGroup) {
+        vuiMutexGroup.handleChange("radio", checked, props.value);
       }
       else {
         const value = checked ? props.checkedValue : props.uncheckedValue;
@@ -101,7 +101,7 @@ const VuiRadio = {
     }
   },
   render() {
-    const { vuiForm, vuiRadioGroup, vuiChooseGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
+    const { vuiForm, vuiRadioGroup, vuiMutexGroup, $slots: slots, $attrs: attrs, $props: props, state } = this;
     const { handleFocus, handleBlur, handleChange } = this;
   
     // props & state
@@ -111,9 +111,9 @@ const VuiRadio = {
       type = vuiRadioGroup.type;
       name = vuiRadioGroup.name;
     }
-    else if (vuiChooseGroup) {
-      type = vuiChooseGroup.type;
-      name = vuiChooseGroup.name;
+    else if (vuiMutexGroup) {
+      type = vuiMutexGroup.type;
+      name = vuiMutexGroup.name;
     }
     else {
       type = props.type;
@@ -129,8 +129,8 @@ const VuiRadio = {
     else if (vuiRadioGroup && vuiRadioGroup.size) {
       size = vuiRadioGroup.size;
     }
-    else if (vuiChooseGroup && vuiChooseGroup.size) {
-      size = vuiChooseGroup.size;
+    else if (vuiMutexGroup && vuiMutexGroup.size) {
+      size = vuiMutexGroup.size;
     }
     else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
@@ -145,8 +145,8 @@ const VuiRadio = {
     else if (vuiRadioGroup && vuiRadioGroup.minWidth) {
       minWidth = vuiRadioGroup.minWidth;
     }
-    else if (vuiChooseGroup && vuiChooseGroup.minWidth) {
-      minWidth = vuiChooseGroup.minWidth;
+    else if (vuiMutexGroup && vuiMutexGroup.minWidth) {
+      minWidth = vuiMutexGroup.minWidth;
     }
 
     focused = state.focused;
@@ -154,8 +154,8 @@ const VuiRadio = {
     if (vuiRadioGroup) {
       checked = value === vuiRadioGroup.state.value;
     }
-    else if (vuiChooseGroup) {
-      checked = !is.array(vuiChooseGroup.state.value) && value === vuiChooseGroup.state.value;
+    else if (vuiMutexGroup) {
+      checked = !is.array(vuiMutexGroup.state.value) && value === vuiMutexGroup.state.value;
     }
     else {
       checked = state.checked === props.checkedValue;
@@ -167,8 +167,8 @@ const VuiRadio = {
     else if (vuiRadioGroup && vuiRadioGroup.disabled) {
       disabled = vuiRadioGroup.disabled;
     }
-    else if (vuiChooseGroup && vuiChooseGroup.disabled) {
-      disabled = vuiChooseGroup.disabled;
+    else if (vuiMutexGroup && vuiMutexGroup.disabled) {
+      disabled = vuiMutexGroup.disabled;
     }
     else {
       disabled = props.disabled;

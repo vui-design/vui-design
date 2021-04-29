@@ -1,5 +1,5 @@
 import VuiIcon from "vui-design/components/icon";
-import VuiMultipleCascaderEmpty from "./multiple-cascader-empty";
+import VuiCascadeSelectorEmpty from "./cascade-selector-empty";
 import Locale from "vui-design/mixins/locale";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
@@ -7,11 +7,11 @@ import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiMultipleCascaderTarget = {
-	name: "vui-multiple-cascader-target",
+const VuiCascadeSelectorTarget = {
+	name: "vui-cascade-selector-target",
 	components: {
 		VuiIcon,
-		VuiMultipleCascaderEmpty
+		VuiCascadeSelectorEmpty
 	},
 	mixins: [
 		Locale
@@ -96,7 +96,7 @@ const VuiMultipleCascaderTarget = {
 			}
 			else {
 				content = (
-					<VuiMultipleCascaderEmpty
+					<VuiCascadeSelectorEmpty
 						classNamePrefix={props.classNamePrefix}
 						description={props.locale ? props.locale.notFound : undefined}
 					/>
@@ -259,4 +259,4 @@ const VuiMultipleCascaderTarget = {
 	}
 };
 
-export default VuiMultipleCascaderTarget;
+export default VuiCascadeSelectorTarget;

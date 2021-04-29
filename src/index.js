@@ -35,9 +35,9 @@ import Tabs from "./components/tabs";
 import TabPanel from "./components/tab-panel";
 // Data Entry
 import Cascader from "./components/cascader";
+import CascadeSelector from "./components/cascade-selector";
 import Checkbox from "./components/checkbox";
 import CheckboxGroup from "./components/checkbox-group";
-import ChooseGroup from "./components/choose-group";
 import Datepicker from "./components/datepicker";
 import Form from "./components/form";
 import FormGroup from "./components/form-group";
@@ -45,7 +45,7 @@ import FormItem from "./components/form-item";
 import Input from "./components/input";
 import InputGroup from "./components/input-group";
 import InputNumber from "./components/input-number";
-import MultipleCascader from "./components/multiple-cascader";
+import MutexGroup from "./components/mutex-group";
 import Radio from "./components/radio";
 import RadioGroup from "./components/radio-group";
 import Rate from "./components/rate";
@@ -146,9 +146,9 @@ const components = [
   TabPanel,
   // Data Entry
   Cascader,
+  CascadeSelector,
   Checkbox,
   CheckboxGroup,
-  ChooseGroup,
   Datepicker,
   Form,
   FormGroup,
@@ -156,7 +156,7 @@ const components = [
   Input,
   InputGroup,
   InputNumber,
-  MultipleCascader,
+  MutexGroup,
   Radio,
   RadioGroup,
   Rate,
@@ -246,7 +246,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-  version: "1.4.10",
+  version: "1.4.11",
   install,
   locale: locale.use,
   i18n: locale.i18n,
@@ -287,9 +287,9 @@ export default {
   TabPanel,
   // Data Entry
   Cascader,
+  CascadeSelector,
   Checkbox,
   CheckboxGroup,
-  ChooseGroup,
   Datepicker,
   Form,
   FormGroup,
@@ -297,7 +297,7 @@ export default {
   Input,
   InputGroup,
   InputNumber,
-  MultipleCascader,
+  MutexGroup,
   Radio,
   RadioGroup,
   Rate,

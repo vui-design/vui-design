@@ -1,6 +1,6 @@
-@vui-choose-group: ~"@{vui}-choose-group";
+@vui-mutex-group: ~"@{vui}-mutex-group";
 
-.@{vui-choose-group} {
+.@{vui-mutex-group} {
   display:inline-block;
   box-sizing:border-box;
   vertical-align:middle;
@@ -14,6 +14,8 @@
     }
 
     .vui-radio-button {
+      border-radius:0;
+
       &:first-child {
         border-top-left-radius:@radio-button-border-radius;
         border-bottom-left-radius:@radio-button-border-radius;
@@ -21,9 +23,6 @@
       &:last-child {
         border-top-right-radius:@radio-button-border-radius;
         border-bottom-right-radius:@radio-button-border-radius;
-      }
-      &:not(:first-child):not(:last-child) {
-        border-radius:0;
       }
     }
     .vui-radio-button + .vui-radio-button,
@@ -43,6 +42,7 @@
 
     .vui-radio-button {
       display:block;
+      border-radius:0;
 
       &:first-child {
         border-top-left-radius:@radio-button-border-radius;
@@ -51,9 +51,6 @@
       &:last-child {
         border-bottom-left-radius:@radio-button-border-radius;
         border-bottom-right-radius:@radio-button-border-radius;
-      }
-      &:not(:first-child):not(:last-child) {
-        border-radius:0;
       }
     }
     .vui-radio-button + .vui-radio-button,
@@ -69,6 +66,8 @@
     }
 
     .vui-checkbox-button {
+      border-radius:0;
+
       &:first-child {
         border-top-left-radius:@checkbox-button-border-radius;
         border-bottom-left-radius:@checkbox-button-border-radius;
@@ -76,9 +75,6 @@
       &:last-child {
         border-top-right-radius:@checkbox-button-border-radius;
         border-bottom-right-radius:@checkbox-button-border-radius;
-      }
-      &:not(:first-child):not(:last-child) {
-        border-radius:0;
       }
     }
     .vui-checkbox-button + .vui-radio-button,
@@ -98,6 +94,7 @@
 
     .vui-checkbox-button {
       display:block;
+      border-radius:0;
 
       &:first-child {
         border-top-left-radius:@checkbox-button-border-radius;
@@ -106,9 +103,6 @@
       &:last-child {
         border-bottom-left-radius:@checkbox-button-border-radius;
         border-bottom-right-radius:@checkbox-button-border-radius;
-      }
-      &:not(:first-child):not(:last-child) {
-        border-radius:0;
       }
     }
     .vui-checkbox-button + .vui-radio-button,

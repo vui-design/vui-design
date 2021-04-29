@@ -6,8 +6,8 @@ import is from "vui-design/utils/is";
 import guid from "vui-design/utils/guid";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const VuiChooseGroup = {
-  name: "vui-choose-group",
+const VuiMutexGroup = {
+  name: "vui-mutex-group",
   inject: {
     vuiForm: {
       default: undefined
@@ -15,7 +15,7 @@ const VuiChooseGroup = {
   },
   provide() {
     return {
-      vuiChooseGroup: this
+      vuiMutexGroup: this
     };
   },
   components: {
@@ -37,8 +37,8 @@ const VuiChooseGroup = {
     size: PropTypes.oneOf(["small", "medium", "large"]),
     minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
+    defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
     options: PropTypes.array.def(() => []),
-    fallback: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.array]),
     disabled: PropTypes.bool.def(false),
     validator: PropTypes.bool.def(true)
   },
@@ -73,7 +73,7 @@ const VuiChooseGroup = {
       let nextValue = is.array(state.value) ? [...state.value] : state.value;
 
       if (type === "radio") {
-        nextValue = checked ? value : props.fallback;
+        nextValue = checked ? value : props.defaultValue;
       }
       else if (type === "checkbox") {
         if (checked) {
@@ -94,7 +94,7 @@ const VuiChooseGroup = {
         }
 
         if (nextValue.length === 0) {
-          nextValue = props.fallback;
+          nextValue = props.defaultValue;
         }
       }
 
@@ -111,7 +111,7 @@ const VuiChooseGroup = {
     const { $slots: slots, $props: props, state } = this;
 
     // class
-    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choose-group");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "mutex-group");
     let classes = {};
 
     classes.el = {
@@ -150,4 +150,4 @@ const VuiChooseGroup = {
   }
 };
 
-export default VuiChooseGroup;
+export default VuiMutexGroup;

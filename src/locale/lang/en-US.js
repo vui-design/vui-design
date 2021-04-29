@@ -13,7 +13,7 @@ export default {
 			placeholder: "Select",
 			notFound: "No Data"
 		},
-		multipleCascader: {
+		cascadeSelector: {
 			notFound: "No Data",
 			clear: "Clear"
 		},

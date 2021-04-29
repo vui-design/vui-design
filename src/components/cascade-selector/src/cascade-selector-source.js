@@ -1,6 +1,6 @@
 import VuiCheckbox from "vui-design/components/checkbox";
 import VuiIcon from "vui-design/components/icon";
-import VuiMultipleCascaderEmpty from "./multiple-cascader-empty";
+import VuiCascadeSelectorEmpty from "./cascade-selector-empty";
 import Portal from "vui-design/directives/portal";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
@@ -8,25 +8,25 @@ import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiMultipleCascaderSource = {
-	name: "vui-multiple-cascader-source",
+const VuiCascadeSelectorSource = {
+	name: "vui-cascade-selector-source",
 	inject: {
-		vuiMultipleCascaderSourceList: {
+		vuiCascadeSelectorSourceList: {
 			default: undefined
 		},
-		vuiMultipleCascaderSource: {
+		vuiCascadeSelectorSource: {
 			default: undefined
 		}
 	},
 	provide() {
 		return {
-			vuiMultipleCascaderSource: this
+			vuiCascadeSelectorSource: this
 		};
 	},
 	components: {
 		VuiCheckbox,
 		VuiIcon,
-		VuiMultipleCascaderEmpty
+		VuiCascadeSelectorEmpty
 	},
 	directives: {
 		Portal
@@ -87,12 +87,12 @@ const VuiMultipleCascaderSource = {
 				const selectedStatus = utils.getSelectedStatus(props.selectedKeys, props.options, props.valueKey);
 
 				const checked = selectedStatus === "all";
-				const indeterminate = utils.getIndeterminateStatus(this.vuiMultipleCascaderSourceList.state.value, props.options, props.valueKey, props.childrenKey);;
+				const indeterminate = utils.getIndeterminateStatus(this.vuiCascadeSelectorSourceList.state.value, props.options, props.valueKey, props.childrenKey);;
 				const disabled = props.disabled;
 
 				content.push(
 					<div class={classes.elCheckbox}>
-						<VuiCheckbox checked={checked} indeterminate={indeterminate} disabled={disabled} onChange={props.onSelectAll} />
+						<VuiCheckbox checked={checked} indeterminate={indeterminate} disabled={disabled} validator={false} onChange={props.onSelectAll} />
 					</div>
 				);
 			}
@@ -127,7 +127,7 @@ const VuiMultipleCascaderSource = {
 			}
 			else {
 				content = (
-					<VuiMultipleCascaderEmpty
+					<VuiCascadeSelectorEmpty
 						classNamePrefix={props.classNamePrefix}
 						description={props.locale ? props.locale.notFound : undefined}
 					/>
@@ -156,7 +156,7 @@ const VuiMultipleCascaderSource = {
 							const children = option[props.childrenKey];
 
 							const expanded = props.expandedKey === value;
-							const indeterminate = utils.getIndeterminateStatus(this.vuiMultipleCascaderSourceList.state.value, children, props.valueKey, props.childrenKey);
+							const indeterminate = utils.getIndeterminateStatus(this.vuiCascadeSelectorSourceList.state.value, children, props.valueKey, props.childrenKey);
 							const checked = props.selectedKeys.indexOf(value) > -1;
 
 							const attributes = {
@@ -292,7 +292,7 @@ const VuiMultipleCascaderSource = {
 				subSourceSelectedKeys = subSourceOptions.map(option => option[props.valueKey]);
 			}
 			else {
-				subSourceSelectedKeys = subSourceOptionKeys.filter(optionKey => this.vuiMultipleCascaderSourceList.state.value.indexOf(optionKey) > -1);
+				subSourceSelectedKeys = subSourceOptionKeys.filter(optionKey => this.vuiCascadeSelectorSourceList.state.value.indexOf(optionKey) > -1);
 			}
 
 			// class
@@ -304,7 +304,7 @@ const VuiMultipleCascaderSource = {
 			// render
 			return (
 				<div key={props.expandedKey} class={classes.el}>
-					<VuiMultipleCascaderSource
+					<VuiCascadeSelectorSource
 						classNamePrefix={props.classNamePrefix}
 						level={subSourceLevel}
 						parent={subSourceParent}
@@ -339,13 +339,13 @@ const VuiMultipleCascaderSource = {
 				return;
 			}
 
-			if (this.vuiMultipleCascaderSource && props.parent) {
+			if (this.vuiCascadeSelectorSource && props.parent) {
 				const option = {
 					value: props.parent[props.valueKey],
 					data: clone(props.parent)
 				};
 
-				this.vuiMultipleCascaderSource.handleSelect(checked, option);
+				this.vuiCascadeSelectorSource.handleSelect(checked, option);
 			}
 			else {
 				props.options.forEach(option => {
@@ -383,7 +383,7 @@ const VuiMultipleCascaderSource = {
 				const children = option[props.childrenKey];
 				const checked = this.state.selectedKeys.indexOf(value) > -1;
 
-				this.vuiMultipleCascaderSourceList.handleSelect(checked, {
+				this.vuiCascadeSelectorSourceList.handleSelect(checked, {
 					value: value,
 					children: children,
 					data: clone(option)
@@ -394,23 +394,23 @@ const VuiMultipleCascaderSource = {
 			const selectedStatus = utils.getSelectedStatus(this.state.selectedKeys, props.options, props.valueKey);
 
 			if (selectedStatus === "all") {
-				if (this.vuiMultipleCascaderSource && props.parent) {
+				if (this.vuiCascadeSelectorSource && props.parent) {
 					const option = {
 						value: props.parent[props.valueKey],
 						data: clone(props.parent)
 					};
 
-					this.vuiMultipleCascaderSource.handleSelect(true, option);
+					this.vuiCascadeSelectorSource.handleSelect(true, option);
 				}
 			}
 			else {
-				if (this.vuiMultipleCascaderSource && props.parent) {
+				if (this.vuiCascadeSelectorSource && props.parent) {
 					const option = {
 						value: props.parent[props.valueKey],
 						data: clone(props.parent)
 					};
 
-					this.vuiMultipleCascaderSource.handleSelect(false, option);
+					this.vuiCascadeSelectorSource.handleSelect(false, option);
 				}
 			}
 		}
@@ -457,4 +457,4 @@ const VuiMultipleCascaderSource = {
 	}
 };
 
-export default VuiMultipleCascaderSource;
+export default VuiCascadeSelectorSource;
