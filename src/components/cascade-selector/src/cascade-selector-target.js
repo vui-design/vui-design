@@ -60,7 +60,7 @@ const VuiCascadeSelectorTarget = {
 					btnClearText = props.locale.clear;
 				}
 				else {
-					btnClearText = this.t("vui.multipleCascader.clear");
+					btnClearText = this.t("vui.cascadeSelector.clear");
 				}
 
 				content.push(
