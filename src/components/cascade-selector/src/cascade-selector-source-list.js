@@ -46,6 +46,9 @@ const VuiCascadeSelectorSourceList = {
 		getContainer() {
 			return this.$el;
 		},
+		handleClick(option) {
+			this.$emit("click", clone(option));
+		},
 		handleSelect(checked, option) {
 			const { $props: props, state } = this;
 
@@ -81,7 +84,6 @@ const VuiCascadeSelectorSourceList = {
 	},
 	render(h) {
 		const { $props: props, state, getContainer } = this;
-		const { handleSelect } = this;
 
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-list");

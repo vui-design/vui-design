@@ -25,7 +25,7 @@ export default {
     value: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     backfillOptionProp: PropTypes.string.def("children"),
     multiple: PropTypes.bool.def(false),
-    maxTagCount: PropTypes.number.def(0),
+    maxTagCount: PropTypes.number,
     maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
     searchable: PropTypes.bool.def(false),
     keyword: PropTypes.string,
@@ -261,7 +261,7 @@ export default {
     if (props.multiple) {
       let maxTagPlaceholder;
 
-      if (props.maxTagCount > 0 && valueLength > props.maxTagCount) {
+      if (props.maxTagCount >= 0 && valueLength > props.maxTagCount) {
         value = value.slice(0, props.maxTagCount);
         maxTagPlaceholder = (
           <div key="maxTagPlaceholder" class={classes.elItem}>

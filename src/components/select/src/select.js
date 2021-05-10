@@ -48,7 +48,7 @@ const VuiSelect = {
     backfillOptionProp: PropTypes.string.def("children"),
     options: PropTypes.array.def([]),
     multiple: PropTypes.bool.def(false),
-    maxTagCount: PropTypes.number.def(0),
+    maxTagCount: PropTypes.number,
     maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
     searchable: PropTypes.bool.def(false),
     filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),

@@ -19,7 +19,7 @@ const VuiSelectWrapper = {
     value: PropTypes.oneOfType([valueProp, PropTypes.arrayOf(valueProp)]),
     backfillOptionProp: PropTypes.string.def("children"),
     multiple: PropTypes.bool.def(false),
-    maxTagCount: PropTypes.number.def(0),
+    maxTagCount: PropTypes.number,
     maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
     searchable: PropTypes.bool.def(false),
     filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),

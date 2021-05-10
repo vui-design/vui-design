@@ -54,17 +54,8 @@ const VuiCascadeSelector = {
 		}
 	},
 	methods: {
-		handleClear() {
-			const { $props: props } = this;
-			const value = [];
-
-			this.state.value = value;
-			this.$emit("input", value);
-			this.$emit("change", value);
-
-			if (props.validator) {
-				this.dispatch("vui-form-item", "change", value);
-			}
+		handleClick(option) {
+			this.$emit("click", option);
 		},
 		handleSelect(value) {
 			const { $props: props } = this;
@@ -88,6 +79,18 @@ const VuiCascadeSelector = {
 			}
 
 			value.splice(index, 1);
+
+			this.state.value = value;
+			this.$emit("input", value);
+			this.$emit("change", value);
+
+			if (props.validator) {
+				this.dispatch("vui-form-item", "change", value);
+			}
+		},
+		handleClear() {
+			const { $props: props } = this;
+			const value = [];
 
 			this.state.value = value;
 			this.$emit("input", value);
@@ -132,6 +135,7 @@ const VuiCascadeSelector = {
 					showSelectAll={props.showSelectAll}
 					disabled={props.disabled}
 					locale={props.locale}
+					onClick={handleClick}
 					onSelect={handleSelect}
 				/>
 				{

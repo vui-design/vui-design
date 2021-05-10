@@ -10,12 +10,13 @@
 	line-height:@cascade-selector-line-height;
 
 	&-source {
+		flex:1;
 		display:flex;
 		flex-direction:column;
 		justify-content:flex-start;
 		align-items:stretch;
 		box-sizing:border-box;
-		width:@cascade-selector-panel-width;
+		min-width:@cascade-selector-panel-width;
 		height:@cascade-selector-panel-height;
 		border:1px solid @cascade-selector-panel-border-color;
 		border-radius:@cascade-selector-panel-border-radius;
@@ -58,6 +59,7 @@
 		display:flex;
 		flex-direction:row;
 		box-sizing:border-box;
+		min-width:399px;
 	}
 	&-source-list &-source {
 		border-radius:0;
