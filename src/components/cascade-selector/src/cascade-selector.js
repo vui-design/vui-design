@@ -103,7 +103,7 @@ const VuiCascadeSelector = {
 	},
 	render() {
 		const { $scopedSlots: scopedSlots, $props: props, state } = this;
-		const { handleClear, handleSelect, handleDeselect } = this;
+		const { handleClick, handleSelect, handleDeselect, handleClear } = this;
 
 		// formatter
 		const formatter = scopedSlots.formatter || props.formatter;
@@ -152,8 +152,8 @@ const VuiCascadeSelector = {
 							showClear={props.showClear}
 							disabled={props.disabled}
 							locale={props.locale}
-							onClear={handleClear}
 							onDeselect={handleDeselect}
+							onClear={handleClear}
 						/>
 					)
 				}

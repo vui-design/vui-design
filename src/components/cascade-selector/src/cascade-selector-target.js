@@ -225,7 +225,7 @@ const VuiCascadeSelectorTarget = {
 	},
 	render(h) {
 		const { $props: props } = this;
-		const { handleClear, handleDeselect } = this;
+		const { handleDeselect, handleClear } = this;
 
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target");
@@ -246,8 +246,8 @@ const VuiCascadeSelectorTarget = {
 			showClear: props.showClear,
 			disabled: props.disabled,
 			locale: props.locale,
-			onClear: handleClear,
-			onDeselect: handleDeselect
+			onDeselect: handleDeselect,
+			onClear: handleClear
 		};
 
 		return (
