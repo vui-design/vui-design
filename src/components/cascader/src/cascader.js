@@ -350,6 +350,16 @@ const VuiCascader = {
     // dropdownVisible
     const dropdownVisible = state.actived;
 
+    // dropdownAutoWidth
+    let dropdownAutoWidth = props.dropdownAutoWidth;
+
+    if (options.length === 0) {
+      dropdownAutoWidth = false;
+    }
+    else if (state.searching === false) {
+      dropdownAutoWidth = true;
+    }
+
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader");
     let classes = {};
@@ -431,7 +441,7 @@ const VuiCascader = {
           visible={dropdownVisible}
           class={props.dropdownClassName}
           placement={props.placement}
-          autoWidth={props.options.length === 0 ? false : props.dropdownAutoWidth}
+          autoWidth={dropdownAutoWidth}
           animation={props.animation}
           getPopupReference={this.getDropdownReference}
           getPopupContainer={props.getPopupContainer}

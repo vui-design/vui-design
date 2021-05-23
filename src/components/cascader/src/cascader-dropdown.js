@@ -9,11 +9,6 @@ import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiCascaderDropdown = {
   name: "vui-cascader-dropdown",
-  inject: {
-    vuiCascader: {
-      default: undefined
-    }
-  },
   provide() {
     return {
       vuiCascaderDropdown: this
@@ -35,16 +30,8 @@ const VuiCascaderDropdown = {
     getPopupReference: PropTypes.func.def(() => null),
     getPopupContainer: PropTypes.any.def(() => document.body)
   },
-  computed: {
-    searching() {
-      return this.vuiCascader.state.searching;
-    },
-    keyword() {
-      return this.vuiCascader.state.keyword;
-    }
-  },
   watch: {
-    keyword(value) {
+    autoWidth(value) {
       this.$nextTick(() => this.reregister());
     }
   },
@@ -54,7 +41,7 @@ const VuiCascaderDropdown = {
         return;
       }
 
-      const { $el: target, $props: props, searching } = this;
+      const { $el: target, $props: props } = this;
       const reference = props.getPopupReference();
       const settings = {
         placement: props.placement
@@ -64,33 +51,11 @@ const VuiCascaderDropdown = {
         return;
       }
 
+      const width = getStyle(reference, "width");
+
       this.popup = new Popup(reference, target, settings);
       this.popup.target.style.zIndex = Popup.nextZIndex();
-
-      if (searching) {
-        const width = getStyle(reference, "width");
-
-        if (props.autoWidth) {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = width;
-        }
-        else {
-          this.popup.target.style.width = width;
-          this.popup.target.style.minWidth = "";
-        }
-      }
-      else {
-        const width = getStyle(reference, "width");
-
-        if (props.autoWidth) {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = "";
-        }
-        else {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = width;
-        }
-      }
+      this.popup.target.style.width = props.autoWidth ? "" : width;
     },
     unregister() {
       if (is.server || !this.popup) {
@@ -107,37 +72,16 @@ const VuiCascaderDropdown = {
 
       this.popup.update();
 
-      const { $props: props, searching } = this;
+      const { $props: props } = this;
       const reference = props.getPopupReference();
 
       if (!reference) {
         return;
       }
 
-      if (searching) {
-        const width = getStyle(reference, "width");
+      const width = getStyle(reference, "width");
 
-        if (props.autoWidth) {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = width;
-        }
-        else {
-          this.popup.target.style.width = width;
-          this.popup.target.style.minWidth = "";
-        }
-      }
-      else {
-        const width = getStyle(reference, "width");
-
-        if (props.autoWidth) {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = "";
-        }
-        else {
-          this.popup.target.style.width = "";
-          this.popup.target.style.minWidth = width;
-        }
-      }
+      this.popup.target.style.width = props.autoWidth ? "" : width;
     },
     handleBeforeOpen() {
       this.$nextTick(() => this.register());
