@@ -80,8 +80,16 @@ const VuiCascaderDropdown = {
         }
       }
       else {
-        this.popup.target.style.width = "";
-        this.popup.target.style.minWidth = "";
+        const width = getStyle(reference, "width");
+
+        if (props.autoWidth) {
+          this.popup.target.style.width = "";
+          this.popup.target.style.minWidth = "";
+        }
+        else {
+          this.popup.target.style.width = "";
+          this.popup.target.style.minWidth = width;
+        }
       }
     },
     unregister() {
@@ -119,8 +127,16 @@ const VuiCascaderDropdown = {
         }
       }
       else {
-        this.popup.target.style.width = "";
-        this.popup.target.style.minWidth = "";
+        const width = getStyle(reference, "width");
+
+        if (props.autoWidth) {
+          this.popup.target.style.width = "";
+          this.popup.target.style.minWidth = "";
+        }
+        else {
+          this.popup.target.style.width = "";
+          this.popup.target.style.minWidth = width;
+        }
       }
     },
     handleBeforeOpen() {

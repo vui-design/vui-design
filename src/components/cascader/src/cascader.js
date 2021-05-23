@@ -431,7 +431,7 @@ const VuiCascader = {
           visible={dropdownVisible}
           class={props.dropdownClassName}
           placement={props.placement}
-          autoWidth={props.dropdownAutoWidth}
+          autoWidth={props.options.length === 0 ? false : props.dropdownAutoWidth}
           animation={props.animation}
           getPopupReference={this.getDropdownReference}
           getPopupContainer={props.getPopupContainer}
