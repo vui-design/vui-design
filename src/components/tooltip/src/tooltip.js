@@ -27,7 +27,9 @@ const VuiTooltip = {
 		maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
 		animation: PropTypes.string.def("vui-tooltip-content-scale"),
-		getPopupContainer: PropTypes.any.def(() => document.body)
+		getPopupContainer: PropTypes.func.def(() => document.body),
+		beforeOpen: PropTypes.func,
+		beforeClose: PropTypes.func
 	},
 	data() {
 		const { $props: props } = this;
@@ -45,9 +47,28 @@ const VuiTooltip = {
 	},
 	methods: {
 		toggle(visible) {
-			this.state.visible = visible;
-			this.$emit("input", visible);
-			this.$emit("change", visible);
+			const { $props: props } = this;
+			const callback = () => {
+				this.state.visible = visible;
+				this.$emit("input", visible);
+				this.$emit("change", visible);
+			};
+			const beforeCallback = visible ? props.beforeOpen : props.beforeClose;
+			let hook = true;
+
+			if (is.function(beforeCallback)) {
+				hook = beforeCallback();
+			}
+
+			if (is.promise(hook)) {
+				hook.then(() => callback()).catch(error => {});
+			}
+			else if (is.boolean(hook) && hook === false) {
+				return;
+			}
+			else {
+				callback();
+			}
 		},
 		createPopup() {
 			if (is.server || this.popup) {

@@ -4,8 +4,9 @@
 	position:relative;
 	cursor:pointer;
 	display:block;
+	box-sizing:border-box;
 	height:12px;
-	margin:10px 6px;
+	margin:0 4px;
 	padding:4px 0;
 	color:#595959;
 	font-size:14px;
@@ -14,11 +15,13 @@
 
 	&-rail {
 		position:absolute;
+		left:0;
 		display:block;
+		box-sizing:border-box;
 		width:100%;
 		height:4px;
 		border-radius:2px;
-		background-color:#f3f3f3;
+		background-color:#ececec;
 		transition:background-color @transition-duration @transition-timing-function;
 	}
 
@@ -26,48 +29,95 @@
 		position:absolute;
 		left:0;
 		display:block;
-		width:30%;
+		box-sizing:border-box;
+		width:70%;
 		height:4px;
 		border-radius:2px;
-		background-color:#91d5ff;
+		background-color:#2d8cf0;
 		transition:background-color @transition-duration @transition-timing-function;
 	}
 
 	&-steps {
 		position:absolute;
+		left:0;
 		display:block;
+		box-sizing:border-box;
 		width:100%;
 		height:4px;
 		background-color:transparent;
 	}
 
+	&-step {
+		position:absolute;
+		left:0;
+		top:-2px;
+		display:block;
+		box-sizing:border-box;
+		width:8px;
+		height:8px;
+		border:2px solid #ececec;
+		border-radius:50%;
+		background-color:#fff;
+		margin-left:-4px;
+		transition:border-color @transition-duration @transition-timing-function;
+
+		&-active {
+			border-color:#2d8cf0;
+		}
+	}
+
 	&-marks {
 		position:absolute;
-		display:block;
-		top:14px;
 		left:0;
+		display:block;
+		box-sizing:border-box;
 		width:100%;
+		height:4px;
+		background-color:transparent;
+	}
+
+	&-mark {
+		position:absolute;
+		left:0;
+		top:12px;
+		cursor:pointer;
+		display:block;
+		box-sizing:border-box;
+		color:#8c8c8c;
 		font-size:14px;
+		text-align:center;
+		transform:translateX(-50%);
+		transition:color @transition-duration @transition-timing-function;
+
+		&-active {
+			color:#595959;
+		}
 	}
 
 	&-handle {
 		position:absolute;
+		left:70%;
+		z-index:1;
 		cursor:pointer;
 		display:block;
+		box-sizing:border-box;
 		width:14px;
 		height:14px;
 		margin-top:-5px;
-		border:2px solid #91d5ff;
-		background-color:#fff;
+		border:2px solid #2d8cf0;
 		border-radius:50%;
-		box-shadow:0;
+		background-color:#fff;
+		box-shadow:none;
+		transform:translateX(-50%);
 		transition:all @transition-duration @transition-timing-function;
 
 		&:hover {
+			z-index:1;
 			border-color:#4298f2;
 		}
 
 		&:focus {
+			z-index:2;
 			border-color:#4298f2;
 			box-shadow:0 0 0 5px rgba(24,144,255,0.12);
 		}

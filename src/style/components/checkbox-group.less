@@ -8,11 +8,11 @@
   white-space:nowrap;
 
   &-horizontal {
-    .vui-checkbox + .vui-checkbox {
+    .@{vui}-checkbox + .@{vui}-checkbox {
       margin-left:16px;
     }
 
-    .vui-checkbox-button {
+    .@{vui}-checkbox-button {
       border-radius:0;
 
       &:first-child {
@@ -24,20 +24,20 @@
         border-bottom-right-radius:@checkbox-button-border-radius;
       }
     }
-    .vui-checkbox-button + .vui-checkbox-button {
+    .@{vui}-checkbox-button + .@{vui}-checkbox-button {
       margin-left:-1px;
     }
   }
 
   &-vertical {
-    .vui-checkbox {
+    .@{vui}-checkbox {
       display:flex;
     }
-    .vui-checkbox + .vui-checkbox {
+    .@{vui}-checkbox + .@{vui}-checkbox {
       margin-top:16px;
     }
 
-    .vui-checkbox-button {
+    .@{vui}-checkbox-button {
       display:block;
       border-radius:0;
 
@@ -50,7 +50,7 @@
         border-bottom-right-radius:@checkbox-button-border-radius;
       }
     }
-    .vui-checkbox-button + .vui-checkbox-button {
+    .@{vui}-checkbox-button + .@{vui}-checkbox-button {
       margin-top:-1px;
     }
   }

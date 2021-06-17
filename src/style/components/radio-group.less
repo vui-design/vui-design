@@ -8,11 +8,11 @@
   white-space:nowrap;
 
   &-horizontal {
-    .vui-radio + .vui-radio {
+    .@{vui}-radio + .@{vui}-radio {
       margin-left:16px;
     }
 
-    .vui-radio-button {
+    .@{vui}-radio-button {
       border-radius:0;
 
       &:first-child {
@@ -24,20 +24,20 @@
         border-bottom-right-radius:@radio-button-border-radius;
       }
     }
-    .vui-radio-button + .vui-radio-button {
+    .@{vui}-radio-button + .@{vui}-radio-button {
       margin-left:-1px;
     }
   }
 
   &-vertical {
-    .vui-radio {
+    .@{vui}-radio {
       display:flex;
     }
-    .vui-radio + .vui-radio {
+    .@{vui}-radio + .@{vui}-radio {
       margin-top:16px;
     }
 
-    .vui-radio-button {
+    .@{vui}-radio-button {
       display:block;
       border-radius:0;
 
@@ -50,7 +50,7 @@
         border-bottom-right-radius:@radio-button-border-radius;
       }
     }
-    .vui-radio-button + .vui-radio-button {
+    .@{vui}-radio-button + .@{vui}-radio-button {
       margin-top:-1px;
     }
   }
