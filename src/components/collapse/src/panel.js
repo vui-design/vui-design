@@ -89,39 +89,82 @@ const VuiPanel = {
 		classes.elBodyWrapper = `${classNamePrefix}-body-wrapper`;
 		classes.elBody = `${classNamePrefix}-body`;
 
-		// render
-		let header = [];
+		// title
+		const title = slots.title || props.title;
 
-		header.push(
-			<div class={classes.elTitle}>{slots.title || props.title}</div>
-		);
+		// extra
+		const extra = slots.extra || props.extra;
 
-		if (slots.extra || props.extra) {
-			header.push(
-				<div class={classes.elExtra}>{slots.extra || props.extra}</div>
-			);
-		}
+		// arrow
+		let arrow;
 
 		if (props.showArrow) {
-			const arrow = (
-				<div class={classes.elArrow}>
-					<VuiIcon type="chevron-right" />
-				</div>
+			arrow = (
+				<VuiIcon type="chevron-right" />
 			);
-
-			if (vuiCollapseProps.arrowAlign === "left") {
-				header.unshift(arrow);
-			}
-			else if (vuiCollapseProps.arrowAlign === "right") {
-				header.push(arrow);
-			}
 		}
 
-		const body = slots.default;
+		// content
+		const content = slots.default;
 
-		return (
-			<div class={classes.el}>
+		// render
+		let children = [];
+
+		if (title || extra || arrow) {
+			let header = [];
+
+			if (arrow && vuiCollapseProps.arrowAlign === "left") {
+				header.push(
+					<div class={classes.elArrow}>{arrow}</div>
+				);
+			}
+
+			if (title) {
+				header.push(
+					<div class={classes.elTitle}>{title}</div>
+				);
+			}
+
+			if (extra) {
+				header.push(
+					<div class={classes.elExtra}>{extra}</div>
+				);
+			}
+
+			if (arrow && vuiCollapseProps.arrowAlign === "right") {
+				header.push(
+					<div class={classes.elArrow}>{arrow}</div>
+				);
+			}
+
+			children.push(
 				<div class={classes.elHeader} onClick={handleToggle}>{header}</div>
+			);
+		}
+
+		if (vuiCollapseProps.destroyInactivePanel) {
+			children.push(
+				<transition
+					name={props.animation}
+					onBeforeEnter={handleBeforeEnter}
+					onEnter={handleEnter}
+					onAfterEnter={handleAfterEnter}
+					onBeforeLeave={handleBeforeLeave}
+					onLeave={handleLeave}
+					onAfterLeave={handleAfterLeave}
+				>
+					{
+						active ? (
+							<div class={classes.elBodyWrapper}>
+								<div class={classes.elBody}>{content}</div>
+							</div>
+						) : null
+					}
+				</transition>
+			);
+		}
+		else {
+			children.push(
 				<transition
 					name={props.animation}
 					onBeforeEnter={handleBeforeEnter}
@@ -132,10 +175,14 @@ const VuiPanel = {
 					onAfterLeave={handleAfterLeave}
 				>
 					<div v-show={active} class={classes.elBodyWrapper}>
-						<div class={classes.elBody}>{body}</div>
+						<div class={classes.elBody}>{content}</div>
 					</div>
 				</transition>
-			</div>
+			);
+		}
+
+		return (
+			<div class={classes.el}>{children}</div>
 		);
 	}
 };

@@ -22,7 +22,7 @@ const VuiPopover = {
 	},
 	props: {
 		classNamePrefix: PropTypes.string,
-		trigger: PropTypes.oneOf(["hover", "focus", "click"]).def("hover"),
+		trigger: PropTypes.oneOf(["hover", "focus", "click", "always"]).def("hover"),
 		visible: PropTypes.bool.def(false),
 		title: PropTypes.string,
 		content: PropTypes.string,
@@ -30,7 +30,7 @@ const VuiPopover = {
 		maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
 		animation: PropTypes.string.def("vui-popover-popup-scale"),
-		getPopupContainer: PropTypes.any.def(() => document.body),
+		getPopupContainer: PropTypes.func.def(() => document.body),
 		beforeOpen: PropTypes.func,
 		beforeClose: PropTypes.func
 	},
@@ -39,13 +39,15 @@ const VuiPopover = {
 
 		return {
 			state: {
-				visible: props.visible
+				visible: props.trigger === "always" ? true : props.visible
 			}
 		};
 	},
 	watch: {
 		visible(value) {
-			this.state.visible = value;
+			const { $props: props } = this;
+
+			this.state.visible = props.trigger === "always" ? true : value;
 		}
 	},
 	methods: {
@@ -73,7 +75,7 @@ const VuiPopover = {
 				callback();
 			}
 		},
-		createPopup() {
+		register() {
 			if (is.server || this.popup) {
 				return;
 			}
@@ -92,7 +94,14 @@ const VuiPopover = {
 			this.popup = new Popup(reference, target, settings);
 			this.popup.target.style.zIndex = Popup.nextZIndex();
 		},
-		destroyPopup() {
+		reregister() {
+			if (is.server || !this.popup) {
+				return;
+			}
+
+			this.popup.update();
+		},
+		unregister() {
 			if (is.server || !this.popup) {
 				return;
 			}
@@ -100,71 +109,59 @@ const VuiPopover = {
 			this.popup.destroy();
 			this.popup = null;
 		},
-		handleMouseEnter(e) {
+		handleMouseenter(e) {
 			const { $props: props } = this;
 
-			if (props.trigger !== "hover") {
-				return;
+			if (props.trigger === "hover") {
+				clearTimeout(this.timeout);
+				this.timeout = setTimeout(() => this.toggle(true), 100);
 			}
-
-			clearTimeout(this.timeout);
-			this.timeout = setTimeout(() => this.toggle(true), 100);
 		},
-		handleMouseLeave(e) {
+		handleMouseleave(e) {
 			const { $props: props } = this;
 
-			if (props.trigger !== "hover") {
-				return;
+			if (props.trigger === "hover") {
+				clearTimeout(this.timeout);
+				this.timeout = setTimeout(() => this.toggle(false), 100);
 			}
-
-			clearTimeout(this.timeout);
-			this.timeout = setTimeout(() => this.toggle(false), 100);
 		},
-		handleFocusin() {
+		handleFocusin(e) {
 			const { $props: props } = this;
 
-			if (props.trigger !== "focus") {
-				return;
+			if (props.trigger === "focus") {
+				this.toggle(true);
 			}
-
-			this.toggle(true);
 		},
-		handleFocusout() {
+		handleFocusout(e) {
 			const { $props: props } = this;
 
-			if (props.trigger !== "focus") {
-				return;
+			if (props.trigger === "focus") {
+				this.toggle(false);
 			}
-
-			this.toggle(false);
 		},
 		handleClick(e) {
 			const { $props: props, state } = this;
 
-			if (props.trigger !== "click") {
-				return;
+			if (props.trigger === "click") {
+				this.toggle(!state.visible);
 			}
-
-			this.toggle(!state.visible);
 		},
 		handleOutClick(e) {
 			const { $props: props } = this;
 
-			if (props.trigger !== "click") {
-				return;
+			if (props.trigger === "click") {
+				const { $refs: references } = this;
+				const element = getElementByEvent(e);
+
+				if (!element || !references.popup || references.popup === element || references.popup.contains(element)) {
+					return;
+				}
+
+				this.toggle(false);
 			}
-
-			const { $refs: references } = this;
-			const target = getElementByEvent(e);
-
-			if (!target || !references.popup || target === references.popup || references.popup.contains(target)) {
-				return;
-			}
-
-			this.toggle(false);
 		},
 		handleBeforeEnter() {
-			this.$nextTick(() => this.createPopup());
+			this.$nextTick(() => this.register());
 			this.$emit("beforeOpen");
 		},
 		handleEnter() {
@@ -180,13 +177,13 @@ const VuiPopover = {
 			this.$emit("close");
 		},
 		handleAfterLeave() {
-			this.$nextTick(() => this.destroyPopup());
+			this.$nextTick(() => this.unregister());
 			this.$emit("afterClose");
 		}
 	},
 	render() {
 		const { $slots: slots, $props: props, state } = this;
-		const { handleMouseEnter, handleMouseLeave, handleFocusin, handleFocusout, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
+		const { handleMouseenter, handleMouseleave, handleFocusin, handleFocusout, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 
 		// title
 		const title = slots.title || props.title;
@@ -221,22 +218,18 @@ const VuiPopover = {
 		// render
 		return (
 			<div class={classes.el}>
-				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave} onFocusin={handleFocusin} onFocusout={handleFocusout} onClick={handleClick} v-outclick={handleOutClick}>
+				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave} onFocusin={handleFocusin} onFocusout={handleFocusout} onClick={handleClick} v-outclick={handleOutClick}>
 					{slots.default}
 				</div>
 				<VuiLazyRender status={state.visible}>
 					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onBeforeLeave={handleBeforeLeave} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
-						<div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} style={styles.elPopup} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>
+						<div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} style={styles.elPopup} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
 							{
 								title && (
 									<div class={classes.elPopupHeader}>{title}</div>
 								)
 							}
-							{
-								content && (
-									<div class={classes.elPopupBody}>{content}</div>
-								)
-							}
+							<div class={classes.elPopupBody}>{content}</div>
 							<div class={classes.elPopupArrow}></div>
 						</div>
 					</transition>

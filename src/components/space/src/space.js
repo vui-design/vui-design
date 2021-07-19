@@ -71,21 +71,33 @@ const VuiSpace = {
       styles.elItem[property] = size;
     }
 
+    // elements
+    let elements = [];
+
+    for (let name in slots) {
+      const slot = slots[name];
+
+      if (!slot) {
+        continue;
+      }
+
+      elements = elements.concat(getValidElements(slot));
+    }
+
     // render
-    const list = getValidElements(slots.default);
     let children = [];
 
-    list.forEach((item, index) => {
-      const isNotFirst = index > 0;
+    elements.forEach((element, index) => {
+      const notFirst = index > 0;
 
-      if (divider && isNotFirst) {
+      if (notFirst && divider) {
         children.push(
           <i class={classes.elDivider} style={styles.elDivider}></i>
         );
       }
 
       children.push(
-        <div class={classes.elItem} style={isNotFirst && styles.elItem}>{item}</div>
+        <div class={classes.elItem} style={notFirst && styles.elItem}>{element}</div>
       );
     });
 

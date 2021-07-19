@@ -28,7 +28,7 @@ const VuiCascaderDropdown = {
     autoWidth: PropTypes.bool.def(true),
     animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
     getPopupReference: PropTypes.func.def(() => null),
-    getPopupContainer: PropTypes.any.def(() => document.body)
+    getPopupContainer: PropTypes.func.def(() => document.body)
   },
   watch: {
     autoWidth(value) {

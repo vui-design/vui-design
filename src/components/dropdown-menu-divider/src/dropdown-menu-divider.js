@@ -1,32 +1,37 @@
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDropdownMenuDivider = {
 	name: "vui-dropdown-menu-divider",
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		gutter: {
-			type: [String, Number],
-			default: 5
-		}
+		classNamePrefix: PropTypes.string,
+		gutter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(4)
 	},
-
 	render() {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, gutter } = this;
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "dropdown-menu-divider");
-		let style = {};
+		const { $slots: slots, $props: props } = this;
 
-		if (gutter) {
-			style.marginTop = is.string(gutter) ? gutter : `${gutter}px`;
-			style.marginBottom = style.marginTop;
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown-menu-divider");
+		let classes = {};
+
+		classes.el = `${classNamePrefix}`;
+
+		// style
+		let styles = {};
+
+		if (props.gutter) {
+			const margin = is.string(props.gutter) ? props.gutter : `${props.gutter}px`;
+
+			styles.el = {
+				marginTop: margin,
+				marginBottom: margin
+			};
 		}
 
+		// render
 		return (
-			<div class={`${classNamePrefix}`} style={style}></div>
+			<div class={classes.el} style={styles.el}></div>
 		);
 	}
 };

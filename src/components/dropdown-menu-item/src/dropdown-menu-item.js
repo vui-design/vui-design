@@ -1,12 +1,12 @@
 import VuiIcon from "vui-design/components/icon";
 import MixinLink from "vui-design/mixins/link";
+import PropTypes from "vui-design/utils/prop-types";
 import guid from "vui-design/utils/guid";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import guardLinkEvent from "vui-design/utils/guardLinkEvent";
+import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDropdownMenuItem = {
 	name: "vui-dropdown-menu-item",
-
 	inject: {
 		vuiDropdown: {
 			default: undefined
@@ -18,47 +18,28 @@ const VuiDropdownMenuItem = {
 			default: undefined
 		}
 	},
-
 	components: {
 		VuiIcon
 	},
-
 	mixins: [
 		MixinLink
 	],
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		name: {
-			type: [String, Number],
-			default: () => guid()
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
+		classNamePrefix: PropTypes.string,
+		name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(() => guid()),
+		icon: PropTypes.string,
+		title: PropTypes.string,
+		disabled: PropTypes.bool.def(false)
 	},
-
 	methods: {
 		handleClick(e) {
-			const { vuiDropdown, vuiDropdownMenu, vuiDropdownSubmenu, $router: router, name, disabled, href, to, replace, getNextRoute } = this;
+			const { vuiDropdown, vuiDropdownMenu, vuiDropdownSubmenu, $router: router, $props: props, href, to, replace, getNextRoute } = this;
 
-			if (disabled) {
+			if (props.disabled) {
 				return e.preventDefault();
 			}
 
-			vuiDropdownMenu.$emit("click", name);
+			vuiDropdownMenu.$emit("click", props.name);
 
 			if (vuiDropdownSubmenu) {
 				vuiDropdownSubmenu.close("select", true);
@@ -83,34 +64,37 @@ const VuiDropdownMenuItem = {
 			}
 		}
 	},
-
 	render(h) {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, name, disabled, href, to, target, getNextRoute } = this;
+		const { $slots: slots, $props: props, href, to, target, getNextRoute } = this;
 		const { handleClick } = this;
 
+		// icon
 		let icon;
 
 		if (slots.icon) {
 			icon = slots.icon;
 		}
-		else if (this.icon) {
+		else if (props.icon) {
 			icon = (
-				<VuiIcon type={this.icon} />
+				<VuiIcon type={props.icon} />
 			);
 		}
 
-		let title = slots.title || this.title;
+		// title
+		const title = slots.title || props.title;
 
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "dropdown-menu-item");
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown-menu-item");
 		let classes = {};
 
 		classes.el = {
 			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-disabled`]: disabled
+			[`${classNamePrefix}-disabled`]: props.disabled
 		};
 		classes.elIcon = `${classNamePrefix}-icon`;
 		classes.elTitle = `${classNamePrefix}-title`;
 
+		// render
 		let children = [];
 
 		if (icon) {

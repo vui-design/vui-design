@@ -1,224 +1,231 @@
 import VuiLazyRender from "vui-design/components/lazy-render";
-import Outclick from "vui-design/directives/outclick";
 import Portal from "vui-design/directives/portal";
+import Outclick from "vui-design/directives/outclick";
 import Popup from "vui-design/utils/popup";
+import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
 import getStyle from "vui-design/utils/getStyle";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDropdown = {
 	name: "vui-dropdown",
-
 	provide() {
 		return {
 			vuiDropdown: this
 		};
 	},
-
 	components: {
 		VuiLazyRender
 	},
-
 	directives: {
-		Outclick,
-		Portal
+		Portal,
+		Outclick
 	},
-
 	model: {
 		prop: "visible",
 		event: "change"
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		trigger: {
-			type: String,
-			default: "hover",
-			validator: value => ["hover", "click"].indexOf(value) > -1
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		placement: {
-			type: String,
-			default: "bottom-start",
-			validator: value => ["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"].indexOf(value) > -1
-		},
-		dropdownAutoWidth: {
-			type: Boolean,
-			default: true
-		},
-		animation: {
-			type: String,
-			default: "vui-dropdown-body-scale"
-		},
-		getPopupContainer: {
-			type: Function,
-			default: () => document.body
-		}
+		classNamePrefix: PropTypes.string,
+		trigger: PropTypes.oneOf(["hover", "click"]).def("hover"),
+		visible: PropTypes.bool.def(false),
+		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+		dropdownAutoWidth: PropTypes.bool.def(true),
+		animation: PropTypes.string.def("vui-dropdown-body-scale"),
+		getPopupContainer: PropTypes.func.def(() => document.body),
+		beforeOpen: PropTypes.func,
+		beforeClose: PropTypes.func
 	},
-
 	data() {
+		const { $props: props } = this;
+
 		return {
-			defaultVisible: this.visible
+			state: {
+				visible: props.visible
+			}
 		};
 	},
-
 	watch: {
 		visible(value) {
-			this.defaultVisible = value;
+			this.state.visible = value;
 		}
 	},
-
 	methods: {
 		open(eventType) {
-			if (this.disabled) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
 				return;
 			}
 
 			this.timeout && clearTimeout(this.timeout);
 
-			this.defaultVisible = true;
-			this.$emit("change", this.defaultVisible);
+			if (this.state.visible) {
+				return;
+			}
+
+			this.state.visible = true;
+			this.$emit("change", this.state.visible);
 		},
 		close(eventType) {
-			if (this.disabled) {
+			const { $props: props } = this;
+
+			if (props.disabled) {
 				return;
 			}
 
-			if (this.trigger === "click" && eventType === "hover") {
+			if (props.trigger === "click" && eventType === "hover") {
 				return;
 			}
 
 			this.timeout && clearTimeout(this.timeout);
 
-			const close = () => {
-				this.defaultVisible = false;
-				this.$emit("change", this.defaultVisible);
+			const callback = () => {
+				if (!this.state.visible) {
+					return;
+				}
+
+				this.state.visible = false;
+				this.$emit("change", this.state.visible);
 			};
 
 			if (eventType === "select") {
-				close();
+				callback();
 			}
 			else {
-				this.timeout = setTimeout(close, 100);
+				this.timeout = setTimeout(callback, 100);
 			}
 		},
-
-		createPopup() {
-			if (is.server) {
+		register() {
+			if (is.server || this.popup) {
 				return;
 			}
 
-			if (this.popup) {
-				return;
-			}
-
-			let reference = this.$refs.trigger;
-			let target = this.$refs.body;
-			let settings = {
-				placement: this.placement
+			const { $refs: references, $props: props } = this;
+			const reference = references.trigger;
+			const target = references.body;
+			const settings = {
+				placement: props.placement
 			};
-
-			if (!this.dropdownAutoWidth) {
-				target.style.width = getStyle(reference, "width");
-			}
-			else {
-				target.style.width = "";
-			}
 
 			if (!reference || !target || !settings.placement) {
 				return;
 			}
 
+			let width = "";
+
+			if (!props.dropdownAutoWidth) {
+				width = getStyle(reference, "width");
+			}
+
 			this.popup = new Popup(reference, target, settings);
 			this.popup.target.style.zIndex = Popup.nextZIndex();
+			this.popup.target.style.width = width;
 		},
-		destroyPopup() {
-			if (is.server) {
+		reregister() {
+			if (is.server || !this.popup) {
 				return;
 			}
 
-			if (!this.popup) {
+			this.popup.update();
+		},
+		unregister() {
+			if (is.server || !this.popup) {
 				return;
 			}
 
 			this.popup.destroy();
 			this.popup = null;
 		},
+		handleMouseenter(e) {
+			const { $props: props } = this;
 
-		handleMouseEnter() {
-			if (this.trigger !== "hover") {
-				return;
+			if (props.trigger === "hover") {
+				this.open("hover");
 			}
-
-			this.open("hover");
 		},
-		handleMouseLeave() {
-			if (this.trigger !== "hover") {
-				return;
-			}
+		handleMouseleave(e) {
+			const { $props: props } = this;
 
-			this.close("hover");
+			if (props.trigger === "hover") {
+				this.close("hover");
+			}
 		},
-		handleClick() {
-			if (this.trigger !== "click") {
-				return;
-			}
+		handleClick(e) {
+			const { $props: props, state } = this;
 
-			this.defaultVisible ? this.close("click") : this.open("click");
+			if (props.trigger === "click") {
+				state.visible ? this.close("click") : this.open("click");
+			}
 		},
 		handleOutClick(e) {
-			const isChildElement = function(component, targetElement) {
-				return component.$children.some(child => {
-					if (child.$el === targetElement || child.$el.contains(targetElement) || (child.$refs && child.$refs.body && (child.$refs.body === targetElement || child.$refs.body.contains(targetElement)))) {
-						return true;
-					}
-					else if (child.$children && isChildElement(child, targetElement)) {
-						return true;
-					}
+			const { $props: props } = this;
 
-					return false;
-				});
-			};
+			if (props.trigger === "click") {
+				const isChildElement = function(component, targetElement) {
+					return component.$children.some(child => {
+						if (child.$el === targetElement || child.$el.contains(targetElement) || (child.$refs && child.$refs.body && (child.$refs.body === targetElement || child.$refs.body.contains(targetElement)))) {
+							return true;
+						}
+						else if (child.$children && isChildElement(child, targetElement)) {
+							return true;
+						}
 
-			if (isChildElement(this, e.target)) {
-				return;
+						return false;
+					});
+				};
+
+				if (isChildElement(this, e.target)) {
+					return;
+				}
+
+				this.close("click");
 			}
-
-			this.close("click");
 		},
-
-		handleBeforeEnter(el) {
-			this.$nextTick(() => this.createPopup());
+		handleBeforeEnter() {
+			this.$nextTick(() => this.register());
+			this.$emit("beforeOpen");
 		},
-		handleAfterLeave(el) {
-			this.$nextTick(() => this.destroyPopup());
+		handleEnter() {
+			this.$emit("open");
+		},
+		handleAfterEnter() {
+			this.$emit("afterOpen");
+		},
+		handleBeforeLeave() {
+			this.$emit("beforeClose");
+		},
+		handleLeave() {
+			this.$emit("close");
+		},
+		handleAfterLeave() {
+			this.$nextTick(() => this.unregister());
+			this.$emit("afterClose");
 		}
 	},
-
 	render() {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, defaultVisible, menu, placement, animation, getPopupContainer } = this;
-		const { handleMouseEnter, handleMouseLeave, handleClick, handleOutClick, handleBeforeEnter, handleAfterLeave } = this;
-		const portal = getPopupContainer();
+		const { $slots: slots, $props: props, state } = this;
+		const { handleMouseenter, handleMouseleave, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "dropdown");
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown");
 		let classes = {};
 
 		classes.el = `${classNamePrefix}`;
 		classes.elTrigger = `${classNamePrefix}-trigger`;
 		classes.elBody = `${classNamePrefix}-body`;
 
+		// render
 		return (
-			<div v-outclick={handleOutClick} class={classes.el}>
-				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave} onClick={handleClick}>{slots.default}</div>
-				<VuiLazyRender status={defaultVisible}>
-					<transition appear name={animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
-						<div ref="body" v-portal={portal} v-show={defaultVisible} class={classes.elBody} onMouseenter={handleMouseEnter} onMouseleave={handleMouseLeave}>{slots.menu}</div>
+			<div class={classes.el} v-outclick={handleOutClick}>
+				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave} onClick={handleClick}>
+					{slots.default}
+				</div>
+				<VuiLazyRender status={state.visible}>
+					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+						<div ref="body" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elBody} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
+							{slots.menu}
+						</div>
 					</transition>
 				</VuiLazyRender>
 			</div>

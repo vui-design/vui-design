@@ -19,7 +19,8 @@ const VuiCollapse = {
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
 		accordion: PropTypes.bool.def(false),
 		bordered: PropTypes.bool.def(true),
-		arrowAlign: PropTypes.oneOf(["left", "right"]).def("left")
+		arrowAlign: PropTypes.oneOf(["left", "right"]).def("left"),
+		destroyInactivePanel: PropTypes.bool.def(false)
 	},
 	data() {
 		const { $props: props } = this;

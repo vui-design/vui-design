@@ -33,7 +33,7 @@ const VuiSelectDropdown = {
     autoWidth: PropTypes.bool.def(true),
     animation: PropTypes.string.def("vui-select-dropdown-scale"),
     getPopupReference: PropTypes.func.def(() => null),
-    getPopupContainer: PropTypes.any.def(() => document.body)
+    getPopupContainer: PropTypes.func.def(() => document.body)
   },
   computed: {
     keyword() {

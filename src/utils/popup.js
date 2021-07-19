@@ -972,7 +972,7 @@ function Popup(reference, target, options) {
 
   // 缓存 reference 元素和 target 元素
   me.reference = reference;
-  me.target = isPlainObject(target) ? this.createTarget(target) : target;
+  me.target = isPlainObject(target) ? me.createTarget(target) : target;
 
   // 重构修饰符列表（对象转数组）
   me.modifiers = Object.keys(me.options.modifiers).map(function(name) {
@@ -987,7 +987,7 @@ function Popup(reference, target, options) {
   });
 
   // 绑定 update 方法
-  this.update = this.update.bind(this);
+  me.update = me.update.bind(me);
 
   // 修饰符在 Popup.js 初始化时具有执行任意代码的能力
   // 这些代码按照其修饰符的顺序执行，它们可以在它们的选项配置中添加新属性
@@ -998,11 +998,11 @@ function Popup(reference, target, options) {
     }
   });
 
-  // 触发第一次 update 让 target 元素定位到正确的位置
-  me.update();
-
   // 添加相关事件监听，它们会在一定情况下处理位置更新
   me.addEventListenners();
+
+  // 触发第一次 update 让 target 元素定位到正确的位置
+  setTimeout(() => me.update(), 0);
 }
 
 // 通过解析配置对象创建 target 元素

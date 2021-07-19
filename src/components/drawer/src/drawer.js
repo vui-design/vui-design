@@ -67,7 +67,7 @@ const VuiDrawer = {
     backdropStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     clickBackdropToClose: PropTypes.bool.def(true),
     animations: PropTypes.array.def(["vui-drawer-backdrop-fade", "vui-drawer-slide"]),
-    getPopupContainer: PropTypes.any.def(() => document.body)
+    getPopupContainer: PropTypes.func.def(() => document.body)
   },
   data() {
     const { $props: props } = this;

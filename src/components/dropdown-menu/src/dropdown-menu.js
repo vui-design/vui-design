@@ -1,43 +1,38 @@
+import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
 const VuiDropdownMenu = {
 	name: "vui-dropdown-menu",
-
 	inject: {
 		vuiDropdown: {
 			default: undefined
 		}
 	},
-
 	provide() {
 		return {
 			vuiDropdownMenu: this
 		};
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		theme: {
-			type: String,
-			default: "light",
-			validator: value => ["light", "dark"].indexOf(value) > -1
-		}
+		classNamePrefix: PropTypes.string,
+		color: PropTypes.oneOf(["light", "dark"]).def("light")
 	},
-
 	render(h) {
-		const { $slots: slots, classNamePrefix: customizedClassNamePrefix, theme } = this;
-		const classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "dropdown-menu");
-		const classes = {
+		const { $slots: slots, $props: props } = this;
+
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown-menu");
+		const classes = {};
+
+		classes.el = {
 			[`${classNamePrefix}`]: true,
 			[`${classNamePrefix}-root`]: true,
-			[`${classNamePrefix}-${theme}`]: theme
+			[`${classNamePrefix}-${props.color}`]: props.color
 		};
 
+		// render
 		return (
-			<div class={classes}>{slots.default}</div>
+			<div class={classes.el}>{slots.default}</div>
 		);
 	}
 };
