@@ -1,7 +1,7 @@
 import VuiIcon from "vui-design/components/icon";
 import MixinLink from "vui-design/mixins/link";
 import PropTypes from "vui-design/utils/prop-types";
-import guid from "vui-design/utils/guid";
+import is from "vui-design/utils/is";
 import guardLinkEvent from "vui-design/utils/guardLinkEvent";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
@@ -26,7 +26,8 @@ const VuiDropdownMenuItem = {
 	],
 	props: {
 		classNamePrefix: PropTypes.string,
-		name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(() => guid()),
+		name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		icon: PropTypes.string,
 		title: PropTypes.string,
 		disabled: PropTypes.bool.def(false)
@@ -39,7 +40,13 @@ const VuiDropdownMenuItem = {
 				return e.preventDefault();
 			}
 
-			vuiDropdownMenu.$emit("click", props.name);
+			let value = props.value;
+
+			if (is.undefined(value)) {
+				value = props.name;
+			}
+
+			vuiDropdownMenu.$emit("click", value);
 
 			if (vuiDropdownSubmenu) {
 				vuiDropdownSubmenu.close("select", true);

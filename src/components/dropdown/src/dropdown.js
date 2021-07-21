@@ -29,12 +29,11 @@ const VuiDropdown = {
 		classNamePrefix: PropTypes.string,
 		trigger: PropTypes.oneOf(["hover", "click"]).def("hover"),
 		visible: PropTypes.bool.def(false),
+		disabled: PropTypes.bool.def(false),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
 		dropdownAutoWidth: PropTypes.bool.def(true),
 		animation: PropTypes.string.def("vui-dropdown-body-scale"),
-		getPopupContainer: PropTypes.func.def(() => document.body),
-		beforeOpen: PropTypes.func,
-		beforeClose: PropTypes.func
+		getPopupContainer: PropTypes.func.def(() => document.body)
 	},
 	data() {
 		const { $props: props } = this;

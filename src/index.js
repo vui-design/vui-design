@@ -17,6 +17,7 @@ import Affix from "./components/affix";
 import Breadcrumb from "./components/breadcrumb";
 import BreadcrumbItem from "./components/breadcrumb-item";
 import Dropdown from "./components/dropdown";
+import DropdownButton from "./components/dropdown-button";
 import DropdownMenu from "./components/dropdown-menu";
 import DropdownSubmenu from "./components/dropdown-submenu";
 import DropdownMenuItem from "./components/dropdown-menu-item";
@@ -128,6 +129,7 @@ const components = [
   Breadcrumb,
   BreadcrumbItem,
   Dropdown,
+  DropdownButton,
   DropdownMenu,
   DropdownSubmenu,
   DropdownMenuItem,
@@ -246,7 +248,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-  version: "1.4.21",
+  version: "1.5.0",
   install,
   locale: locale.use,
   i18n: locale.i18n,
@@ -269,6 +271,7 @@ export default {
   Breadcrumb,
   BreadcrumbItem,
   Dropdown,
+  DropdownButton,
   DropdownMenu,
   DropdownSubmenu,
   DropdownMenuItem,
