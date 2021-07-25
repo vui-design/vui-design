@@ -13,10 +13,6 @@ export default {
 			placeholder: "Select",
 			notFound: "No Data"
 		},
-		cascadeSelector: {
-			notFound: "No Data",
-			clear: "Clear"
-		},
 		select: {
 			placeholder: "Select",
 			loading: "Loading...",
@@ -93,6 +89,10 @@ export default {
 		transfer: {
 			search: "Please enter search content",
 			notFound: "No Data"
+		},
+		cascadeTransfer: {
+			notFound: "No Data",
+			clear: "Clear"
 		},
 		pagination: {
 			prevPage: "Previous Page",

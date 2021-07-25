@@ -1,5 +1,5 @@
 import VuiIcon from "vui-design/components/icon";
-import VuiCascadeSelectorEmpty from "./cascade-selector-empty";
+import VuiCascadeTransferEmpty from "./cascade-transfer-empty";
 import Locale from "vui-design/mixins/locale";
 import PropTypes from "vui-design/utils/prop-types";
 import is from "vui-design/utils/is";
@@ -7,11 +7,11 @@ import clone from "vui-design/utils/clone";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const VuiCascadeSelectorTarget = {
-	name: "vui-cascade-selector-target",
+const VuiCascadeTransferTarget = {
+	name: "vui-cascade-transfer-target",
 	components: {
 		VuiIcon,
-		VuiCascadeSelectorEmpty
+		VuiCascadeTransferEmpty
 	},
 	mixins: [
 		Locale
@@ -41,7 +41,7 @@ const VuiCascadeSelectorTarget = {
 
 			// title
 			const title = props.title({
-				direction: props.direction
+				type: props.type
 			});
 
 			// render
@@ -60,7 +60,7 @@ const VuiCascadeSelectorTarget = {
 					btnClearText = props.locale.clear;
 				}
 				else {
-					btnClearText = this.t("vui.cascadeSelector.clear");
+					btnClearText = this.t("vui.cascadeTransfer.clear");
 				}
 
 				content.push(
@@ -96,7 +96,7 @@ const VuiCascadeSelectorTarget = {
 			}
 			else {
 				content = (
-					<VuiCascadeSelectorEmpty
+					<VuiCascadeTransferEmpty
 						classNamePrefix={props.classNamePrefix}
 						description={props.locale ? props.locale.notFound : undefined}
 					/>
@@ -129,10 +129,10 @@ const VuiCascadeSelectorTarget = {
 
 							const attributes = {
 								classNamePrefix: classNamePrefix,
-								direction: props.direction,
-								value: value,
-								children: children,
-								data: option,
+								type: props.type,
+								valueKey: props.valueKey,
+								childrenKey: props.childrenKey,
+								option: option,
 								formatter: props.formatter,
 								disabled: props.disabled,
 								onDeselect: props.onDeselect
@@ -145,31 +145,6 @@ const VuiCascadeSelectorTarget = {
 			);
 		},
 		getChoiceItem(props) {
-			// content
-			let content;
-
-			if (is.function(props.formatter)) {
-				const attributes = {
-					direction: props.direction,
-					data: clone(props.data)
-				};
-
-				content = props.formatter(attributes);
-			}
-			else {
-				content = props.value;
-			}
-
-			// onDeselect
-			const onDeselect = () => {
-				const option = {
-					value: props.value,
-					data: clone(props.data)
-				};
-
-				props.onDeselect(option);
-			};
-
 			// class
 			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
 			let classes = {};
@@ -180,6 +155,26 @@ const VuiCascadeSelectorTarget = {
 			};
 			classes.elLabel = `${classNamePrefix}-label`;
 			classes.elBtnDeselect = `${classNamePrefix}-btn-deselect`;
+
+			// content
+			let content;
+
+			if (is.function(props.formatter)) {
+				const attributes = {
+					type: props.type,
+					option: props.option
+				};
+
+				content = props.formatter(attributes);
+			}
+			else {
+				content = props.option[props.valueKey];
+			}
+
+			// onDeselect
+			const onDeselect = e => {
+				props.onDeselect(props.option);
+			};
 
 			// render
 			let children = [];
@@ -235,7 +230,7 @@ const VuiCascadeSelectorTarget = {
 
 		// render
 		const attributes = {
-			direction: "target",
+			type: "target",
 			classNamePrefix: props.classNamePrefix,
 			title: props.title,
 			value: props.value,
@@ -259,4 +254,4 @@ const VuiCascadeSelectorTarget = {
 	}
 };
 
-export default VuiCascadeSelectorTarget;
+export default VuiCascadeTransferTarget;

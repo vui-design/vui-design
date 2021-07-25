@@ -36,7 +36,6 @@ import Tabs from "./components/tabs";
 import TabPanel from "./components/tab-panel";
 // Data Entry
 import Cascader from "./components/cascader";
-import CascadeSelector from "./components/cascade-selector";
 import Checkbox from "./components/checkbox";
 import CheckboxGroup from "./components/checkbox-group";
 import Datepicker from "./components/datepicker";
@@ -58,6 +57,7 @@ import Switch from "./components/switch";
 import Textarea from "./components/textarea";
 import Timeroutine from "./components/timeroutine";
 import Transfer from "./components/transfer";
+import CascadeTransfer from "./components/cascade-transfer";
 import Upload from "./components/upload";
 // Data Display
 import Avatar from "./components/avatar";
@@ -148,7 +148,6 @@ const components = [
   TabPanel,
   // Data Entry
   Cascader,
-  CascadeSelector,
   Checkbox,
   CheckboxGroup,
   Datepicker,
@@ -170,6 +169,7 @@ const components = [
   Textarea,
   Timeroutine,
   Transfer,
+  CascadeTransfer,
   Upload,
   // Data Display
   AvatarGroup,
@@ -248,7 +248,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-  version: "1.5.0",
+  version: "1.5.1",
   install,
   locale: locale.use,
   i18n: locale.i18n,
@@ -290,7 +290,6 @@ export default {
   TabPanel,
   // Data Entry
   Cascader,
-  CascadeSelector,
   Checkbox,
   CheckboxGroup,
   Datepicker,
@@ -312,6 +311,7 @@ export default {
   Textarea,
   Timeroutine,
   Transfer,
+  CascadeTransfer,
   Upload,
   // Data Display
   Avatar,

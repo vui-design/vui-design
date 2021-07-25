@@ -13,10 +13,6 @@ export default {
 			placeholder: "请选择",
 			notFound: "暂无数据"
 		},
-		cascadeSelector: {
-			notFound: "暂无数据",
-			clear: "清空"
-		},
 		select: {
 			placeholder: "请选择",
 			loading: "加载中...",
@@ -93,6 +89,10 @@ export default {
 		transfer: {
 			search: "请输入搜索内容",
 			notFound: "暂无数据"
+		},
+		cascadeTransfer: {
+			notFound: "暂无数据",
+			clear: "清空"
 		},
 		pagination: {
 			prevPage: "上一页",

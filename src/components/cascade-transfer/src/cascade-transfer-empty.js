@@ -3,8 +3,8 @@ import Locale from "vui-design/mixins/locale";
 import PropTypes from "vui-design/utils/prop-types";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 
-const VuiCascadeSelectorEmpty = {
-	name: "vui-cascade-selector-empty",
+const VuiCascadeTransferEmpty = {
+	name: "vui-cascade-transfer-empty",
 	components: {
 		VuiEmpty
 	},
@@ -19,7 +19,7 @@ const VuiCascadeSelectorEmpty = {
 		const { $props: props } = this;
 
 		// description
-		const description = props.description ? props.description : this.t("vui.cascadeSelector.notFound");
+		const description = props.description ? props.description : this.t("vui.cascadeTransfer.notFound");
 
 		// class
 		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
@@ -36,4 +36,4 @@ const VuiCascadeSelectorEmpty = {
 	}
 };
 
-export default VuiCascadeSelectorEmpty;
+export default VuiCascadeTransferEmpty;
