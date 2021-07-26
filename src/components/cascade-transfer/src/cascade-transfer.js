@@ -52,9 +52,9 @@ const VuiCascadeTransfer = {
 
 		return {
 			state: {
-				sourceList: sourceList.concat(source),
 				selectedKeys: utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey),
-				value: clone(props.value)
+				value: clone(props.value),
+				sourceList: sourceList.concat(source)
 			}
 		};
 	},
@@ -64,6 +64,18 @@ const VuiCascadeTransfer = {
 
 			this.state.selectedKeys = utils.mapValueToSelectedKeys(value, props.options, props.valueKey, props.childrenKey);
 			this.state.value = clone(value);
+		},
+		options(value) {
+			const { $props: props } = this;
+			const sourceList = [];
+			const source = {
+				parent: undefined,
+				options: value
+			};
+
+			this.state.selectedKeys = utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey);
+			this.state.value = clone(props.value);
+			this.state.sourceList = sourceList.concat(source);
 		}
 	},
 	methods: {

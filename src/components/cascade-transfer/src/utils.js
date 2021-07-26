@@ -33,7 +33,11 @@ export const mapValueToSelectedKeys = (value, options, valueKey, childrenKey) =>
 	value.forEach(key => {
 		const target = map[key];
 
-		selectedKeys.push(key);
+		if (!target) {
+			return;
+		}
+
+		selectedKeys.push(target.option[valueKey]);
 
 		if (target.children && target.children.length > 0) {
 			const children = flatten(target.children, childrenKey, true);
@@ -62,6 +66,10 @@ export const mapSelectedKeysToValue = (selectedKeys, options, valueKey, children
 
 	selectedKeys.forEach(selectedKey => {
 		const target = map[selectedKey];
+
+		if (!target) {
+			return;
+		}
 
 		if (!target.parent) {
 			value.push(selectedKey);
