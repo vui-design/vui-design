@@ -88,6 +88,7 @@ import Timeline from "./components/timeline";
 import TimelineItem from "./components/timeline-item";
 import Tooltip from "./components/tooltip";
 import Tree from "./components/tree";
+import Watermark from "./components/watermark";
 // Feedback
 import Alert from "./components/alert";
 import Drawer from "./components/drawer";
@@ -200,6 +201,7 @@ const components = [
   TimelineItem,
   Tooltip,
   Tree,
+  Watermark,
   // Feedback
   Alert,
   Drawer,
@@ -248,7 +250,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-  version: "1.5.2",
+  version: "1.5.3",
   install,
   locale: locale.use,
   i18n: locale.i18n,
@@ -343,6 +345,7 @@ export default {
   Tooltip,
   Tree,
   // Feedback
+  Watermark,
   Alert,
   Drawer,
   Message,
