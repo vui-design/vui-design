@@ -61,7 +61,7 @@ const VuiMessage = {
 			default: "vui-message-fade"
 		},
 		getPopupContainer: {
-			type: Function,
+			type: [Function, Boolean],
 			default: () => document.body
 		}
 	},

@@ -48,7 +48,7 @@ const VuiSubmenuPopup = {
 			default: undefined
 		},
 		getPopupContainer: {
-			type: Function,
+			type: [Function, Boolean],
 			default: () => document.body
 		}
 	},

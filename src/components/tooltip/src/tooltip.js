@@ -31,7 +31,7 @@ const VuiTooltip = {
 		maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
 		animation: PropTypes.string.def("vui-tooltip-popup-scale"),
-		getPopupContainer: PropTypes.func.def(() => document.body),
+		getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
 		beforeOpen: PropTypes.func,
 		beforeClose: PropTypes.func
 	},

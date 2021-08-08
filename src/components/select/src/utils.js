@@ -210,7 +210,16 @@ export const getSelectedOptionByValue = (value, options, selectedOption) => {
     return selectedOption;
   }
 
-  return undefined;
+  if (is.string(value) && is.falsy(value)) {
+    return;
+  }
+
+  return {
+    type: "option",
+    value: value,
+    disabled: false,
+    children: value
+  };
 };
 
 /**
@@ -220,10 +229,6 @@ export const getSelectedOptionByValue = (value, options, selectedOption) => {
 * @param {Array} options 选项
 */
 export const getSelectedOptionsByValue = (value, options, selectedOptions) => {
-  if (is.undefined(value)) {
-    return [];
-  }
-
   let array = [];
 
   if (is.array(value)) {

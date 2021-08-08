@@ -54,7 +54,7 @@ const VuiSubmenu = {
 			default: () => ["vui-submenu-body-collapse", "vui-submenu-body-zoom-top", "vui-submenu-body-zoom-left"]
 		},
 		getPopupContainer: {
-			type: Function,
+			type: [Function, Boolean],
 			default: () => document.body
 		}
 	},

@@ -79,6 +79,7 @@ import List from "./components/list";
 import ListItem from "./components/list-item";
 import ListItemMeta from "./components/list-item-meta";
 import Popover from "./components/popover";
+import Qrcode from "./components/qrcode";
 import Ratio from "./components/ratio";
 import Statistic from "./components/statistic";
 import Table from "./components/table";
@@ -192,6 +193,7 @@ const components = [
   ListItem,
   ListItemMeta,
   Popover,
+  Qrcode,
   Ratio,
   Statistic,
   Table,
@@ -250,7 +252,7 @@ if (typeof window !== "undefined" && window.Vue) {
 }
 
 export default {
-  version: "1.5.3",
+  version: "1.6.0",
   install,
   locale: locale.use,
   i18n: locale.i18n,
@@ -335,6 +337,7 @@ export default {
   ListItem,
   ListItemMeta,
   Popover,
+  Qrcode,
   Ratio,
   Statistic,
   Table,

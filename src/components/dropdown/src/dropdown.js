@@ -33,7 +33,7 @@ const VuiDropdown = {
 		placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
 		dropdownAutoWidth: PropTypes.bool.def(true),
 		animation: PropTypes.string.def("vui-dropdown-body-scale"),
-		getPopupContainer: PropTypes.func.def(() => document.body)
+		getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
 	},
 	data() {
 		const { $props: props } = this;

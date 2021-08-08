@@ -54,7 +54,7 @@ const VuiModal = {
     backdropClassName: PropTypes.string,
     clickBackdropToClose: PropTypes.bool.def(true),
     animations: PropTypes.array.def(["vui-modal-backdrop-fade", "vui-modal-zoom"]),
-    getPopupContainer: PropTypes.func.def(() => document.body)
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
   },
   data() {
     const { $props: props } = this;

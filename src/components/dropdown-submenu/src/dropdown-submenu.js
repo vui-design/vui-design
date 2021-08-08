@@ -38,7 +38,7 @@ const VuiDropdownSubmenu = {
 		title: PropTypes.string,
 		disabled: PropTypes.bool.def(false),
 		animation: PropTypes.string.def("vui-dropdown-submenu-body-scale"),
-		getPopupContainer: PropTypes.func.def(() => document.body)
+		getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
 	},
 	data() {
 		const state = {

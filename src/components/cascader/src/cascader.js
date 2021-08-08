@@ -59,7 +59,7 @@ const VuiCascader = {
     animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
     dropdownClassName: PropTypes.string,
     dropdownAutoWidth: PropTypes.bool.def(true),
-    getPopupContainer: PropTypes.func.def(() => document.body),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
     validator: PropTypes.bool.def(true)
   },
   data() {

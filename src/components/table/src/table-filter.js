@@ -44,7 +44,7 @@ const VuiTableFilter = {
     locale: PropTypes.object,
     placement: PropTypes.oneOf(["top-start", "top", "top-end", "bottom-start", "bottom", "bottom-end"]).def("bottom-end"),
     animation: PropTypes.string.def("vui-table-column-filter-dropdown-slide"),
-    getPopupContainer: PropTypes.func.def(() => document.body)
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
   },
   data() {
     const { $props: props } = this;

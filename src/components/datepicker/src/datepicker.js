@@ -13,8 +13,10 @@ const VuiDatepicker = {
   ],
   props: {
     classNamePrefix: PropTypes.string,
+    type: PropTypes.string.def("date"),
     range: PropTypes.bool.def(false),
     format: PropTypes.string.def("YYYY-MM-DD"),
+    formatter: PropTypes.object,
     valueType: PropTypes.string.def("format"),
     defaultValue: PropTypes.object,
     value: {},
