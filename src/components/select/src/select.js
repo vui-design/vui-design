@@ -10,7 +10,7 @@ import getStyle from "vui-design/utils/getStyle";
 import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
 import utils from "./utils";
 
-const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
+const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
 const VuiSelect = {
   name: "vui-select",
   inject: {
