@@ -1,4 +1,4 @@
-import Vue from "Vue";
+import Vue from "vue";
 
 const funProto = Function.prototype;
 const objProto = Object.prototype;
