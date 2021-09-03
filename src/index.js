@@ -365,7 +365,7 @@ export {
 };
 
 export default {
-  version: "1.7.1",
+  version: "1.7.2",
   install,
   // Locale
   locale: locale.use,
