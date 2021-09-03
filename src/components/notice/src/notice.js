@@ -1,8 +1,8 @@
-import VuiIcon from "vui-design/components/icon";
-import Portal from "vui-design/directives/portal";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import Popup from "vui-design/utils/popup";
+import VuiIcon from "../../icon";
+import Portal from "../../../directives/portal";
+import Popup from "../../../libs/popup";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiNotice = {
 	name: "vui-notice",

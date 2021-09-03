@@ -1,11 +1,11 @@
-import VuiAffix from "vui-design/components/affix";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getScroll from "vui-design/utils/getScroll";
-import getOffsetTop from "vui-design/utils/getOffsetTop";
-import scrollTo from "vui-design/utils/scrollTo";
-import addEventListener from "vui-design/utils/addEventListener";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiAffix from "../../affix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getScroll from "../../../utils/getScroll";
+import getOffsetTop from "../../../utils/getOffsetTop";
+import scrollTo from "../../../utils/scrollTo";
+import addEventListener from "../../../utils/addEventListener";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const sharpMatcherRegx = /#([^#]+)$/;
 

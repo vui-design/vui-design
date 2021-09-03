@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VuiMessage from "./src/message";
-import createChainedFunction from "vui-design/utils/createChainedFunction";
-import is from "vui-design/utils/is";
+import createChainedFunction from "../../utils/createChainedFunction";
+import is from "../../utils/is";
 
 /**
 * 默认配置

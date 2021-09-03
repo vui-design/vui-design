@@ -1,5 +1,5 @@
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import getValidElements from "vui-design/utils/getValidElements";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+import getValidElements from "../../../utils/getValidElements";
 
 const VuiListItem = {
 	name: "vui-list-item",

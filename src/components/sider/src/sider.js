@@ -1,9 +1,9 @@
-import VuiIcon from "vui-design/components/icon";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import noop from "vui-design/utils/noop";
-import getScrollbarSize from "vui-design/utils/getScrollbarSize";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import noop from "../../../utils/noop";
+import getScrollbarSize from "../../../utils/getScrollbarSize";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 if (typeof window !== "undefined") {
   const matchMediaPolyfill = mediaQuery => {

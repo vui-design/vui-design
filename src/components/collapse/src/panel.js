@@ -1,7 +1,7 @@
-import VuiIcon from "vui-design/components/icon";
-import PropTypes from "vui-design/utils/prop-types";
-import guid from "vui-design/utils/guid";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import PropTypes from "../../../utils/prop-types";
+import guid from "../../../utils/guid";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiPanel = {
 	name: "vui-panel",

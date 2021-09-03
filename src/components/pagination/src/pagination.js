@@ -1,10 +1,10 @@
-import VuiSelect from "vui-design/components/select";
-import VuiOption from "vui-design/components/option";
-import VuiInput from "vui-design/components/input";
-import Locale from "vui-design/mixins/locale";
-import is from "vui-design/utils/is";
-import range from "vui-design/utils/range";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiSelect from "../../select";
+import VuiOption from "../../option";
+import VuiInput from "../../input";
+import Locale from "../../../mixins/locale";
+import is from "../../../utils/is";
+import range from "../../../utils/range";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiPagination = {
 	name: "vui-pagination",

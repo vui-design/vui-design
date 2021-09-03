@@ -1,7 +1,7 @@
-import VuiSpin from "vui-design/components/spin";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiSpin from "../../spin";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSelectSpin = {
   name: "vui-select-spin",

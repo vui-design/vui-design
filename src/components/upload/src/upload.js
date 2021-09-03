@@ -1,4 +1,4 @@
-import guid from "vui-design/utils/guid";
+import guid from "../../../utils/guid";
 import request from "./request";
 import VuiUploadTrigger from "./upload-trigger";
 import VuiUploadList from "./upload-list";

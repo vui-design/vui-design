@@ -1,8 +1,8 @@
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import colours from "vui-design/utils/colours";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import colours from "../../../utils/colours";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSwitch = {
   name: "vui-switch",

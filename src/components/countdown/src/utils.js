@@ -1,4 +1,4 @@
-import padStart from "vui-design/utils/padStart";
+import padStart from "../../../utils/padStart";
 
 const units = [
 	["Y", 1000 * 60 * 60 * 24 * 365],

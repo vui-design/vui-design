@@ -1,5 +1,5 @@
 import Vue from "vue";
-import deepMerge from "vui-design/utils/deepMerge";
+import deepMerge from "../utils/deepMerge";
 import format from "./utils/format";
 import defaultLang from "./lang/zh-CN";
 

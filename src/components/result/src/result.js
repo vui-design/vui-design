@@ -1,7 +1,7 @@
-import VuiIcon from "vui-design/components/icon";
+import VuiIcon from "../../icon";
 import VuiResultException from "./result-exception";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const mapIconTypes = {
   info: "info-filled",

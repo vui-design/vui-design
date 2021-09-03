@@ -1,5 +1,5 @@
-import VuiAvatar from "vui-design/components/avatar";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiAvatar from "../../avatar";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiListItemMeta = {
 	name: "vui-list-item-meta",

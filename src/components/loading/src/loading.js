@@ -1,6 +1,6 @@
-import clamp from "vui-design/utils/clamp";
-import queue from "vui-design/utils/queue";
-import css from "vui-design/utils/css";
+import clamp from "../../../utils/clamp";
+import queue from "../../../utils/queue";
+import css from "../../../utils/css";
 
 const VuiLoading = {};
 

@@ -1,5 +1,5 @@
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiContent = {
   name: "vui-content",

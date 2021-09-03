@@ -1,9 +1,9 @@
-import VuiRadio from "vui-design/components/radio";
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import guid from "vui-design/utils/guid";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiRadio from "../../radio";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import guid from "../../../utils/guid";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiRadioGroup = {
   name: "vui-radio-group",

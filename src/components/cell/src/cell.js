@@ -1,7 +1,7 @@
-import VuiIcon from "vui-design/components/icon";
-import MixinLink from "vui-design/mixins/link";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import MixinLink from "../../../mixins/link";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiCell = {
 	name: "vui-cell",

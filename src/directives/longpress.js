@@ -1,4 +1,4 @@
-import { on, once } from "vui-design/utils/dom";
+import { on, once } from "../utils/dom";
 
 export default {
 	bind(el, binding, vnode) {

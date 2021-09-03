@@ -1,7 +1,7 @@
-import Portal from "vui-design/directives/portal";
-import Popup from "vui-design/utils/popup";
-import is from "vui-design/utils/is";
-import getStyle from "vui-design/utils/getStyle";
+import Portal from "../../../directives/portal";
+import Popup from "../../../libs/popup";
+import is from "../../../utils/is";
+import getStyle from "../../../utils/getStyle";
 
 const VuiSubmenuPopup = {
 	name: "vui-submenu-popup",

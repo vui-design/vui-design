@@ -1,11 +1,11 @@
-import VuiIcon from "vui-design/components/icon";
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import merge from "vui-design/utils/merge";
-import css from "vui-design/utils/css";
-import getTextareaSize from "vui-design/utils/getTextareaSize";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import merge from "../../../utils/merge";
+import css from "../../../utils/css";
+import getTextareaSize from "../../../utils/getTextareaSize";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTextarea = {
   name: "vui-textarea",

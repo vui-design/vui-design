@@ -1,10 +1,10 @@
-import VuiIcon from "vui-design/components/icon";
-import Emitter from "vui-design/mixins/emitter";
-import Longpress from "vui-design/directives/longpress";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getNumberPrecision from "vui-design/utils/getNumberPrecision";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import Emitter from "../../../mixins/emitter";
+import Longpress from "../../../directives/longpress";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getNumberPrecision from "../../../utils/getNumberPrecision";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const regexp = {
 	numeric: /^[\+\-]?\d*?\.?\d*?$/,

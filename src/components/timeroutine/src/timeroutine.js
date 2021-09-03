@@ -1,13 +1,13 @@
-import Emitter from "vui-design/mixins/emitter";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import range from "vui-design/utils/range";
-import padStart from "vui-design/utils/padStart";
-import addEventListener from "vui-design/utils/addEventListener";
-import getElementByEvent from "vui-design/utils/getElementByEvent";
-import getOffsetRect from "vui-design/utils/getOffsetRect";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Emitter from "../../../mixins/emitter";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import range from "../../../utils/range";
+import padStart from "../../../utils/padStart";
+import addEventListener from "../../../utils/addEventListener";
+import getElementByEvent from "../../../utils/getElementByEvent";
+import getOffsetRect from "../../../utils/getOffsetRect";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTimeroutine = {
 	name: "vui-timeroutine",

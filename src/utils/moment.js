@@ -1,4 +1,4 @@
-import fecha from "vui-design/libs/fecha";
+import fecha from "../libs/fecha";
 import is from "./is";
 
 

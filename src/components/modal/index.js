@@ -1,9 +1,9 @@
 import Vue from "vue";
-import VuiIcon from "vui-design/components/icon";
+import VuiIcon from "../icon";
 import VuiModal from "./src/modal";
-import createChainedFunction from "vui-design/utils/createChainedFunction";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import createChainedFunction from "../../utils/createChainedFunction";
+import is from "../../utils/is";
+import getClassNamePrefix from "../../utils/getClassNamePrefix";
 
 /**
 * 默认配置

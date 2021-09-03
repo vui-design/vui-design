@@ -1,4 +1,4 @@
-import PropTypes from "vui-design/utils/prop-types";
+import PropTypes from "../../../utils/prop-types";
 
 const VuiDescription = {
   name: "vui-description",

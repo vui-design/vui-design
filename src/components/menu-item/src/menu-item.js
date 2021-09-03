@@ -1,9 +1,9 @@
-import VuiIcon from "vui-design/components/icon";
-import VuiTooltip from "vui-design/components/tooltip";
-import MixinLink from "vui-design/mixins/link";
-import guid from "vui-design/utils/guid";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import guardLinkEvent from "vui-design/utils/guardLinkEvent";
+import VuiIcon from "../../icon";
+import VuiTooltip from "../../tooltip";
+import MixinLink from "../../../mixins/link";
+import guid from "../../../utils/guid";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+import guardLinkEvent from "../../../utils/guardLinkEvent";
 
 const VuiMenuItem = {
 	name: "vui-menu-item",

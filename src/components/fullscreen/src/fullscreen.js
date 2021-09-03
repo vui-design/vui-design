@@ -1,5 +1,5 @@
-import fullscreen from "vui-design/utils/fullscreen";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import fullscreen from "../../../utils/fullscreen";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 export default {
 	name: "vui-fullscreen",

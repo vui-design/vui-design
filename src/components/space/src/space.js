@@ -1,7 +1,7 @@
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getValidElements from "vui-design/utils/getValidElements";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getValidElements from "../../../utils/getValidElements";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const sizes = ["small", "medium", "large"];
 

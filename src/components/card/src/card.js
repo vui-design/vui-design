@@ -1,10 +1,10 @@
-import VuiIcon from "vui-design/components/icon";
-import VuiRow from "vui-design/components/row";
-import VuiCol from "vui-design/components/col";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getValidElements from "vui-design/utils/getValidElements";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import VuiRow from "../../row";
+import VuiCol from "../../col";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getValidElements from "../../../utils/getValidElements";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const gridCardLoadingBlocks = [
 	[20],

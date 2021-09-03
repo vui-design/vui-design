@@ -1,11 +1,11 @@
-import VuiLazyRender from "vui-design/components/lazy-render";
-import Portal from "vui-design/directives/portal";
-import Outclick from "vui-design/directives/outclick";
-import Popup from "vui-design/utils/popup";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getStyle from "vui-design/utils/getStyle";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiLazyRender from "../../lazy-render";
+import Portal from "../../../directives/portal";
+import Outclick from "../../../directives/outclick";
+import Popup from "../../../libs/popup";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getStyle from "../../../utils/getStyle";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDropdown = {
 	name: "vui-dropdown",

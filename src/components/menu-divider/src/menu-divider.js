@@ -1,5 +1,5 @@
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiMenuDivider = {
 	name: "vui-menu-divider",

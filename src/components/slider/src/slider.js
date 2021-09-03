@@ -2,11 +2,11 @@ import VuiSliderTrack from "./slider-track";
 import VuiSliderSteps from "./slider-steps";
 import VuiSliderMarks from "./slider-marks";
 import VuiSliderDragger from "./slider-dragger";
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiSlider = {

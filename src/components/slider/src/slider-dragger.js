@@ -1,9 +1,9 @@
-import VuiTooltip from "vui-design/components/tooltip";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import keyCodes from "vui-design/utils/keyCodes";
-import addEventListener from "vui-design/utils/addEventListener";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiTooltip from "../../tooltip";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import keyCodes from "../../../utils/keyCodes";
+import addEventListener from "../../../utils/addEventListener";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiSliderDragger = {

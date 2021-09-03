@@ -1,4 +1,4 @@
-import is from "vui-design/utils/is";
+import is from "../../../utils/is";
 
 /**
 * 从 children 中解析获取面板列表

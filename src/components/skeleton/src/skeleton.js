@@ -1,9 +1,9 @@
 import VuiSkeletonAvatar from "./skeleton-avatar";
 import VuiSkeletonTitle from "./skeleton-title";
 import VuiSkeletonParagraph from "./skeleton-paragraph";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 function getComponentProps(property) {
   if (is.json(property)) {

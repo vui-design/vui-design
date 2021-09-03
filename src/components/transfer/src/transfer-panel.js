@@ -1,11 +1,11 @@
-import VuiCheckbox from "vui-design/components/checkbox";
+import VuiCheckbox from "../../checkbox";
 import VuiTransferPanelSearch from "./transfer-panel-search";
 import VuiTransferPanelBodyMenu from "./transfer-panel-body-menu";
 import VuiTransferPanelBodyEmpty from "./transfer-panel-body-empty";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiTransferPanel = {

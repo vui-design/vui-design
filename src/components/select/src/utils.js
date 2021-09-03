@@ -1,4 +1,4 @@
-import is from "vui-design/utils/is";
+import is from "../../../utils/is";
 
 /**
 * 默认配置

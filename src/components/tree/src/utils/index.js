@@ -1,4 +1,4 @@
-import clone from "vui-design/utils/clone";
+import clone from "../../../../utils/clone";
 
 /**
 * 从组件属性中获取派生数据

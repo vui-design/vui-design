@@ -1,5 +1,5 @@
 import ResizeObserver from "resize-observer-polyfill";
-import PropTypes from "vui-design/utils/prop-types";
+import PropTypes from "../../../utils/prop-types";
 
 const VuiResizeObserver = {
 	name: "vui-resize-observer",

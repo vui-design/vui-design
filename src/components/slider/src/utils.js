@@ -1,5 +1,5 @@
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
 
 export function getValuePrecision(step) {
 	const string = String(step);

@@ -1,8 +1,8 @@
 import VuiTabsTab from "./tabs-tab";
 import VuiTabsPanel from "./tabs-panel";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTabs = {
   name: "vui-tabs",

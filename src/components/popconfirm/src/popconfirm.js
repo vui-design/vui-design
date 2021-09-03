@@ -1,10 +1,10 @@
-import VuiPopover from "vui-design/components/popover";
-import VuiIcon from "vui-design/components/icon";
-import VuiButton from "vui-design/components/button";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiPopover from "../../popover";
+import VuiIcon from "../../icon";
+import VuiButton from "../../button";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiPopconfirm = {
 	name: "vui-popconfirm",

@@ -1,7 +1,7 @@
-import VuiInput from "vui-design/components/input";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiInput from "../../input";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTransferPanelSearch = {
 	name: "vui-transfer-panel-search",

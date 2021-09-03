@@ -1,9 +1,9 @@
-import VuiIcon from "vui-design/components/icon";
-import MixinLink from "vui-design/mixins/link";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import guardLinkEvent from "vui-design/utils/guardLinkEvent";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import MixinLink from "../../../mixins/link";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import guardLinkEvent from "../../../utils/guardLinkEvent";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDropdownMenuItem = {
 	name: "vui-dropdown-menu-item",

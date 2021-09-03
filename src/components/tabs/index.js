@@ -1,6 +1,6 @@
 import VuiTabs from "./src/tabs";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
+import PropTypes from "../../utils/prop-types";
+import is from "../../utils/is";
 import utils from "./src/utils";
 
 const VuiTabsWrapper = {

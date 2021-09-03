@@ -133,8 +133,7 @@ module.exports = {
 	resolve: {
 		extensions: [".js", ".jsx", ".vue"],
 		alias: {
-			"vue": "vue/dist/vue.esm.js",
-			"vui-design": resolve("src")
+			"vue": "vue/dist/vue.esm.js"
 		}
 	},
 
@@ -142,6 +141,6 @@ module.exports = {
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new webpack.DefinePlugin({
 			"process.env.VERSION": `"${package.version}"`
-		}),
+		})
 	]
 };

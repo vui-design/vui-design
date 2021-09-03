@@ -1,6 +1,6 @@
-import Locale from "vui-design/mixins/locale";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Locale from "../../../mixins/locale";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTime = {
 	name: "vui-time",

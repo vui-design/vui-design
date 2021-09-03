@@ -1,9 +1,9 @@
-import VuiTooltip from "vui-design/components/tooltip";
-import VuiAvatar from "vui-design/components/avatar";
-import VuiSpace from "vui-design/components/space";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
-import getValidElements from "vui-design/utils/getValidElements";
+import VuiTooltip from "../../tooltip";
+import VuiAvatar from "../../avatar";
+import VuiSpace from "../../space";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+import getValidElements from "../../../utils/getValidElements";
 
 const VuiAvatarGroup = {
 	name: "vui-avatar-group",

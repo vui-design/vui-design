@@ -1,4 +1,4 @@
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiButtonGroup = {
 	name: "vui-button-group",

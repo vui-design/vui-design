@@ -1,6 +1,6 @@
-import PropTypes from "vui-design/utils/prop-types";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiSliderTrack = {

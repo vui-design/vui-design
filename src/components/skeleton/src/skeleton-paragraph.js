@@ -1,7 +1,7 @@
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import range from "vui-design/utils/range";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import range from "../../../utils/range";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const widthProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 const skeletonParagraphProps = {

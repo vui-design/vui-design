@@ -1,4 +1,4 @@
-import addEventListener from "vui-design/utils/addEventListener";
+import addEventListener from "../../../utils/addEventListener";
 
 const eventTypes = ["resize", "scroll", "touchstart", "touchmove", "touchend", "pageshow", "load"];
 let observerEntities = [];

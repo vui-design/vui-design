@@ -1,9 +1,9 @@
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import { on, off, isInContainer, getScrollContainer } from "vui-design/utils/dom";
-import throttle from "vui-design/utils/throttle";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import { on, off, isInContainer, getScrollContainer } from "../../../utils/dom";
+import throttle from "../../../utils/throttle";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const isSupportObjectFit = () => document.documentElement.style.objectFit !== undefined;
 

@@ -1,4 +1,4 @@
-import getScrollbarSize from "vui-design/utils/getScrollbarSize";
+import getScrollbarSize from "./getScrollbarSize";
 
 /**
 * Modal、Drawer 等弹窗组件弹出时，添加滚动条占位符

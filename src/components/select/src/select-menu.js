@@ -1,8 +1,8 @@
 import VuiSelectMenuItemGroup from "./select-menu-item-group";
 import VuiSelectMenuItem from "./select-menu-item";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 export default {

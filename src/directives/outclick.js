@@ -1,6 +1,6 @@
-import guid from "vui-design/utils/guid";
-import is from "vui-design/utils/is";
-import { on } from "vui-design/utils/dom";
+import guid from "../utils/guid";
+import is from "../utils/is";
+import { on } from "../utils/dom";
 
 let nodeList = [];
 let context = "vue-outclick-context";

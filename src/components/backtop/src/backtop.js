@@ -1,10 +1,10 @@
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import throttle from "vui-design/utils/throttle";
-import scrollTo from "vui-design/utils/scrollTo";
-import { on, off } from "vui-design/utils/dom";
-import addEventListener from "vui-design/utils/addEventListener";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import throttle from "../../../utils/throttle";
+import scrollTo from "../../../utils/scrollTo";
+import { on, off } from "../../../utils/dom";
+import addEventListener from "../../../utils/addEventListener";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiBacktop = {
 	name: "vui-backtop",

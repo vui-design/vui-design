@@ -1,8 +1,8 @@
-import VuiResizeObserver from "vui-design/components/resize-observer";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import requestAnimationFrameThrottle from "vui-design/utils/requestAnimationFrameThrottle";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiResizeObserver from "../../resize-observer";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import requestAnimationFrameThrottle from "../../../utils/requestAnimationFrameThrottle";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiAffix = {

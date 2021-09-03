@@ -1,7 +1,7 @@
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import debounce from "vui-design/utils/debounce";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import debounce from "../../../utils/debounce";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSpin = {
   name: "vui-spin",

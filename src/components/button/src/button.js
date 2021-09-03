@@ -1,8 +1,8 @@
-import VuiIcon from "vui-design/components/icon";
-import Link from "vui-design/mixins/link";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import Link from "../../../mixins/link";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiButton = {
   name: "vui-button",

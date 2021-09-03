@@ -1,8 +1,8 @@
-import VuiCheckbox from "vui-design/components/checkbox";
-import VuiIcon from "vui-design/components/icon";
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiCheckbox from "../../checkbox";
+import VuiIcon from "../../icon";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTreeNode = {
 	name: "vui-tree-node",

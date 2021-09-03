@@ -1,8 +1,8 @@
-import VuiIcon from "vui-design/components/icon";
-import VuiButton from "vui-design/components/button";
-import VuiDropdown from "vui-design/components/dropdown";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import VuiButton from "../../button";
+import VuiDropdown from "../../dropdown";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDropdownButton = {
 	name: "vui-dropdown-button",

@@ -1,5 +1,5 @@
-import getType from "vui-design/utils/getType";
-import guid from "vui-design/utils/guid";
+import getType from "../../../utils/getType";
+import guid from "../../../utils/guid";
 import request from "./request";
 
 const VuiUploadTrigger = {

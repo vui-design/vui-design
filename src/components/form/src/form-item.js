@@ -1,13 +1,13 @@
 import AsyncValidator from "async-validator";
-import VuiSpace from "vui-design/components/space";
-import VuiIcon from "vui-design/components/icon";
-import VuiTooltip from "vui-design/components/tooltip";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import noop from "vui-design/utils/noop";
-import getTargetByPath from "vui-design/utils/getTargetByPath";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiSpace from "../../space";
+import VuiIcon from "../../icon";
+import VuiTooltip from "../../tooltip";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import noop from "../../../utils/noop";
+import getTargetByPath from "../../../utils/getTargetByPath";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiFormItem = {
   name: "vui-form-item",

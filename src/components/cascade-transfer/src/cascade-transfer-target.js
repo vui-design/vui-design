@@ -1,10 +1,10 @@
-import VuiIcon from "vui-design/components/icon";
+import VuiIcon from "../../icon";
 import VuiCascadeTransferEmpty from "./cascade-transfer-empty";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiCascadeTransferTarget = {

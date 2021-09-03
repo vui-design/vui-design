@@ -1,6 +1,6 @@
 import VuiDescriptions from "./src/descriptions";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
+import PropTypes from "../../utils/prop-types";
+import is from "../../utils/is";
 import utils from "./src/utils";
 
 const VuiDescriptionsWrapper = {

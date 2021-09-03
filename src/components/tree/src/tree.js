@@ -1,7 +1,7 @@
 import VuiTreeNode from "./tree-node";
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import { getDerivedDataFromProps, getDerivedCheckedKeysFromProps } from "./utils";
 
 const VuiTree = {

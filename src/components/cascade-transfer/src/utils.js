@@ -1,6 +1,6 @@
-import is from "vui-design/utils/is";
-import clone from "vui-design/utils/clone";
-import flatten from "vui-design/utils/flatten";
+import is from "../../../utils/is";
+import clone from "../../../utils/clone";
+import flatten from "../../../utils/flatten";
 
 const mapper = (options, parent, valueKey, childrenKey, map) => {
 	options.forEach(option => {

@@ -3,11 +3,11 @@ import VuiSelectDropdown from "./select-dropdown";
 import VuiSelectSpin from "./select-spin";
 import VuiSelectEmpty from "./select-empty";
 import VuiSelectMenu from "./select-menu";
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import getStyle from "vui-design/utils/getStyle";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import getStyle from "../../../utils/getStyle";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);

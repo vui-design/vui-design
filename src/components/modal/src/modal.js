@@ -1,15 +1,15 @@
-import VuiLazyRender from "vui-design/components/lazy-render";
-import VuiIcon from "vui-design/components/icon";
-import VuiButton from "vui-design/components/button";
-import Portal from "vui-design/directives/portal";
-import Locale from "vui-design/mixins/locale";
-import Popup from "vui-design/utils/popup";
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import merge from "vui-design/utils/merge";
-import addScrollbarEffect from "vui-design/utils/addScrollbarEffect";
-import getElementByEvent from "vui-design/utils/getElementByEvent";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiLazyRender from "../../lazy-render";
+import VuiIcon from "../../icon";
+import VuiButton from "../../button";
+import Portal from "../../../directives/portal";
+import Locale from "../../../mixins/locale";
+import Popup from "../../../libs/popup";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import merge from "../../../utils/merge";
+import addScrollbarEffect from "../../../utils/addScrollbarEffect";
+import getElementByEvent from "../../../utils/getElementByEvent";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiModal = {
   name: "vui-modal",

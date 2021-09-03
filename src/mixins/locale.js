@@ -1,4 +1,4 @@
-import { t } from "vui-design/locale";
+import { t } from "../locale";
 
 export default {
 	methods: {

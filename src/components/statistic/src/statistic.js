@@ -1,7 +1,7 @@
-import PropTypes from "vui-design/utils/prop-types";
-import is from "vui-design/utils/is";
-import padEnd from "vui-design/utils/padEnd";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
+import padEnd from "../../../utils/padEnd";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiStatistic = {
 	name: "vui-statistic",

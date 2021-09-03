@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VuiSpin from "./src/spin";
-import Popup from "vui-design/utils/popup";
-import is from "vui-design/utils/is";
+import Popup from "../../libs/popup";
+import is from "../../utils/is";
 
 /**
 * 默认配置

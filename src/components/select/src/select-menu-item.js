@@ -1,8 +1,8 @@
-import VuiIcon from "vui-design/components/icon";
-import PropTypes from "vui-design/utils/prop-types";
-import clone from "vui-design/utils/clone";
-import scrollIntoView from "vui-design/utils/scrollIntoView";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import PropTypes from "../../../utils/prop-types";
+import clone from "../../../utils/clone";
+import scrollIntoView from "../../../utils/scrollIntoView";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiSelectMenuItem = {

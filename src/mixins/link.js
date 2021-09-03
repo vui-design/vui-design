@@ -1,5 +1,5 @@
-import PropTypes from "vui-design/utils/prop-types";
-import guardLinkEvent from "vui-design/utils/guardLinkEvent";
+import PropTypes from "../utils/prop-types";
+import guardLinkEvent from "../utils/guardLinkEvent";
 
 export default {
 	props: {

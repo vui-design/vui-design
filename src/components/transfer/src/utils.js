@@ -1,7 +1,7 @@
-import is from "vui-design/utils/is";
-import guid from "vui-design/utils/guid";
-import clone from "vui-design/utils/clone";
-import getTargetByPath from "vui-design/utils/getTargetByPath";
+import is from "../../../utils/is";
+import guid from "../../../utils/guid";
+import clone from "../../../utils/clone";
+import getTargetByPath from "../../../utils/getTargetByPath";
 
 /**
 * 默认配置

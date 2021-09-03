@@ -1,5 +1,5 @@
-import VcSteps from "vui-design/components/vc-steps";
-import is from "vui-design/utils/is";
+import VcSteps from "../../vc-steps";
+import is from "../../../utils/is";
 
 const VuiSteps = {
 	name: "vui-steps",

@@ -1,8 +1,8 @@
-import VuiIcon from "vui-design/components/icon";
+import VuiIcon from "../../icon";
 import VuiSubmenuInline from "./submenu-inline";
 import VuiSubmenuPopup from "./submenu-popup";
-import guid from "vui-design/utils/guid";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import guid from "../../../utils/guid";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSubmenu = {
 	name: "vui-submenu",

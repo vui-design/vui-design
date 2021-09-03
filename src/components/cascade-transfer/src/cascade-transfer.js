@@ -1,11 +1,11 @@
 import VuiCascadeTransferSourceList from "./cascade-transfer-source-list";
 import VuiCascadeTransferSource from "./cascade-transfer-source";
 import VuiCascadeTransferTarget from "./cascade-transfer-target";
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
-import clone from "vui-design/utils/clone";
-import flatten from "vui-design/utils/flatten";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
+import clone from "../../../utils/clone";
+import flatten from "../../../utils/flatten";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiCascadeTransfer = {

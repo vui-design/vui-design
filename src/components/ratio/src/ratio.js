@@ -1,6 +1,6 @@
-import VuiIcon from "vui-design/components/icon";
-import padEnd from "vui-design/utils/padEnd";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../icon";
+import padEnd from "../../../utils/padEnd";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiRatio = {
 	name: "vui-ratio",

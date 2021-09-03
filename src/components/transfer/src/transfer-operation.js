@@ -1,7 +1,7 @@
-import VuiButton from "vui-design/components/button";
-import PropTypes from "vui-design/utils/prop-types";
-import noop from "vui-design/utils/noop";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiButton from "../../button";
+import PropTypes from "../../../utils/prop-types";
+import noop from "../../../utils/noop";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTransferOperation = {
 	name: "vui-transfer-operation",

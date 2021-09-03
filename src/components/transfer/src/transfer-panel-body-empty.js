@@ -1,7 +1,7 @@
-import VuiEmpty from "vui-design/components/empty";
-import Locale from "vui-design/mixins/locale";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiEmpty from "../../empty";
+import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTransferPanelBodyEmpty = {
 	name: "vui-transfer-panel-body-empty",

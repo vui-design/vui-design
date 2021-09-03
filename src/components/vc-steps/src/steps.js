@@ -1,6 +1,6 @@
-import VuiIcon from "vui-design/components/icon";
-import is from "vui-design/utils/is";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiIcon from "../../../components/icon";
+import is from "../../../utils/is";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VcSteps = {
 	name: "vc-steps",

@@ -1,5 +1,5 @@
-import Emitter from "vui-design/mixins/emitter";
-import PropTypes from "vui-design/utils/prop-types";
+import Emitter from "../../../mixins/emitter";
+import PropTypes from "../../../utils/prop-types";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/locale/zh-cn";
 

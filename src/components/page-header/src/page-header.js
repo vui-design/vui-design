@@ -1,10 +1,10 @@
-import VuiAvatar from "vui-design/components/avatar";
-import VuiBreadcrumb from "vui-design/components/breadcrumb";
-import VuiBreadcrumbItem from "vui-design/components/breadcrumb";
-import VuiIcon from "vui-design/components/icon";
-import VuiTag from "vui-design/components/tag";
-import PropTypes from "vui-design/utils/prop-types";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiAvatar from "../../avatar";
+import VuiBreadcrumb from "../../breadcrumb";
+import VuiBreadcrumbItem from "../../breadcrumb";
+import VuiIcon from "../../icon";
+import VuiTag from "../../tag";
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiPageHeader = {
 	name: "vui-page-header",

@@ -1,5 +1,5 @@
-import VuiIcon from "vui-design/components/icon";
-import VuiProgress from "vui-design/components/progress";
+import VuiIcon from "../../icon";
+import VuiProgress from "../../progress";
 
 const VuiUploadList = {
 	name: "vui-upload-list",

@@ -1,5 +1,5 @@
 import VuiSelect from "./src/select";
-import PropTypes from "vui-design/utils/prop-types";
+import PropTypes from "../../utils/prop-types";
 import utils from "./src/utils";
 
 const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);

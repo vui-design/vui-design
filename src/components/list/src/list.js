@@ -1,6 +1,6 @@
-import VuiRow from "vui-design/components/row";
-import VuiCol from "vui-design/components/col";
-import getClassNamePrefix from "vui-design/utils/getClassNamePrefix";
+import VuiRow from "../../row";
+import VuiCol from "../../col";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiList = {
 	name: "vui-list",
