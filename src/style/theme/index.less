@@ -11,8 +11,6 @@
 @success-color: #52c41a;
 @error-color: #ff4d4f;
 
-@processing-color: @primary-color;
-
 @link-color: @primary-color;
 @link-hover-color: tint(@link-color, 10%);
 @link-active-color: shade(@link-color, 10%);
@@ -47,6 +45,7 @@
 
 // 组件背景色
 @component-background-color: #fff;
+@component-dark-background-color: #1a2035;
 
 // 边框
 @border-width: 1px;
@@ -112,7 +111,7 @@
 // 通用组件 --------------------------------------------------------------------------------
 
 // Button
-@button-border-width: 1px;
+@button-border-width: @border-width;
 @button-border-radius: @border-radius;
 
 @button-size-sm: 24px;
@@ -127,116 +126,116 @@
 @button-font-size-md: 14px;
 @button-font-size-lg: 16px;
 
-@button-default-border-color: #e0e0e0;
-@button-default-background-color: #fff;
-@button-default-font-color: #595959;
-@button-default-hover-border-color: tint(#2d8cf0, 10%);
-@button-default-hover-background-color: #fff;
-@button-default-hover-font-color: tint(#2d8cf0, 10%);
-@button-default-active-border-color: shade(#2d8cf0, 10%);
-@button-default-active-background-color: #fff;
-@button-default-active-font-color: shade(#2d8cf0, 10%);
-@button-default-disabled-border-color: #e0e0e0;
+@button-default-border-color: @border-color;
+@button-default-background-color: @component-background-color;
+@button-default-font-color: @font-color;
+@button-default-hover-border-color: tint(@primary-color, 10%);
+@button-default-hover-background-color: @component-background-color;
+@button-default-hover-font-color: tint(@primary-color, 10%);
+@button-default-active-border-color: shade(@primary-color, 10%);
+@button-default-active-background-color: @component-background-color;
+@button-default-active-font-color: shade(@primary-color, 10%);
+@button-default-disabled-border-color: @border-color;
 @button-default-disabled-background-color: shade(@component-background-color, 2%);
-@button-default-disabled-font-color: tint(#000, 75%);
+@button-default-disabled-font-color: @font-disabled-color;
 
-@button-primary-border-color: #2d8cf0;
-@button-primary-background-color: #2d8cf0;
-@button-primary-font-color: #fff;
-@button-primary-hover-border-color: tint(#2d8cf0, 10%);
-@button-primary-hover-background-color: tint(#2d8cf0, 10%);
-@button-primary-hover-font-color: #fff;
-@button-primary-active-border-color: shade(#2d8cf0, 10%);
-@button-primary-active-background-color: shade(#2d8cf0, 10%);
-@button-primary-active-font-color: #fff;
-@button-primary-disabled-border-color: #e0e0e0;
+@button-primary-border-color: @primary-color;
+@button-primary-background-color: @primary-color;
+@button-primary-font-color: @font-reverse-color;
+@button-primary-hover-border-color: tint(@primary-color, 10%);
+@button-primary-hover-background-color: tint(@primary-color, 10%);
+@button-primary-hover-font-color: @font-reverse-color;
+@button-primary-active-border-color: shade(@primary-color, 10%);
+@button-primary-active-background-color: shade(@primary-color, 10%);
+@button-primary-active-font-color: @font-reverse-color;
+@button-primary-disabled-border-color: @border-color;
 @button-primary-disabled-background-color: shade(@component-background-color, 2%);
-@button-primary-disabled-font-color: tint(#000, 75%);
+@button-primary-disabled-font-color: @font-disabled-color;
 
-@button-info-border-color: #5bc0de;
-@button-info-background-color: #5bc0de;
-@button-info-font-color: #fff;
-@button-info-hover-border-color: tint(#5bc0de, 10%);
-@button-info-hover-background-color: tint(#5bc0de, 10%);
-@button-info-hover-font-color: #fff;
-@button-info-active-border-color: shade(#5bc0de, 10%);
-@button-info-active-background-color: shade(#5bc0de, 10%);
-@button-info-active-font-color: #fff;
-@button-info-disabled-border-color: #e0e0e0;
+@button-info-border-color: @info-color;
+@button-info-background-color: @info-color;
+@button-info-font-color: @font-reverse-color;
+@button-info-hover-border-color: tint(@info-color, 10%);
+@button-info-hover-background-color: tint(@info-color, 10%);
+@button-info-hover-font-color: @font-reverse-color;
+@button-info-active-border-color: shade(@info-color, 10%);
+@button-info-active-background-color: shade(@info-color, 10%);
+@button-info-active-font-color: @font-reverse-color;
+@button-info-disabled-border-color: @border-color;
 @button-info-disabled-background-color: shade(@component-background-color, 2%);
-@button-info-disabled-font-color: tint(#000, 75%);
+@button-info-disabled-font-color: @font-disabled-color;
 
-@button-warning-border-color: #faad14;
-@button-warning-background-color: #faad14;
-@button-warning-font-color: #fff;
-@button-warning-hover-border-color: tint(#faad14, 10%);
-@button-warning-hover-background-color: tint(#faad14, 10%);
-@button-warning-hover-font-color: #fff;
-@button-warning-active-border-color: shade(#faad14, 10%);
-@button-warning-active-background-color: shade(#faad14, 10%);
-@button-warning-active-font-color: #fff;
-@button-warning-disabled-border-color: #e0e0e0;
+@button-warning-border-color: @warning-color;
+@button-warning-background-color: @warning-color;
+@button-warning-font-color: @font-reverse-color;
+@button-warning-hover-border-color: tint(@warning-color, 10%);
+@button-warning-hover-background-color: tint(@warning-color, 10%);
+@button-warning-hover-font-color: @font-reverse-color;
+@button-warning-active-border-color: shade(@warning-color, 10%);
+@button-warning-active-background-color: shade(@warning-color, 10%);
+@button-warning-active-font-color: @font-reverse-color;
+@button-warning-disabled-border-color: @border-color;
 @button-warning-disabled-background-color: shade(@component-background-color, 2%);
-@button-warning-disabled-font-color: tint(#000, 75%);
+@button-warning-disabled-font-color: @font-disabled-color;
 
-@button-success-border-color: #52c41a;
-@button-success-background-color: #52c41a;
-@button-success-font-color: #fff;
-@button-success-hover-border-color: tint(#52c41a, 10%);
-@button-success-hover-background-color: tint(#52c41a, 10%);
-@button-success-hover-font-color: #fff;
-@button-success-active-border-color: shade(#52c41a, 10%);
-@button-success-active-background-color: shade(#52c41a, 10%);
-@button-success-active-font-color: #fff;
-@button-success-disabled-border-color: #e0e0e0;
+@button-success-border-color: @success-color;
+@button-success-background-color: @success-color;
+@button-success-font-color: @font-reverse-color;
+@button-success-hover-border-color: tint(@success-color, 10%);
+@button-success-hover-background-color: tint(@success-color, 10%);
+@button-success-hover-font-color: @font-reverse-color;
+@button-success-active-border-color: shade(@success-color, 10%);
+@button-success-active-background-color: shade(@success-color, 10%);
+@button-success-active-font-color: @font-reverse-color;
+@button-success-disabled-border-color: @border-color;
 @button-success-disabled-background-color: shade(@component-background-color, 2%);
-@button-success-disabled-font-color: tint(#000, 75%);
+@button-success-disabled-font-color: @font-disabled-color;
 
-@button-error-border-color: #ff4d4f;
-@button-error-background-color: #ff4d4f;
-@button-error-font-color: #fff;
-@button-error-hover-border-color: tint(#ff4d4f, 10%);
-@button-error-hover-background-color: tint(#ff4d4f, 10%);
-@button-error-hover-font-color: #fff;
-@button-error-active-border-color: shade(#ff4d4f, 10%);
-@button-error-active-background-color: shade(#ff4d4f, 10%);
-@button-error-active-font-color: #fff;
-@button-error-disabled-border-color: #e0e0e0;
+@button-error-border-color: @error-color;
+@button-error-background-color: @error-color;
+@button-error-font-color: @font-reverse-color;
+@button-error-hover-border-color: tint(@error-color, 10%);
+@button-error-hover-background-color: tint(@error-color, 10%);
+@button-error-hover-font-color: @font-reverse-color;
+@button-error-active-border-color: shade(@error-color, 10%);
+@button-error-active-background-color: shade(@error-color, 10%);
+@button-error-active-font-color: @font-reverse-color;
+@button-error-disabled-border-color: @border-color;
 @button-error-disabled-background-color: shade(@component-background-color, 2%);
-@button-error-disabled-font-color: tint(#000, 75%);
+@button-error-disabled-font-color: @font-disabled-color;
 
-@button-dashed-border-color: #e0e0e0;
-@button-dashed-background-color: #fff;
-@button-dashed-font-color: #595959;
-@button-dashed-hover-border-color: tint(#2d8cf0, 10%);
-@button-dashed-hover-background-color: #fff;
-@button-dashed-hover-font-color: tint(#2d8cf0, 10%);
-@button-dashed-active-border-color: shade(#2d8cf0, 10%);
-@button-dashed-active-background-color: #fff;
-@button-dashed-active-font-color: shade(#2d8cf0, 10%);
-@button-dashed-disabled-border-color: #e0e0e0;
+@button-dashed-border-color: @border-color;
+@button-dashed-background-color: @component-background-color;
+@button-dashed-font-color: @font-color;
+@button-dashed-hover-border-color: tint(@primary-color, 10%);
+@button-dashed-hover-background-color: @component-background-color;
+@button-dashed-hover-font-color: tint(@primary-color, 10%);
+@button-dashed-active-border-color: shade(@primary-color, 10%);
+@button-dashed-active-background-color: @component-background-color;
+@button-dashed-active-font-color: shade(@primary-color, 10%);
+@button-dashed-disabled-border-color: @border-color;
 @button-dashed-disabled-background-color: shade(@component-background-color, 2%);
-@button-dashed-disabled-font-color: tint(#000, 75%);
+@button-dashed-disabled-font-color: @font-disabled-color;
 
 @button-text-border-color: transparent;
 @button-text-background-color: transparent;
-@button-text-font-color: #595959;
+@button-text-font-color: @font-color;
 @button-text-hover-border-color: transparent;
 @button-text-hover-background-color: transparent;
-@button-text-hover-font-color: tint(#2d8cf0, 10%);
+@button-text-hover-font-color: tint(@primary-color, 10%);
 @button-text-active-border-color: transparent;
 @button-text-active-background-color: transparent;
-@button-text-active-font-color: shade(#2d8cf0, 10%);
+@button-text-active-font-color: shade(@primary-color, 10%);
 @button-text-disabled-border-color: transparent;
 @button-text-disabled-background-color: transparent;
-@button-text-disabled-font-color: tint(#000, 75%);
+@button-text-disabled-font-color: @font-disabled-color;
 
 // 布局组件 --------------------------------------------------------------------------------
 
 // Divider
 @divider-color: rgba(0, 0, 0, 0.06);
-@divider-horizontal-gutter: 16px;
-@divider-vertical-gutter: 8px;
+@divider-horizontal-gutter: @margin-md;
+@divider-vertical-gutter: @margin-xs;
 @divider-text-font-color: @font-primary-color;
 @divider-text-font-size: @font-size;
 
@@ -245,14 +244,21 @@
 
 @layout-header-height: 64px;
 @layout-header-padding: 0 48px;
-@layout-header-light-background-color: #fff;
-@layout-header-dark-background-color: #1a2035;
+@layout-header-light-background-color: @component-background-color;
+@layout-header-dark-background-color: @component-dark-background-color;
 
-@layout-sider-light-background-color: #fff;
-@layout-sider-dark-background-color: #1a2035;
 @layout-sider-trigger-height: 48px;
-@layout-sider-trigger-padding: 0 20px;
-@layout-sider-trigger-font-size: 14px;
+@layout-sider-trigger-font-size: @font-size;
+@layout-sider-light-background-color: @component-background-color;
+@layout-sider-light-trigger-border-color: rgba(0, 0, 0, 0.05);
+@layout-sider-light-trigger-font-color: @font-color;
+@layout-sider-light-trigger-hover-font-color: @font-primary-color;
+@layout-sider-light-trigger-active-font-color: @font-primary-color;
+@layout-sider-dark-background-color: @component-dark-background-color;
+@layout-sider-dark-trigger-border-color: rgba(255, 255, 255, 0.025);
+@layout-sider-dark-trigger-font-color: rgba(255, 255, 255, 0.65);
+@layout-sider-dark-trigger-hover-font-color: rgba(255, 255, 255, 1);
+@layout-sider-dark-trigger-active-font-color: rgba(255, 255, 255, 1);
 
 @layout-footer-padding: 24px 48px;
 @layout-footer-font-color: @font-color;
@@ -268,6 +274,7 @@
 @space-with-divider-size-lg: 16px;
 @space-divider-width: 1px;
 @space-divider-height: @font-size;
+@space-divider-color: #f0f0f0;
 
 // 导航组件 --------------------------------------------------------------------------------
 
@@ -292,25 +299,47 @@
 @menu-dark-background-color: #1a2035;
 
 // PageHeader
-@page-header-background-color: #fff;
-@page-header-padding: 20px;
-@page-header-header-margin-top: 16px;
-@page-header-body-margin-top: 16px;
-@page-header-footer-margin-top: 16px;
+@page-header-background-color: @component-background-color;
+@page-header-padding: @padding-lg;
+@page-header-header-margin-top: @margin-md;
+@page-header-header-tag-gutter: @margin-xs;
+@page-header-header-extra-margin-left: @margin-md;
+@page-header-body-margin-top: @margin-md;
+@page-header-footer-margin-top: @margin-md;
 @page-header-back-color: @font-color;
 @page-header-back-hover-color: @link-hover-color;
 @page-header-back-active-color: @link-active-color;
 @page-header-back-size: @font-size-lg;
-@page-header-back-margin-right: 16px;
-@page-header-avatar-margin-right: 16px;
+@page-header-back-margin-right: @margin-md;
+@page-header-avatar-margin-right: @margin-md;
 @page-header-title-height: 34px;
-@page-header-title-margin-right: 16px;
-@page-header-title-font-size: 20px;
+@page-header-title-margin-right: @margin-md;
+@page-header-title-font-color: @font-primary-color;
+@page-header-title-font-size: @font-size + 6px;
 @page-header-title-font-weight: 600;
 @page-header-sub-title-height: 34px;
-@page-header-sub-title-margin-right: 16px;
-@page-header-sub-title-font-size: 14px;
-@page-header-tag-gutter: 8px;
+@page-header-sub-title-margin-right: @margin-md;
+@page-header-sub-title-font-color: @font-disabled-color;
+@page-header-sub-title-font-size: @font-size;
+
+// Pagination
+@pagination-height: 34px;
+@pagination-font-color: @font-color;
+@pagination-font-size: @font-size;
+@pagination-item-size: 34px;
+@pagination-item-size-sm: 24px;
+@pagination-item-border-color: @border-color;
+@pagination-item-border-radius: @border-radius;
+@pagination-item-background-color: @component-background-color;
+@pagination-item-margin: 8px;
+@pagination-item-padding: 0 8px;
+@pagination-item-padding-sm: 0 6px;
+@pagination-item-hover-border-color: tint(@primary-color, 10%);
+@pagination-item-hover-font-color: tint(@primary-color, 10%);
+@pagination-item-active-border-color: @primary-color;
+@pagination-item-active-font-color: @primary-color;
+@pagination-item-disabled-border-color: @border-color;
+@pagination-item-disabled-font-color: @font-disabled-color;
 
 // 数据录入 --------------------------------------------------------------------------------
 
@@ -637,7 +666,7 @@
 
 @badge-status-default-color: @default-color;
 @badge-status-default-font-color: #595959;
-@badge-status-processing-color: @processing-color;
+@badge-status-processing-color: @primary-color;
 @badge-status-processing-font-color: #595959;
 @badge-status-warning-color: @warning-color;
 @badge-status-warning-font-color: #595959;

@@ -1,78 +1,309 @@
 @vui-pagination: ~"@{vui}-pagination";
 
+.@{vui-pagination} {
+	display:block;
+	box-sizing:border-box;
+	margin:0;
+	padding:0;
+	font-size:@pagination-font-size;
+	line-height:1;
+	list-style:none;
 
-// --------------------------------------------------
-// normal
-.vui-pagination { list-style:none; box-sizing:border-box; height:34px; margin:0; padding:0; font-size:14px; line-height:0; }
-.vui-pagination.vui-pagination-align-left { text-align:left; }
-.vui-pagination.vui-pagination-align-center { text-align:center; }
-.vui-pagination.vui-pagination-align-right { text-align:right; }
+	&-align-left {
+		text-align:left;
+	}
+	&-align-center {
+		text-align:center;
+	}
+	&-align-right {
+		text-align:right;
+	}
 
+	&-total {
+		display:inline-block;
+		box-sizing:border-box;
+		height:@pagination-item-size;
+		margin:0 @pagination-item-margin * 2 0 0;
+		padding:0;
+		vertical-align:middle;
+		line-height:@pagination-item-size;
+	}
 
-.vui-pagination-total { cursor:unset; display:inline-block; box-sizing:border-box; height:34px; margin:0 16px 0 0; padding:0; vertical-align:middle; line-height:34px; }
+	&-button {
+		position:relative;
+		cursor:pointer;
+		display:inline-block;
+		box-sizing:border-box;
+		min-width:@pagination-item-size;
+		height:@pagination-item-size;
+		border:1px solid @pagination-item-border-color;
+		border-radius:@pagination-item-border-radius;
+		background-color:@pagination-item-background-color;
+		margin:0;
+		padding:@pagination-item-padding;
+		vertical-align:middle;
+		color:@pagination-font-color;
+		text-align:center;
+		line-height:@pagination-item-size - 2px;
+		user-select:none;
+		transition:all @transition-duration @transition-timing-function;
 
+		&-prev {
+			margin-right:@pagination-item-margin / 2;
+		}
+		&-next {
+			margin-left:@pagination-item-margin / 2;
+		}
 
-.vui-pagination-button { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin:0; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
-.vui-pagination-button .vui-pagination-button-arrow { position:absolute; top:50%; left:50%; display:block; width:10px; height:10px; fill:currentColor; transform:translate(-50%, -50%); }
-.vui-pagination-button.vui-pagination-button-prev { margin-right:4px; }
-.vui-pagination-button.vui-pagination-button-next { margin-left:4px; }
-.vui-pagination-button:hover { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
-.vui-pagination-button:focus { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
-.vui-pagination-button:active { border-color:#2d8cf0; color:#2d8cf0; }
-.vui-pagination-button.vui-pagination-button-disabled { cursor:not-allowed; border-color:#e0e0e0; color:#bfbfbf; }
+		&:hover {
+			border-color:@pagination-item-hover-border-color;
+			color:@pagination-item-hover-font-color;
+		}
+		&:focus {
+			border-color:@pagination-item-hover-border-color;
+			color:@pagination-item-hover-font-color;
+		}
+		&:active {
+			border-color:@pagination-item-active-border-color;
+			color:@pagination-item-active-font-color;
+		}
+		&&-disabled {
+			cursor:not-allowed;
+			border-color:@pagination-item-disabled-border-color;
+			color:@pagination-item-disabled-font-color;
+		}
 
+		&-arrow {
+			position:absolute;
+			top:50%;
+			left:50%;
+			display:block;
+			width:10px;
+			height:10px;
+			fill:currentColor;
+			transform:translate(-50%, -50%);
+		}
+	}
 
-.vui-pagination-item { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; margin:0 4px; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
-.vui-pagination-item:hover { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
-.vui-pagination-item:focus { border-color:tint(#2d8cf0, 10%); color:tint(#2d8cf0, 10%); }
-.vui-pagination-item:active { border-color:#2d8cf0; color:#2d8cf0; }
-.vui-pagination-item.vui-pagination-item-active { border-color:#2d8cf0; color:#2d8cf0; }
+	&-item {
+		position:relative;
+		cursor:pointer;
+		display:inline-block;
+		box-sizing:border-box;
+		min-width:@pagination-item-size;
+		height:@pagination-item-size;
+		border:1px solid @pagination-item-border-color;
+		border-radius:@pagination-item-border-radius;
+		background-color:@pagination-item-background-color;
+		margin:0 @pagination-item-margin / 2;
+		padding:@pagination-item-padding;
+		vertical-align:middle;
+		color:@pagination-font-color;
+		text-align:center;
+		line-height:@pagination-item-size - 2px;
+		user-select:none;
+		transition:all @transition-duration @transition-timing-function;
 
+		&:hover {
+			border-color:@pagination-item-hover-border-color;
+			color:@pagination-item-hover-font-color;
+		}
+		&:focus {
+			border-color:@pagination-item-hover-border-color;
+			color:@pagination-item-hover-font-color;
+		}
+		&:active,
+		&&-active {
+			border-color:@pagination-item-active-border-color;
+			color:@pagination-item-active-font-color;
+		}
+	}
 
-.vui-pagination-ellipsis { position:relative; cursor:pointer; display:inline-block; box-sizing:border-box; min-width:34px; height:34px; border:1px solid transparent; border-radius:2px; background-color:transparent; margin:0 4px; padding:0 8px; vertical-align:middle; color:#595959; text-align:center; line-height:32px; user-select:none; transition:all 0.2s; }
-.vui-pagination-ellipsis .vui-pagination-ellipsis-arrow { position:absolute; top:50%; left:50%; display:block; width:10px; height:10px; fill:currentColor; opacity:0; transform:translate(-50%, -50%); transition:opacity 0.2s; }
-.vui-pagination-ellipsis .vui-pagination-ellipsis-icon { position:absolute; top:50%; left:50%; display:block; color:#bfbfbf; opacity:1; transform:translate(-50%, -50%); transition:opacity 0.2s; }
-.vui-pagination-ellipsis:hover { color:tint(#2d8cf0, 10%); }
-.vui-pagination-ellipsis:hover .vui-pagination-ellipsis-arrow { opacity:1; }
-.vui-pagination-ellipsis:hover .vui-pagination-ellipsis-icon { opacity:0; }
-.vui-pagination-ellipsis:focus { color:tint(#2d8cf0, 10%); }
-.vui-pagination-ellipsis:focus .vui-pagination-ellipsis-arrow { opacity:1; }
-.vui-pagination-ellipsis:focus .vui-pagination-ellipsis-icon { opacity:0; }
-.vui-pagination-ellipsis:active { color:#2d8cf0; }
-.vui-pagination-ellipsis:active .vui-pagination-ellipsis-arrow { opacity:1; }
-.vui-pagination-ellipsis:active .vui-pagination-ellipsis-icon { opacity:0; }
+	&-ellipsis {
+		position:relative;
+		cursor:pointer;
+		display:inline-block;
+		box-sizing:border-box;
+		min-width:@pagination-item-size;
+		height:@pagination-item-size;
+		border:1px solid transparent;
+		border-radius:@pagination-item-border-radius;
+		background-color:transparent;
+		margin:0 @pagination-item-margin / 2;
+		padding:@pagination-item-padding;
+		vertical-align:middle;
+		color:@pagination-font-color;
+		text-align:center;
+		line-height:@pagination-item-size - 2px;
+		user-select:none;
+		transition:all @transition-duration @transition-timing-function;
 
+		& &-arrow {
+			position:absolute;
+			top:50%;
+			left:50%;
+			display:block;
+			width:10px;
+			height:10px;
+			fill:currentColor;
+			opacity:0;
+			transform:translate(-50%, -50%);
+			transition:opacity @transition-duration @transition-timing-function;
+		}
+		& &-icon {
+			position:absolute;
+			top:50%;
+			left:50%;
+			display:block;
+			opacity:0.45;
+			transform:translate(-50%, -50%);
+			transition:opacity @transition-duration @transition-timing-function;
+		}
 
-.vui-pagination-sizer { display:inline-block; box-sizing:border-box; height:34px; margin:0 0 0 16px; padding:0; vertical-align:middle; }
+		&:hover {
+			color:@pagination-item-hover-font-color;
+		}
+		&:hover &-arrow {
+			opacity:1;
+		}
+		&:hover &-icon {
+			opacity:0;
+		}
+		&:focus {
+			color:@pagination-item-hover-font-color;
+		}
+		&:focus &-arrow {
+			opacity:1;
+		}
+		&:focus &-icon {
+			opacity:0;
+		}
+		&:active {
+			color:@pagination-item-active-font-color;
+		}
+		&:active &-arrow {
+			opacity:1;
+		}
+		&:active &-icon {
+			opacity:0;
+		}
+	}
 
+	&-sizer {
+		display:inline-block;
+		box-sizing:border-box;
+		height:@pagination-item-size;
+		margin:0 0 0 @pagination-item-margin * 2;
+		padding:0;
+		vertical-align:middle;
+	}
 
-.vui-pagination-elevator { display:inline-block; box-sizing:border-box; height:34px; margin:0 0 0 16px; padding:0; vertical-align:middle; line-height:34px; }
-.vui-pagination-elevator span { float:left; display:block; }
-.vui-pagination-elevator .vui-input { float:left; display:block; width:50px; margin:0 8px; }
-.vui-pagination-elevator .vui-input .vui-input-main input { text-align:center; }
+	&-elevator {
+		display:inline-block;
+		box-sizing:border-box;
+		height:@pagination-item-size;
+		margin:0 0 0 @pagination-item-margin * 2;
+		padding:0;
+		vertical-align:middle;
+		line-height:@pagination-item-size;
 
+		& span {
+			float:left;
+			display:block;
+		}
 
-// --------------------------------------------------
-// small
-.vui-pagination-small { height:24px; }
-.vui-pagination-small .vui-pagination-total { height:24px; margin-right:8px; line-height:24px; }
-.vui-pagination-small .vui-pagination-button { min-width:24px; height:24px; border-width:0; background-color:transparent; padding:0 6px; line-height:24px; }
-.vui-pagination-small .vui-pagination-button-prev { margin-right:0; }
-.vui-pagination-small .vui-pagination-button-next { margin-left:0; }
-.vui-pagination-small .vui-pagination-item { min-width:24px; height:24px; border-width:0; background-color:transparent; margin:0; padding:0 6px; line-height:24px; }
-.vui-pagination-small .vui-pagination-ellipsis { min-width:24px; height:24px; border-width:0; background-color:transparent; margin:0; padding:0 6px; line-height:24px; }
-.vui-pagination-small .vui-pagination-sizer { width:80px; height:24px; margin-left:8px; }
-.vui-pagination-small .vui-pagination-elevator { height:24px; margin-left:8px; line-height:24px; }
-.vui-pagination-small .vui-pagination-elevator .vui-input { width:40px; margin:0 6px; }
+		& .@{vui}-input {
+			float:left;
+			display:block;
+			width:50px;
+			margin:0 @pagination-item-margin;
+		}
+		& .@{vui}-input .@{vui}-input-input input {
+			text-align:center;
+		}
+	}
 
+	&-small {
+		height:@pagination-item-size-sm;
+	}
+	&-small &-total {
+		height:@pagination-item-size-sm;
+		margin-right:@pagination-item-margin;
+		line-height:@pagination-item-size-sm;
+	}
+	&-small &-button {
+		min-width:@pagination-item-size-sm;
+		height:@pagination-item-size-sm;
+		border-width:0;
+		background-color:transparent;
+		padding:@pagination-item-padding-sm;
+		line-height:@pagination-item-size-sm;
+	}
+	&-small &-button-prev {
+		margin-right:0;
+	}
+	&-small &-button-next {
+		margin-left:0;
+	}
+	&-small &-item {
+		min-width:@pagination-item-size-sm;
+		height:@pagination-item-size-sm;
+		border-width:0;
+		background-color:transparent;
+		margin:0;
+		padding:@pagination-item-padding-sm;
+		line-height:@pagination-item-size-sm;
+	}
+	&-small &-ellipsis {
+		min-width:@pagination-item-size-sm;
+		height:@pagination-item-size-sm;
+		border-width:0;
+		background-color:transparent;
+		margin:0;
+		padding:@pagination-item-padding-sm;
+		line-height:@pagination-item-size-sm;
+	}
+	&-small &-sizer {
+		height:@pagination-item-size-sm;
+		margin-left:@pagination-item-margin;
+	}
+	&-small &-elevator {
+		height:@pagination-item-size-sm;
+		margin-left:@pagination-item-margin;
+		line-height:@pagination-item-size-sm;
+	}
+	&-small &-elevator .vui-input {
+		width:40px;
+		margin:0 6px;
+	}
 
-// --------------------------------------------------
-// simple
-.vui-pagination-simple { height:24px; }
-.vui-pagination-simple .vui-pagination-button { min-width:24px; height:24px; border-width:0; background-color:transparent; padding:0 6px; line-height:24px; }
-.vui-pagination-simple .vui-pagination-button-prev { margin-right:8px; }
-.vui-pagination-simple .vui-pagination-button-next { margin-left:8px; }
-.vui-pagination-simple .vui-pagination-elevator { height:24px; margin:0; line-height:24px; }
-.vui-pagination-simple .vui-pagination-elevator span { margin-left:6px; }
-.vui-pagination-simple .vui-pagination-elevator .vui-input { width:40px; margin:0; }
-
+	&-simple {
+		height:@pagination-item-size-sm;
+	}
+	&-simple &-button {
+		min-width:@pagination-item-size-sm;
+		height:@pagination-item-size-sm;
+		border-width:0;
+		background-color:transparent;
+		padding:@pagination-item-padding-sm;
+		line-height:@pagination-item-size-sm;
+	}
+	&-simple &-button-prev {
+		margin-right:@pagination-item-margin;
+	}
+	&-simple &-button-next {
+		margin-left:@pagination-item-margin;
+	}
+	&-simple &-elevator {
+		height:@pagination-item-size-sm;
+		margin:0;
+		line-height:@pagination-item-size-sm;
+	}
+	&-simple &-elevator span {
+		margin-left:6px;
+	}
+	&-simple &-elevator .vui-input {
+		width:40px;
+		margin:0;
+	}
+}

@@ -2,471 +2,444 @@ import VuiSelect from "../../select";
 import VuiOption from "../../option";
 import VuiInput from "../../input";
 import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import range from "../../../utils/range";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiPagination = {
-	name: "vui-pagination",
+  name: "vui-pagination",
+  components: {
+    VuiSelect,
+    VuiOption,
+    VuiInput
+  },
+  mixins: [
+    Locale
+  ],
+  model: {
+    prop: "page",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    small: PropTypes.bool.def(false),
+    simple: PropTypes.bool.def(false),
+    align: PropTypes.oneOf(["left", "center", "right"]).def("left"),
+    total: PropTypes.number.def(0),
+    showTotal: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    page: PropTypes.number.def(1),
+    pageSize: PropTypes.number.def(10),
+    pageSizeOptions: PropTypes.array.def([10, 20, 30, 40]),
+    showPageSizer: PropTypes.bool.def(false),
+    showPageElevator: PropTypes.bool.def(false),
+    prevPageText: PropTypes.string,
+    nextPageText: PropTypes.string,
+    hideOnSinglePage: PropTypes.bool.def(false)
+  },
+  data() {
+    const { $props: props } = this;
+    const totalPages = this.getTotalPages(props.total, props.pageSize);
+    let page = props.page;
 
-	components: {
-		VuiSelect,
-		VuiOption,
-		VuiInput
-	},
+    if (page < 1) {
+      page = 1;
+    }
+    else if (page > totalPages) {
+      page = totalPages;
+    }
 
-	mixins: [
-		Locale
-	],
+    return {
+      state: {
+        page: page,
+        pageSize: props.pageSize
+      }
+    };
+  },
+  computed: {
+    totalPages() {
+      const { $props: props, state } = this;
 
-	model: {
-		prop: "page",
-		event: "input"
-	},
+      return this.getTotalPages(props.total, state.pageSize);
+    }
+  },
+  watch: {
+    page(value) {
+      const { $props: props, state } = this;
+      const totalPages = this.getTotalPages(props.total, state.pageSize);
+      let page = value;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		small: {
-			type: Boolean,
-			default: false
-		},
-		simple: {
-			type: Boolean,
-			default: false
-		},
-		align: {
-			type: String,
-			default: "left",
-			validator: value => ["left", "center", "right"].indexOf(value) > -1
-		},
-		total: {
-			type: Number,
-			default: 0
-		},
-		showTotal: {
-			type: [Boolean, Function],
-			default: false
-		},
-		page: {
-			type: Number,
-			default: 1
-		},
-		pageSize: {
-			type: Number,
-			default: 10,
-		},
-		pageSizeOptions: {
-			type: Array,
-			default: () => [10, 20, 30, 40],
-		},
-		showPageSizer: {
-			type: Boolean,
-			default: false
-		},
-		showPageElevator: {
-			type: Boolean,
-			default: false
-		},
-		prevPageText: {
-			type: String,
-			default: undefined
-		},
-		nextPageText: {
-			type: String,
-			default: undefined
-		},
-		hideOnSinglePage: {
-			type: Boolean,
-			default: false
-		}
-	},
+      if (page < 1) {
+        page = 1;
+      }
+      else if (page > totalPages) {
+        page = totalPages;
+      }
 
-	data() {
-		let { total, page, pageSize } = this;
-		let totalPages = this.getTotalPages(total, pageSize);
+      this.state.page = page;
+    },
+    pageSize(value) {
+      const { $props: props, state } = this;
+      const totalPages = this.getTotalPages(props.total, value);
+      let page = state.page;
 
-		if (page < 1) {
-			page = 1;
-		}
-		else if (page > totalPages) {
-			page = totalPages;
-		}
+      if (page > totalPages) {
+        page = totalPages;
+      }
 
-		return {
-			currentPage: page,
-			currentPageSize: pageSize
-		};
-	},
+      this.state.page = page;
+      this.state.pageSize = value;
+    }
+  },
+  methods: {
+    getTotalPages(total, pageSize) {
+      let totalPages = Math.ceil(total / pageSize);
 
-	computed: {
-		totalPages() {
-			return this.getTotalPages(this.total, this.currentPageSize);
-		}
-	},
+      if (totalPages < 1) {
+        totalPages = 1;
+      }
 
-	watch: {
-		page(value) {
-			let totalPages = this.getTotalPages(this.total, this.currentPageSize);
+      return totalPages;
+    },
+    handlePrevPage() {
+      const { state } = this;
+      const newPage = state.page - 1;
 
-			if (value < 1) {
-				value = 1;
-			}
-			else if (value > totalPages) {
-				value = totalPages;
-			}
+      if (newPage < 1) {
+        return;
+      }
 
-			this.currentPage = value;
-		},
-		pageSize(value) {
-			let totalPages = this.getTotalPages(this.total, value);
+      this.handleChangePage(newPage);
+    },
+    handleNextPage() {
+      const { state } = this;
+      const newPage = state.page + 1;
 
-			if (this.currentPage > totalPages) {
-				this.currentPage = totalPages;
-			}
+      if (newPage > this.totalPages) {
+        return;
+      }
 
-			this.currentPageSize = value;
-		}
-	},
+      this.handleChangePage(newPage);
+    },
+    handlePrevFivePage() {
+      const { state } = this;
+      const newPage = state.page - 5;
 
-	methods: {
-		getTotalPages(total, pageSize) {
-			let totalPages = Math.ceil(total / pageSize);
+      if (newPage > 1) {
+        this.handleChangePage(newPage);
+      }
+      else {
+        this.handleChangePage(1);
+      }
+    },
+    handleNextFivePage() {
+      const { state } = this;
+      const newPage = state.page + 5;
 
-			if (totalPages < 1) {
-				totalPages = 1;
-			}
+      if (newPage < this.totalPages) {
+        this.handleChangePage(newPage);
+      }
+      else {
+        this.handleChangePage(this.totalPages);
+      }
+    },
+    handleInputPage(e) {
+      const keyCode = e.keyCode;
 
-			return totalPages;
-		},
+      if (keyCode === 38 || keyCode === 40) {
+        e.preventDefault();
+      }
+    },
+    handleConfirmPage(e) {
+      const { state } = this;
+      const keyCode = e.keyCode;
 
-		handlePrevPage() {
-			let newPage = this.currentPage - 1;
+      if (keyCode === 38) {
+        this.handlePrevPage();
+      }
+      else if (keyCode === 40) {
+        this.handleNextPage();
+      }
+      else if (keyCode === 13) {
+        let value = e.target.value.trim();
 
-			if (newPage < 1) {
-				return;
-			}
+        if ((/^-?[0-9]\d*$/).test(value)) {
+          value = Number(value);
 
-			this.handleChangePage(newPage);
-		},
-		handleNextPage() {
-			let newPage = this.currentPage + 1;
+          if (value === state.page) {
+            return;
+          }
 
-			if (newPage > this.totalPages) {
-				return;
-			}
+          if (value < 1) {
+            value = 1;
+          }
+          else if (value > this.totalPages) {
+            value = this.totalPages;
+          }
 
-			this.handleChangePage(newPage);
-		},
-		handlePrevFivePage() {
-			let newPage = this.currentPage - 5;
+          e.target.value = value;
+          this.handleChangePage(value);
+        }
+        else {
+          e.target.value = state.page;
+        }
+      }
+    },
+    handleChangePage(page) {
+      const { state } = this;
 
-			if (newPage > 1) {
-				this.handleChangePage(newPage);
-			}
-			else {
-				this.handleChangePage(1);
-			}
-		},
-		handleNextFivePage() {
-			let newPage = this.currentPage + 5;
+      if (state.page === page) {
+        return;
+      }
 
-			if (newPage < this.totalPages) {
-				this.handleChangePage(newPage);
-			}
-			else {
-				this.handleChangePage(this.totalPages);
-			}
-		},
-		handleInputPage(e) {
-			let keyCode = e.keyCode;
+      this.state.page = page;
+      this.$emit("input", page);
+      this.$emit("change", page);
+    },
+    handleChangePageSize(pageSize) {
+      const { $props: props, state } = this;
+      const totalPages = this.getTotalPages(props.total, pageSize);
+      let page = state.page;
 
-			if (keyCode === 38 || keyCode === 40) {
-				e.preventDefault();
-			}
-		},
-		handleConfirmPage(e) {
-			let keyCode = e.keyCode;
+      if (page > totalPages) {
+        page = totalPages;
+      }
 
-			if (keyCode === 38) {
-				this.handlePrevPage();
-			}
-			else if (keyCode === 40) {
-				this.handleNextPage();
-			}
-			else if (keyCode === 13) {
-				let value = e.target.value.trim();
+      this.state.pageSize = pageSize;
+      this.handleChangePage(page);
+      this.$emit("changePageSize", pageSize);
+    }
+  },
+  render(h) {
+    const { t: translate, $props: props, state } = this;
+    const { handlePrevPage, handleNextPage, handlePrevFivePage, handleNextFivePage, handleInputPage, handleConfirmPage, handleChangePage, handleChangePageSize } = this;
 
-				if ((/^-?[0-9]\d*$/).test(value)) {
-					value = Number(value);
+    // show
+    const show = props.hideOnSinglePage ? this.totalPages > 1 : true;
 
-					if (value === this.currentPage) {
-						return;
-					}
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "pagination");
+    let classes = {};
 
-					if (value > this.totalPages) {
-						value = this.totalPages;
-					}
-					else if (value < 1) {
-						value = 1;
-					}
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-small`]: props.small,
+      [`${classNamePrefix}-simple`]: props.simple,
+      [`${classNamePrefix}-align-${props.align}`]: props.align
+    };
 
-					e.target.value = value;
-					this.handleChangePage(value);
-				}
-				else {
-					e.target.value = this.currentPage;
-				}
-			}
-		},
-		handleChangePage(page) {
-			if (this.currentPage === page) {
-				return;
-			}
+    // render
+    const btnPrevPage = {
+      key:"prevPage",
+      title: translate("vui.pagination.prevPage"),
+      className: {
+        [`${classNamePrefix}-button`]: true,
+        [`${classNamePrefix}-button-prev`]: true,
+        [`${classNamePrefix}-button-disabled`]: state.page === 1
+      },
+      children: props.prevPageText || (
+        <svg viewBox="0 0 10 10" class={`${classNamePrefix}-button-arrow`}>
+          <path d="M3.6,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8c-0.2-0.2-0.6-0.2-0.8,0L2.4,4.6c-0.2,0.2-0.2,0.6,0,0.8l4.5,4.4 c0.2,0.2,0.6,0.2,0.8,0c0.2-0.2,0.2-0.6,0-0.8L3.6,5z" />
+        </svg>
+      ),
+      handler: handlePrevPage
+    };
+    const btnNextPage = {
+      key:"nextPage",
+      title: translate("vui.pagination.nextPage"),
+      className: {
+        [`${classNamePrefix}-button`]: true,
+        [`${classNamePrefix}-button-next`]: true,
+        [`${classNamePrefix}-button-disabled`]: state.page === this.totalPages
+      },
+      children: props.nextPageText || (
+        <svg viewBox="0 0 10 10" class={`${classNamePrefix}-button-arrow`}>
+          <path d="M6.4,5L2.4,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L3.2,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L6.4,5z" />
+        </svg>
+      ),
+      handler: handleNextPage
+    };
 
-			this.currentPage = page;
-			this.$emit("input", page);
-			this.$emit("change", page);
-		},
-		handleChangePageSize(pageSize) {
-			let totalPages = this.getTotalPages(this.total, pageSize);
-			let currentPage = this.currentPage;
+    const btnPrevFivePage = {
+      key:"prevFivePage",
+      title: translate("vui.pagination.prevFivePage"),
+      className: {
+        [`${classNamePrefix}-ellipsis`]: true
+      },
+      icon: (
+        <i class={`${classNamePrefix}-ellipsis-icon`}>•••</i>
+      ),
+      arrow: (
+        <svg class={`${classNamePrefix}-ellipsis-arrow`} viewBox="0 0 10 10">
+          <path d="M1.4,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8c-0.2-0.2-0.6-0.2-0.8,0L0.2,4.6c-0.2,0.2-0.2,0.6,0,0.8l4.5,4.4c0.2,0.2,0.6,0.2,0.8,0c0.2-0.2,0.2-0.6,0-0.8L1.4,5z M5.8,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8C9.6-0.1,9.3-0.1,9,0.2L4.6,4.6c-0.2,0.2-0.2,0.6,0,0.8L9,9.8c0.2,0.2,0.6,0.2,0.8,0s0.2-0.6,0-0.8L5.8,5z" />
+        </svg>
+      ),
+      handler: handlePrevFivePage
+    };
+    const btnNextFivePage = {
+      key:"nextFivePage",
+      title: translate("vui.pagination.nextFivePage"),
+      className: {
+        [`${classNamePrefix}-ellipsis`]: true
+      },
+      icon: (
+        <i class={`${classNamePrefix}-ellipsis-icon`}>•••</i>
+      ),
+      arrow: (
+        <svg class={`${classNamePrefix}-ellipsis-arrow`} viewBox="0 0 10 10">
+          <path d="M8.6,5L4.6,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L5.4,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L8.6,5z M4.2,5L0.2,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L1,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L4.2,5z" />
+        </svg>
+      ),
+      handler: handleNextFivePage
+    };
 
-			if (currentPage > totalPages) {
-				currentPage = totalPages;
-			}
+    if (props.simple) {
+      return (
+        <ul v-show={show} class={classes.el}>
+          <li key={btnPrevPage.key} title={btnPrevPage.title} class={btnPrevPage.className} onClick={btnPrevPage.handler}>
+            {btnPrevPage.children}
+          </li>
+          <li class={`${classNamePrefix}-elevator`}>
+            <VuiInput size="small" value={state.page} onKeydown={handleInputPage} onKeyup={handleConfirmPage} />
+            {
+              props.showTotal && (
+                <span>/ {this.totalPages}</span>
+              )
+            }
+          </li>
+          <li key={btnNextPage.key} title={btnNextPage.title} class={btnNextPage.className} onClick={btnNextPage.handler}>
+            {btnNextPage.children}
+          </li>
+        </ul>
+      );
+    }
+    else {
+      let totalText;
 
-			this.currentPageSize = pageSize;
-			this.handleChangePage(currentPage);
-			this.$emit("changePageSize", pageSize);
-		}
-	},
+      if (props.showTotal) {
+        if (is.function(props.showTotal)) {
+          let rangeFrom = (state.page - 1) * state.pageSize + 1;
+          let rangeTo = state.page * state.pageSize;
 
-	render(h) {
-		let { t: translate, classNamePrefix: customizedClassNamePrefix, small, simple, align, total, showTotal, totalPages, currentPage: page, currentPageSize: pageSize, pageSizeOptions, showPageSizer, showPageElevator, prevPageText, nextPageText, hideOnSinglePage } = this;
-		let { handlePrevPage, handleNextPage, handlePrevFivePage, handleNextFivePage, handleInputPage, handleConfirmPage, handleChangePage, handleChangePageSize } = this;
-		let show = hideOnSinglePage ? totalPages > 1 : true;
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "pagination");
-		let classes = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-small`]: small,
-			[`${classNamePrefix}-simple`]: simple,
-			[`${classNamePrefix}-align-${align}`]: align
-		};
+          if (props.total < 1) {
+            rangeFrom = 0;
+          }
 
-		let btnPrevPage = {
-			key:"prevPage",
-			title: translate("vui.pagination.prevPage"),
-			className: {
-				[`${classNamePrefix}-button`]: true,
-				[`${classNamePrefix}-button-prev`]: true,
-				[`${classNamePrefix}-button-disabled`]: page === 1
-			},
-			children: prevPageText || (
-				<svg viewBox="0 0 10 10" class={`${classNamePrefix}-button-arrow`}>
-					<path d="M3.6,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8c-0.2-0.2-0.6-0.2-0.8,0L2.4,4.6c-0.2,0.2-0.2,0.6,0,0.8l4.5,4.4 c0.2,0.2,0.6,0.2,0.8,0c0.2-0.2,0.2-0.6,0-0.8L3.6,5z" />
-				</svg>
-			),
-			handler: handlePrevPage
-		};
-		let btnNextPage = {
-			key:"nextPage",
-			title: translate("vui.pagination.nextPage"),
-			className: {
-				[`${classNamePrefix}-button`]: true,
-				[`${classNamePrefix}-button-next`]: true,
-				[`${classNamePrefix}-button-disabled`]: page === totalPages
-			},
-			children: nextPageText || (
-				<svg viewBox="0 0 10 10" class={`${classNamePrefix}-button-arrow`}>
-					<path d="M6.4,5L2.4,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L3.2,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L6.4,5z" />
-				</svg>
-			),
-			handler: handleNextPage
-		};
+          if (rangeTo > props.total) {
+            rangeTo = props.total;
+          }
 
-		let btnPrevFivePage = {
-			key:"prevFivePage",
-			title: translate("vui.pagination.prevFivePage"),
-			className: {
-				[`${classNamePrefix}-ellipsis`]: true
-			},
-			icon: (
-				<i class={`${classNamePrefix}-ellipsis-icon`}>•••</i>
-			),
-			arrow: (
-				<svg class={`${classNamePrefix}-ellipsis-arrow`} viewBox="0 0 10 10">
-					<path d="M1.4,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8c-0.2-0.2-0.6-0.2-0.8,0L0.2,4.6c-0.2,0.2-0.2,0.6,0,0.8l4.5,4.4c0.2,0.2,0.6,0.2,0.8,0c0.2-0.2,0.2-0.6,0-0.8L1.4,5z M5.8,5l4.1-4.1c0.2-0.2,0.2-0.6,0-0.8C9.6-0.1,9.3-0.1,9,0.2L4.6,4.6c-0.2,0.2-0.2,0.6,0,0.8L9,9.8c0.2,0.2,0.6,0.2,0.8,0s0.2-0.6,0-0.8L5.8,5z" />
-				</svg>
-			),
-			handler: handlePrevFivePage
-		};
-		let btnNextFivePage = {
-			key:"nextFivePage",
-			title: translate("vui.pagination.nextFivePage"),
-			className: {
-				[`${classNamePrefix}-ellipsis`]: true
-			},
-			icon: (
-				<i class={`${classNamePrefix}-ellipsis-icon`}>•••</i>
-			),
-			arrow: (
-				<svg class={`${classNamePrefix}-ellipsis-arrow`} viewBox="0 0 10 10">
-					<path d="M8.6,5L4.6,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L5.4,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L8.6,5z M4.2,5L0.2,0.9c-0.2-0.2-0.2-0.6,0-0.8c0.2-0.2,0.6-0.2,0.8,0l4.5,4.4c0.2,0.2,0.2,0.6,0,0.8L1,9.8c-0.2,0.2-0.6,0.2-0.8,0c-0.2-0.2-0.2-0.6,0-0.8L4.2,5z" />
-				</svg>
-			),
-			handler: handleNextFivePage
-		};
+          totalText = props.showTotal(props.total, [rangeFrom, rangeTo]);
+        }
+        else {
+          totalText = `${translate("vui.pagination.total")} ${props.total} ${translate("vui.pagination." + (props.total > 1 ? "items" : "item"))}`;
+        }
+      }
 
-		if (simple) {
-			return (
-				<ul v-show={show} class={classes}>
-					<li key={btnPrevPage.key} title={btnPrevPage.title} class={btnPrevPage.className} onClick={btnPrevPage.handler}>
-						{btnPrevPage.children}
-					</li>
-					<li class={`${classNamePrefix}-elevator`}>
-						<VuiInput size="small" value={page} onKeydown={handleInputPage} onKeyup={handleConfirmPage} />
-						{
-							showTotal && (
-								<span>/ {totalPages}</span>
-							)
-						}
-					</li>
-					<li key={btnNextPage.key} title={btnNextPage.title} class={btnNextPage.className} onClick={btnNextPage.handler}>
-						{btnNextPage.children}
-					</li>
-				</ul>
-			);
-		}
-		else {
-			let totalText;
+      let items = [];
 
-			if (showTotal) {
-				if (is.function(showTotal)) {
-					let rangeFrom = (page - 1) * pageSize + 1;
-					let rangeTo = page * pageSize;
+      if (this.totalPages < 9) {
+        items = range(1, this.totalPages + 1);
+      }
+      else {
+        if (state.page < 6) {
+          items = [1, 2, 3, 4, 5, 6, "nextFivePage", this.totalPages];
+        }
+        else if (state.page > this.totalPages - 5) {
+          items = [1, "prevFivePage", this.totalPages - 5, this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages];
+        }
+        else {
+          items = [1, "prevFivePage", state.page - 2, state.page - 1, state.page, state.page + 1, state.page + 2, "nextFivePage", this.totalPages];
+        }
+      }
 
-					if (total < 1) {
-						rangeFrom = 0;
-					}
+      return (
+        <ul v-show={show} class={classes.el}>
+          {
+            props.showTotal && (
+              <li key={"total"} class={`${classNamePrefix}-total`}>
+                {totalText}
+              </li>
+            )
+          }
+          <li key={btnPrevPage.key} title={btnPrevPage.title} class={btnPrevPage.className} onClick={btnPrevPage.handler}>
+            {btnPrevPage.children}
+          </li>
+          {
+            items.map(item => {
+              if (item === "prevFivePage") {
+                let attrs = btnPrevFivePage;
 
-					if (rangeTo > total) {
-						rangeTo = total;
-					}
+                return (
+                  <li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
+                    {attrs.icon}
+                    {attrs.arrow}
+                  </li>
+                );
+              }
+              else if (item === "nextFivePage") {
+                let attrs = btnNextFivePage;
 
-					totalText = showTotal(total, [rangeFrom, rangeTo]);
-				}
-				else {
-					totalText = `${translate("vui.pagination.total")} ${total} ${translate("vui.pagination." + (total > 1 ? "items" : "item"))}`;
-				}
-			}
+                return (
+                  <li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
+                    {attrs.icon}
+                    {attrs.arrow}
+                  </li>
+                );
+              }
+              else {
+                let attrs = {
+                  key: item,
+                  title: item,
+                  className: {
+                    [`${classNamePrefix}-item`]: true,
+                    [`${classNamePrefix}-item-active`]: state.page === item
+                  },
+                  children: item,
+                  handler: e => handleChangePage(item)
+                };
 
-			let items = [];
-
-			if (totalPages < 9) {
-				items = range(1, totalPages + 1);
-			}
-			else {
-				if (page < 6) {
-					items = [1, 2, 3, 4, 5, 6, "nextFivePage", totalPages];
-				}
-				else if (page > totalPages - 5) {
-					items = [1, "prevFivePage", totalPages - 5, totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-				}
-				else {
-					items = [1, "prevFivePage", page - 2, page - 1, page, page + 1, page + 2, "nextFivePage", totalPages];
-				}
-			}
-
-			return (
-				<ul v-show={show} class={classes}>
-					{
-						showTotal && (
-							<li key={"total"} class={`${classNamePrefix}-total`}>
-								{totalText}
-							</li>
-						)
-					}
-					<li key={btnPrevPage.key} title={btnPrevPage.title} class={btnPrevPage.className} onClick={btnPrevPage.handler}>
-						{btnPrevPage.children}
-					</li>
-					{
-						items.map(item => {
-							if (item === "prevFivePage") {
-								let attrs = btnPrevFivePage;
-
-								return (
-									<li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
-										{attrs.icon}
-										{attrs.arrow}
-									</li>
-								);
-							}
-							else if (item === "nextFivePage") {
-								let attrs = btnNextFivePage;
-
-								return (
-									<li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
-										{attrs.icon}
-										{attrs.arrow}
-									</li>
-								);
-							}
-							else {
-								let attrs = {
-									key: item,
-									title: item,
-									className: {
-										[`${classNamePrefix}-item`]: true,
-										[`${classNamePrefix}-item-active`]: page === item
-									},
-									children: item,
-									handler: e => handleChangePage(item)
-								};
-
-								return (
-									<li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
-										{attrs.children}
-									</li>
-								);
-							}
-						})
-					}
-					<li key={btnNextPage.key} title={btnNextPage.title} class={btnNextPage.className} onClick={btnNextPage.handler}>
-						{btnNextPage.children}
-					</li>
-					{
-						showPageSizer && (
-							<li key={"sizer"} class={`${classNamePrefix}-sizer`}>
-								<VuiSelect size={small ? "small" : undefined} value={pageSize} onInput={handleChangePageSize}>
-									{
-										pageSizeOptions.map(option => {
-											return (
-												<VuiOption key={option} value={option}>
-													{option} {translate("vui.pagination.pageSize")}
-												</VuiOption>
-											);
-										})
-									}
-								</VuiSelect>
-							</li>
-						)
-					}
-					{
-						showPageElevator && (
-							<li key={"elevator"} class={`${classNamePrefix}-elevator`}>
-								<span>{translate("vui.pagination.goto")}</span>
-								<VuiInput size={small ? "small" : undefined} value={page} onKeydown={handleInputPage} onKeyup={handleConfirmPage} />
-								<span>{translate("vui.pagination.page")}</span>
-							</li>
-						)
-					}
-				</ul>
-			);
-		}
-	}
+                return (
+                  <li key={attrs.key} title={attrs.title} class={attrs.className} onClick={attrs.handler}>
+                    {attrs.children}
+                  </li>
+                );
+              }
+            })
+          }
+          <li key={btnNextPage.key} title={btnNextPage.title} class={btnNextPage.className} onClick={btnNextPage.handler}>
+            {btnNextPage.children}
+          </li>
+          {
+            props.showPageSizer && (
+              <li key={"sizer"} class={`${classNamePrefix}-sizer`}>
+                <VuiSelect size={props.small ? "small" : undefined} value={state.pageSize} onInput={handleChangePageSize}>
+                  {
+                    props.pageSizeOptions.map(option => {
+                      return (
+                        <VuiOption key={option} value={option}>
+                          {option} {translate("vui.pagination.pageSize")}
+                        </VuiOption>
+                      );
+                    })
+                  }
+                </VuiSelect>
+              </li>
+            )
+          }
+          {
+            props.showPageElevator && (
+              <li key={"elevator"} class={`${classNamePrefix}-elevator`}>
+                <span>{translate("vui.pagination.goto")}</span>
+                <VuiInput size={props.small ? "small" : undefined} value={state.page} onKeydown={handleInputPage} onKeyup={handleConfirmPage} />
+                <span>{translate("vui.pagination.page")}</span>
+              </li>
+            )
+          }
+        </ul>
+      );
+    }
+  }
 };
 
 export default VuiPagination;

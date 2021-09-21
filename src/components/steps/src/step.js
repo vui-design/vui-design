@@ -1,25 +1,13 @@
-const VuiStep = {
-	name: "vui-step",
+import PropTypes from "../../../utils/prop-types";
 
-	props: {
-		icon: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		description: {
-			type: String,
-			default: undefined
-		},
-		status: {
-			type: String,
-			default: undefined,
-			validator: value => ["wait", "process", "finish", "error"].indexOf(value) > -1
-		}
-	}
+const VuiStep = {
+  name: "vui-step",
+  props: {
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.oneOf(["wait", "process", "finish", "error"])
+  }
 };
 
 export default VuiStep;

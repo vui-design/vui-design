@@ -1,64 +1,67 @@
 @vui-breadcrumb: ~"@{vui}-breadcrumb";
 
 .@{vui-breadcrumb} {
-	display:block;
-	box-sizing:border-box;
-	font-size:@breadcrumb-font-size;
-	line-height:@breadcrumb-line-height;
+  display:block;
+  box-sizing:border-box;
+  font-size:@breadcrumb-font-size;
+  line-height:@breadcrumb-line-height;
 
-	.clearfix;
+  .clearfix;
 
-	&-item {
-		float:left;
-		display:block;
-		box-sizing:border-box;
+  &-item {
+    float:left;
+    display:block;
+    box-sizing:border-box;
 
-		&-link {
-			float:left;
-			cursor:text;
-			color:@breadcrumb-item-color;
-		}
+    &-link {
+      float:left;
+      cursor:text;
+      color:@breadcrumb-item-color;
+    }
 
-		&-link i {
-			margin-right:@breadcrumb-item-icon-margin-right;
-			transform:scale(0.9);
-		}
+    &-link i {
+      margin-right:@breadcrumb-item-icon-margin-right;
+      transform:scale(0.9);
+    }
 
-		& a {
-			cursor:pointer;
-			outline:none;
-			text-decoration:none;
-			transition:color @transition-duration @transition-timing-function;
+    & a {
+      cursor:pointer;
+      outline:none;
+      color:@breadcrumb-item-color;
+      text-decoration:none;
+      transition:color @transition-duration @transition-timing-function;
 
-			&:hover {
-				color:@breadcrumb-item-hover-color;
-			}
-			&:active {
-				color:@breadcrumb-item-active-color;
-			}
-		}
+      &:hover {
+        color:@breadcrumb-item-hover-color;
+      }
+      &:active {
+        color:@breadcrumb-item-active-color;
+      }
+    }
 
-		&-separator {
-			float:left;
-			margin:@breadcrumb-item-separator-margin;
-			color:@breadcrumb-item-separator-color;
-		}
+    &-separator {
+      float:left;
+      margin:@breadcrumb-item-separator-margin;
+      color:@breadcrumb-item-separator-color;
+    }
 
-		&:last-child &-link {
-			color:@breadcrumb-last-item-color;
-		}
+    &:last-child &-link {
+      color:@breadcrumb-last-item-color;
+    }
 
-		&:last-child a {
-			&:hover {
-				color:@breadcrumb-item-hover-color;
-			}
-			&:active {
-				color:@breadcrumb-item-active-color;
-			}
-		}
+    &:last-child a {
+      color:@breadcrumb-last-item-color;
 
-		&:last-child &-separator {
-			display:none;
-		}
-	}
+      &:hover {
+        color:@breadcrumb-item-hover-color;
+      }
+      &:active {
+        color:@breadcrumb-item-active-color;
+      }
+    }
+
+    &:last-child &-separator {
+      display:none;
+    }
+  }
 }

@@ -47,11 +47,12 @@
       bottom:0;
       cursor:pointer;
       box-sizing:border-box;
+      display:flex;
+      justify-content:center;
+      align-items:center;
       width:100%;
       height:@layout-sider-trigger-height;
-      padding:@layout-sider-trigger-padding;
       font-size:@layout-sider-trigger-font-size;
-      line-height:@layout-sider-trigger-height;
       transition:all @transition-duration @transition-timing-function;
     }
 
@@ -64,14 +65,14 @@
     }
     &-light &-trigger {
       background-color:@layout-sider-light-background-color;
-      box-shadow:0 1px 0 rgba(0, 0, 0, 0.05) inset;
-      color:@font-color;
+      box-shadow:0 1px 0 @layout-sider-light-trigger-border-color inset;
+      color:@layout-sider-light-trigger-font-color;
     }
     &-light &-trigger:hover {
-      color:@font-primary-color;
+      color:@layout-sider-light-trigger-hover-font-color;
     }
     &-light &-trigger:active {
-      color:@font-primary-color;
+      color:@layout-sider-light-trigger-active-font-color;
     }
 
     &-dark {
@@ -79,14 +80,14 @@
     }
     &-dark &-trigger {
       background-color:@layout-sider-dark-background-color;
-      box-shadow:0 1px 0 rgba(255, 255, 255, 0.025) inset;
-      color:rgba(255, 255, 255, 0.65);
+      box-shadow:0 1px 0 @layout-sider-dark-trigger-border-color inset;
+      color:@layout-sider-dark-trigger-font-color;
     }
     &-dark &-trigger:hover {
-      color:rgba(255, 255, 255, 1);
+      color:@layout-sider-dark-trigger-hover-font-color;
     }
     &-dark &-trigger:active {
-      color:rgba(255, 255, 255, 1);
+      color:@layout-sider-dark-trigger-active-font-color;
     }
   }
 
