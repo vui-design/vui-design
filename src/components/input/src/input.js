@@ -31,6 +31,7 @@ const VuiInput = {
     placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    autofocus: PropTypes.bool.def(false),
     clearable: PropTypes.bool.def(false),
     readonly: PropTypes.bool.def(false),
     disabled: PropTypes.bool.def(false),
@@ -178,7 +179,20 @@ const VuiInput = {
       }
     },
     handleToggle(e) {
-    this.state.plaintext = !this.state.plaintext;
+      this.state.plaintext = !this.state.plaintext;
+    }
+  },
+  mounted() {
+    const { $props: props, $refs: references } = this;
+
+    if (props.autofocus && references.input) {
+      this.timeout = setTimeout(() => references.input.focus());
+    }
+  },
+  beforeDesotry() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
     }
   },
   render(h) {

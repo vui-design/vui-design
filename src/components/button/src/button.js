@@ -32,6 +32,7 @@ const VuiButton = {
     ghost: PropTypes.bool.def(false),
     shape: PropTypes.oneOf(["round", "circle"]),
     size: PropTypes.oneOf(["small", "medium", "large"]),
+    autofocus: PropTypes.bool.def(false),
     loading: PropTypes.bool.def(false),
     disabled: PropTypes.bool.def(false),
     icon: PropTypes.string
@@ -49,6 +50,19 @@ const VuiButton = {
     },
     handleButtonClick(e) {
       this.$emit("click", e);
+    }
+  },
+  mounted() {
+    const { $props: props, $el: element } = this;
+
+    if (props.autofocus && element) {
+      this.timeout = setTimeout(() => element.focus());
+    }
+  },
+  beforeDesotry() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
     }
   },
   render() {

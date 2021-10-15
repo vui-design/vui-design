@@ -42,6 +42,7 @@ const VuiModal = {
     okButtonProps: PropTypes.object,
     okText: PropTypes.string,
     okAsync: PropTypes.bool.def(false),
+    autofocusButton: PropTypes.oneOf(["ok", "cancel"]),
     closable: PropTypes.bool.def(true),
     top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(100),
     centered: PropTypes.bool.def(false),
@@ -277,7 +278,8 @@ const VuiModal = {
         if (props.showCancelButton) {
           const cancelButtonProps = {
             props: {
-              loading: state.cancelLoading
+              loading: state.cancelLoading,
+              autofocus: props.autofocusButton === "cancel"
             },
             on: {
               click: handleCancel
@@ -294,7 +296,8 @@ const VuiModal = {
           const okButtonProps = {
             props: {
               type: "primary",
-              loading: state.okLoading
+              loading: state.okLoading,
+              autofocus: props.autofocusButton === "ok"
             },
             on: {
               click: handleOk

@@ -370,7 +370,7 @@ export {
 };
 
 export default {
-  version: "1.7.5",
+  version: "1.7.6",
   install,
   // Locale
   locale: locale.use,

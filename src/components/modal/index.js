@@ -10,6 +10,7 @@ import getClassNamePrefix from "../../utils/getClassNamePrefix";
 */
 const defaults = {
   width: 360,
+  autofocusButton: "ok",
   getPopupContainer: () => document.body
 };
 
@@ -76,7 +77,7 @@ const createModalInstance = function(options) {
       }
     },
     render(h) {
-      const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, top, centered, width, className, headerStyle, bodyStyle, footerStyle, backdrop, backdropClassName, animations, getPopupContainer } = this;
+      const { type, icon, visible, showCancelButton, cancelButtonProps, cancelText, cancelAsync, showOkButton, okButtonProps, okText, okAsync, autofocusButton, top, centered, width, className, headerStyle, bodyStyle, footerStyle, backdrop, backdropClassName, animations, getPopupContainer } = this;
 
       const beforeOpen = createChainedFunction(this.handleBeforeOpen.bind(this), this.beforeOpen || this.onBeforeOpen);
       const open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
@@ -98,6 +99,7 @@ const createModalInstance = function(options) {
           okButtonProps,
           okText,
           okAsync,
+          autofocusButton,
           closable: false,
           top,
           centered,
