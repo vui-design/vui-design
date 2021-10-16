@@ -109,6 +109,7 @@ import Spin from "./components/spin";
 // Other
 import Anchor from "./components/anchor";
 import AnchorLink from "./components/anchor-link";
+import Authorizer from "./components/authorizer";
 import Backtop from "./components/backtop";
 import Fullscreen from "./components/fullscreen";
 import Loading from "./components/loading";
@@ -223,6 +224,7 @@ const components = [
   // Other
   Anchor,
   AnchorLink,
+  Authorizer,
   Backtop,
   Fullscreen,
   TransitionCollapse
@@ -243,7 +245,8 @@ const install = function(Vue, options = {}) {
   Vue.prototype.$vui = {
     classNamePrefix: "vui",
     size: options.size || "",
-    zIndex: options.zIndex || 2000
+    zIndex: options.zIndex || 2000,
+    authorize: options.authorize
   };
   Vue.prototype.$notice = Notice;
   Vue.prototype.$message = Message;
@@ -363,6 +366,7 @@ export {
   // Other
   Anchor,
   AnchorLink,
+  Authorizer,
   Backtop,
   Loading,
   Fullscreen,
@@ -370,7 +374,7 @@ export {
 };
 
 export default {
-  version: "1.7.6",
+  version: "1.8.0",
   install,
   // Locale
   locale: locale.use,
@@ -481,6 +485,7 @@ export default {
   // Other
   Anchor,
   AnchorLink,
+  Authorizer,
   Backtop,
   Loading,
   Fullscreen,
