@@ -29,8 +29,6 @@ export function getClosestStep(value, props) {
 		steps.push(Math.round(nowSteps) * props.step + props.min);
 	}
 
-	console.log(steps)
-
 	const array = steps.map(breakpoint => Math.abs(value - breakpoint));
 
 	return steps[array.indexOf(Math.min(...array))];
@@ -38,8 +36,6 @@ export function getClosestStep(value, props) {
 
 export function getClosestValue(value, props) {
 	const closestStep = isFinite(getClosestStep(value, props)) ? getClosestStep(value, props) : 0;
-
-	console.log(2, closestStep)
 
 	if (props.step === null) {
 		return closestStep;

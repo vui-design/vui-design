@@ -61,7 +61,7 @@ function getCalender(year, month, iterator) {
 	var monthStartDate = new Date(year, month, 1);
 	var dayOfWeek = monthStartDate.getDay() || (iso ? 7 : 0);
 	var currentDay = weekStart - dayOfWeek;
-	console.log(currentDay)
+
 	var weekNr = getDateInfo(year, month, 1, iso);
 	var maxDays = daysInMonth(year, month);
 	var lastMonthMaxDays = daysInMonth(year, month - 1);

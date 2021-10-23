@@ -30,7 +30,7 @@ export const request = element => {
 		element.msRequestFullscreen()
 	}
 	else {
-		console.log("Fullscreen API is not supported.");
+		console.warn("Fullscreen API is not supported.");
 	}
 };
 
@@ -49,7 +49,7 @@ export const exit = () => {
 		document.msExitFullscreen();
 	}
 	else {
-		console.log("Fullscreen API is not supported.");
+		console.warn("Fullscreen API is not supported.");
 	}
 };
 

@@ -60,6 +60,7 @@ const VuiCascader = {
     dropdownClassName: PropTypes.string,
     dropdownAutoWidth: PropTypes.bool.def(true),
     getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
+    beforeSelect: PropTypes.func,
     validator: PropTypes.bool.def(true)
   },
   data() {
@@ -268,15 +269,33 @@ const VuiCascader = {
       const option = options[options.length - 1];
       const keyword = "";
       const value = options.map(option => option[optionKeys.value]);
+      const callback = () => {
+        this.state.actived = option && option.children && option.children.length > 0;
+        this.state.keyword = keyword;
+        this.state.value = options;
+        this.$emit("input", value);
+        this.$emit("change", value);
 
-      this.state.actived = option && option.children && option.children.length > 0;
-      this.state.keyword = keyword;
-      this.state.value = options;
-      this.$emit("input", value);
-      this.$emit("change", value);
+        if (props.validator) {
+          this.dispatch("vui-form-item", "change", value);
+        }
+      };
 
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", value);
+      let hook = true;
+
+      if (is.function(props.beforeSelect)) {
+        hook = props.beforeSelect(value, options);
+      }
+
+      if (is.boolean(hook) && hook === false) {
+        return;
+      }
+
+      if (is.promise(hook)) {
+        hook.then(() => callback()).catch(error => {});
+      }
+      else {
+        callback();
       }
     },
     handleMenuSelect(level, data) {
@@ -284,15 +303,33 @@ const VuiCascader = {
       const optionKeys = utils.getOptionKeys(props.optionKeys);
       const keyword = "";
       const value = data.path.map(option => option[optionKeys.value]);
+      const callback = () => {
+        this.state.actived = false;
+        this.state.keyword = keyword;
+        this.state.value = data.path;
+        this.$emit("input", value);
+        this.$emit("change", value);
 
-      this.state.actived = false;
-      this.state.keyword = keyword;
-      this.state.value = data.path;
-      this.$emit("input", value);
-      this.$emit("change", value);
+        if (props.validator) {
+          this.dispatch("vui-form-item", "change", value);
+        }
+      };
 
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", value);
+      let hook = true;
+
+      if (is.function(props.beforeSelect)) {
+        hook = props.beforeSelect(value, data.path);
+      }
+
+      if (is.boolean(hook) && hook === false) {
+        return;
+      }
+
+      if (is.promise(hook)) {
+        hook.then(() => callback()).catch(error => {});
+      }
+      else {
+        callback();
       }
     }
   },
