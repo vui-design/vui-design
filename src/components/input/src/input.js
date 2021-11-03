@@ -123,6 +123,12 @@ const VuiInput = {
         return;
       }
 
+      const keyCode = e.keyCode;
+
+      if (keyCode === 13) {
+        this.$emit("enter", e);
+      }
+
       this.$emit("keydown", e);
     },
     handleKeyup(e) {
