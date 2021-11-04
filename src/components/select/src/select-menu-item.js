@@ -86,7 +86,7 @@ const VuiSelectMenuItem = {
           return;
         }
 
-        if (!vuiSelectState.activedEventType !== "navigate") {
+        if (vuiSelectState.activedEventType !== "navigate") {
           return;
         }
 
