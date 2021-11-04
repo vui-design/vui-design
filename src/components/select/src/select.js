@@ -79,6 +79,7 @@ const VuiSelect = {
       keyword: "",
       value: undefined,
       options: [],
+      activedEventType: "navigate",
       activedMenuItemIndex: -1,
       activedMenuItem: undefined
     };
@@ -170,6 +171,7 @@ const VuiSelect = {
         this.changeActivedMenuItem(direction, index);
       }
       else {
+        this.state.activedEventType = "navigate";
         this.state.activedMenuItemIndex = index;
         this.state.activedMenuItem = option;
       }
@@ -209,6 +211,7 @@ const VuiSelect = {
         }
       }
 
+      this.state.activedEventType = "navigate";
       this.state.activedMenuItemIndex = index;
       this.state.activedMenuItem = option;
     },
@@ -345,6 +348,7 @@ const VuiSelect = {
 
       const index = options.findIndex(option => option.value === data.value);
 
+      this.state.activedEventType = "mouseenter";
       this.state.activedMenuItemIndex = index;
       this.state.activedMenuItem = data;
     },

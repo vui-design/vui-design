@@ -74,7 +74,8 @@ const VuiSelectMenuItem = {
     actived: {
       immediate: true,
       handler(value) {
-        const { vuiSelectDropdown, $el: element } = this;
+        const { vuiSelect, vuiSelectDropdown, $el: element } = this;
+        const { state: vuiSelectState } = vuiSelect;
         const { $el: containter } = vuiSelectDropdown;
 
         if (!value) {
@@ -82,6 +83,10 @@ const VuiSelectMenuItem = {
         }
         
         if (!this.visible) {
+          return;
+        }
+
+        if (!vuiSelectState.activedEventType !== "navigate") {
           return;
         }
 
