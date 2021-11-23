@@ -19,8 +19,9 @@ const VuiTransferPanelSearch = {
 		disabled: PropTypes.bool.def(false)
 	},
 	data() {
+		const { $props: props } = this;
 		const state = {
-			value: ""
+			value: props.value
 		};
 
 		return {

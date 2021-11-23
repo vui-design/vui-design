@@ -37,6 +37,7 @@ const VuiTransfer = {
 		formatter: PropTypes.func.def(option => option.key),
 		showSelectAll: PropTypes.bool.def(true),
 		searchable: PropTypes.bool.def(false),
+		keywords: PropTypes.array.def(["", ""]),
 		filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
 		filterOptionProp: PropTypes.string.def("label"),
 		disabled: PropTypes.bool.def(false),
@@ -210,6 +211,7 @@ const VuiTransfer = {
 					footer={scopedSlots.footer}
 					showSelectAll={props.showSelectAll}
 					searchable={props.searchable}
+					keyword={props.keywords[0]}
 					filter={props.filter}
 					filterOptionProp={props.filterOptionProp}
 					disabled={props.disabled}
@@ -241,6 +243,7 @@ const VuiTransfer = {
 					footer={scopedSlots.footer}
 					showSelectAll={props.showSelectAll}
 					searchable={props.searchable}
+					keyword={props.keywords[1]}
 					filter={props.filter}
 					filterOptionProp={props.filterOptionProp}
 					disabled={props.disabled}

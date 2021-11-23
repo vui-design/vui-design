@@ -28,6 +28,7 @@ const VuiTransferPanel = {
 		footer: PropTypes.func,
 		showSelectAll: PropTypes.bool.def(true),
 		searchable: PropTypes.bool.def(false),
+		keyword: PropTypes.string.def(""),
 		filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
 		filterOptionProp: PropTypes.string.def("key"),
 		disabled: PropTypes.bool.def(false),
@@ -36,7 +37,7 @@ const VuiTransferPanel = {
 	data() {
 		const { $props: props } = this;
 		const state = {
-			keyword: "",
+			keyword: props.keyword,
 			selectedKeys: clone(props.selectedKeys)
 		};
 
@@ -45,6 +46,9 @@ const VuiTransferPanel = {
 		};
 	},
 	watch: {
+		keyword(value) {
+			this.state.keyword = value;
+		},
 		selectedKeys(value) {
 			this.state.selectedKeys = clone(value);
 		}

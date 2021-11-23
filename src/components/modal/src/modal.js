@@ -54,6 +54,7 @@ const VuiModal = {
     backdrop: PropTypes.bool.def(true),
     backdropClassName: PropTypes.string,
     clickBackdropToClose: PropTypes.bool.def(true),
+    destroyOnClose: PropTypes.bool.def(false),
     animations: PropTypes.array.def(["vui-modal-backdrop-fade", "vui-modal-zoom"]),
     getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
   },
@@ -61,9 +62,10 @@ const VuiModal = {
     const { $props: props } = this;
     const state = {
       visible: props.visible,
-      zIndex: Popup.nextZIndex(),
+      closed: props.visible ? false : true,
       cancelLoading: false,
-      okLoading: false
+      okLoading: false,
+      zIndex: Popup.nextZIndex()
     };
 
     return {
@@ -161,11 +163,12 @@ const VuiModal = {
       }
     },
     handleBeforeEnter() {
+      this.state.closed = false;
       this.$emit("beforeOpen");
     },
     handleEnter() {
-      this.$emit("open");
       this.scrollbarEffect = addScrollbarEffect();
+      this.$emit("open");
     },
     handleAfterEnter() {
       this.$emit("afterOpen");
@@ -177,8 +180,9 @@ const VuiModal = {
       this.$emit("close");
     },
     handleAfterLeave() {
-      this.$emit("afterClose");
+      this.state.closed = true;
       this.scrollbarEffect && this.scrollbarEffect.remove();
+      this.$emit("afterClose");
     }
   },
   beforeDestroy() {
@@ -261,7 +265,7 @@ const VuiModal = {
     let body;
 
     body = (
-      <div class={classes.elBody} style={props.bodyStyle}>{slots.default}</div>
+      <div class={classes.elBody} style={props.bodyStyle}>{props.destroyOnClose && state.closed ? null : slots.default}</div>
     );
 
     let footer;
