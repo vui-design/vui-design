@@ -1,110 +1,110 @@
 import VuiIcon from "../../icon";
+import PropTypes from "../../../utils/prop-types";
 import padEnd from "../../../utils/padEnd";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiRatio = {
-	name: "vui-ratio",
+  name: "vui-ratio",
+  props: {
+    classNamePrefix: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    denominator: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    precision: PropTypes.number.def(2),
+    suffix: PropTypes.string.def("%"),
+    replacement: PropTypes.string.def("NaN")
+  },
+  methods: {
+    translate(value, precision, replacement) {
+      const string = String(value);
+      const matched = string.match(/^(-?)(\d*)(\.(\d+))?$/);
 
-	components: {
-		VuiIcon
-	},
+      if (value === 0 || matched === null) {
+        return {
+          direction: "",
+          int: replacement,
+          decimal: ""
+        };
+      }
+      else {
+        const negative = matched[1];
+        const int = matched[2] || "0";
+        let decimal = matched[4] || "";
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		precision: {
-			type: Number,
-			default: undefined
-		},
-		suffix: {
-			type: String,
-			default: "%"
-		},
-		color: {
-			type: String,
-			default: undefined
-		}
-	},
+        if (/^\d+$/.test(precision)) {
+          decimal = padEnd(decimal, precision, "0").slice(0, precision);
+        }
 
-	methods: {
-		translate(value, precision) {
-			let string = String(value);
-			let matched = string.match(/^(-?)(\d*)(\.(\d+))?$/);
+        if (decimal) {
+          decimal = `.${decimal}`;
+        }
 
-			if (!matched) {
-				return {
-					negative: false,
-					int: value,
-					decimal: ""
-				};
-			}
-			else {
-				let negative = matched[1];
-				let int = matched[2] || "0";
-				let decimal = matched[4] || "";
+        return {
+          direction: negative ? "down" : "up",
+          int,
+          decimal
+        };
+      }
+    }
+  },
 
-				if (/^\d+$/.test(precision)) {
-					decimal = padEnd(decimal, precision, "0").slice(0, precision);
-				}
+  render(h) {
+    const { $props: props, translate } = this;
 
-				if (decimal) {
-					decimal = `.${decimal}`;
-				}
+    // ratio
+    const value = Number(props.value);
+    const denominator = Number(props.denominator);
+    let ratio = ((value - denominator) / denominator) * 100;
 
-				return {
-					negative: negative ? true : false,
-					int,
-					decimal
-				};
-			}
-		}
-	},
+    ratio = translate(ratio, props.precision, props.replacement);
 
-	render(h) {
-		let { $slots: slots, $props: props, translate } = this;
-		let translated = translate(props.value, props.precision);
-		let sort = translated.negative ? "desc" : "asc";
-		let iconType = translated.negative ? "arrow-down" : "arrow-up";
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ratio");
+    let classes = {};
 
-		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ratio");
-		let classes = {};
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${ratio.direction}`]: ratio.direction
+    };
+    classes.elPrefix = `${classNamePrefix}-prefix`;
+    classes.elSuffix = `${classNamePrefix}-suffix`;
+    classes.elValue = `${classNamePrefix}-value`;
 
-		classes.el = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${sort}`]: !props.color && sort
-		};
-		classes.elPrefix = `${classNamePrefix}-prefix`;
-		classes.elSuffix = `${classNamePrefix}-suffix`;
-		classes.elValue = `${classNamePrefix}-value`;
+    // render
+    let children = [];
 
-		// style
-		let styles = {};
+    if (ratio.direction) {
+      const iconType = "arrow-" + ratio.direction;
 
-		styles.el = {
-			color: props.color
-		};
+      children.push(
+        <div class={classes.elPrefix}>
+          <VuiIcon type={iconType} />
+        </div>
+      );
+    }
 
-		// render
-		return (
-			<div class={classes.el}>
-				<div class={classes.elPrefix}>
-					<VuiIcon type={iconType} />
-				</div>
-				<div class={classes.elValue}>
-					<big>{translated.int}</big>
-					<small>{translated.decimal}</small>
-				</div>
-				<div class={classes.elSuffix}>{props.suffix}</div>
-			</div>
-		);
-	}
+    children.push(
+      <div class={classes.elValue}>
+        <big>{ratio.int}</big>
+        {
+          ratio.decimal ? (
+            <small>{ratio.decimal}</small>
+          ) : null
+        }
+      </div>
+    );
+
+    if (props.suffix && ratio.direction) {
+      children.push(
+        <div class={classes.elSuffix}>{props.suffix}</div>
+      );
+    }
+
+    return (
+      <div class={classes.el}>
+        {children}
+      </div>
+    );
+  }
 };
 
 export default VuiRatio;

@@ -33445,128 +33445,119 @@ function padEnd(value, length, chars) {
 
 
 
+
 var VuiRatio = {
-	name: "vui-ratio",
+  name: "vui-ratio",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    denominator: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    precision: prop_types["a" /* default */].number.def(2),
+    suffix: prop_types["a" /* default */].string.def("%"),
+    replacement: prop_types["a" /* default */].string.def("NaN")
+  },
+  methods: {
+    translate: function translate(value, precision, replacement) {
+      var string = String(value);
+      var matched = string.match(/^(-?)(\d*)(\.(\d+))?$/);
 
-	components: {
-		VuiIcon: components_icon
-	},
+      if (value === 0 || matched === null) {
+        return {
+          direction: "",
+          int: replacement,
+          decimal: ""
+        };
+      } else {
+        var negative = matched[1];
+        var int = matched[2] || "0";
+        var decimal = matched[4] || "";
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		value: {
-			type: [String, Number],
-			default: undefined
-		},
-		precision: {
-			type: Number,
-			default: undefined
-		},
-		suffix: {
-			type: String,
-			default: "%"
-		},
-		color: {
-			type: String,
-			default: undefined
-		}
-	},
+        if (/^\d+$/.test(precision)) {
+          decimal = padEnd(decimal, precision, "0").slice(0, precision);
+        }
 
-	methods: {
-		translate: function translate(value, precision) {
-			var string = String(value);
-			var matched = string.match(/^(-?)(\d*)(\.(\d+))?$/);
+        if (decimal) {
+          decimal = "." + decimal;
+        }
 
-			if (!matched) {
-				return {
-					negative: false,
-					int: value,
-					decimal: ""
-				};
-			} else {
-				var negative = matched[1];
-				var int = matched[2] || "0";
-				var decimal = matched[4] || "";
+        return {
+          direction: negative ? "down" : "up",
+          int: int,
+          decimal: decimal
+        };
+      }
+    }
+  },
 
-				if (/^\d+$/.test(precision)) {
-					decimal = padEnd(decimal, precision, "0").slice(0, precision);
-				}
+  render: function render(h) {
+    var _classes$el;
 
-				if (decimal) {
-					decimal = "." + decimal;
-				}
+    var props = this.$props,
+        translate = this.translate;
 
-				return {
-					negative: negative ? true : false,
-					int: int,
-					decimal: decimal
-				};
-			}
-		}
-	},
+    // ratio
 
-	render: function render(h) {
-		var _classes$el;
+    var value = Number(props.value);
+    var denominator = Number(props.denominator);
+    var ratio = (value - denominator) / denominator * 100;
 
-		var slots = this.$slots,
-		    props = this.$props,
-		    translate = this.translate;
+    ratio = translate(ratio, props.precision, props.replacement);
 
-		var translated = translate(props.value, props.precision);
-		var sort = translated.negative ? "desc" : "asc";
-		var iconType = translated.negative ? "arrow-down" : "arrow-up";
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ratio");
+    var classes = {};
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ratio");
-		var classes = {};
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + ratio.direction, ratio.direction), _classes$el);
+    classes.elPrefix = classNamePrefix + "-prefix";
+    classes.elSuffix = classNamePrefix + "-suffix";
+    classes.elValue = classNamePrefix + "-value";
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + sort, !props.color && sort), _classes$el);
-		classes.elPrefix = classNamePrefix + "-prefix";
-		classes.elSuffix = classNamePrefix + "-suffix";
-		classes.elValue = classNamePrefix + "-value";
+    // render
+    var children = [];
 
-		// style
-		var styles = {};
+    if (ratio.direction) {
+      var iconType = "arrow-" + ratio.direction;
 
-		styles.el = {
-			color: props.color
-		};
+      children.push(h(
+        "div",
+        { "class": classes.elPrefix },
+        [h(components_icon, {
+          attrs: { type: iconType }
+        })]
+      ));
+    }
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[h(
-				"div",
-				{ "class": classes.elPrefix },
-				[h(components_icon, {
-					attrs: { type: iconType }
-				})]
-			), h(
-				"div",
-				{ "class": classes.elValue },
-				[h("big", [translated.int]), h("small", [translated.decimal])]
-			), h(
-				"div",
-				{ "class": classes.elSuffix },
-				[props.suffix]
-			)]
-		);
-	}
+    children.push(h(
+      "div",
+      { "class": classes.elValue },
+      [h("big", [ratio.int]), ratio.decimal ? h("small", [ratio.decimal]) : null]
+    ));
+
+    if (props.suffix && ratio.direction) {
+      children.push(h(
+        "div",
+        { "class": classes.elSuffix },
+        [props.suffix]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
-/* harmony default export */ var ratio = (VuiRatio);
+/* harmony default export */ var src_ratio = (VuiRatio);
 // CONCATENATED MODULE: ./src/components/ratio/index.js
 
 
-ratio.install = function (Vue) {
-	Vue.component(ratio.name, ratio);
+src_ratio.install = function (Vue) {
+  Vue.component(src_ratio.name, src_ratio);
 };
 
-/* harmony default export */ var components_ratio = (ratio);
+/* harmony default export */ var components_ratio = (src_ratio);
 // CONCATENATED MODULE: ./src/components/statistic/src/statistic.js
 
 
@@ -43050,7 +43041,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.8.5",
+  version: "1.8.6",
   install: src_install,
   // Locale
   locale: src_locale.use,
