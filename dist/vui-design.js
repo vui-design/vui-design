@@ -11179,15 +11179,15 @@ Popup.prototype.removeEventListeners = function () {
 };
 
 /****************************************************/
-var popup_zIndex = (external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a.prototype.$vui || {}).zIndex || 2000;
+var zIndex = (external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a.prototype.$vui || {}).zIndex || 2000;
 
 Object.defineProperty(Popup, "zIndex", {
   configurable: true,
   get: function get() {
-    return popup_zIndex;
+    return zIndex;
   },
   set: function set(value) {
-    popup_zIndex = value;
+    zIndex = value;
   }
 });
 
@@ -16092,7 +16092,7 @@ var VuiSelectEmpty = {
       "div",
       { "class": classes.el },
       [h(components_empty, {
-        attrs: { size: "small", description: notFoundText }
+        attrs: { description: notFoundText }
       })]
     );
   }
@@ -16885,6 +16885,7 @@ var VuiSelect = {
     loadingText: prop_types["a" /* default */].string,
     notFoundText: prop_types["a" /* default */].string,
     clearKeywordOnSelect: prop_types["a" /* default */].bool.def(true),
+    bordered: prop_types["a" /* default */].bool.def(true),
     clearable: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
     placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
@@ -17478,7 +17479,7 @@ var VuiSelect = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "select");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-single", !props.multiple), defineProperty_default()(_classes$el, classNamePrefix + "-multiple", props.multiple), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-actived", state.actived), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-single", !props.multiple), defineProperty_default()(_classes$el, classNamePrefix + "-multiple", props.multiple), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-actived", state.actived), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
 
     // render
     var menu = void 0;
@@ -17604,6 +17605,7 @@ var VuiSelectWrapper = {
     loadingText: prop_types["a" /* default */].string,
     notFoundText: prop_types["a" /* default */].string,
     clearKeywordOnSelect: prop_types["a" /* default */].bool.def(true),
+    bordered: prop_types["a" /* default */].bool.def(true),
     clearable: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
     placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
@@ -17700,14 +17702,15 @@ var VuiInput = {
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].string.def("text"),
+    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    maxLength: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     prepend: prop_types["a" /* default */].string,
     append: prop_types["a" /* default */].string,
     prefix: prop_types["a" /* default */].string,
     suffix: prop_types["a" /* default */].string,
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    maxLength: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    bordered: prop_types["a" /* default */].bool.def(true),
     autofocus: prop_types["a" /* default */].bool.def(false),
     clearable: prop_types["a" /* default */].bool.def(false),
     readonly: prop_types["a" /* default */].bool.def(false),
@@ -17880,14 +17883,15 @@ var VuiInput = {
     }
   },
   mounted: function mounted() {
-    var props = this.$props,
-        references = this.$refs;
+    var _this = this;
+
+    var props = this.$props;
 
 
-    if (props.autofocus && references.input) {
+    if (props.autofocus) {
       this.timeout = setTimeout(function () {
-        return references.input.focus();
-      });
+        return _this.focus();
+      }, 0);
     }
   },
   beforeDesotry: function beforeDesotry() {
@@ -17959,7 +17963,7 @@ var VuiInput = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
     classes.elPrepend = classNamePrefix + "-prepend";
     classes.elAppend = classNamePrefix + "-append";
     classes.elPrefix = classNamePrefix + "-prefix";
@@ -17969,18 +17973,45 @@ var VuiInput = {
     classes.elBtnClear = classNamePrefix + "-btn-clear";
 
     // render
-    var prepend = slots.prepend || props.prepend;
-    var append = slots.append || props.append;
+    var prepend = void 0;
+
+    if (slots.prepend || props.prepend) {
+      prepend = h(
+        "div",
+        { "class": classes.elPrepend },
+        [slots.prepend || props.prepend]
+      );
+    }
+
+    var append = void 0;
+
+    if (slots.append || props.append) {
+      append = h(
+        "div",
+        { "class": classes.elAppend },
+        [slots.append || props.append]
+      );
+    }
+
     var prefix = void 0;
-    var suffix = void 0;
 
     if (slots.prefix) {
-      prefix = slots.prefix;
+      prefix = h(
+        "div",
+        { "class": classes.elPrefix },
+        [slots.prefix]
+      );
     } else if (props.prefix) {
-      prefix = h(components_icon, {
-        attrs: { type: props.prefix }
-      });
+      prefix = h(
+        "div",
+        { "class": classes.elPrefix },
+        [h(components_icon, {
+          attrs: { type: props.prefix }
+        })]
+      );
     }
+
+    var suffix = void 0;
 
     if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
       var elBtnClearProps = {
@@ -17996,7 +18027,11 @@ var VuiInput = {
         }
       };
 
-      suffix = h(components_icon, elBtnClearProps);
+      suffix = h(
+        "div",
+        { "class": classes.elSuffix },
+        [h(components_icon, elBtnClearProps)]
+      );
     } else if (props.type === "password" && !props.readonly && !disabled) {
       var elBtnToggleProps = {
         props: {
@@ -18011,13 +18046,25 @@ var VuiInput = {
         }
       };
 
-      suffix = h(components_icon, elBtnToggleProps);
+      suffix = h(
+        "div",
+        { "class": classes.elSuffix },
+        [h(components_icon, elBtnToggleProps)]
+      );
     } else if (slots.suffix) {
-      suffix = slots.suffix;
+      suffix = h(
+        "div",
+        { "class": classes.elSuffix },
+        [slots.suffix]
+      );
     } else if (props.suffix) {
-      suffix = h(components_icon, {
-        attrs: { type: props.suffix }
-      });
+      suffix = h(
+        "div",
+        { "class": classes.elSuffix },
+        [h(components_icon, {
+          attrs: { type: props.suffix }
+        })]
+      );
     }
 
     var elInputProps = {
@@ -18044,35 +18091,19 @@ var VuiInput = {
     return h(
       "div",
       { "class": classes.el },
-      [prepend && h(
-        "div",
-        { "class": classes.elPrepend },
-        [prepend]
-      ), h(
+      [prepend, h(
         "div",
         { "class": classes.elInput, on: {
             "mouseenter": handleMouseenter,
             "mouseleave": handleMouseleave
           }
         },
-        [prefix && h(
-          "div",
-          { "class": classes.elPrefix },
-          [prefix]
-        ), h("input", babel_helper_vue_jsx_merge_props_default()([elInputProps, {
+        [prefix, h("input", babel_helper_vue_jsx_merge_props_default()([elInputProps, {
           domProps: {
             "value": state.value
           }
-        }])), suffix && h(
-          "div",
-          { "class": classes.elSuffix },
-          [suffix]
-        )]
-      ), append && h(
-        "div",
-        { "class": classes.elAppend },
-        [append]
-      )]
+        }])), suffix]
+      ), append]
     );
   }
 };
@@ -20124,7 +20155,7 @@ var VuiCascaderEmpty = {
       "div",
       { "class": classes.el },
       [h(components_empty, {
-        attrs: { size: "small", description: notFoundText }
+        attrs: { description: notFoundText }
       })]
     );
   }
@@ -20642,6 +20673,7 @@ var VuiCascader = {
       return labels.join(" / ");
     }),
     changeOnSelect: prop_types["a" /* default */].bool.def(false),
+    bordered: prop_types["a" /* default */].bool.def(true),
     searchable: prop_types["a" /* default */].bool.def(false),
     filter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].func]).def(true),
     filterOptionProp: prop_types["a" /* default */].string.def("label"),
@@ -20668,7 +20700,7 @@ var VuiCascader = {
       actived: false,
       searching: false,
       keyword: "",
-      value: this.getDerivedStateValueFromProps({
+      value: this.getStateValueFromProps({
         value: props.value,
         options: props.options,
         optionKeys: optionKeys
@@ -20687,7 +20719,7 @@ var VuiCascader = {
 
       var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getDerivedStateValueFromProps({
+      this.state.value = this.getStateValueFromProps({
         value: _value,
         options: props.options,
         optionKeys: optionKeys
@@ -20698,7 +20730,7 @@ var VuiCascader = {
 
       var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getDerivedStateValueFromProps({
+      this.state.value = this.getStateValueFromProps({
         value: props.value,
         options: value,
         optionKeys: optionKeys
@@ -20706,10 +20738,7 @@ var VuiCascader = {
     }
   },
   methods: {
-    getDropdownReference: function getDropdownReference() {
-      return this.$refs.selection.$el;
-    },
-    getDerivedStateValueFromProps: function getDerivedStateValueFromProps(props) {
+    getStateValueFromProps: function getStateValueFromProps(props) {
       var value = Object(utils_clone["a" /* default */])(props.value);
       var result = [];
 
@@ -20730,7 +20759,7 @@ var VuiCascader = {
         result = result.concat(Object(utils_clone["a" /* default */])(option));
 
         if (option[childrenKey]) {
-          result = result.concat(this.getDerivedStateValueFromProps({
+          result = result.concat(this.getStateValueFromProps({
             value: value,
             options: option[childrenKey],
             optionKeys: props.optionKeys
@@ -20763,6 +20792,9 @@ var VuiCascader = {
       });
 
       return list;
+    },
+    getPopupReference: function getPopupReference() {
+      return this.$refs.selection.$el;
     },
     focus: function focus() {
       this.$refs.selection && this.$refs.selection.focus();
@@ -21032,7 +21064,7 @@ var VuiCascader = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascader");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-actived", state.actived), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-actived", state.actived), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
 
     // render
     var menu = void 0;
@@ -21111,7 +21143,7 @@ var VuiCascader = {
             placement: props.placement,
             autoWidth: dropdownAutoWidth,
             animation: props.animation,
-            getPopupReference: this.getDropdownReference,
+            getPopupReference: this.getPopupReference,
             getPopupContainer: props.getPopupContainer
           },
           "class": props.dropdownClassName, on: {
@@ -23077,7 +23109,7 @@ var VuiInputNumber = {
 
 
 input_number.install = function (Vue) {
-	Vue.component(input_number.name, input_number);
+  Vue.component(input_number.name, input_number);
 };
 
 /* harmony default export */ var components_input_number = (input_number);
@@ -25644,7 +25676,8 @@ var VuiTextarea = {
     maxLength: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     rows: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(4),
     autosize: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(false),
-    resize: prop_types["a" /* default */].bool.def(false),
+    resizable: prop_types["a" /* default */].bool.def(false),
+    bordered: prop_types["a" /* default */].bool.def(true),
     clearable: prop_types["a" /* default */].bool.def(false),
     readonly: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
@@ -25675,17 +25708,17 @@ var VuiTextarea = {
       }
 
       this.state.value = _value;
-      this.resizeTextarea();
+      this.resize();
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", _value);
       }
     },
     rows: function rows() {
-      this.resizeTextarea();
+      this.resize();
     },
     autosize: function autosize() {
-      this.resizeTextarea();
+      this.resize();
     }
   },
   methods: {
@@ -25695,7 +25728,7 @@ var VuiTextarea = {
     blur: function blur() {
       this.$refs.textarea.blur();
     },
-    resizeTextarea: function resizeTextarea() {
+    resize: function resize() {
       var _this = this;
 
       if (is["a" /* default */].server) {
@@ -25713,9 +25746,7 @@ var VuiTextarea = {
 
           styles = {
             height: minHeight,
-            minHeight: minHeight,
-            maxHeight: minHeight,
-            overflowY: "unset"
+            minHeight: minHeight
           };
         } else {
           var _props$autosize = props.autosize,
@@ -25723,11 +25754,15 @@ var VuiTextarea = {
               maxRows = _props$autosize.maxRows;
 
 
+          if (!minRows) {
+            minRows = props.rows;
+          }
+
           styles = getTextareaSize(references.textarea, minRows, maxRows);
         }
 
         css(references.textarea, utils_merge(styles, {
-          resize: props.resize ? "vertical" : "none"
+          resize: props.resizable ? "vertical" : "none"
         }));
       };
 
@@ -25813,7 +25848,7 @@ var VuiTextarea = {
       var value = e.target.value;
 
       this.state.value = value;
-      this.resizeTextarea();
+      this.resize();
       this.$emit("input", value);
 
       if (props.validator) {
@@ -25841,7 +25876,7 @@ var VuiTextarea = {
       var value = "";
 
       this.state.value = value;
-      this.resizeTextarea();
+      this.resize();
       this.focus();
       this.$emit("clear", e);
       this.$emit("input", value);
@@ -25853,7 +25888,7 @@ var VuiTextarea = {
     }
   },
   mounted: function mounted() {
-    this.resizeTextarea();
+    this.resize();
   },
   render: function render(h) {
     var _classes$el;
@@ -25887,7 +25922,7 @@ var VuiTextarea = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "textarea");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
     classes.elInput = classNamePrefix + "-input";
     classes.elBtnClear = classNamePrefix + "-btn-clear";
     classes.elStatistic = classNamePrefix + "-statistic";
@@ -25898,7 +25933,7 @@ var VuiTextarea = {
       attrs: extends_default()({}, attrs, {
         placeholder: props.placeholder,
         maxLength: props.maxLength,
-        rows: props.rows,
+        rows: props.autosize && props.autosize.minRows ? props.autosize.minRows : props.rows,
         readonly: props.readonly,
         disabled: disabled,
         class: classes.elInput
@@ -25948,7 +25983,7 @@ var VuiTextarea = {
       statistic = h(
         "label",
         { "class": classes.elStatistic },
-        [length + "/" + props.maxLength]
+        [length, "/", props.maxLength]
       );
     }
 
@@ -29488,6 +29523,11 @@ var VuiProgress = {
 			type: String,
 			default: undefined
 		},
+		// 轨道颜色
+		trackColor: {
+			type: String,
+			default: undefined
+		},
 		// 进度条内容的模板函数
 		format: {
 			type: Function,
@@ -29527,6 +29567,7 @@ var VuiProgress = {
 		    percentage = this.percentage,
 		    status = this.status,
 		    color = this.color,
+		    trackColor = this.trackColor,
 		    format = this.format,
 		    canvas = this.canvas,
 		    stroke = this.stroke,
@@ -29572,7 +29613,8 @@ var VuiProgress = {
 
 			var lineTrackStyle = {
 				height: lineStrokeWidth + "px",
-				borderRadius: (lineStrokeLinecap === "round" ? lineStrokeWidth : 0) + "px"
+				borderRadius: (lineStrokeLinecap === "round" ? lineStrokeWidth : 0) + "px",
+				backgroundColor: trackColor
 			};
 			var lineThumbStyle = {
 				width: percentage + "%",
@@ -29637,7 +29679,8 @@ var VuiProgress = {
 				strokeWidth: circleStrokeWidth + "px",
 				strokeLinecap: circleStrokeLinecap,
 				strokeDasharray: perimeter + "px, " + perimeter + "px",
-				strokeDashoffset: "0px"
+				strokeDashoffset: "0px",
+				stroke: trackColor
 			};
 			var circleThumbStyle = {
 				stroke: circleStrokeColor,
@@ -38497,244 +38540,201 @@ src_drawer.install = function (Vue) {
 
 
 
+
 var VuiMessage = {
-	name: "vui-message",
+  name: "vui-message",
+  components: {
+    VuiIcon: components_icon
+  },
+  directives: {
+    Portal: directives_portal
+  },
+  model: {
+    prop: "visible",
+    event: "change"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error", "loading"]).def("info"),
+    content: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
+    icon: prop_types["a" /* default */].string,
+    background: prop_types["a" /* default */].bool.def(false),
+    closable: prop_types["a" /* default */].bool.def(false),
+    closeText: prop_types["a" /* default */].string,
+    top: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(20),
+    visible: prop_types["a" /* default */].bool.def(false),
+    animation: prop_types["a" /* default */].string.def("vui-message-fade"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+      return document.body;
+    })
+  },
+  data: function data() {
+    var props = this.$props;
 
-	components: {
-		VuiIcon: components_icon
-	},
+    var state = {
+      visible: props.visible
+    };
 
-	directives: {
-		Portal: directives_portal
-	},
+    return {
+      state: state
+    };
+  },
 
-	model: {
-		prop: "visible",
-		event: "change"
-	},
+  watch: {
+    visible: function visible(value) {
+      if (this.state.visible === value) {
+        return;
+      }
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "info",
-			validator: function validator(value) {
-				return ["info", "warning", "success", "error", "loading"].indexOf(value) > -1;
-			}
-		},
-		content: {
-			type: [String, Object, Function],
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		closeText: {
-			type: String,
-			default: undefined
-		},
-		top: {
-			type: [String, Number],
-			default: 20
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		animation: {
-			type: String,
-			default: "vui-message-fade"
-		},
-		getPopupContainer: {
-			type: [Function, Boolean],
-			default: function _default() {
-				return document.body;
-			}
-		}
-	},
+      this.state.visible = value;
+    }
+  },
+  methods: {
+    open: function open() {
+      this.state.visible = true;
+      this.$emit("change", this.state.visible);
+    },
+    close: function close() {
+      this.state.visible = false;
+      this.$emit("change", this.state.visible);
+    },
+    handleBtnCloseClick: function handleBtnCloseClick() {
+      this.close();
+    },
+    handleEnter: function handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter: function handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleLeave: function handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave: function handleAfterLeave() {
+      this.$emit("afterClose");
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
 
-	data: function data() {
-		return {
-			defaultVisible: this.visible,
-			zIndex: 0
-		};
-	},
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleBtnCloseClick = this.handleBtnCloseClick,
+        handleEnter = this.handleEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleLeave = this.handleLeave,
+        handleAfterLeave = this.handleAfterLeave;
 
+    // icon
 
-	watch: {
-		visible: function visible(value) {
-			if (this.defaultVisible === value) {
-				return;
-			}
+    var icon = void 0;
 
-			this.defaultVisible = value;
-		},
-		defaultVisible: function defaultVisible(value) {
-			if (!value) {
-				return;
-			}
+    if (slots.icon) {
+      icon = slots.icon;
+    } else if (props.icon) {
+      icon = h(components_icon, {
+        attrs: { type: props.icon }
+      });
+    }
 
-			this.zIndex = popup.nextZIndex();
-		}
-	},
+    // content
+    var content = void 0;
 
-	methods: {
-		open: function open() {
-			this.defaultVisible = true;
-			this.$emit("change", this.defaultVisible);
-		},
-		close: function close() {
-			this.defaultVisible = false;
-			this.$emit("change", this.defaultVisible);
-		},
-		handleBtnCloseClick: function handleBtnCloseClick() {
-			this.close();
-		},
-		handleEnter: function handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter: function handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleLeave: function handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave: function handleAfterLeave() {
-			this.$emit("afterClose");
-		}
-	},
+    if (slots.default) {
+      content = slots.default;
+    } else if (props.content) {
+      content = is["a" /* default */].function(props.content) ? props.content(h) : props.content;
+    }
 
-	render: function render(h) {
-		var _classes$el;
+    // btnClose
+    var btnClose = void 0;
 
-		var slots = this.$slots,
-		    customizedClassNamePrefix = this.classNamePrefix,
-		    type = this.type,
-		    closable = this.closable,
-		    closeText = this.closeText,
-		    top = this.top,
-		    zIndex = this.zIndex,
-		    defaultVisible = this.defaultVisible,
-		    animation = this.animation,
-		    getPopupContainer = this.getPopupContainer;
-		var handleBtnCloseClick = this.handleBtnCloseClick,
-		    handleEnter = this.handleEnter,
-		    handleAfterEnter = this.handleAfterEnter,
-		    handleLeave = this.handleLeave,
-		    handleAfterLeave = this.handleAfterLeave;
+    if (props.closable) {
+      if (props.closeText) {
+        btnClose = props.closeText;
+      } else {
+        btnClose = h(components_icon, {
+          attrs: { type: "crossmark" }
+        });
+      }
+    }
 
-		var portal = getPopupContainer();
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "message");
+    var classes = {};
 
-		var content = void 0;
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-with-background", props.background), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-closable", props.closable), _classes$el);
+    classes.elContent = classNamePrefix + "-content";
+    classes.elIcon = classNamePrefix + "-icon";
+    classes.elBtnClose = classNamePrefix + "-btn-close";
 
-		if (slots.default) {
-			content = slots.default;
-		} else if (this.content) {
-			content = is["a" /* default */].function(this.content) ? this.content(h) : this.content;
-		}
+    // style
+    var styles = {};
 
-		var icon = void 0;
+    styles.el = {
+      top: is["a" /* default */].string(props.top) ? props.top : props.top + "px",
+      zIndex: state.visible ? popup.nextZIndex() : popup.zIndex
+    };
 
-		if (slots.icon) {
-			icon = slots.icon;
-		} else if (this.icon) {
-			icon = h(components_icon, {
-				attrs: { type: this.icon }
-			});
-		}
+    // render
+    var children = [];
 
-		var btnClose = void 0;
+    if (icon) {
+      children.push(h(
+        "div",
+        { "class": classes.elIcon },
+        [icon]
+      ));
+    }
 
-		if (closable) {
-			if (closeText) {
-				btnClose = closeText;
-			} else {
-				btnClose = h(components_icon, {
-					attrs: { type: "crossmark" }
-				});
-			}
-		}
+    children.push(h(
+      "div",
+      { "class": classes.elContent },
+      [content]
+    ));
 
-		var classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "message");
-		var classes = {};
+    if (props.closable) {
+      children.push(h(
+        "div",
+        { "class": classes.elBtnClose, on: {
+            "click": handleBtnCloseClick
+          }
+        },
+        [btnClose]
+      ));
+    }
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + type, type), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-closable", closable), _classes$el);
-		classes.elContent = classNamePrefix + "-content";
-		classes.elIcon = classNamePrefix + "-icon";
-		classes.elBtnClose = classNamePrefix + "-btn-close";
+    return h(
+      "transition",
+      {
+        attrs: {
+          name: props.animation,
 
-		var styles = {};
-
-		styles.el = {
-			top: top + "px",
-			zIndex: zIndex
-		};
-
-		var children = [];
-
-		children.push(h(
-			"div",
-			{ "class": classes.elContent },
-			[content]
-		));
-
-		if (icon) {
-			children.push(h(
-				"div",
-				{ "class": classes.elIcon },
-				[icon]
-			));
-		}
-
-		if (closable) {
-			children.push(h(
-				"div",
-				{ "class": classes.elBtnClose, on: {
-						"click": handleBtnCloseClick
-					}
-				},
-				[btnClose]
-			));
-		}
-
-		return h(
-			"transition",
-			{
-				attrs: {
-					name: animation,
-
-					appear: true
-				},
-				on: {
-					"enter": handleEnter,
-					"afterEnter": handleAfterEnter,
-					"leave": handleLeave,
-					"afterLeave": handleAfterLeave
-				}
-			},
-			[h(
-				"div",
-				{
-					directives: [{
-						name: "portal",
-						value: portal
-					}, {
-						name: "show",
-						value: defaultVisible
-					}],
-					"class": classes.el, style: styles.el },
-				[children]
-			)]
-		);
-	}
+          appear: true
+        },
+        on: {
+          "enter": handleEnter,
+          "afterEnter": handleAfterEnter,
+          "leave": handleLeave,
+          "afterLeave": handleAfterLeave
+        }
+      },
+      [h(
+        "div",
+        {
+          directives: [{
+            name: "portal",
+            value: props.getPopupContainer
+          }, {
+            name: "show",
+            value: state.visible
+          }],
+          "class": classes.el, style: styles.el },
+        [children]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var src_message = (VuiMessage);
@@ -38772,46 +38772,46 @@ function createChainedFunction() {
 * 默认配置
 */
 var message_defaults = {
-	top: 20,
-	duration: 3,
-	getPopupContainer: function getPopupContainer() {
-		return document.body;
-	}
+  top: 20,
+  duration: 3,
+  getPopupContainer: function getPopupContainer() {
+    return document.body;
+  }
 };
 
 /**
 * 存储已打开的 Message，用于更新 top 属性
 */
 var storage = {
-	value: [],
-	addItem: function addItem(item) {
-		var index = this.value.indexOf(item);
+  value: [],
+  addItem: function addItem(item) {
+    var index = this.value.indexOf(item);
 
-		if (index > -1) {
-			return;
-		}
+    if (index > -1) {
+      return;
+    }
 
-		this.value.push(item);
-	},
-	removeItem: function removeItem(item) {
-		var index = this.value.indexOf(item);
+    this.value.push(item);
+  },
+  removeItem: function removeItem(item) {
+    var index = this.value.indexOf(item);
 
-		if (index === -1) {
-			return;
-		}
+    if (index === -1) {
+      return;
+    }
 
-		var length = this.value.length;
-		var distance = item.$el.offsetHeight + 15;
+    var length = this.value.length;
+    var distance = item.$el.offsetHeight + 15;
 
-		this.value.splice(index, 1);
+    this.value.splice(index, 1);
 
-		while (index < length - 1) {
-			var next = this.value[index];
+    while (index < length - 1) {
+      var next = this.value[index];
 
-			next.top = next.top - distance;
-			index++;
-		}
-	}
+      next.top = next.top - distance;
+      index++;
+    }
+  }
 };
 
 /**
@@ -38819,149 +38819,151 @@ var storage = {
 * @param {Object} options 
 */
 var message_createMessageInstance = function createMessageInstance(options) {
-	// 创建 Message 挂载的 html 根节点
-	var container = options.getPopupContainer();
-	var el = document.createElement("div");
+  // 创建 Message 挂载的 html 根节点
+  var container = options.getPopupContainer();
+  var el = document.createElement("div");
 
-	container.appendChild(el);
+  container.appendChild(el);
 
-	// 根据之前已打开的 Message 计算当前 Message 的垂直位置
-	storage.value.forEach(function (prev) {
-		options.top += prev.$el.offsetHeight + 15;
-	});
+  // 根据之前已打开的 Message 计算当前 Message 的垂直位置
+  storage.value.forEach(function (prev) {
+    options.top += prev.$el.offsetHeight + 16;
+  });
 
-	// 上述已创建 Message 挂载的 html 根节点，这里对 getPopupContainer 选项进行重置，避免在组件实例化后又进行一次挂载
-	options.getPopupContainer = function () {
-		return false;
-	};
+  // 上述已创建 Message 挂载的 html 根节点，这里对 getPopupContainer 选项进行重置，避免在组件实例化后又进行一次挂载
+  options.getPopupContainer = function () {
+    return false;
+  };
 
-	// 创建 Message 实例
-	return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a({
-		el: el,
-		components: {
-			VuiMessage: src_message
-		},
-		data: function data() {
-			return extends_default()({}, options, {
-				visible: false
-			});
-		},
+  // 创建 Message 实例
+  return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a({
+    el: el,
+    components: {
+      VuiMessage: src_message
+    },
+    data: function data() {
+      return extends_default()({}, options, {
+        visible: false
+      });
+    },
 
-		methods: {
-			setTimeout: function (_setTimeout) {
-				function setTimeout() {
-					return _setTimeout.apply(this, arguments);
-				}
+    methods: {
+      setTimeout: function (_setTimeout) {
+        function setTimeout() {
+          return _setTimeout.apply(this, arguments);
+        }
 
-				setTimeout.toString = function () {
-					return _setTimeout.toString();
-				};
+        setTimeout.toString = function () {
+          return _setTimeout.toString();
+        };
 
-				return setTimeout;
-			}(function () {
-				if (this.duration <= 0) {
-					return;
-				}
+        return setTimeout;
+      }(function () {
+        if (this.duration <= 0) {
+          return;
+        }
 
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(this.close, this.duration * 1000);
-			}),
-			clearTimeout: function (_clearTimeout) {
-				function clearTimeout() {
-					return _clearTimeout.apply(this, arguments);
-				}
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(this.close, this.duration * 1000);
+      }),
+      clearTimeout: function (_clearTimeout) {
+        function clearTimeout() {
+          return _clearTimeout.apply(this, arguments);
+        }
 
-				clearTimeout.toString = function () {
-					return _clearTimeout.toString();
-				};
+        clearTimeout.toString = function () {
+          return _clearTimeout.toString();
+        };
 
-				return clearTimeout;
-			}(function () {
-				if (!this.timeout) {
-					return;
-				}
+        return clearTimeout;
+      }(function () {
+        if (!this.timeout) {
+          return;
+        }
 
-				clearTimeout(this.timeout);
-				this.timeout = null;
-			}),
-			open: function open() {
-				this.visible = true;
-				storage.addItem(this);
-			},
-			close: function close() {
-				this.visible = false;
-				storage.removeItem(this);
-			},
-			update: function update(options) {
-				if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-					return;
-				}
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }),
+      open: function open() {
+        this.visible = true;
+        storage.addItem(this);
+      },
+      close: function close() {
+        this.visible = false;
+        storage.removeItem(this);
+      },
+      update: function update(options) {
+        if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+          return;
+        }
 
-				if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-					options = {
-						content: options
-					};
-				}
+        if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+          options = {
+            content: options
+          };
+        }
 
-				for (var key in options) {
-					this[key] = options[key];
-				}
-			},
-			handleOpen: function handleOpen() {
-				storage.addItem(this);
-			},
-			handleAfterOpen: function handleAfterOpen() {
-				this.setTimeout();
-			},
-			handleClose: function handleClose() {
-				storage.removeItem(this);
-			},
-			handleAfterClose: function handleAfterClose() {
-				this.clearTimeout();
-				this.$destroy();
-				this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
-			}
-		},
-		render: function render(h) {
-			var type = this.type,
-			    content = this.content,
-			    icon = this.icon,
-			    closable = this.closable,
-			    closeText = this.closeText,
-			    top = this.top,
-			    visible = this.visible,
-			    animation = this.animation,
-			    getPopupContainer = this.getPopupContainer;
+        for (var key in options) {
+          this[key] = options[key];
+        }
+      },
+      handleOpen: function handleOpen() {
+        storage.addItem(this);
+      },
+      handleAfterOpen: function handleAfterOpen() {
+        this.setTimeout();
+      },
+      handleClose: function handleClose() {
+        storage.removeItem(this);
+      },
+      handleAfterClose: function handleAfterClose() {
+        this.clearTimeout();
+        this.$destroy();
+        this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
+      }
+    },
+    render: function render(h) {
+      var type = this.type,
+          content = this.content,
+          icon = this.icon,
+          closable = this.closable,
+          background = this.background,
+          closeText = this.closeText,
+          top = this.top,
+          visible = this.visible,
+          animation = this.animation,
+          getPopupContainer = this.getPopupContainer;
 
 
-			var open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
-			var afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
-			var close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
-			var afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
+      var open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
+      var afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
+      var close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
+      var afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
 
-			var attrs = {
-				props: {
-					type: type,
-					content: content,
-					icon: icon,
-					closable: closable,
-					closeText: closeText,
-					top: top,
-					visible: visible,
-					animation: animation,
-					getPopupContainer: getPopupContainer
-				},
-				on: {
-					open: open,
-					afterOpen: afterOpen,
-					close: close,
-					afterClose: afterClose
-				}
-			};
+      var attrs = {
+        props: {
+          type: type,
+          content: content,
+          icon: icon,
+          background: background,
+          closable: closable,
+          closeText: closeText,
+          top: top,
+          visible: visible,
+          animation: animation,
+          getPopupContainer: getPopupContainer
+        },
+        on: {
+          open: open,
+          afterOpen: afterOpen,
+          close: close,
+          afterClose: afterClose
+        }
+      };
 
-			return h(src_message, attrs);
-		}
-	});
+      return h(src_message, attrs);
+    }
+  });
 };
 
 /**
@@ -38969,27 +38971,27 @@ var message_createMessageInstance = function createMessageInstance(options) {
 * @param {String/Object} options
 */
 src_message.open = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({}, message_defaults, options);
+  options = extends_default()({}, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -38997,30 +38999,30 @@ src_message.open = function (options) {
 * @param {String/Object} options 
 */
 src_message.info = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({
-		type: "info",
-		icon: "info-filled"
-	}, message_defaults, options);
+  options = extends_default()({
+    type: "info",
+    icon: "info-filled"
+  }, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -39028,30 +39030,30 @@ src_message.info = function (options) {
 * @param {String/Object} options 
 */
 src_message.warning = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({
-		type: "warning",
-		icon: "warning-filled"
-	}, message_defaults, options);
+  options = extends_default()({
+    type: "warning",
+    icon: "warning-filled"
+  }, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -39059,30 +39061,30 @@ src_message.warning = function (options) {
 * @param {String/Object} options 
 */
 src_message.success = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({
-		type: "success",
-		icon: "checkmark-circle-filled"
-	}, message_defaults, options);
+  options = extends_default()({
+    type: "success",
+    icon: "checkmark-circle-filled"
+  }, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -39090,30 +39092,30 @@ src_message.success = function (options) {
 * @param {String/Object} options 
 */
 src_message.error = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({
-		type: "error",
-		icon: "crossmark-circle-filled"
-	}, message_defaults, options);
+  options = extends_default()({
+    type: "error",
+    icon: "crossmark-circle-filled"
+  }, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -39121,30 +39123,30 @@ src_message.error = function (options) {
 * @param {String/Object} options 
 */
 src_message.loading = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			content: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      content: options
+    };
+  }
 
-	options = extends_default()({
-		type: "loading",
-		icon: "loading"
-	}, message_defaults, options);
+  options = extends_default()({
+    type: "loading",
+    icon: "loading"
+  }, message_defaults, options);
 
-	var instance = message_createMessageInstance(options);
+  var instance = message_createMessageInstance(options);
 
-	instance.open();
+  instance.open();
 
-	return instance;
+  return instance;
 };
 
 /**
@@ -39152,7 +39154,7 @@ src_message.loading = function (options) {
 * @param {Function} Vue 
 */
 src_message.install = function (Vue) {
-	Vue.component(src_message.name, src_message);
+  Vue.component(src_message.name, src_message);
 };
 
 /* harmony default export */ var components_message = (src_message);
@@ -43041,7 +43043,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.8.6",
+  version: "1.8.7",
   install: src_install,
   // Locale
   locale: src_locale.use,

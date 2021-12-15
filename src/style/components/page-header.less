@@ -109,40 +109,35 @@
     .clearfix;
 
     .@{vui}-menu {
-      height:36px;
-      line-height:@line-height;
+      height:28px;
+      line-height:1;
     }
     .@{vui}-menu-item {
       padding:0;
     }
     .@{vui}-menu-item + .@{vui}-menu-item {
-      margin-left:20px;
+      margin-left:24px;
     }
 
     .@{vui}-tabs {
 
     }
-    .@{vui}-tabs-header {
+    .@{vui}-tabs .@{vui}-tabs-header {
       border-bottom:none;
+      box-shadow:none;
       margin-bottom:0;
     }
-    .@{vui}-tabs-header-content {
-      margin-bottom:0;
+    .@{vui}-tabs-line .@{vui}-tabs-header .@{vui}-tabs-tab {
+      align-items:flex-start;
     }
-    .@{vui}-tabs-small .@{vui}-tabs-header .@{vui}-tabs-tab {
-      margin-right:14px;
-      padding:0;
-      height:30px;
+    .@{vui}-tabs-line.@{vui}-tabs-small .@{vui}-tabs-header .@{vui}-tabs-tab {
+      height:24px;
     }
-    .@{vui}-tabs-medium .@{vui}-tabs-header .@{vui}-tabs-tab {
-      margin-right:18px;
-      padding:0;
-      height:40px;
+    .@{vui}-tabs-line.@{vui}-tabs-medium .@{vui}-tabs-header .@{vui}-tabs-tab {
+      height:28px;
     }
-    .@{vui}-tabs-large .@{vui}-tabs-header .@{vui}-tabs-tab {
-      margin-right:22px;
-      padding:0;
-      height:50px;
+    .@{vui}-tabs-line.@{vui}-tabs-large .@{vui}-tabs-header .@{vui}-tabs-tab {
+      height:32px;
     }
   }
 

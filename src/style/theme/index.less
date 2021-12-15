@@ -26,9 +26,9 @@
 @font-reverse-color: #fff;
 
 // 字体大小
+@font-size-sm: 12px;
 @font-size: 14px;
 @font-size-lg: 16px;
-@font-size-sm: 12px;
 
 // 字体粗细
 @font-weight: 400;
@@ -305,7 +305,7 @@
 @page-header-header-tag-gutter: @margin-xs;
 @page-header-header-extra-margin-left: @margin-md;
 @page-header-body-margin-top: @margin-md;
-@page-header-footer-margin-top: @margin-md;
+@page-header-footer-margin-top: @margin-lg;
 @page-header-back-color: @font-color;
 @page-header-back-hover-color: @link-hover-color;
 @page-header-back-active-color: @link-active-color;
@@ -342,6 +342,62 @@
 @pagination-item-disabled-font-color: @font-disabled-color;
 
 // 数据录入 --------------------------------------------------------------------------------
+
+// Cascader
+@cascader-selection-border-color: @border-color;
+@cascader-selection-border-radius: @border-radius;
+@cascader-selection-background-color: @component-background-color;
+@cascader-selection-font-color: @font-color;
+@cascader-selection-placeholder-font-color: @font-disabled-color;
+@cascader-selection-arrow-color: @font-disabled-color;
+@cascader-selection-btn-clear-color: @font-disabled-color;
+@cascader-selection-btn-clear-hover-color: @font-color;
+
+@cascader-selection-size-sm: 24px;
+@cascader-selection-size-md: 34px;
+@cascader-selection-size-lg: 44px;
+
+@cascader-selection-padding-sm: @padding-xs - 2px;
+@cascader-selection-padding-md: @padding-xs;
+@cascader-selection-padding-lg: @padding-xs + 2px;
+
+@cascader-selection-font-size-sm: @font-size-sm;
+@cascader-selection-font-size-md: @font-size;
+@cascader-selection-font-size-lg: @font-size-lg;
+
+@cascader-selection-btn-clear-size-sm: @font-size-sm;
+@cascader-selection-btn-clear-size-md: @font-size;
+@cascader-selection-btn-clear-size-lg: @font-size-lg;
+
+@cascader-selection-hover-border-color: tint(@primary-color, 10%);
+@cascader-selection-active-border-color: tint(@primary-color, 10%);
+@cascader-selection-disabled-border-color: @border-color;
+@cascader-selection-disabled-background-color: shade(@component-background-color, 2%);
+@cascader-selection-disabled-font-color: @font-disabled-color;
+
+@cascader-dropdown-max-height: 282px;
+@cascader-dropdown-border-radius: @border-radius;
+@cascader-dropdown-background-color: @component-background-color;
+@cascader-dropdown-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+
+@cascader-menu-min-width: 120px;
+@cascader-menu-max-height: 282px;
+@cascader-menu-border-color: #f3f3f3;
+
+@cascader-menu-item-height: 34px;
+@cascader-menu-item-padding-horizontal: 10px;
+@cascader-menu-item-font-color: @font-color;
+@cascader-menu-item-font-size: @font-size;
+
+@cascader-menu-item-hover-background-color: #fafafa;
+@cascader-menu-item-hover-font-color: @font-primary-color;
+@cascader-menu-item-selected-background-color: #e6f7ff;
+@cascader-menu-item-selected-font-color: @primary-color;
+@cascader-menu-item-disabled-background-color: #fff;
+@cascader-menu-item-disabled-font-color: @font-disabled-color;
+
+@cascader-menu-item-arrow-margin-left: 8px;
+@cascader-menu-item-arrow-size: 12px;
 
 // Checkbox
 @checkbox-border-color: @border-color;
@@ -407,22 +463,24 @@
 @input-padding-md: @padding-xs;
 @input-padding-lg: @padding-xs + 2px;
 
-@input-font-size-sm: 12px;
-@input-font-size-md: 14px;
-@input-font-size-lg: 16px;
-
-@input-addon-background-color: shade(@component-background-color, 2%);
-@input-affix-color: @font-disabled-color;
-@input-btn-clear-color: @font-disabled-color;
-@input-btn-clear-hover-color: @font-color;
-@input-btn-toggle-color: @font-disabled-color;
-@input-btn-toggle-hover-color: @font-color;
+@input-font-size-sm: @font-size-sm;
+@input-font-size-md: @font-size;
+@input-font-size-lg: @font-size-lg;
 
 @input-hover-border-color: tint(@primary-color, 10%);
 @input-focus-border-color: tint(@primary-color, 10%);
 @input-disabled-border-color: @border-color;
 @input-disabled-background-color: shade(@component-background-color, 2%);
 @input-disabled-font-color: @font-disabled-color;
+
+@input-addon-background-color: shade(@component-background-color, 2%);
+@input-affix-color: @font-disabled-color;
+
+@input-btn-clear-color: @font-disabled-color;
+@input-btn-clear-hover-color: @font-color;
+
+@input-btn-toggle-color: @font-disabled-color;
+@input-btn-toggle-hover-color: @font-color;
 
 // Radio
 @radio-border-color: @border-color;
@@ -477,6 +535,66 @@
 @rate-star-checked-color: @warning-color;
 @rate-star-size: 20px;
 @rate-star-hover-scale: scale(1.1);
+
+// Select
+@select-selection-border-color: @border-color;
+@select-selection-border-radius: @border-radius;
+@select-selection-background-color: @component-background-color;
+@select-selection-font-color: @font-color;
+
+@select-selection-size-sm: 24px;
+@select-selection-size-md: 34px;
+@select-selection-size-lg: 44px;
+
+@select-selection-padding-sm: @padding-xs - 2px;
+@select-selection-padding-md: @padding-xs;
+@select-selection-padding-lg: @padding-xs + 2px;
+
+@select-selection-font-size-sm: @font-size-sm;
+@select-selection-font-size-md: @font-size;
+@select-selection-font-size-lg: @font-size-lg;
+
+@select-selection-hover-border-color: tint(@primary-color, 10%);
+@select-selection-active-border-color: tint(@primary-color, 10%);
+@select-selection-disabled-border-color: @border-color;
+@select-selection-disabled-background-color: shade(@component-background-color, 2%);
+@select-selection-disabled-font-color: @font-disabled-color;
+
+@select-selection-placeholder-font-color: @font-disabled-color;
+
+@select-selection-arrow-color: @font-disabled-color;
+
+@select-selection-btn-clear-color: @font-disabled-color;
+@select-selection-btn-clear-hover-color: @font-color;
+
+@select-selection-btn-clear-size-sm: @font-size-sm;
+@select-selection-btn-clear-size-md: @font-size;
+@select-selection-btn-clear-size-lg: @font-size-lg;
+
+@select-dropdown-max-height: 282px;
+@select-dropdown-border-radius: @border-radius;
+@select-dropdown-background-color: @component-background-color;
+@select-dropdown-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+
+@select-menu-item-group-header-height: 34px;
+@select-menu-item-group-header-padding-horizontal: 10px;
+@select-menu-item-group-header-font-color: @font-disabled-color;
+@select-menu-item-group-header-font-size: @font-size-sm;
+
+@select-menu-item-height: 34px;
+@select-menu-item-padding-horizontal: 10px;
+@select-menu-item-font-color: @font-color;
+@select-menu-item-font-size: @font-size;
+
+@select-menu-item-hover-background-color: #fafafa;
+@select-menu-item-hover-font-color: @font-primary-color;
+@select-menu-item-selected-background-color: #e6f7ff;
+@select-menu-item-selected-font-color: @primary-color;
+@select-menu-item-disabled-background-color: #fff;
+@select-menu-item-disabled-font-color: @font-disabled-color;
+
+@select-menu-item-icon-margin-left: 8px;
+@select-menu-item-icon-size: 12px;
 
 // Slider
 @slider-size: 12px;
@@ -533,21 +651,27 @@
 // Textarea
 @textarea-border-color: @border-color;
 @textarea-border-radius: @border-radius;
+@textarea-background-color: @component-background-color;
+@textarea-padding-vertical: @padding-xs - 2;
+@textarea-padding-horizontal: @padding-xs;
 @textarea-font-color: @font-color;
 @textarea-font-size: @font-size;
 @textarea-font-family: @font-family;
 @textarea-line-height: @line-height;
-
-@textarea-btn-clear-color: @font-disabled-color;
-@textarea-btn-clear-hover-color: @font-color;
-@textarea-statistic-font-color: @font-secondary-color;
-@textarea-statistic-font-size: @font-size-sm;
 
 @textarea-hover-border-color: tint(@primary-color, 10%);
 @textarea-focus-border-color: tint(@primary-color, 10%);
 @textarea-disabled-border-color: @border-color;
 @textarea-disabled-background-color: shade(@component-background-color, 2%);
 @textarea-disabled-font-color: @font-disabled-color;
+
+@textarea-btn-clear-color: @font-disabled-color;
+@textarea-btn-clear-hover-color: @font-color;
+
+@textarea-statistic-bottom: @textarea-padding-vertical;
+@textarea-statistic-right: @textarea-padding-horizontal;
+@textarea-statistic-font-color: @font-secondary-color;
+@textarea-statistic-font-size: @font-size-sm;
 
 // Transfer
 @transfer-font-color: @font-color;
@@ -1101,6 +1225,37 @@
 @drawer-body-padding: 20px;
 @drawer-footer-border-top: 1px solid #f0f0f0;
 @drawer-footer-padding: 20px;
+
+// Message
+@message-border-radius: @border-radius;
+@message-background-color: @component-background-color;
+@message-box-shadow: @box-shadow;
+@message-padding-vertical: @padding-sm;
+@message-padding-horizontal: @padding-md;
+
+@message-info-background-color: ~`colorPalette("@{primary-color}", 1) `;
+@message-warning-background-color: ~`colorPalette("@{warning-color}", 1) `;
+@message-success-background-color: ~`colorPalette("@{success-color}", 1) `;
+@message-error-background-color: ~`colorPalette("@{error-color}", 1) `;
+@message-loading-background-color: ~`colorPalette("@{primary-color}", 1) `;
+
+@message-icon-color: @font-color;
+@message-icon-size: @font-size;
+
+@message-icon-info-color: @primary-color;
+@message-icon-warning-color: @warning-color;
+@message-icon-success-color: @success-color;
+@message-icon-error-color: @error-color;
+@message-icon-loading-color: @primary-color;
+
+@message-content-font-color: @font-color;
+@message-content-font-size: @font-size;
+@message-content-line-height: @line-height;
+
+@message-btn-close-font-color: @font-secondary-color;
+@message-btn-close-font-size: @font-size-sm;
+
+@message-btn-close-hover-font-color: @font-color;
 
 // Modal
 @modal-border-radius: @border-radius;

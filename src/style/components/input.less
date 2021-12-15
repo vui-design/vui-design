@@ -13,7 +13,7 @@
   &-append {
     display:table-cell;
     box-sizing:border-box;
-    width:1px;
+    width:0;
     border:1px solid @input-border-color;
     background-color:@input-addon-background-color;
     vertical-align:middle;
@@ -25,11 +25,13 @@
     white-space:nowrap;
     transition:all @transition-duration @transition-timing-function;
   }
+
   &-prepend {
     border-right-width:0;
     border-top-left-radius:@input-border-radius;
     border-bottom-left-radius:@input-border-radius;
   }
+
   &-append {
     border-left-width:0;
     border-top-right-radius:@input-border-radius;
@@ -57,25 +59,26 @@
   }
 
   &-input {
-  position:relative;
-  display:table-cell;
-  box-sizing:border-box;
-  width:100%;
-
-  input {
-    appearance:none;
-    outline:none;
-    display:block;
+    position:relative;
+    display:table-cell;
     box-sizing:border-box;
     width:100%;
-    border:1px solid @input-border-color;
-    border-radius:@input-border-radius;
-    background-color:@input-background-color;
-    margin:0;
-    color:@input-font-color;
-    font-family:@input-font-family;
-    line-height:normal;
-    transition:all @transition-duration @transition-timing-function;
+
+    input {
+      appearance:none;
+      outline:none;
+      display:block;
+      box-sizing:border-box;
+      width:100%;
+      border-style:solid;
+      border-color:@input-border-color;
+      border-radius:@input-border-radius;
+      background-color:@input-background-color;
+      margin:0;
+      color:@input-font-color;
+      font-family:@input-font-family;
+      line-height:normal;
+      transition:all @transition-duration @transition-timing-function;
     }
 
     &:not(:first-child) input {
@@ -98,6 +101,7 @@
       color:@input-btn-clear-hover-color;
     }
   }
+
   &-btn-clear {
     color:@input-btn-clear-color;
 
@@ -105,6 +109,7 @@
       color:@input-btn-clear-hover-color;
     }
   }
+
   &-btn-toggle {
     color:@input-btn-toggle-color;
 
@@ -124,13 +129,14 @@
     font-size:@input-font-size-sm;
   }
   &-small &-prefix {
-    left:@input-padding-sm + 1px;
+    left:@input-padding-sm;
   }
   &-small &-suffix {
-    right:@input-padding-sm + 1px;
+    right:@input-padding-sm;
   }
   &-small &-input {
     input {
+      border-width:0;
       height:@input-size-sm;
       padding:0 @input-padding-sm;
       font-size:@input-font-size-sm;
@@ -141,6 +147,17 @@
       &:not(:last-child) {
         padding-right:@input-padding-sm * 2 + @input-font-size-sm;
       }
+    }
+  }
+  &-bordered&-small &-prefix {
+    left:@input-padding-sm + 1px;
+  }
+  &-bordered&-small &-suffix {
+    right:@input-padding-sm + 1px;
+  }
+  &-bordered&-small &-input {
+    input {
+      border-width:1px;
     }
   }
 
@@ -155,13 +172,14 @@
     font-size:@input-font-size-md;
   }
   &-medium &-prefix {
-    left:@input-padding-md + 1px;
+    left:@input-padding-md;
   }
   &-medium &-suffix {
-    right:@input-padding-md + 1px;
+    right:@input-padding-md;
   }
   &-medium &-input {
     input {
+      border-width:0;
       height:@input-size-md;
       padding:0 @input-padding-md;
       font-size:@input-font-size-md;
@@ -172,6 +190,17 @@
       &:not(:last-child) {
         padding-right:@input-padding-md * 2 + @input-font-size-md;
       }
+    }
+  }
+  &-bordered&-medium &-prefix {
+    left:@input-padding-md + 1px;
+  }
+  &-bordered&-medium &-suffix {
+    right:@input-padding-md + 1px;
+  }
+  &-bordered&-medium &-input {
+    input {
+      border-width:1px;
     }
   }
 
@@ -186,13 +215,14 @@
     font-size:@input-font-size-lg;
   }
   &-large &-prefix {
-    left:@input-padding-lg + 1px;
+    left:@input-padding-lg;
   }
   &-large &-suffix {
-    right:@input-padding-lg + 1px;
+    right:@input-padding-lg;
   }
   &-large &-input {
     input {
+      border-width:0;
       height:@input-size-lg;
       padding:0 @input-padding-lg;
       font-size:@input-font-size-lg;
@@ -203,6 +233,17 @@
       &:not(:last-child) {
         padding-right:@input-padding-lg * 2 + @input-font-size-lg;
       }
+    }
+  }
+  &-bordered&-large &-prefix {
+    left:@input-padding-lg + 1px;
+  }
+  &-bordered&-large &-suffix {
+    right:@input-padding-lg + 1px;
+  }
+  &-bordered&-large &-input {
+    input {
+      border-width:1px;
     }
   }
 

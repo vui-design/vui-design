@@ -28,7 +28,8 @@ const VuiTextarea = {
     maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(4),
     autosize: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
-    resize: PropTypes.bool.def(false),
+    resizable: PropTypes.bool.def(false),
+    bordered: PropTypes.bool.def(true),
     clearable: PropTypes.bool.def(false),
     readonly: PropTypes.bool.def(false),
     disabled: PropTypes.bool.def(false),
@@ -55,17 +56,17 @@ const VuiTextarea = {
       }
 
       this.state.value = value;
-      this.resizeTextarea();
+      this.resize();
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", value);
       }
     },
     rows() {
-      this.resizeTextarea();
+      this.resize();
     },
     autosize() {
-      this.resizeTextarea();
+      this.resize();
     }
   },
   methods: {
@@ -75,7 +76,7 @@ const VuiTextarea = {
     blur() {
       this.$refs.textarea.blur();
     },
-    resizeTextarea() {
+    resize() {
       if (is.server) {
         return;
       }
@@ -89,19 +90,21 @@ const VuiTextarea = {
 
           styles = {
             height: minHeight,
-            minHeight: minHeight,
-            maxHeight: minHeight,
-            overflowY: "unset"
+            minHeight: minHeight
           };
         }
         else {
-          const { minRows, maxRows } = props.autosize;
+          let { minRows, maxRows } = props.autosize;
+
+          if (!minRows) {
+            minRows = props.rows;
+          }
 
           styles = getTextareaSize(references.textarea, minRows, maxRows);
         }
 
         css(references.textarea, merge(styles, {
-          resize: props.resize ? "vertical" : "none"
+          resize: props.resizable ? "vertical" : "none"
         }));
       }
 
@@ -179,7 +182,7 @@ const VuiTextarea = {
       const value = e.target.value;
 
       this.state.value = value;
-      this.resizeTextarea();
+      this.resize();
       this.$emit("input", value);
 
       if (props.validator) {
@@ -205,7 +208,7 @@ const VuiTextarea = {
       const value = "";
 
       this.state.value = value;
-      this.resizeTextarea();
+      this.resize();
       this.focus();
       this.$emit("clear", e);
       this.$emit("input", value);
@@ -217,7 +220,7 @@ const VuiTextarea = {
     }
   },
   mounted() {
-    this.resizeTextarea();
+    this.resize();
   },
   render(h) {
     const { vuiForm, $listeners: listeners, $attrs: attrs, $props: props, state } = this;
@@ -239,6 +242,7 @@ const VuiTextarea = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-bordered`]: props.bordered,
       [`${classNamePrefix}-hovered`]: state.hovered,
       [`${classNamePrefix}-focused`]: state.focused,
       [`${classNamePrefix}-disabled`]: disabled
@@ -254,7 +258,7 @@ const VuiTextarea = {
         ...attrs,
         placeholder: props.placeholder,
         maxLength: props.maxLength,
-        rows: props.rows,
+        rows: props.autosize && props.autosize.minRows ? props.autosize.minRows : props.rows,
         readonly: props.readonly,
         disabled: disabled,
         class: classes.elInput
@@ -301,7 +305,7 @@ const VuiTextarea = {
       const length = String(state.value).length;
 
       statistic = (
-        <label class={classes.elStatistic}>{`${length}/${props.maxLength}`}</label>
+        <label class={classes.elStatistic}>{length}/{props.maxLength}</label>
       );
     }
 

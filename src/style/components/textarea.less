@@ -14,26 +14,32 @@
     width:100%;
     min-width:100%;
     max-width:100%;
-    border:1px solid @textarea-border-color;
+    border-width:0;
+    border-style:solid;
+    border-color:@textarea-border-color;
     border-radius:@textarea-border-radius;
-    background-color:@component-background-color;
+    background-color:@textarea-background-color;
     margin:0;
-    padding:6px 8px;
+    padding:@textarea-padding-vertical @textarea-padding-horizontal;
     color:@textarea-font-color;
     font-size:@textarea-font-size;
     font-family:@textarea-font-family;
     line-height:@textarea-line-height;
     transition:all @transition-duration @transition-timing-function, height 0s;
   }
+  &-bordered &-input {
+    border-width:1px;
+  }
 
   &-btn-clear {
     position:absolute;
-    top:10px;
-    right:8px;
+    top:@textarea-padding-vertical + (round(@textarea-font-size * @textarea-line-height) - @textarea-font-size) / 2;
+    right:@textarea-padding-horizontal;
     z-index:3;
     cursor:pointer;
     display:block;
     color:@textarea-btn-clear-color;
+    font-size:@textarea-font-size;
     line-height:1;
     transition:all @transition-duration @transition-timing-function;
 
@@ -45,16 +51,24 @@
       color:@textarea-btn-clear-hover-color;
     }
   }
+  &-bordered &-btn-clear {
+    top:@textarea-padding-vertical + (round(@textarea-font-size * @textarea-line-height) - @textarea-font-size) / 2 + 1px;
+    right:@textarea-padding-horizontal + 1px;
+  }
 
   &-statistic {
     position:absolute;
-    bottom:@margin-xs;
-    right:@margin-xs;
+    bottom:@textarea-statistic-bottom;
+    right:@textarea-statistic-right;
     z-index:3;
     pointer-events:none;
-    color:@font-secondary-color;
+    color:@textarea-statistic-font-color;
     font-size:@textarea-statistic-font-size;
     line-height:1;
+  }
+  &-bordered &-statistic {
+    bottom:@textarea-statistic-bottom + 1px;
+    right:@textarea-statistic-right + 1px;
   }
 
   &-hovered &-input {

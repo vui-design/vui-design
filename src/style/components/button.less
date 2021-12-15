@@ -19,14 +19,14 @@
   user-select:none;
   white-space:nowrap;
   text-align:center;
-  transition:all 0.2s;
+  transition:all @transition-duration @transition-timing-function;
 
   span {
     display:inline-block;
   }
 
   i {
-    transition:margin 0.2s;
+    transition:margin @transition-duration @transition-timing-function;
 
     &:first-child {
       margin-left:0;

@@ -30,7 +30,7 @@ const VuiSelectEmpty = {
     // render
     return (
       <div class={classes.el}>
-        <VuiEmpty size="small" description={notFoundText} />
+        <VuiEmpty description={notFoundText} />
       </div>
     );
   }

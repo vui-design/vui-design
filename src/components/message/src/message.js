@@ -1,214 +1,176 @@
 import VuiIcon from "../../icon";
 import Portal from "../../../directives/portal";
 import Popup from "../../../libs/popup";
+import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiMessage = {
-	name: "vui-message",
+  name: "vui-message",
+  components: {
+    VuiIcon
+  },
+  directives: {
+    Portal
+  },
+  model: {
+    prop: "visible",
+    event: "change"
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["info", "warning", "success", "error", "loading"]).def("info"),
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
+    icon: PropTypes.string,
+    background: PropTypes.bool.def(false),
+    closable: PropTypes.bool.def(false),
+    closeText: PropTypes.string,
+    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(20),
+    visible: PropTypes.bool.def(false),
+    animation: PropTypes.string.def("vui-message-fade"),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
+  },
+  data() {
+    const { $props: props } = this;
+    const state = {
+      visible: props.visible
+    };
 
-	components: {
-		VuiIcon
-	},
+    return {
+      state
+    };
+  },
+  watch: {
+    visible(value) {
+      if (this.state.visible === value) {
+        return;
+      }
 
-	directives: {
-		Portal
-	},
+      this.state.visible = value;
+    }
+  },
+  methods: {
+    open() {
+      this.state.visible = true;
+      this.$emit("change", this.state.visible);
+    },
+    close() {
+      this.state.visible = false;
+      this.$emit("change", this.state.visible);
+    },
+    handleBtnCloseClick() {
+      this.close();
+    },
+    handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave() {
+      this.$emit("afterClose");
+    }
+  },
+  render(h) {
+    const { $slots: slots, $props: props, state } = this;
+    const { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
 
-	model: {
-		prop: "visible",
-		event: "change"
-	},
+    // icon
+    let icon;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "info",
-			validator(value) {
-				return ["info", "warning", "success", "error", "loading"].indexOf(value) > -1;
-			}
-		},
-		content: {
-			type: [String, Object, Function],
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		closable: {
-			type: Boolean,
-			default: false
-		},
-		closeText: {
-			type: String,
-			default: undefined
-		},
-		top: {
-			type: [String, Number],
-			default: 20
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		animation: {
-			type: String,
-			default: "vui-message-fade"
-		},
-		getPopupContainer: {
-			type: [Function, Boolean],
-			default: () => document.body
-		}
-	},
+    if (slots.icon) {
+      icon = slots.icon;
+    }
+    else if (props.icon) {
+      icon = (
+        <VuiIcon type={props.icon} />
+      );
+    }
 
-	data() {
-		return {
-			defaultVisible: this.visible,
-			zIndex: 0
-		};
-	},
+    // content
+    let content;
 
-	watch: {
-		visible(value) {
-			if (this.defaultVisible === value) {
-				return;
-			}
+    if (slots.default) {
+      content = slots.default;
+    }
+    else if (props.content) {
+      content = is.function(props.content) ? props.content(h) : props.content;
+    }
 
-			this.defaultVisible = value;
-		},
-		defaultVisible(value) {
-			if (!value) {
-				return;
-			}
+    // btnClose
+    let btnClose;
 
-			this.zIndex = Popup.nextZIndex();
-		}
-	},
+    if (props.closable) {
+      if (props.closeText) {
+        btnClose = props.closeText;
+      }
+      else {
+        btnClose = (
+          <VuiIcon type="crossmark" />
+        );
+      }
+    }
 
-	methods: {
-		open() {
-			this.defaultVisible = true;
-			this.$emit("change", this.defaultVisible);
-		},
-		close() {
-			this.defaultVisible = false;
-			this.$emit("change", this.defaultVisible);
-		},
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "message");
+    let classes = {};
 
-		handleBtnCloseClick() {
-			this.close();
-		},
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${props.type}`]: props.type,
+      [`${classNamePrefix}-with-background`]: props.background,
+      [`${classNamePrefix}-with-icon`]: icon,
+      [`${classNamePrefix}-closable`]: props.closable
+    };
+    classes.elContent = `${classNamePrefix}-content`;
+    classes.elIcon = `${classNamePrefix}-icon`;
+    classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
-		handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave() {
-			this.$emit("afterClose");
-		}
-	},
+    // style
+    let styles = {};
 
-	render(h) {
-		let { $slots: slots, classNamePrefix: customizedClassNamePrefix, type, closable, closeText, top, zIndex, defaultVisible, animation, getPopupContainer } = this;
-		let { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let portal = getPopupContainer();
+    styles.el = {
+      top: is.string(props.top) ? props.top : (props.top + "px"),
+      zIndex: state.visible ? Popup.nextZIndex() : Popup.zIndex
+    };
 
-		let content;
+    // render
+    let children = [];
 
-		if (slots.default) {
-			content = slots.default;
-		}
-		else if (this.content) {
-			content = is.function(this.content) ? this.content(h) : this.content;
-		}
+    if (icon) {
+      children.push(
+        <div class={classes.elIcon}>{icon}</div>
+      );
+    }
 
-		let icon;
+    children.push(
+      <div class={classes.elContent}>{content}</div>
+    );
 
-		if (slots.icon) {
-			icon = slots.icon;
-		}
-		else if (this.icon) {
-			icon = (
-				<VuiIcon type={this.icon} />
-			);
-		}
+    if (props.closable) {
+      children.push(
+        <div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
+      );
+    }
 
-		let btnClose;
-
-		if (closable) {
-			if (closeText) {
-				btnClose = closeText;
-			}
-			else {
-				btnClose = (
-					<VuiIcon type="crossmark" />
-				);
-			}
-		}
-
-		let classNamePrefix = getClassNamePrefix(customizedClassNamePrefix, "message");
-		let classes = {};
-
-		classes.el = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-with-icon`]: icon,
-			[`${classNamePrefix}-closable`]: closable
-		};
-		classes.elContent = `${classNamePrefix}-content`;
-		classes.elIcon = `${classNamePrefix}-icon`;
-		classes.elBtnClose = `${classNamePrefix}-btn-close`;
-
-		let styles = {};
-
-		styles.el = {
-			top: `${top}px`,
-			zIndex
-		};
-
-		let children = [];
-
-		children.push(
-			<div class={classes.elContent}>{content}</div>
-		);
-
-		if (icon) {
-			children.push(
-				<div class={classes.elIcon}>{icon}</div>
-			);
-		}
-
-		if (closable) {
-			children.push(
-				<div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
-			);
-		}
-
-		return (
-			<transition
-				name={animation}
-				onEnter={handleEnter}
-				onAfterEnter={handleAfterEnter}
-				onLeave={handleLeave}
-				onAfterLeave={handleAfterLeave}
-				appear
-			>
-				<div v-portal={portal} v-show={defaultVisible} class={classes.el} style={styles.el}>
-					{children}
-				</div>
-			</transition>
-		);
-	}
+    return (
+      <transition
+        name={props.animation}
+        onEnter={handleEnter}
+        onAfterEnter={handleAfterEnter}
+        onLeave={handleLeave}
+        onAfterLeave={handleAfterLeave}
+        appear
+      >
+        <div v-portal={props.getPopupContainer} v-show={state.visible} class={classes.el} style={styles.el}>
+          {children}
+        </div>
+      </transition>
+    );
+  }
 };
 
 export default VuiMessage;

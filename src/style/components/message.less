@@ -1,100 +1,113 @@
 @vui-message: ~"@{vui}-message";
 
+.@{vui-message} {
+  position:fixed;
+  top:20px;
+  left:50%;
+  box-sizing:border-box;
+  border-radius:@message-border-radius;
+  background-color:@message-background-color;
+  box-shadow:@message-box-shadow;
+  padding:@message-padding-vertical @message-padding-horizontal;
+  transform:translate(-50%, 0);
+  transition:top @transition-duration @transition-timing-function;
+
+  &-icon {
+    position:absolute;
+    top:@message-padding-vertical + round(@message-content-font-size * @message-content-line-height - @message-icon-size) / 2;
+    left:@message-padding-horizontal;
+    color:@message-icon-color;
+    font-size:@message-icon-size;
+    line-height:1;
+
+    .@{vui}-icon {
+      display:block;
+    }
+  }
+
+  &-content {
+    color:@message-content-font-color;
+    font-size:@message-content-font-size;
+    text-align:left;
+    line-height:@message-content-line-height;
+    white-space:normal;
+    word-break:break-all;
+    word-wrap:break-word; 
+  }
+
+  &-btn-close {
+    position:absolute;
+    top:@message-padding-vertical + round(@message-content-font-size * @message-content-line-height - @message-btn-close-font-size) / 2;
+    right:@message-padding-horizontal;
+    cursor:pointer;
+    color:@message-btn-close-font-color;
+    font-size:@message-btn-close-font-size;
+    line-height:1;
+    transition:all @transition-duration @transition-timing-function;
+
+    .@{vui}-icon {
+      display:block;
+      transform:scale(0.85);
+    }
+
+    &:hover {
+      color:@message-btn-close-hover-font-color;
+    }
+  }
+
+  &-info&-with-background {
+    background-color:@message-info-background-color;
+  }
+  &-info &-icon {
+    color:@message-icon-info-color;
+  }
+  &-warning&-with-background {
+    background-color:@message-warning-background-color;
+  }
+  &-warning &-icon {
+    color:@message-icon-warning-color;
+  }
+  &-success&-with-background {
+    background-color:@message-success-background-color;
+  }
+  &-success &-icon {
+    color:@message-icon-success-color;
+  }
+  &-error&-with-background {
+    background-color:@message-error-background-color;
+  }
+  &-error &-icon {
+    color:@message-icon-error-color;
+  }
+  &-loading&-with-background {
+    background-color:@message-loading-background-color;
+  }
+  &-loading &-icon {
+    color:@message-icon-loading-color;
+  }
+
+  &&-with-icon {
+    padding-left:@message-padding-horizontal + @message-icon-size + 8px;
+  }
+  &&-closable {
+    padding-right:@message-padding-horizontal + @message-btn-close-font-size + 8px;
+  }
+
+  &-fade-enter-active {
+    animation:vuiMessageFadeIn @animation-in-duration @animation-in-timing-function both;
+  }
+  &-fade-leave-active {
+    animation:vuiMessageFadeOut @animation-out-duration @animation-out-timing-function both;
+  }
+}
+
 @keyframes vuiMessageFadeIn {
-	0% { opacity:0; transform:translate(-50%, -100%); }
-	100% { opacity:1; transform:translate(-50%, 0); }
+  0% { opacity:0; transform:translate(-50%, -100%); }
+  100% { opacity:1; transform:translate(-50%, 0); }
 }
 
 @keyframes vuiMessageFadeOut {
-	0% { opacity:1; }
-	30% { opacity:1; }
-	100% { opacity:0; }
-}
-
-.@{vui-message} {
-	position:fixed;
-	top:20px;
-	left:50%;
-	box-sizing:border-box;
-	border-radius:@border-radius;
-	background-color:@background-color;
-	box-shadow:@box-shadow;
-	padding:10px 15px;
-	transform:translate(-50%, 0);
-	transition:top @transition-duration @transition-timing-function;
-
-	& &-icon {
-		position:absolute;
-		top:13px;
-		left:15px;
-		color:@font-color;
-		font-size:@font-size;
-		line-height:1;
-
-		.@{vui}-icon {
-			display:block;
-		}
-	}
-
-	& &-content {
-		color:@font-color;
-		font-size:@font-size;
-		text-align:left;
-		line-height:@line-height;
-		white-space:normal;
-		word-break:break-all;
-		word-wrap:break-word; 
-	}
-
-	& &-btn-close {
-		position:absolute;
-		top:14px;
-		right:15px;
-		cursor:pointer;
-		color:@font-secondary-color;
-		font-size:@font-size-sm;
-		line-height:1;
-		transition:all @transition-duration @transition-timing-function;
-
-		.@{vui}-icon {
-			display:block;
-		}
-
-		&:hover {
-			color:@font-color;
-		}
-	}
-
-
-	&-info &-icon {
-		color:@primary-color;
-	}
-	&-warning &-icon {
-		color:@warning-color;
-	}
-	&-success &-icon {
-		color:@success-color;
-	}
-	&-error &-icon {
-		color:@error-color;
-	}
-	&-loading &-icon {
-		color:@primary-color;
-	}
-
-
-	&&-with-icon {
-		padding-left:@font-size + 25px;
-	}
-	&&-closable {
-		padding-right:@font-size-sm + 25px;
-	}
-
-
-	&-fade-enter-active {
-		animation:vuiMessageFadeIn @animation-in-duration @animation-in-timing-function both;
-	}
-	&-fade-leave-active {
-		animation:vuiMessageFadeOut @animation-out-duration @animation-out-timing-function both;
-	}
+  0% { opacity:1; }
+  30% { opacity:1; }
+  100% { opacity:0; }
 }

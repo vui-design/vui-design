@@ -29,6 +29,7 @@ const VuiSelectWrapper = {
     loadingText: PropTypes.string,
     notFoundText: PropTypes.string,
     clearKeywordOnSelect: PropTypes.bool.def(true),
+    bordered: PropTypes.bool.def(true),
     clearable: PropTypes.bool.def(false),
     disabled: PropTypes.bool.def(false),
     placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),

@@ -23,14 +23,15 @@ const VuiInput = {
   props: {
     classNamePrefix: PropTypes.string,
     type: PropTypes.string.def("text"),
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     prepend: PropTypes.string,
     append: PropTypes.string,
     prefix: PropTypes.string,
     suffix: PropTypes.string,
     size: PropTypes.oneOf(["small", "medium", "large"]),
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    bordered: PropTypes.bool.def(true),
     autofocus: PropTypes.bool.def(false),
     clearable: PropTypes.bool.def(false),
     readonly: PropTypes.bool.def(false),
@@ -189,10 +190,10 @@ const VuiInput = {
     }
   },
   mounted() {
-    const { $props: props, $refs: references } = this;
+    const { $props: props } = this;
 
-    if (props.autofocus && references.input) {
-      this.timeout = setTimeout(() => references.input.focus());
+    if (props.autofocus) {
+      this.timeout = setTimeout(() => this.focus(), 0);
     }
   },
   beforeDesotry() {
@@ -254,6 +255,7 @@ const VuiInput = {
     classes.el = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-${size}`]: size,
+      [`${classNamePrefix}-bordered`]: props.bordered,
       [`${classNamePrefix}-hovered`]: state.hovered,
       [`${classNamePrefix}-focused`]: state.focused,
       [`${classNamePrefix}-disabled`]: disabled
@@ -267,19 +269,44 @@ const VuiInput = {
     classes.elBtnClear = `${classNamePrefix}-btn-clear`;
 
     // render
-    const prepend = slots.prepend || props.prepend;
-    const append = slots.append || props.append;
+    let prepend;
+
+    if (slots.prepend || props.prepend) {
+      prepend = (
+        <div class={classes.elPrepend}>
+          {slots.prepend || props.prepend}
+        </div>
+      )
+    }
+
+    let append;
+
+    if (slots.append || props.append) {
+      append = (
+        <div class={classes.elAppend}>
+          {slots.append || props.append}
+        </div>
+      );
+    }
+
     let prefix;
-    let suffix;
 
     if (slots.prefix) {
-      prefix = slots.prefix;
+      prefix = (
+        <div class={classes.elPrefix}>
+          {slots.prefix}
+        </div>
+      );
     }
     else if (props.prefix) {
       prefix = (
-        <VuiIcon type={props.prefix} />
+        <div class={classes.elPrefix}>
+          <VuiIcon type={props.prefix} />
+        </div>
       );
     }
+
+    let suffix;
 
     if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
       const elBtnClearProps = {
@@ -294,7 +321,9 @@ const VuiInput = {
       };
 
       suffix = (
-        <VuiIcon {...elBtnClearProps} />
+        <div class={classes.elSuffix}>
+          <VuiIcon {...elBtnClearProps} />
+        </div>
       );
     }
     else if (props.type === "password" && !props.readonly && !disabled) {
@@ -310,15 +339,23 @@ const VuiInput = {
       };
 
       suffix = (
-        <VuiIcon {...elBtnToggleProps} />
+        <div class={classes.elSuffix}>
+          <VuiIcon {...elBtnToggleProps} />
+        </div>
       );
     }
     else if (slots.suffix) {
-      suffix = slots.suffix;
+      suffix = (
+        <div class={classes.elSuffix}>
+          {slots.suffix}
+        </div>
+      );
     }
     else if (props.suffix) {
       suffix = (
-        <VuiIcon type={props.suffix} />
+        <div class={classes.elSuffix}>
+          <VuiIcon type={props.suffix} />
+        </div>
       );
     }
 
@@ -347,29 +384,13 @@ const VuiInput = {
 
     return (
       <div class={classes.el}>
-        {
-          prepend && (
-            <div class={classes.elPrepend}>{prepend}</div>
-          )
-        }
+        {prepend}
         <div class={classes.elInput} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
-        {
-          prefix && (
-            <div class={classes.elPrefix}>{prefix}</div>
-          )
-        }
-        <input {...elInputProps} value={state.value} />
-        {
-          suffix && (
-            <div class={classes.elSuffix}>{suffix}</div>
-          )
-        }
+          {prefix}
+          <input {...elInputProps} value={state.value} />
+          {suffix}
         </div>
-          {
-          append && (
-            <div class={classes.elAppend}>{append}</div>
-          )
-        }
+        {append}
       </div>
     );
   }

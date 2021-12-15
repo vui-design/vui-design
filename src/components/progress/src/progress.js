@@ -43,6 +43,11 @@ const VuiProgress = {
 			type: String,
 			default: undefined
 		},
+		// 轨道颜色
+		trackColor: {
+			type: String,
+			default: undefined
+		},
 		// 进度条内容的模板函数
 		format: {
 			type: Function,
@@ -72,7 +77,7 @@ const VuiProgress = {
 	},
 
 	render(h) {
-		let { classNamePrefix, type, size, percentage, status, color, format, canvas, stroke, linecap, showInfo } = this;
+		let { classNamePrefix, type, size, percentage, status, color, trackColor, format, canvas, stroke, linecap, showInfo } = this;
 
 		// status
 		if (percentage === 100 && status === "normal") {
@@ -118,7 +123,8 @@ const VuiProgress = {
 
 			let lineTrackStyle = {
 				height: `${lineStrokeWidth}px`,
-				borderRadius: `${lineStrokeLinecap === "round" ? lineStrokeWidth : 0}px`
+				borderRadius: `${lineStrokeLinecap === "round" ? lineStrokeWidth : 0}px`,
+				backgroundColor: trackColor
 			};
 			let lineThumbStyle = {
 				width: `${percentage}%`,
@@ -185,7 +191,8 @@ const VuiProgress = {
 				strokeWidth: `${circleStrokeWidth}px`,
 				strokeLinecap: circleStrokeLinecap,
 				strokeDasharray: `${perimeter}px, ${perimeter}px`,
-				strokeDashoffset: `0px`
+				strokeDashoffset: `0px`,
+				stroke: trackColor
 			};
 			let circleThumbStyle = {
 				stroke: circleStrokeColor,

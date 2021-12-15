@@ -49,6 +49,7 @@ const VuiCascader = {
     optionKeys: PropTypes.object.def(utils.optionKeys),
     formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
     changeOnSelect: PropTypes.bool.def(false),
+    bordered: PropTypes.bool.def(true),
     searchable: PropTypes.bool.def(false),
     filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
     filterOptionProp: PropTypes.string.def("label"),
@@ -72,7 +73,7 @@ const VuiCascader = {
       actived: false,
       searching: false,
       keyword: "",
-      value: this.getDerivedStateValueFromProps({
+      value: this.getStateValueFromProps({
         value: props.value,
         options: props.options,
         optionKeys: optionKeys
@@ -89,7 +90,7 @@ const VuiCascader = {
       const { $props: props } = this;
       const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getDerivedStateValueFromProps({
+      this.state.value = this.getStateValueFromProps({
         value: value,
         options: props.options,
         optionKeys: optionKeys
@@ -99,7 +100,7 @@ const VuiCascader = {
       const { $props: props } = this;
       const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getDerivedStateValueFromProps({
+      this.state.value = this.getStateValueFromProps({
         value: props.value,
         options: value,
         optionKeys: optionKeys
@@ -107,10 +108,7 @@ const VuiCascader = {
     }
   },
   methods: {
-    getDropdownReference() {
-      return this.$refs.selection.$el;
-    },
-    getDerivedStateValueFromProps(props) {
+    getStateValueFromProps(props) {
       let value = clone(props.value);
       let result = [];
 
@@ -126,7 +124,7 @@ const VuiCascader = {
         result = result.concat(clone(option));
 
         if (option[childrenKey]) {
-          result = result.concat(this.getDerivedStateValueFromProps({
+          result = result.concat(this.getStateValueFromProps({
             value: value,
             options: option[childrenKey],
             optionKeys: props.optionKeys
@@ -161,6 +159,9 @@ const VuiCascader = {
       });
 
       return list;
+    },
+    getPopupReference() {
+      return this.$refs.selection.$el;
     },
     focus() {
       this.$refs.selection && this.$refs.selection.focus();
@@ -404,6 +405,7 @@ const VuiCascader = {
     classes.el = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-${size}`]: size,
+      [`${classNamePrefix}-bordered`]: props.bordered,
       [`${classNamePrefix}-hovered`]: state.hovered,
       [`${classNamePrefix}-focused`]: state.focused,
       [`${classNamePrefix}-actived`]: state.actived,
@@ -480,7 +482,7 @@ const VuiCascader = {
           placement={props.placement}
           autoWidth={dropdownAutoWidth}
           animation={props.animation}
-          getPopupReference={this.getDropdownReference}
+          getPopupReference={this.getPopupReference}
           getPopupContainer={props.getPopupContainer}
           onBeforeOpen={handleBeforeOpen}
           onAfterOpen={handleAfterOpen}
