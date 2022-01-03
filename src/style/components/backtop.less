@@ -1,46 +1,49 @@
 @vui-backtop: ~"@{vui}-backtop";
 
 .@{vui-backtop} {
-	position:fixed;
-	right:50px;
-	bottom:50px;
-	z-index:100;
-	cursor:pointer;
-	display:block;
-	width:@backtop-size;
-	height:@backtop-size;
+  cursor:pointer;
+  position:fixed;
+  right:40px;
+  bottom:40px;
+  z-index:100;
+  display:block;
+  box-sizing:border-box;
+  width:@backtop-size;
+  height:@backtop-size;
 
-	&-content {
-		display:flex;
-		justify-content:center;
-		align-items:center;
-		width:@backtop-size;
-		height:@backtop-size;
-		border-radius:@backtop-content-radius;
-		background-color:@backtop-content-background-color;
-		overflow:hidden;
-		color:@backtop-content-font-color;
-		font-size:@backtop-content-font-size;
-		transition:all 0.2s;
+  &-content {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    width:100%;
+    height:100%;
+    border-radius:@backtop-content-radius;
+    background-color:@backtop-content-background-color;
+    overflow:hidden;
+    color:@backtop-content-font-color;
+    font-size:@backtop-content-font-size;
+    transition:all @transition-duration @transition-timing-function;
 
-		svg {
-			width:1em;
-			height:1em;
-			fill:currentColor;
-		}
+    svg {
+      display:block;
+      width:1em;
+      height:1em;
+      fill:currentColor;
+    }
 
-		&:hover {
-			background-color:@backtop-content-hover-background-color;
-		}
-	}
+    &:hover {
+      background-color:@backtop-content-hover-background-color;
+    }
+  }
 
-	&-fade-enter-active,
-	&-fade-leave-active {
-		opacity:1;
-		transition:opacity @transition-duration;
-	}
-	&-fade-enter,
-	&-fade-leave-active {
-		opacity:0;
-	}
+  &-fade-enter-active,
+  &-fade-leave-active {
+    opacity:1;
+    transition:opacity @transition-duration @transition-timing-function;
+  }
+  &-fade-enter,
+  &-fade-leave-active {
+    opacity:0;
+  }
 }

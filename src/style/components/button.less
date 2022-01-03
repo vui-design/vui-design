@@ -61,7 +61,7 @@
       bottom:-1px;
       left:-1px;
       right:-1px;
-      background-color:rgba(255,255,255,0.3);
+      background-color:rgba(255,255,255,0.35);
     }
   }
   &-disabled {
@@ -344,57 +344,57 @@
     color:rgba(0,0,0,0.3);
   }
 
-  &-error {
+  &-danger {
     border-style:solid;
-    border-color:@button-error-border-color;
-    background-color:@button-error-background-color;
-    color:@button-error-font-color;
+    border-color:@button-danger-border-color;
+    background-color:@button-danger-background-color;
+    color:@button-danger-font-color;
 
     &:hover {
-      border-color:@button-error-hover-border-color;
-      background-color:@button-error-hover-background-color;
-      color:@button-error-hover-font-color;
+      border-color:@button-danger-hover-border-color;
+      background-color:@button-danger-hover-background-color;
+      color:@button-danger-hover-font-color;
     }
     &:focus {
-      border-color:@button-error-hover-border-color;
-      background-color:@button-error-hover-background-color;
-      color:@button-error-hover-font-color;
+      border-color:@button-danger-hover-border-color;
+      background-color:@button-danger-hover-background-color;
+      color:@button-danger-hover-font-color;
     }
     &:active {
-      border-color:@button-error-active-border-color;
-      background-color:@button-error-active-background-color;
-      color:@button-error-active-font-color;
+      border-color:@button-danger-active-border-color;
+      background-color:@button-danger-active-background-color;
+      color:@button-danger-active-font-color;
     }
   }
-  &-error&-disabled {
-    border-color:@button-error-disabled-border-color;
-    background-color:@button-error-disabled-background-color;
-    color:@button-error-disabled-font-color;
+  &-danger&-disabled {
+    border-color:@button-danger-disabled-border-color;
+    background-color:@button-danger-disabled-background-color;
+    color:@button-danger-disabled-font-color;
   }
 
-  &-error&-ghost {
-    border-color:@button-error-border-color;
+  &-danger&-ghost {
+    border-color:@button-danger-border-color;
     background-color:transparent;
-    color:@button-error-background-color;
+    color:@button-danger-background-color;
 
     &:hover {
-      border-color:@button-error-hover-border-color;
+      border-color:@button-danger-hover-border-color;
       background-color:transparent;
-      color:@button-error-hover-background-color;
+      color:@button-danger-hover-background-color;
     }
     &:focus {
-      border-color:@button-error-hover-border-color;
+      border-color:@button-danger-hover-border-color;
       background-color:transparent;
-      color:@button-error-hover-background-color;
+      color:@button-danger-hover-background-color;
     }
     &:active {
-      border-color:@button-error-active-border-color;
+      border-color:@button-danger-active-border-color;
       background-color:transparent;
-      color:@button-error-active-background-color;
+      color:@button-danger-active-background-color;
     }
   }
-  &-error&-ghost&-disabled {
-    border-color:@button-error-disabled-border-color;
+  &-danger&-ghost&-disabled {
+    border-color:@button-danger-disabled-border-color;
     background-color:transparent;
     color:rgba(0,0,0,0.3);
   }
@@ -592,7 +592,7 @@
   &-group &-info + &-info,
   &-group &-warning + &-warning,
   &-group &-success + &-success,
-  &-group &-error + &-error {
+  &-group &-danger + &-danger {
     margin-left:1px;
   }
 }

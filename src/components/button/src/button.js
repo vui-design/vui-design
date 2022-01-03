@@ -27,7 +27,7 @@ const VuiButton = {
   props: {
     classNamePrefix: PropTypes.string,
     htmlType: PropTypes.oneOf(["button", "submit", "reset"]).def("button"),
-    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "dashed", "text"]).def("default"),
+    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed", "text"]).def("default"),
     block: PropTypes.bool.def(false),
     ghost: PropTypes.bool.def(false),
     shape: PropTypes.oneOf(["round", "circle"]),
@@ -78,6 +78,10 @@ const VuiButton = {
     }
     else {
       type = props.type;
+    }
+
+    if (type === "error") {
+      type = "danger";
     }
 
     // shape

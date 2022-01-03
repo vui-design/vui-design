@@ -28,7 +28,8 @@ const VuiAnchor = {
     getScrollContainer: PropTypes.func.def(() => window),
     getCurrentAnchorLink: PropTypes.func,
     offsetTop: PropTypes.number,
-    offsetBottom: PropTypes.number
+    offsetBottom: PropTypes.number,
+    preventDefault: PropTypes.bool.def(false)
   },
   data() {
     const state = {
@@ -145,8 +146,8 @@ const VuiAnchor = {
 
       this.animating = true;
       scrollTo(scrollContainer, scrollTop, y, 450, () => {
-                this.animating = false;
-            });
+        this.animating = false;
+      });
     },
     changeInkThumb() {
       if (is.undefined(document)) {
@@ -248,13 +249,16 @@ const VuiAnchor = {
       </div>
     );
 
-    return !props.affix ? (
-      anchor
-    ) : (
-      <VuiAffix getScrollContainer={props.getScrollContainer} offsetTop={props.offsetTop} offsetBottom={props.offsetBottom}>
-        {anchor}
-      </VuiAffix>
-    );
+    if (props.affix) {
+      return (
+        <VuiAffix getScrollContainer={props.getScrollContainer} offsetTop={props.offsetTop} offsetBottom={props.offsetBottom}>
+          {anchor}
+        </VuiAffix>
+      );
+    }
+    else {
+      return anchor;
+    }
   }
 };
 

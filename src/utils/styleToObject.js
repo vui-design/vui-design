@@ -5,25 +5,25 @@ import is from "./is";
 * @param {String} style 行内样式 
 */
 export default function styleToObject(style) {
-	let object = {};
+  let object = {};
 
-	if (!style || !is.string(style)) {
-		return object;
-	}
+  if (!style || !is.string(style)) {
+    return object;
+  }
 
-	const array = style.split(";").filter(item => item);
+  const array = style.split(";").filter(item => item);
 
-	array.forEach(item => {
-		const part = item.split(":").map(string => string.trim());
-		let key = part[0];
-		let value = part[1];
+  array.forEach(item => {
+    const part = item.split(":").map(string => string.trim());
+    let key = part[0];
+    let value = part[1];
 
-		key = key.replace(/-(\w)/g, (match, letter) => {
-			return letter.toUpperCase();
-		});
+    key = key.replace(/-(\w)/g, (match, letter) => {
+      return letter.toUpperCase();
+    });
 
-		object[key] = value;
-	});
+    object[key] = value;
+  });
 
-	return object;
+  return object;
 };

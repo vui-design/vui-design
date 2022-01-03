@@ -3,20 +3,20 @@
 * @returns {Any}
 */
 export default function getInheritProp(prop, defaultValue, parents) {
-	let i = 0;
-	let length = parents.length;
-	let value = defaultValue;
+  let i = 0;
+  let length = parents.length;
+  let value = defaultValue;
 
-	while (i < length) {
-		const parent = parents[i];
+  while (i < length) {
+    const parent = parents[i];
 
-		if (parent && parent[prop]) {
-			value = parent[prop];
-			break;
-		}
+    if (parent && parent[prop]) {
+      value = parent[prop];
+      break;
+    }
 
-		i++;
-	}
+    i++;
+  }
 
-	return value;
+  return value;
 };

@@ -141,15 +141,6 @@ var assign = function() {
   return target;
 };
 
-
-
-
-
-
-
-
-
-
 // 为给定元素设置属性
 var setAttributes = function(element, attributes) {
   Object.keys(attributes).forEach(function(prop) {
@@ -500,60 +491,6 @@ var runModifiers = function(data, modifiers, ends) {
 
   return data;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /****************************************************************************************************
  * Popup 修饰器列表
@@ -929,10 +866,6 @@ var modifiers = {
   }
 };
 
-
-
-
-
 /****************************************************************************************************
  * Popup 选项
  */
@@ -950,10 +883,6 @@ var defaults = {
   // 销毁后的回调函数
   onUpdate: noop
 };
-
-
-
-
 
 /****************************************************************************************************
  * Popup 构造函数
@@ -1168,22 +1097,6 @@ Popup.prototype.removeEventListeners = function() {
   this.state.update = null;
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /****************************************************/
 let zIndex = (Vue.prototype.$vui || {}).zIndex || 2000;
 
@@ -1200,29 +1113,6 @@ Object.defineProperty(Popup, "zIndex", {
 Popup.nextZIndex = function() {
   return Popup.zIndex++;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // 
 export default Popup;

@@ -3,7 +3,7 @@ import Emitter from "../../../mixins/emitter";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import merge from "../../../utils/merge";
-import css from "../../../utils/css";
+import setStyle from "../../../utils/setStyle";
 import getTextareaSize from "../../../utils/getTextareaSize";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
@@ -40,7 +40,7 @@ const VuiTextarea = {
     const state = {
       hovered: false,
       focused: false,
-      value: props.value
+      value: is.effective(props.value) ? props.value : ""
     };
 
     return {
@@ -50,6 +50,8 @@ const VuiTextarea = {
   watch: {
     value(value) {
       const { $props: props, state } = this;
+
+      value = is.effective(value) ? value : "";
 
       if (state.value === value) {
         return;
@@ -103,7 +105,7 @@ const VuiTextarea = {
           styles = getTextareaSize(references.textarea, minRows, maxRows);
         }
 
-        css(references.textarea, merge(styles, {
+        setStyle(references.textarea, merge(styles, {
           resize: props.resizable ? "vertical" : "none"
         }));
       }
@@ -281,7 +283,7 @@ const VuiTextarea = {
     // btnClear
     let btnClear;
 
-    if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
+    if (props.clearable && !props.readonly && !disabled && state.hovered && is.effective(state.value)) {
       const elBtnClearProps = {
         props: {
           type: "crossmark-circle-filled"

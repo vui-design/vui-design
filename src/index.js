@@ -7,6 +7,7 @@ if (typeof console !== "undefined" && console.warn && typeof window !== "undefin
 import Icon from "./components/icon";
 import ButtonGroup from "./components/button-group";
 import Button from "./components/button";
+import Link from "./components/link";
 // Layout
 import Divider from "./components/divider";
 import Row from "./components/row";
@@ -111,9 +112,10 @@ import Anchor from "./components/anchor";
 import AnchorLink from "./components/anchor-link";
 import Authorizer from "./components/authorizer";
 import Backtop from "./components/backtop";
+import Collapser from "./components/collapser";
 import Fullscreen from "./components/fullscreen";
 import Loading from "./components/loading";
-import TransitionCollapse from "./components/transition-collapse";
+import ResizeObserver from "./components/resize-observer";
 // Language
 import locale from "./locale";
 
@@ -122,6 +124,7 @@ const components = [
   Icon,
   ButtonGroup,
   Button,
+  Link,
   // Layout
   Divider,
   Row,
@@ -226,8 +229,9 @@ const components = [
   AnchorLink,
   Authorizer,
   Backtop,
+  Collapser,
   Fullscreen,
-  TransitionCollapse
+  ResizeObserver
 ];
 
 const install = function(Vue, options = {}) {
@@ -264,6 +268,7 @@ export {
   Icon,
   ButtonGroup,
   Button,
+  Link,
   // Layout
   Divider,
   Row,
@@ -369,12 +374,13 @@ export {
   Authorizer,
   Backtop,
   Loading,
+  Collapser,
   Fullscreen,
-  TransitionCollapse
+  ResizeObserver
 };
 
 export default {
-  version: "1.8.7",
+  version: "1.9.0",
   install,
   // Locale
   locale: locale.use,
@@ -383,6 +389,7 @@ export default {
   Icon,
   ButtonGroup,
   Button,
+  Link,
   // Layout
   Divider,
   Row,
@@ -487,7 +494,8 @@ export default {
   AnchorLink,
   Authorizer,
   Backtop,
+  Collapser,
   Loading,
   Fullscreen,
-  TransitionCollapse
+  ResizeObserver
 };

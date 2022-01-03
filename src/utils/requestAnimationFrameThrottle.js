@@ -6,20 +6,20 @@ import raf from "./raf";
 * 这里使用 requestAnimationFrame 来优化滚动处理，在一帧中只进行一次有效重绘
 */
 export default function requestAnimationFrameThrottle(callback) {
-	let id;
+  let id;
 
-	const factory = args => () => {
-		id = null;
-		callback(...args);
-	};
+  const factory = args => () => {
+    id = null;
+    callback(...args);
+  };
 
-	const throttled = (...args) => {
-		if (id == null) {
-			id = raf(factory(args));
-		}
-	};
+  const throttled = (...args) => {
+    if (id == null) {
+      id = raf(factory(args));
+    }
+  };
 
-	throttled.cancel = () => raf.cancel(id);
+  throttled.cancel = () => raf.cancel(id);
 
-	return throttled;
+  return throttled;
 };

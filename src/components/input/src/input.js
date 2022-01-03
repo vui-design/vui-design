@@ -1,6 +1,7 @@
 import VuiIcon from "../../icon";
 import Emitter from "../../../mixins/emitter";
 import PropTypes from "../../../utils/prop-types";
+import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiInput = {
@@ -44,7 +45,7 @@ const VuiInput = {
       hovered: false,
       focused: false,
       plaintext: false,
-      value: props.value
+      value: is.effective(props.value) ? props.value : ""
     };
 
     return {
@@ -54,6 +55,8 @@ const VuiInput = {
   watch: {
     value(value) {
       const { $props: props, state } = this;
+
+      value = is.effective(value) ? value : "";
 
       if (state.value === value) {
         return;
@@ -308,7 +311,7 @@ const VuiInput = {
 
     let suffix;
 
-    if (props.clearable && !props.readonly && !disabled && state.hovered && state.value !== "") {
+    if (props.clearable && !props.readonly && !disabled && state.hovered && is.effective(state.value)) {
       const elBtnClearProps = {
         props: {
           type: "crossmark-circle-filled"

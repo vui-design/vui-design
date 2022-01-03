@@ -1,180 +1,168 @@
 import Locale from "../../../mixins/locale";
+import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
+import padStart from "../../../utils/padStart";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiTime = {
-	name: "vui-time",
+  name: "vui-time",
+  mixins: [
+    Locale
+  ],
+  props: {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["relative", "date", "datetime"]).def("relative"),
+    time: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.date]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.date]),
+    interval: PropTypes.number.def(60),
+  },
+  data() {
+    const state = {
+      value: ""
+    };
 
-	mixins: [
-		Locale
-	],
+    return {
+      state
+    };
+  },
+  methods: {
+    parse(value) {
+      let date;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "relative",
-			validator: value => ["relative", "date", "datetime"].indexOf(value) > -1
-		},
-		time: {
-			type: [Date, String, Number],
-			required: true
-		},
-		interval: {
-			type: Number,
-			default: 60
-		}
-	},
+      if (is.string(value)) {
+        date = new Date(value.replace(/-/g, "/"));
+      }
+      else if (is.number(value)) {
+        date = new Date(String(value).length > 10 ? value : value * 1000);
+      }
+      else if (is.date(value)) {
+        date = value;
+      }
 
-	data() {
-		let state = {
-			text: ""
-		};
+      return date;
+    },
+    format(value, type) {
+      const date = this.parse(value);
 
-		return {
-			state
-		};
-	},
+      if (!is.date(date)) {
+        return "";
+      }
 
-	methods: {
-		parse(value) {
-			let result;
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let hour = date.getHours();
+      let minute = date.getMinutes();
+      let second = date.getSeconds();
 
-			if (is.object(value)) {
-				result = value;
-			}
-			else if (is.string(value)) {
-				result = new Date(value.replace(/-/g, "/"));
-			}
-			else if (is.number(value)) {
-				result = new Date(String(value).length > 10 ? value : value * 1000);
-			}
-			else {
-				result = new Date();
-			}
+      month = padStart(month, 2, "0");
+      day = padStart(day, 2, "0");
+      hour = padStart(hour, 2, "0");
+      minute = padStart(minute, 2, "0");
+      second = padStart(second, 2, "0");
 
-			return result;
-		},
-		format(value, type) {
-			let result;
-			let date = this.parse(value);
-			let year = date.getFullYear();
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
-			let hour = date.getHours();
-			let minute = date.getMinutes();
-			let second = date.getSeconds();
+      if (type === "date") {
+        return year + "-" + month + "-" + day;
+      }
+      else if (type === "datetime") {
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+      }
+    },
+    getRelativeTime(value) {
+      const date = this.parse(value);
 
-			month = month < 10 ? `0${month}` : month;
-			day = day < 10 ? `0${day}` : day;
-			hour = hour < 10 ? `0${hour}` : hour;
-			minute = minute < 10 ? `0${minute}` : minute;
-			second = second < 10 ? `0${second}` : second;
+      if (!is.date(date)) {
+        return "";
+      }
 
-			if (type === "date") {
-				result = `${year}-${month}-${day}`;
-			}
-			else if (type === "datetime") {
-				result = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-			}
+      const now = new Date();
+      let direction;
+      let diff = now.getTime() - date.getTime();
 
-			return result;
-		},
-		getRelativeTime(value) {
-			let date = this.parse(value);
-			let now = new Date();
-			let direction;
-			let diff = now.getTime() - date.getTime();
+      if (diff >= 0) {
+        direction = this.t("vui.time.before");
+      }
+      else {
+        direction = this.t("vui.time.after");
+        diff = -diff;
+      }
 
-			if (diff >= 0) {
-				direction = this.t("vui.time.before");
-			}
-			else {
-				direction = this.t("vui.time.after");
-				diff = -diff;
-			}
+      const years = Math.floor(diff / (86400000 * 365));
+      const months = Math.floor(diff / (86400000 * 30));
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor(diff / 3600000);
+      const minutes = Math.floor(diff / 60000);
 
-			let years = Math.floor(diff / (86400000 * 365));
-			let months = Math.floor(diff / (86400000 * 30));
-			let days = Math.floor(diff / 86400000);
-			let hours = Math.floor(diff / 3600000);
-			let minutes = Math.floor(diff / 60000);
+      if (years > 0) {
+        return years + (years === 1 ? this.t("vui.time.year") : this.t("vui.time.years")) + direction;
+      }
 
-			if (years > 0) {
-				return years + (years === 1 ? this.t("vui.time.year") : this.t("vui.time.years")) + direction;
-			}
+      if (months > 0) {
+        return months + (months === 1 ? this.t("vui.time.month") : this.t("vui.time.months")) + direction;
+      }
 
-			if (months > 0) {
-				return months + (months === 1 ? this.t("vui.time.month") : this.t("vui.time.months")) + direction;
-			}
+      if (days > 0) {
+        return days + (days === 1 ? this.t("vui.time.day") : this.t("vui.time.days")) + direction;
+      }
 
-			if (days > 0) {
-				return days + (days === 1 ? this.t("vui.time.day") : this.t("vui.time.days")) + direction;
-			}
+      if (hours > 0) {
+        return hours + (hours === 1 ? this.t("vui.time.hour") : this.t("vui.time.hours")) + direction;
+      }
 
-			if (hours > 0) {
-				return hours + (hours === 1 ? this.t("vui.time.hour") : this.t("vui.time.hours")) + direction;
-			}
+      if (minutes > 0) {
+        return minutes + (minutes === 1 ? this.t("vui.time.minute") : this.t("vui.time.minutes")) + direction;
+      }
 
-			if (minutes > 0) {
-				return minutes + (minutes === 1 ? this.t("vui.time.minute") : this.t("vui.time.minutes")) + direction;
-			}
+      return this.t("vui.time.just");
+    },
+    getDateTime(value, type) {
+      return this.format(value, type);
+    },
+    setTimeout() {
+      const { $props: props } = this;
+      const value = props.value || props.time;
+      const callback = () => this.setTimeout();
+      const duration = props.interval * 1000;
 
-			return this.t("vui.time.just");
-		},
-		getDateTime(value, type) {
-			return this.format(value, type);
-		},
-		setTimeout() {
-			let { $props: props } = this;
-			let callback = () => this.setTimeout();
-			let duration = props.interval * 1000;
+      if (props.type === "relative") {
+        this.state.value = this.getRelativeTime(value);
+      }
+      else {
+        this.state.value = this.getDateTime(value, props.type);
+      }
 
-			if (props.type === "relative") {
-				this.state.text = this.getRelativeTime(props.time);
-			}
-			else {
-				this.state.text = this.getDateTime(props.time, props.type);
-			}
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(callback, duration);
+    },
+    clearTimeout() {
+      if (!this.timeout) {
+        return;
+      }
 
-			clearTimeout(this.timeout);
-			this.timeout = setTimeout(callback, duration);
-		},
-		clearTimeout() {
-			if (!this.timeout) {
-				return;
-			}
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  },
+  mounted() {
+    this.setTimeout();
+  },
+  beforeDestroy() {
+    this.clearTimeout();
+  },
+  render() {
+    const { $props: props, state } = this;
 
-			clearTimeout(this.timeout);
-			this.timeout = null;
-		}
-	},
+    // class
+    let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "time");
+    let classes = {};
 
-	mounted() {
-		this.setTimeout();
-	},
+    classes.el = `${classNamePrefix}`;
 
-	beforeDestroy() {
-		this.clearTimeout();
-	},
-
-	render() {
-		let { $props: props, state } = this;
-
-		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "time");
-		let classes = {};
-
-		classes.el = `${classNamePrefix}`;
-
-		// render
-		return (
-			<label class={classes.el}>{state.text}</label>
-		);
-	}
+    // render
+    return (
+      <span class={classes.el}>{state.value}</span>
+    );
+  }
 };
 
 export default VuiTime;

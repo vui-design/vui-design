@@ -3,7 +3,7 @@
 * @returns {Event} event 对象
 */
 export default function getElementByEvent(event) {
-	const e = event || window.event;
+  const e = event || window.event;
 
-	return e.target || e.srcElement;
+  return e.target || e.srcElement;
 };

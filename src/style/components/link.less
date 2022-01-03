@@ -1,0 +1,187 @@
+@vui-link: ~"@{vui}-link";
+
+.@{vui-link} {
+  cursor:pointer;
+  outline:none;
+  display:inline-flex;
+  flex-direction:row;
+  justify-content:flex-start;
+  align-items:center;
+  vertical-align:middle;
+  text-decoration:none;
+  transition:all @transition-duration @transition-timing-function;
+
+  span {
+    display:block;
+    box-sizing:border-box;
+  }
+
+  .@{vui}-icon {
+    display:block;
+    box-sizing:border-box;
+    transition:all @transition-duration @transition-timing-function;
+
+    &:first-child {
+      margin-left:0;
+    }
+
+    &:last-child {
+      margin-right:0;
+    }
+  }
+
+  &-block {
+    display:flex;
+  }
+
+  &-underline {
+    text-decoration:none;
+  }
+  &-underline:hover {
+    text-decoration:underline;
+  }
+  &-underline:focus {
+    text-decoration:underline;
+  }
+  &-underline:active {
+    text-decoration:underline;
+  }
+
+  &-loading {
+    pointer-events:none;
+    opacity:0.65;
+  }
+
+  &-disabled {
+    cursor:not-allowed;
+  }
+
+  &-default {
+    color:@link-default-font-color;
+
+    &:hover {
+      color:@link-default-hover-font-color;
+    }
+    &:focus {
+      color:@link-default-hover-font-color;
+    }
+    &:active {
+      color:@link-default-active-font-color;
+    }
+  }
+  &-default&-disabled {
+    color:@link-default-disabled-font-color;
+  }
+
+  &-primary {
+    color:@link-primary-font-color;
+
+    &:hover {
+      color:@link-primary-hover-font-color;
+    }
+    &:focus {
+      color:@link-primary-hover-font-color;
+    }
+    &:active {
+      color:@link-primary-active-font-color;
+    }
+  }
+  &-primary&-disabled {
+    color:@link-primary-disabled-font-color;
+  }
+
+  &-info {
+    color:@link-info-font-color;
+
+    &:hover {
+      color:@link-info-hover-font-color;
+    }
+    &:focus {
+      color:@link-info-hover-font-color;
+    }
+    &:active {
+      color:@link-info-active-font-color;
+    }
+  }
+  &-info&-disabled {
+    color:@link-info-disabled-font-color;
+  }
+
+  &-warning {
+    color:@link-warning-font-color;
+
+    &:hover {
+      color:@link-warning-hover-font-color;
+    }
+    &:focus {
+      color:@link-warning-hover-font-color;
+    }
+    &:active {
+      color:@link-warning-active-font-color;
+    }
+  }
+  &-warning&-disabled {
+    color:@link-warning-disabled-font-color;
+  }
+
+  &-success {
+    color:@link-success-font-color;
+
+    &:hover {
+      color:@link-success-hover-font-color;
+    }
+    &:focus {
+      color:@link-success-hover-font-color;
+    }
+    &:active {
+      color:@link-success-active-font-color;
+    }
+  }
+  &-success&-disabled {
+    color:@link-success-disabled-font-color;
+  }
+
+  &-danger {
+    color:@link-danger-font-color;
+
+    &:hover {
+      color:@link-danger-hover-font-color;
+    }
+    &:focus {
+      color:@link-danger-hover-font-color;
+    }
+    &:active {
+      color:@link-danger-active-font-color;
+    }
+  }
+  &-danger&-disabled {
+    color:@link-danger-disabled-font-color;
+  }
+
+  &-small {
+    font-size:@link-font-size-sm;
+
+    .@{vui}-icon {
+      font-size:@link-font-size-sm - 2px;
+      margin:0 @link-icon-margin-sm;
+    }
+  }
+
+  &-medium {
+    font-size:@link-font-size-md;
+
+    .@{vui}-icon {
+      font-size:@link-font-size-md - 2px;
+      margin:0 @link-icon-margin-md;
+    }
+  }
+
+  &-large {
+    font-size:@button-font-size-lg;
+
+    .@{vui}-icon {
+      font-size:@link-font-size-lg - 2px;
+      margin:0 @link-icon-margin-lg;
+    }
+  }
+}

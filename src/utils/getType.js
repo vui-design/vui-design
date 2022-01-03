@@ -5,5 +5,5 @@ const objToString = Object.prototype.toString;
 * @param {*} value
 */
 export default function getType(value) {
-	return objToString.call(value);
+  return objToString.call(value);
 };

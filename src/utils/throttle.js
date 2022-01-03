@@ -1,4 +1,4 @@
-import getTime from "./getTime";
+import getTimestamp from "./getTimestamp";
 
 export default function(fn, wait, options){
   let timeout, context, args, result, previous = 0;
@@ -8,7 +8,7 @@ export default function(fn, wait, options){
   }
 
   let later = function() {
-    previous = options.leading === false ? 0 : getTime();
+    previous = options.leading === false ? 0 : getTimestamp();
     timeout = null;
     result = fn.apply(context, args);
 
@@ -18,7 +18,7 @@ export default function(fn, wait, options){
   };
 
   let throttled = function() {
-    let current = getTime();
+    let current = getTimestamp();
 
     if (!previous && options.leading === false) {
       previous = current;
@@ -41,7 +41,8 @@ export default function(fn, wait, options){
       if (!timeout) {
         context = args = null;
       }
-    } else if (!timeout && options.trailing !== false) {
+    }
+    else if (!timeout && options.trailing !== false) {
       timeout = setTimeout(later, remaining);
     }
 

@@ -7,11 +7,11 @@ import getOffsetLeft from "./getOffsetLeft";
 * @param {Window|HTMLElement} container 容器
 */
 export default function getOffsetRect(element, container) {
-	const top = getOffsetTop(element, container);
-	const left = getOffsetLeft(element, container);
+  const top = getOffsetTop(element, container);
+  const left = getOffsetLeft(element, container);
 
-	return {
-		top,
-		left
-	};
+  return {
+    top,
+    left
+  };
 };

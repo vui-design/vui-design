@@ -329,12 +329,11 @@ const VuiTableTbody = {
       });
     },
     getTbody(h) {
+      const { $slots: vuiTableSlots } = this.vuiTable;
       const { $props: props } = this;
       let trs = [];
 
       if (props.tbody.length === 0) {
-        const { locale } = props;
-        const description = locale && locale.empty ? locale.empty : this.t("vui.table.empty");
         let colspan = 0;
 
         if (props.rowExpansion) {
@@ -347,10 +346,24 @@ const VuiTableTbody = {
 
         colspan += props.colgroup.length;
 
+        let empty;
+
+        if (vuiTableSlots.empty) {
+          empty = vuiTableSlots.empty;
+        }
+        else {
+          const { locale } = props;
+          const description = locale && locale.empty ? locale.empty : this.t("vui.table.empty");
+
+          empty = (
+            <VuiEmpty description={description} style="padding: 40px 0;" />
+          );
+        }
+
         trs.push(
           <tr>
             <td colspan={colspan}>
-              <VuiEmpty description={description} style="padding: 40px 0;" />
+              {empty}
             </td>
           </tr>
         );
@@ -366,7 +379,7 @@ const VuiTableTbody = {
     },
     getTbodyChildren(h, trs, level, rows) {
       const { $props: props } = this;
-      const { $scopedSlots: scopedSlots } = this.vuiTable;
+      const { $scopedSlots: vuiTableScopedSlots } = this.vuiTable;
 
       rows.forEach(row => {
         const rowKey = utils.getRowKey(row, props.rowKey);
@@ -513,7 +526,7 @@ const VuiTableTbody = {
           let content;
 
           if (column.slot) {
-            const scopedSlot = scopedSlots[column.slot];
+            const scopedSlot = vuiTableScopedSlots[column.slot];
 
             content = scopedSlot && scopedSlot({
               row: clone(row),
@@ -561,7 +574,7 @@ const VuiTableTbody = {
           let content;
 
           if (props.rowExpansion.slot) {
-            const scopedSlot = scopedSlots[props.rowExpansion.slot];
+            const scopedSlot = vuiTableScopedSlots[props.rowExpansion.slot];
 
             content = scopedSlot && scopedSlot({
               row: clone(row),

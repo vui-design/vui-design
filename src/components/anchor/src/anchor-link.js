@@ -33,6 +33,10 @@ const VuiAnchorLink = {
 
       vuiAnchor.scrollTo(href);
       vuiAnchor.$emit("click", e, { href, title });
+
+      if (vuiAnchor.preventDefault) {
+        e.preventDefault();
+      }
     }
   },
   mounted() {

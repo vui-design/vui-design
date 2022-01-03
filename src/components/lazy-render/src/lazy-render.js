@@ -1,35 +1,35 @@
 import PropTypes from "../../../utils/prop-types";
 
 const VuiLazyRender = {
-	name: "vui-lazy-render",
-	props: {
-		status: PropTypes.bool.def(false)
-	},
-	data() {
-		const state = {
-			status: this.status
-		};
+  name: "vui-lazy-render",
+  props: {
+    render: PropTypes.bool.def(false)
+  },
+  data() {
+    const state = {
+      rendered: this.render
+    };
 
-		return {
-			state
-		};
-	},
-	watch: {
-		status(value) {
-			if (!value || this.state.status) {
-				return;
-			}
+    return {
+      state
+    };
+  },
+  watch: {
+    render(value) {
+      if (!value || this.state.rendered) {
+        return;
+      }
 
-			this.state.status = true;
-		}
-	},
-	render() {
-		if (!this.state.status) {
-			return null;
-		}
+      this.state.rendered = true;
+    }
+  },
+  render() {
+    if (!this.state.rendered) {
+      return null;
+    }
 
-		return this.$slots.default;
-	}
+    return this.$slots.default;
+  }
 };
 
 export default VuiLazyRender;

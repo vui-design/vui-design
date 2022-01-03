@@ -1,0 +1,32 @@
+@vui-collapser: ~"@{vui}-collapser";
+
+.@{vui-collapser} {
+  &-enter {
+    height:0 !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+  }
+  &-enter-to {
+
+  }
+  &-enter-active {
+    overflow:hidden;
+    transition:all @transition-duration @transition-timing-function;
+  }
+  &-leave {
+
+  }
+  &-leave-to {
+    height:0 !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+  }
+  &-leave-active {
+    overflow:hidden;
+    transition:all @transition-duration @transition-timing-function;
+  }
+}

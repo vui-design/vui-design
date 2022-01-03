@@ -1,9 +1,9 @@
 export default function(ref) {
-	return {
-		methods: {
-			blur() {
-				this.$refs[ref].blur();
-			}
-		}
-	};
+  return {
+    methods: {
+      blur() {
+        this.$refs[ref].blur();
+      }
+    }
+  };
 };

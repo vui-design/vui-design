@@ -1,95 +1,98 @@
 @vui-anchor: ~"@{vui}-anchor";
+@anchor-wrapper-padding-left: (@anchor-ink-thumb-size - @anchor-ink-track-size) / 2;
 
 .@{vui-anchor} {
-	position:relative;
-	box-sizing:border-box;
-	margin:0;
-	padding:0 0 0 @anchor-ink-track-size;
-	color:@anchor-font-color;
-	font-size:@anchor-font-size;
-	line-height:@anchor-line-height;
+  position:relative;
+  display:block;
+  box-sizing:border-box;
+  margin:0;
+  padding:0 0 0 @anchor-ink-track-size;
+  color:@anchor-font-color;
+  font-size:@anchor-font-size;
+  line-height:@anchor-line-height;
 
-	&-wrapper {
-		box-sizing:border-box;
-		background-color:#fff;
-		margin-left:-4px;
-		padding-left:4px;
-		overflow:auto;
-	}
+  &-wrapper {
+    display:block;
+    box-sizing:border-box;
+    margin-left:-@anchor-wrapper-padding-left;
+    padding-left:@anchor-wrapper-padding-left;
+    overflow:auto;
+  }
 
-	&-ink {
-		position:absolute;
-		top:0;
-		left:0;
-		box-sizing:border-box;
-		height:100%;
+  &-ink {
+    position:absolute;
+    top:0;
+    left:0;
+    display:block;
+    box-sizing:border-box;
+    height:100%;
 
-		& > &-track {
-			position:relative;
-			display:block;
-			box-sizing:border-box;
-			width:@anchor-ink-track-size;
-			height:100%;
-			margin:0 auto;
-			background-color:#f0f0f0;
-		}
+    & > &-track {
+      position:relative;
+      display:block;
+      box-sizing:border-box;
+      width:@anchor-ink-track-size;
+      height:100%;
+      margin:0 auto;
+      background-color:@anchor-ink-track-color;
+    }
 
-		& > &-thumb {
-			position:absolute;
-			top:11px;
-			left:50%;
-			display:none;
-			box-sizing:border-box;
-			width:8px;
-			height:8px;
-			background-color:#fff;
-			border:2px solid #1890ff;
-			border-radius:8px;
-			transform:translateX(-50%);
-			transition:top 0.2s;
-		}
+    & > &-thumb {
+      position:absolute;
+      left:50%;
+      display:none;
+      box-sizing:border-box;
+      width:@anchor-ink-thumb-size;
+      height:@anchor-ink-thumb-size;
+      background-color:@anchor-ink-thumb-color;
+      border:@anchor-ink-thumb-border-width solid @anchor-ink-thumb-border-color;
+      border-radius:50%;
+      transform:translateX(-50%);
+      transition:top @transition-duration @transition-timing-function;
+    }
 
-		&-active > &-thumb {
-			display:block;
-		}
-	}
+    &-active > &-thumb {
+      display:block;
+    }
+  }
 
-	&-link {
-		display:block;
-		box-sizing:border-box;
-		padding:@anchor-link-padding;
+  &-link {
+    display:block;
+    box-sizing:border-box;
+    padding:@anchor-link-padding-vertical 0 @anchor-link-padding-vertical @anchor-link-padding-horizontal;
 
-		& > &-title {
-			position:relative;
-			display:block;
-			box-sizing:border-box;
-			margin-bottom:@anchor-link-padding-vertical;
-			overflow:hidden;
-			color:@anchor-link-title-font-color;
-			white-space:nowrap;
-			text-overflow:ellipsis;
-			transition:all 0.2s;
+    & > &-title {
+      position:relative;
+      display:block;
+      box-sizing:border-box;
+      margin-bottom:@anchor-link-padding-vertical;
+      overflow:hidden;
+      color:@anchor-link-title-font-color;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      transition:all @transition-duration @transition-timing-function;
 
-			&:only-child {
-				margin-bottom:0;
-			}
-			&:hover {
-				color:@anchor-link-title-hover-font-color;
-			}
-			&:active {
-				color:@anchor-link-title-active-font-color;
-			}
-		}
+      &:only-child {
+        margin-bottom:0;
+      }
 
-		&-active > &-title {
-			color:@anchor-link-title-on-font-color;
+      &:hover {
+        color:@anchor-link-title-hover-font-color;
+      }
+      &:active {
+        color:@anchor-link-title-active-font-color;
+      }
+    }
 
-			&:hover {
-				color:@anchor-link-title-on-font-color;
-			}
-			&:active {
-				color:@anchor-link-title-on-font-color;
-			}
-		}
-	}
+    &-active > &-title {
+      color:@anchor-link-title-on-font-color;
+
+      &:hover {
+        color:@anchor-link-title-on-font-color;
+      }
+      &:active {
+        color:@anchor-link-title-on-font-color;
+      }
+    }
+  }
 }

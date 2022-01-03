@@ -5,5 +5,5 @@
 * @param {Number} upper 上限
 */
 export default function clamp(number, lower, upper) {
-	return Math.min.call(null, Math.max.call(null, number, lower), upper);
+  return Math.min.call(null, Math.max.call(null, number, lower), upper);
 };

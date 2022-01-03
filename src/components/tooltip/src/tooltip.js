@@ -233,7 +233,7 @@ const VuiTooltip = {
 				<div ref="trigger" class={classes.elTrigger} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave} onFocusin={handleFocusin} onFocusout={handleFocusout} onClick={handleClick} v-outclick={handleOutClick}>
 					{slots.default}
 				</div>
-				<VuiLazyRender status={state.visible}>
+				<VuiLazyRender render={state.visible}>
 					<transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
 						<div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} style={styles.elPopup} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
 							<div class={classes.elPopupBody} style={styles.elPopupBody}>{content}</div>

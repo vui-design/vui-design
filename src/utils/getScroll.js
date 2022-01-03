@@ -6,19 +6,19 @@ import is from "./is";
 * @param {Boolean} vertical 是否获取垂直方向的滚动距离，默认为 true
 */
 export default function getScroll(scrollContainer, vertical = true) {
-	if (typeof window === "undefined") {
-		return 0;
-	}
+  if (typeof window === "undefined") {
+    return 0;
+  }
 
-	const isWindow = scrollContainer === window;
-	const key = vertical ? "pageYOffset" : "pageXOffset";
-	const property = vertical ? "scrollTop" : "scrollLeft";
+  const isWindow = scrollContainer === window;
+  const key = vertical ? "pageYOffset" : "pageXOffset";
+  const property = vertical ? "scrollTop" : "scrollLeft";
 
-	let value = isWindow ? scrollContainer[key] : scrollContainer[property];
+  let value = isWindow ? scrollContainer[key] : scrollContainer[property];
 
-	if (isWindow && !is.number(value)) {
-		value = window.document.documentElement[property];
-	}
+  if (isWindow && !is.number(value)) {
+    value = window.document.documentElement[property];
+  }
 
-	return value;
+  return value;
 };

@@ -346,7 +346,7 @@ const VuiModal = {
     );
 
     return (
-      <VuiLazyRender status={state.visible}>
+      <VuiLazyRender render={state.visible}>
         <div v-portal={props.getPopupContainer}>
           {children}
         </div>

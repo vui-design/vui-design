@@ -6,31 +6,31 @@
 * @param {Object|Boolean} option 选项
 */
 export default function addEventListener(target, type, listener, option) {
-	if (target.addEventListener) {
-		let useCapture = false;
+  if (target.addEventListener) {
+    let useCapture = false;
 
-		if (typeof option === "object") {
-			useCapture = option.capture || false;
-		}
-		else if (typeof option === "boolean") {
-			useCapture = option;
-		}
+    if (typeof option === "object") {
+      useCapture = option.capture || false;
+    }
+    else if (typeof option === "boolean") {
+      useCapture = option;
+    }
 
-		target.addEventListener(type, listener, option || false);
+    target.addEventListener(type, listener, option || false);
 
-		return {
-			remove() {
-				target.removeEventListener(type, listener, useCapture);
-			}
-		};
-	}
-	else if (target.attachEvent) {
-		target.attachEvent("on" + type, listener);
+    return {
+      remove() {
+        target.removeEventListener(type, listener, useCapture);
+      }
+    };
+  }
+  else if (target.attachEvent) {
+    target.attachEvent("on" + type, listener);
 
-		return {
-			remove() {
-				target.detachEvent("on" + type, listener);
-			}
-		};
-	}
+    return {
+      remove() {
+        target.detachEvent("on" + type, listener);
+      }
+    };
+  }
 };

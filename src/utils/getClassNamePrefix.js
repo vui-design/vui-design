@@ -6,18 +6,18 @@ import Vue from "vue";
 * @param {String} componentName 组件名称
 */
 export default function getClassNamePrefix(customizedClassNamePrefix, componentName) {
-	let classNamePrefix = customizedClassNamePrefix;
+  let classNamePrefix = customizedClassNamePrefix;
 
-	if (!classNamePrefix) {
-		const vui = Vue.prototype.$vui;
+  if (!classNamePrefix) {
+    const vui = Vue.prototype.$vui;
 
-		if (vui && vui.classNamePrefix) {
-			classNamePrefix = vui.classNamePrefix;
-		}
-		else {
-			classNamePrefix = "vui";
-		}
-	}
+    if (vui && vui.classNamePrefix) {
+      classNamePrefix = vui.classNamePrefix;
+    }
+    else {
+      classNamePrefix = "vui";
+    }
+  }
 
-	return classNamePrefix + "-" + componentName;
+  return classNamePrefix + "-" + componentName;
 };

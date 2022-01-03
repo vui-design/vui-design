@@ -1,245 +1,255 @@
 @vui-form: ~"@{vui}-form";
 
-.@{vui-form} {
-	display:block;
-	color:#595959;
-	font-size:14px;
-	line-height:@line-height;
-
-	&-group {
-		position:relative;
-		border:1px solid #e0e0e0;
-		border-radius:2px;
-		padding:30px;
-
-		&-title {
-			position:absolute;
-			top:0;
-			left:20px;
-			background-color:#fff;
-			padding:0 12px;
-			color:#595959;
-			font-size:14px;
-			line-height:@line-height;
-			transform:translateY(-50%);
-		}
-
-		& + & {
-			margin-top:30px;
-		}
-	}
-
-	&-item {
-		.clearfix;
-
-		&-label {
-			display:flex;
-			align-items:center;
-			overflow:hidden;
-			color:#262626;
-
-			&-left {
-				justify-content:flex-start;
-			}
-
-			&-right {
-				justify-content:flex-end;
-			}
-
-			&-required {
-				flex-shrink:0;
-				display:block;
-				margin-right:4px;
-				color:#ff4d4f;
-				font-family:SimSun, sans-serif;
-			}
-
-			&-optional {
-				flex-shrink:0;
-				display:block;
-				margin-left:4px;
-				color:#8c8c8c;
-			}
-
-			&-content {
-				flex-shrink:1;
-				display:block;
-				overflow:hidden;
-				white-space:nowrap;
-				text-overflow:ellipsis;
-			}
-
-			&-description {
-				color:#8c8c8c;
-			}
-
-			&-tooltip {
-				flex-shrink:0;
-				display:block;
-				margin-left:4px;
-				color:#8c8c8c;
-
-				i {
-					display:block;
-				}
-			}
-
-			&-colon {
-				flex-shrink:0;
-				display:block;
-				margin-left:2px;
-			}
-		}
-
-		&-control {
-			position:relative;
-
-			&-layout {
-				display:flex;
-				align-items:center;
-				min-height:34px;
-
-				&-content {
-					flex:1;
-					max-width:100%;
-				}
-			}
-
-			&-extra {
-				margin-top:12px;
-				color:#8c8c8c;
-			}
-
-			&-message {
-				position:absolute;
-				top:100%;
-				left:0;
-				width:100%;
-				padding:2px 0;
-				color:#ff4d4f;
-				line-height:20px;
-
-				&-fade-enter-active { animation:vuiFormItemControlMessageFadeIn @animation-in-duration @animation-in-timing-function both; }
-				&-fade-leave-active { animation:vuiFormItemControlMessageFadeOut @animation-out-duration @animation-out-timing-function both; }
-			}
-		}
-
-		&-without-label &-control {
-			&-layout {
-				min-height:unset;
-			}
-		}
-	}
-
-	&-horizontal &-item {
-		display:block;
-		margin-bottom:24px;
-
-		&:last-child {
-			margin-bottom:0;
-		}
-
-		&-label {
-			float:left;
-			height:34px;
-			padding-right:12px;
-		}
-	}
-
-	&-vertical &-item {
-		display:block;
-		margin-bottom:24px;
-
-		&:last-child {
-			margin-bottom:0;
-		}
-
-		&-label {
-			margin-bottom:12px;
-		}
-	}
-
-	&-inline {
-		display:flex;
-		flex-wrap:wrap;
-		align-items:flex-start;
-	}
-	&-inline &-item {
-		flex-shrink:0;
-		display:flex;
-		flex-wrap:nowrap;
-		align-items:flex-start;
-		margin-right:16px; 
-
-		&:last-child {
-			margin-right:0;
-		}
-
-		&-label {
-			height:34px;
-			padding-right:12px;
-		}
-	}
-}
-
 @keyframes vuiFormItemControlMessageFadeIn {
-	0% { opacity:0; }
-	100% { opacity:1; }
+  0% { opacity:0; }
+  100% { opacity:1; }
 }
 
 @keyframes vuiFormItemControlMessageFadeOut {
-	0% { opacity:1; }
-	100% { opacity:0; }
+  0% { opacity:1; }
+  100% { opacity:0; }
 }
 
-.vui-form-item-error .vui-input .vui-input-input input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-hovered .vui-input-input input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-focused .vui-input-input input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-disabled .vui-input-input input { border-color:#ff4d4f; }
+.@{vui-form} {
+  display:block;
+  box-sizing:border-box;
+  color:@form-font-color;
+  font-size:@form-font-size;
+  line-height:@form-line-height;
 
-.vui-form-item-error .vui-input-number { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-number-hovered { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-number-focused { border-color:#ff4d4f; }
-.vui-form-item-error .vui-input-number-disabled { border-color:#ff4d4f; }
+  &-group {
+    position:relative;
+    border:1px solid @form-group-border-color;
+    border-radius:@form-group-border-radius;
+    padding:@form-group-padding;
 
-.vui-form-item-error .vui-textarea .vui-textarea-input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-textarea-hovered .vui-textarea-input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-textarea-focused .vui-textarea-input { border-color:#ff4d4f; }
-.vui-form-item-error .vui-textarea-disabled .vui-textarea-input { border-color:#ff4d4f; }
+    &-title {
+      position:absolute;
+      top:0;
+      left:@margin-xl;
+      padding:0 @form-group-title-padding-horizontal;
+      color:@form-group-title-font-color;
+      font-size:@form-group-title-font-size;
+      transform:translateY(-50%);
+    }
 
-.vui-form-item-error .vui-select .vui-select-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-select .vui-select-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-select-hovered .vui-select-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-select-hovered .vui-select-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-select-focused .vui-select-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-select-focused .vui-select-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-select-actived .vui-select-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-select-actived .vui-select-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-select-disabled .vui-select-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-select-disabled .vui-select-selection-arrow { color:#ff4d4f; }
+    & + & {
+      margin-top:@form-group-margin-top;
+    }
+  }
 
-.vui-form-item-error .vui-cascader .vui-cascader-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascader .vui-cascader-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-hovered .vui-cascader-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-hovered .vui-cascader-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-focused .vui-cascader-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-focused .vui-cascader-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-actived .vui-cascader-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-actived .vui-cascader-selection-arrow { color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-disabled .vui-cascader-selection { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascader-disabled .vui-cascader-selection-arrow { color:#ff4d4f; }
+  &-item {
+    &-label {
+      display:flex;
+      align-items:center;
+      box-sizing:border-box;
+      overflow:hidden;
+      color:@form-item-label-font-color;
 
-.vui-form-item-error .vui-cascade-selector .vui-cascade-selector-source-list .vui-cascade-selector-source { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascade-selector .vui-cascade-selector-target { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascade-selector-disabled .vui-cascade-selector-source-list .vui-cascade-selector-source { border-color:#ff4d4f; }
-.vui-form-item-error .vui-cascade-selector-disabled .vui-cascade-selector-target { border-color:#ff4d4f; }
+      &-left {
+        justify-content:flex-start;
+      }
 
-.vui-form-item-error .vui-transfer .vui-transfer-panel { border-color:#ff4d4f; }
-.vui-form-item-error .vui-transfer .vui-transfer-panel .vui-transfer-panel-search .vui-input .vui-input-input input { border-color:#e0e0e0; }
-.vui-form-item-error .vui-transfer-disabled .vui-transfer-panel { border-color:#ff4d4f; }
-.vui-form-item-error .vui-transfer-disabled .vui-transfer-panel .vui-transfer-panel-search .vui-input .vui-input-input input { border-color:#e0e0e0; }
+      &-right {
+        justify-content:flex-end;
+      }
 
-.vui-form-item-error .mx-datepicker-input { border-color:#ff4d4f; }
-.vui-form-item-error .mx-datepicker-input:hover { border-color:#ff4d4f; }
-.vui-form-item-error .mx-datepicker-input:focus { border-color:#ff4d4f; }
-.vui-form-item-error .mx-datepicker-input.disabled, .vui-form-item-error .mx-datepicker-input:disabled { border-color:#ff4d4f; }
+      &-required {
+        flex:0 0 auto;
+        display:block;
+        box-sizing:border-box;
+        margin-right:@form-item-label-required-mark-margin-right;
+        color:@form-item-label-required-mark-font-color;
+        font-family:SimSun, sans-serif;
+      }
+
+      &-optional {
+        flex:0 0 auto;
+        display:block;
+        box-sizing:border-box;
+        margin-left:@form-item-label-optional-mark-margin-left;
+        color:@form-item-label-optional-mark-font-color;
+      }
+
+      &-content {
+        flex:0 1 auto;
+        display:block;
+
+        .writeEllipsis;
+      }
+
+      &-description {
+        color:@form-item-label-description-font-color;
+      }
+
+      &-tooltip {
+        flex:0 0 auto;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        box-sizing:border-box;
+        margin-left:@form-item-label-tooltip-margin-left;
+        color:@form-item-label-tooltip-font-color;
+
+        .@{vui}-icon {
+          display:block;
+        }
+      }
+
+      &-colon {
+        flex:0 0 auto;
+        display:block;
+        box-sizing:border-box;
+        margin-left:@form-item-label-colon-margin-left;
+      }
+    }
+
+    &-control {
+      position:relative;
+      display:block;
+      box-sizing:border-box;
+
+      &-extra {
+        margin-top:@form-item-control-extra-margin-top;
+        color:@form-item-control-extra-font-color;
+      }
+
+      &-message {
+        position:absolute;
+        top:100%;
+        left:0;
+        width:100%;
+        padding:(@form-horizontal-item-margin-bottom - floor(@form-font-size * @form-line-height)) / 2 0;
+        color:@form-item-control-message-font-color;
+
+        &-fade-enter-active {
+          animation:vuiFormItemControlMessageFadeIn @animation-in-duration @animation-in-timing-function both;
+        }
+        &-fade-leave-active {
+          animation:vuiFormItemControlMessageFadeOut @animation-out-duration @animation-out-timing-function both;
+        }
+      }
+    }
+  }
+
+  &-horizontal {
+
+  }
+  &-horizontal &-item {
+    display:flex;
+    justify-content:flex-start;
+    align-items:stretch;
+    box-sizing:border-box;
+    margin-bottom:@form-horizontal-item-margin-bottom;
+
+    &:last-child {
+      margin-bottom:0;
+    }
+
+    &-label {
+      max-height:@form-horizontal-item-label-max-height;
+      padding-right:@form-horizontal-item-label-padding-right;
+    }
+
+    &-control {
+      flex:1;
+      width:0;
+    }
+  }
+
+  &-vertical {
+
+  }
+  &-vertical &-item {
+    display:block;
+    box-sizing:border-box;
+    margin-bottom:@form-vertical-item-margin-bottom;
+
+    &:last-child {
+      margin-bottom:0;
+    }
+
+    &-label {
+      margin-bottom:@form-vertical-item-label-margin-bottom;
+    }
+  }
+
+  &-inline {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    align-items:flex-start;
+    box-sizing:border-box;
+  }
+  &-inline &-item {
+    display:flex;
+    justify-content:flex-start;
+    align-items:stretch;
+    box-sizing:border-box;
+    margin-right:@form-inline-item-margin-left;
+
+    &:last-child {
+      margin-right:0;
+    }
+
+    &-label {
+      max-height:@form-inline-item-label-max-height;
+      padding-right:@form-inline-item-label-padding-right;
+    }
+  }
+
+  &-item-error {
+    .vui-input .vui-input-input input { border-color:@error-color; }
+    .vui-input-hovered .vui-input-input input { border-color:@error-color; }
+    .vui-input-focused .vui-input-input input { border-color:@error-color; }
+    .vui-input-disabled .vui-input-input input { border-color:@error-color; }
+
+    .vui-input-number { border-color:@error-color; }
+    .vui-input-number-hovered { border-color:@error-color; }
+    .vui-input-number-focused { border-color:@error-color; }
+    .vui-input-number-disabled { border-color:@error-color; }
+
+    .vui-textarea .vui-textarea-input { border-color:@error-color; }
+    .vui-textarea-hovered .vui-textarea-input { border-color:@error-color; }
+    .vui-textarea-focused .vui-textarea-input { border-color:@error-color; }
+    .vui-textarea-disabled .vui-textarea-input { border-color:@error-color; }
+
+    .vui-select .vui-select-selection { border-color:@error-color; }
+    .vui-select .vui-select-selection-arrow { color:@error-color; }
+    .vui-select-hovered .vui-select-selection { border-color:@error-color; }
+    .vui-select-hovered .vui-select-selection-arrow { color:@error-color; }
+    .vui-select-focused .vui-select-selection { border-color:@error-color; }
+    .vui-select-focused .vui-select-selection-arrow { color:@error-color; }
+    .vui-select-actived .vui-select-selection { border-color:@error-color; }
+    .vui-select-actived .vui-select-selection-arrow { color:@error-color; }
+    .vui-select-disabled .vui-select-selection { border-color:@error-color; }
+    .vui-select-disabled .vui-select-selection-arrow { color:@error-color; }
+
+    .vui-cascader .vui-cascader-selection { border-color:@error-color; }
+    .vui-cascader .vui-cascader-selection-arrow { color:@error-color; }
+    .vui-cascader-hovered .vui-cascader-selection { border-color:@error-color; }
+    .vui-cascader-hovered .vui-cascader-selection-arrow { color:@error-color; }
+    .vui-cascader-focused .vui-cascader-selection { border-color:@error-color; }
+    .vui-cascader-focused .vui-cascader-selection-arrow { color:@error-color; }
+    .vui-cascader-actived .vui-cascader-selection { border-color:@error-color; }
+    .vui-cascader-actived .vui-cascader-selection-arrow { color:@error-color; }
+    .vui-cascader-disabled .vui-cascader-selection { border-color:@error-color; }
+    .vui-cascader-disabled .vui-cascader-selection-arrow { color:@error-color; }
+
+    .vui-cascade-selector .vui-cascade-selector-source-list .vui-cascade-selector-source { border-color:@error-color; }
+    .vui-cascade-selector .vui-cascade-selector-target { border-color:@error-color; }
+    .vui-cascade-selector-disabled .vui-cascade-selector-source-list .vui-cascade-selector-source { border-color:@error-color; }
+    .vui-cascade-selector-disabled .vui-cascade-selector-target { border-color:@error-color; }
+
+    .vui-transfer .vui-transfer-panel { border-color:@error-color; }
+    .vui-transfer .vui-transfer-panel .vui-transfer-panel-search .vui-input .vui-input-input input { border-color:@default-color; }
+    .vui-transfer-disabled .vui-transfer-panel { border-color:@error-color; }
+    .vui-transfer-disabled .vui-transfer-panel .vui-transfer-panel-search .vui-input .vui-input-input input { border-color:@default-color; }
+
+    .mx-datepicker-input { border-color:@error-color; }
+    .mx-datepicker-input:hover { border-color:@error-color; }
+    .mx-datepicker-input:focus { border-color:@error-color; }
+    .mx-datepicker-input.disabled { border-color:@error-color; }
+    .mx-datepicker-input:disabled { border-color:@error-color; }
+  }
+}

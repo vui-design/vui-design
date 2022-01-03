@@ -116,7 +116,7 @@ const VuiCascaderDropdown = {
 
     // render
     return (
-      <VuiLazyRender status={props.visible}>
+      <VuiLazyRender render={props.visible}>
         <VuiResizeObserver onResize={handleResize}>
           <transition
             appear

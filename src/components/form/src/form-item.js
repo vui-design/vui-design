@@ -236,44 +236,56 @@ const VuiFormItem = {
     const { vuiForm, $slots: slots, $props: props, state, isRequired, t: translate } = this;
 
     // label
-    let label = {
-      for: props.labelFor,
-      children: slots.label || props.label,
-      description: vuiForm.layout === "vertical" ? (slots.description || props.description) : "",
-      tooltip: slots.tooltip || props.tooltip,
-      colon: vuiForm.layout === "horizontal" && vuiForm.colon
-    };
+    const label = slots.label || props.label;
+
+    // label width
+    let labelWidth;
 
     if (!is.undefined(props.labelWidth)) {
-      label.width = props.labelWidth;
+      labelWidth = props.labelWidth;
     }
     else if (!is.undefined(vuiForm.labelWidth)) {
-      label.width = vuiForm.labelWidth;
+      labelWidth = vuiForm.labelWidth;
     }
 
-    if (label.width) {
-      label.width = is.string(label.width) ? label.width : `${label.width}px`;
+    if (is.string(labelWidth) || is.number(labelWidth)) {
+      labelWidth = is.string(labelWidth) ? labelWidth : `${labelWidth}px`;
     }
+
+    // label align
+    let labelAlign;
 
     if (props.labelAlign) {
-      label.align = props.labelAlign;
+      labelAlign = props.labelAlign;
     }
     else if (vuiForm.labelAlign) {
-      label.align = vuiForm.labelAlign;
+      labelAlign = vuiForm.labelAlign;
     }
     else if (vuiForm.layout === "vertical") {
-      label.align = "left";
+      labelAlign = "left";
     }
     else {
-      label.align = "right";
+      labelAlign = "right";
     }
 
+    // required mark
+    let requiredMark;
+
     if (isRequired) {
-      label.requiredMark = vuiForm.requiredMark === true ? "asterisk" : "";
+      requiredMark = vuiForm.requiredMark === true ? "asterisk" : "";
     }
     else {
-      label.requiredMark = vuiForm.requiredMark === "optional" ? "optional" : "";
+      requiredMark = vuiForm.requiredMark === "optional" ? "optional" : "";
     }
+
+    // description
+    const description = vuiForm.layout === "vertical" ? (slots.description || props.description) : "";
+
+    // tooltip
+    const tooltip = slots.tooltip || props.tooltip;
+
+    // colon
+    const colon = vuiForm.layout === "horizontal" && vuiForm.colon;
 
     // extra
     const extra = slots.extra || props.extra;
@@ -287,14 +299,14 @@ const VuiFormItem = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
-      [`${classNamePrefix}-without-label`]: !label.children,
+      [`${classNamePrefix}-without-label`]: !label,
       [`${classNamePrefix}-required`]: isRequired,
       [`${classNamePrefix}-error`]: state.validator.status === "error",
       [`${classNamePrefix}-validating`]: state.validator.status === "validating"
     };
     classes.elLabel = {
       [`${classNamePrefix}-label`]: true,
-      [`${classNamePrefix}-label-${label.align}`]: label.align
+      [`${classNamePrefix}-label-${labelAlign}`]: labelAlign
     };
     classes.elLabelRequired = `${classNamePrefix}-label-required`;
     classes.elLabelOptional = `${classNamePrefix}-label-optional`;
@@ -314,52 +326,54 @@ const VuiFormItem = {
     styles.elLabel = {};
     styles.elControl = {};
 
-    if (vuiForm.layout !== "vertical" && label.width) {
-      styles.elLabel.width = label.width;
+    if (vuiForm.layout !== "vertical" && labelWidth) {
+      styles.elLabel.width = labelWidth;
 
-      if (vuiForm.layout === "horizontal") {
-        styles.elControl.marginLeft = label.width;
+      if (vuiForm.layout === "horizontal" && !label) {
+        styles.elControl.marginLeft = labelWidth;
       }
     }
 
     // render
     let children = [];
 
-    if (label.children) {
+    if (label) {
       children.push(
-        <label for={label.for} class={classes.elLabel} style={styles.elLabel}>
+        <label for={props.labelFor} class={classes.elLabel} style={styles.elLabel}>
           {
-            label.requiredMark === "asterisk" && (
+            requiredMark === "asterisk" && (
               <div class={classes.elLabelRequired}>∗</div>
             )
           }
           <div class={classes.elLabelContent} title={props.label}>
             {
-              label.description ? (
+              description ? (
                 <VuiSpace divider size="small">
-                  {label.children}
-                  <div class={classes.elLabelDescription}>{label.description}</div>
+                  {label}
+                  <div class={classes.elLabelDescription}>{description}</div>
                 </VuiSpace>
               ) : (
-                label.children
+                label
               )
             }
           </div>
           {
-            label.requiredMark === "optional" && (
+            requiredMark === "optional" && (
               <div class={classes.elLabelOptional}>{translate("vui.form.optional")}</div>
             )
           }
           {
-            label.tooltip && (
-              <VuiTooltip class={classes.elLabelTooltip} color={props.tooltipColor} maxWidth={props.tooltipMaxWidth}>
-                <VuiIcon type="help" />
-                <div slot="content">{label.tooltip}</div>
-              </VuiTooltip>
+            tooltip && (
+              <div class={classes.elLabelTooltip}>
+                <VuiTooltip color={props.tooltipColor} maxWidth={props.tooltipMaxWidth}>
+                  <VuiIcon type="help" />
+                  <div slot="content">{tooltip}</div>
+                </VuiTooltip>
+              </div>
             )
           }
           {
-            label.children && label.colon && (
+            label && colon && (
               <div class={classes.elLabelColon}>:</div>
             )
           }
@@ -369,19 +383,17 @@ const VuiFormItem = {
 
     children.push(
       <div class={classes.elControl} style={styles.elControl}>
-        <div class={classes.elControlLayout}>
-          <div class={classes.elControlLayoutContent}>{slots.default}</div>
-        </div>
+        {slots.default}
         {
-          extra && (
+          extra ? (
             <div class={classes.elControlExtra}>{extra}</div>
-          )
+          ) : null
         }
         <transition appear name={props.animation}>
           {
-            showMessage && (
+            showMessage ? (
               <div class={classes.elControlMessage}>{state.validator.message}</div>
-            )
+            ) : null
           }
         </transition>
       </div>

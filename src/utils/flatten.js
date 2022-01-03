@@ -8,32 +8,32 @@ import is from "./is";
 * @param {Function} predicate 谓词函数，用于判断是否展开子数据；可选
 */
 export default function flatten(list, property = "children", keep = false, predicate) {
-    if (is.boolean(property)) {
-        predicate = key;
-        keep = property;
-        property = "children";
+  if (is.boolean(property)) {
+    predicate = key;
+    keep = property;
+    property = "children";
+  }
+
+  let array = [];
+
+  list.forEach(item => {
+    let children = item[property];
+
+    if (children) {
+      if (keep) {
+        array.push(item);
+      }
+
+      if (is.function(predicate) && !predicate(item)) {
+        return;
+      }
+
+      array.push.apply(array, flatten(children, property, keep, predicate));
     }
+    else {
+      array.push(item);
+    }
+  });
 
-    let array = [];
-
-    list.forEach(item => {
-        let children = item[property];
-
-        if (children) {
-            if (keep) {
-                array.push(item);
-            }
-
-            if (is.function(predicate) && !predicate(item)) {
-                return;
-            }
-
-            array.push.apply(array, flatten(children, property, keep, predicate));
-        }
-        else {
-            array.push(item);
-        }
-    });
-
-    return array;
+  return array;
 };

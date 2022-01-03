@@ -8,6 +8,7 @@ const VuiDescriptions = {
   props: {
     classNamePrefix: PropTypes.string,
     layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+    layoutStyle: PropTypes.oneOf(["auto", "fixed"]),
     bordered: PropTypes.bool.def(false),
     size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
     columns: PropTypes.number.def(3),
@@ -16,8 +17,7 @@ const VuiDescriptions = {
     labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     labelAlign: PropTypes.oneOf(["left", "center", "right"]),
     title: PropTypes.any,
-    extra: PropTypes.any,
-    equivalent: PropTypes.bool.def(false)
+    extra: PropTypes.any
   },
   methods: {
     getColumns() {
@@ -149,10 +149,10 @@ const VuiDescriptions = {
                 <td colSpan={span}>
                   {
                     column.label && (
-                      <label class={classes.elItemLabel}>{column.label}</label>
+                      <span class={classes.elItemLabel}>{column.label}</span>
                     )
                   }
-                  <label class={classes.elItemContent}>{column.children}</label>
+                  <span class={classes.elItemContent}>{column.children}</span>
                 </td>
               );
             });
@@ -185,13 +185,13 @@ const VuiDescriptions = {
 
               header.push(
                 <th colSpan={span}>
-                  <label class={classes.elItemLabel}>{column.label}</label>
+                  <span class={classes.elItemLabel}>{column.label}</span>
                 </th>
               );
 
               body.push(
                 <td colSpan={span}>
-                  <label class={classes.elItemContent}>{column.children}</label>
+                  <span class={classes.elItemContent}>{column.children}</span>
                 </td>
               );
             });
@@ -214,7 +214,14 @@ const VuiDescriptions = {
     const { $props: props } = this;
 
     // table layout
-    const isTableLayoutFixed = !props.bordered || (props.bordered && props.equivalent);
+    let tableLayout = "";
+
+    if (props.bordered) {
+      tableLayout = props.layoutStyle ? props.layoutStyle : "auto";
+    }
+    else {
+      tableLayout = "fixed";
+    }
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "descriptions");
@@ -234,7 +241,7 @@ const VuiDescriptions = {
     let style = {};
 
     style.elTable = {
-      tableLayout: isTableLayoutFixed ? "fixed" : "auto"
+      tableLayout: tableLayout
     };
 
     // render

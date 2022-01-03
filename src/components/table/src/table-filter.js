@@ -174,7 +174,7 @@ const VuiTableFilter = {
             <path d="M0 0h1024L624.390244 462.04878v561.95122l-224.780488-112.390244V449.560976L0 0z m0 0"></path>
           </svg>
         </div>
-        <VuiLazyRender status={state.visible}>
+        <VuiLazyRender render={state.visible}>
           <transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
             <div ref="dropdown" v-portal={portal} v-show={state.visible} class={classes.elDropdown}>
               <div class={classes.elDropdownBody}>

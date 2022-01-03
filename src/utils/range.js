@@ -7,21 +7,21 @@
 * @param {Number} step 范围的增量或者减量
 */
 export default function range(start, end, step) {
-	if (end == null) {
-		end = start || 0;
-		start = 0;
-	}
+  if (end == null) {
+    end = start || 0;
+    start = 0;
+  }
 
-	if (!step) {
-		step = end < start ? -1 : 1;
-	}
+  if (!step) {
+    step = end < start ? -1 : 1;
+  }
 
-	const length = Math.max(Math.ceil((end - start) / step), 0);
-	let range = Array(length);
+  const length = Math.max(Math.ceil((end - start) / step), 0);
+  let range = Array(length);
 
-	for (let i = 0; i < length; i++, start += step) {
-		range[i] = start;
-	}
+  for (let i = 0; i < length; i++, start += step) {
+    range[i] = start;
+  }
 
-	return range;
+  return range;
 };

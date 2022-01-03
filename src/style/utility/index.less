@@ -8,10 +8,6 @@
 .pull-left { float:left !important; }
 .pull-right { float:right !important; }
 
-.display-block { display:block; }
-.display-inline { display:inline; }
-.display-inline-block { display:inline-block; }
-
 .show { display:block !important; }
 .hide { display:none !important; }
 
@@ -167,27 +163,27 @@
 .color-success { color:@success-color; }
 .color-error { color:@error-color; }
 
-.weight-thin { font-weight:300; }
-.weight-bold { font-weight:600; }
+.weight-thin { font-weight:@font-weight-thin; }
+.weight-bold { font-weight:@font-weight-bold; }
 
-a.link-default, .link-default a { color:#595959; }
-a.link-default:hover, .link-default a:hover { color:tint(#2d8cf0, 10%); }
-a.link-default:active, .link-default a:active { color:shade(#2d8cf0, 10%); }
-a.link-primary, .link-primary a { color:#2d8cf0; }
-a.link-primary:hover, .link-primary a:hover { color:tint(#2d8cf0, 10%); }
-a.link-primary:active, .link-primary a:active { color:shade(#2d8cf0, 10%); }
-a.link-info, .link-info a { color:#5bc0de; }
-a.link-info:hover, .link-info a:hover { color:tint(#5bc0de, 10%); }
-a.link-info:active, .link-info a:active { color:shade(#5bc0de, 10%); }
-a.link-warning, .link-warning a { color:#faad14; }
-a.link-warning:hover, .link-warning a:hover { color:tint(#faad14, 10%); }
-a.link-warning:active, .link-warning a:active { color:shade(#faad14, 10%); }
-a.link-success, .link-success a { color:#52c41a; }
-a.link-success:hover, .link-success a:hover { color:tint(#52c41a, 10%); }
-a.link-success:active, .link-success a:active { color:shade(#52c41a, 10%); }
-a.link-error, .link-error a { color:#ff4d4f; }
-a.link-error:hover, .link-error a:hover { color:tint(#ff4d4f, 10%); }
-a.link-error:active, .link-error a:active { color:shade(#ff4d4f, 10%); }
-a.link-disabled, .link-disabled a { cursor:not-allowed; color:tint(#000, 75%); }
-a.link-disabled:hover, .link-disabled a:hover { cursor:not-allowed; color:tint(#000, 75%); }
-a.link-disabled:active, .link-disabled a:active { cursor:not-allowed; color:tint(#000, 75%); }
+a.link-default, .link-default a { color:@font-color; }
+a.link-default:hover, .link-default a:hover { color:tint(@primary-color, 10%); }
+a.link-default:active, .link-default a:active { color:shade(@primary-color, 10%); }
+a.link-primary, .link-primary a { color:@primary-color; }
+a.link-primary:hover, .link-primary a:hover { color:tint(@primary-color, 10%); }
+a.link-primary:active, .link-primary a:active { color:shade(@primary-color, 10%); }
+a.link-info, .link-info a { color:@info-color; }
+a.link-info:hover, .link-info a:hover { color:tint(@info-color, 10%); }
+a.link-info:active, .link-info a:active { color:shade(@info-color, 10%); }
+a.link-warning, .link-warning a { color:@warning-color; }
+a.link-warning:hover, .link-warning a:hover { color:tint(@warning-color, 10%); }
+a.link-warning:active, .link-warning a:active { color:shade(@warning-color, 10%); }
+a.link-success, .link-success a { color:@success-color; }
+a.link-success:hover, .link-success a:hover { color:tint(@success-color, 10%); }
+a.link-success:active, .link-success a:active { color:shade(@success-color, 10%); }
+a.link-error, .link-error a { color:@error-color; }
+a.link-error:hover, .link-error a:hover { color:tint(@error-color, 10%); }
+a.link-error:active, .link-error a:active { color:shade(@error-color, 10%); }
+a.link-disabled, .link-disabled a { cursor:not-allowed; color:@font-disabled-color; }
+a.link-disabled:hover, .link-disabled a:hover { cursor:not-allowed; color:@font-disabled-color; }
+a.link-disabled:active, .link-disabled a:active { cursor:not-allowed; color:@font-disabled-color; }

@@ -2,17 +2,17 @@
 * 用于生成全局唯一ID
 */
 export default function guid() {
-	let result = "";
+  let result = "";
 
-	for (let i = 1; i <= 32; i++) {
-		let n = Math.floor(Math.random() * 16.0).toString(16);
+  for (let i = 1; i <= 32; i++) {
+    let n = Math.floor(Math.random() * 16.0).toString(16);
 
-		result += n;
+    result += n;
 
-		if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) {
-			result += "-";
-		}
-	}
+    if ((i == 8) || (i == 12) || (i == 16) || (i == 20)) {
+      result += "-";
+    }
+  }
 
-	return result;
+  return result;
 };

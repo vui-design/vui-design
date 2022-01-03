@@ -7,11 +7,12 @@ import Popup from "../../../libs/popup";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import merge from "../../../utils/merge";
-import css from "../../../utils/css";
 import styleToObject from "../../../utils/styleToObject";
 import addScrollbarEffect from "../../../utils/addScrollbarEffect";
 import getStyle from "../../../utils/getStyle";
+import setStyle from "../../../utils/setStyle";
 import getElementByEvent from "../../../utils/getElementByEvent";
+import getContainer from "../../../utils/getContainer";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDrawer = {
@@ -67,7 +68,7 @@ const VuiDrawer = {
     backdropStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     clickBackdropToClose: PropTypes.bool.def(true),
     animations: PropTypes.array.def(["vui-drawer-backdrop-fade", "vui-drawer-slide"]),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
+    getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
   },
   data() {
     const { $props: props } = this;
@@ -115,9 +116,11 @@ const VuiDrawer = {
       const placement = props.placement;
       const distance = parseInt(getStyle(drawer, placement)) + 200;
 
-      css(drawer, placement, distance + "px");
+      setStyle(drawer, placement, distance + "px");
 
-      vuiDrawer && vuiDrawer.push();
+      if (vuiDrawer) {
+        vuiDrawer.push();
+      }
     },
     pull() {
       const { vuiDrawer, $refs: references, $props: props } = this;
@@ -125,28 +128,25 @@ const VuiDrawer = {
       const placement = props.placement;
       const distance = parseInt(getStyle(drawer, placement)) - 200;
 
-      css(drawer, placement, distance + "px");
+      setStyle(drawer, placement, distance + "px");
 
-      vuiDrawer && vuiDrawer.pull();
-    },
-    handleBackdropClick() {
-      const { $props: props } = this;
-
-      if (!props.backdrop || !props.clickBackdropToClose) {
-        return;
+      if (vuiDrawer) {
+        vuiDrawer.pull();
       }
-
-      this.handleCancel();
     },
     handleWrapperClick(e) {
-      const { $refs: references } = this;
+      const { $refs: references, $props: props } = this;
       const target = getElementByEvent(e);
 
       if (!target || !references.wrapper || target !== references.wrapper) {
         return;
       }
 
-      this.handleBackdropClick();
+      if (!props.backdrop || !props.clickBackdropToClose) {
+        return;
+      }
+
+      this.handleCancel();
     },
     handleCancel() {
       const { $props: props } = this;
@@ -166,8 +166,8 @@ const VuiDrawer = {
         });
       }
       else {
-        this.$emit("cancel");
         this.close();
+        this.$emit("cancel");
       }
     },
     handleOk() {
@@ -188,8 +188,8 @@ const VuiDrawer = {
         });
       }
       else {
-        this.$emit("ok");
         this.close();
+        this.$emit("ok");
       }
     },
     handleEnter() {
@@ -227,7 +227,7 @@ const VuiDrawer = {
   },
   render() {
     const { $slots: slots, $props: props, state, t: translate } = this;
-    const { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+    const { handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
     const showHeader = slots.title || props.title;
 
     // class
@@ -261,16 +261,13 @@ const VuiDrawer = {
     styles.elWrapper = {
       zIndex: state.zIndex
     };
+    styles.el = {};
 
     if (["left", "right"].indexOf(props.placement) > -1) {
-      styles.el = {
-        width: is.string(props.width) ? props.width : `${props.width}px`
-      };
+      styles.el.width = is.string(props.width) ? props.width : `${props.width}px`;
     }
     else {
-      styles.el = {
-        height: is.string(props.height) ? props.height : `${props.height}px`
-      };
+      styles.el.height = is.string(props.height) ? props.height : `${props.height}px`;
     }
 
     // render
@@ -390,7 +387,7 @@ const VuiDrawer = {
     );
 
     return (
-      <VuiLazyRender status={state.visible}>
+      <VuiLazyRender render={state.visible}>
         <div v-portal={props.getPopupContainer}>
           {children}
         </div>

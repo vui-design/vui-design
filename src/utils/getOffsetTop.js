@@ -4,25 +4,25 @@
 * @param {Window|HTMLElement} container 容器
 */
 export default function getOffsetTop(element, container) {
-	if (!element) {
-		return 0;
-	}
+  if (!element) {
+    return 0;
+  }
 
-	if (!element.getClientRects().length) {
-		return 0;
-	}
+  if (!element.getClientRects().length) {
+    return 0;
+  }
 
-	const rect = element.getBoundingClientRect();
+  const rect = element.getBoundingClientRect();
 
-	if (rect.width || rect.height) {
-		if (container === window) {
-			container = element.ownerDocument.documentElement;
+  if (rect.width || rect.height) {
+    if (container === window) {
+      container = element.ownerDocument.documentElement;
 
-			return rect.top - container.clientTop;
-		}
+      return rect.top - container.clientTop;
+    }
 
-		return rect.top - container.getBoundingClientRect().top;
-	}
+    return rect.top - container.getBoundingClientRect().top;
+  }
 
-	return rect.top;
+  return rect.top;
 };

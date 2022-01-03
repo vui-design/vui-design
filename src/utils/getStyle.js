@@ -4,32 +4,32 @@
 * @param {String} property
 */
 export default function getStyle(element, property) {
-	let value = "";
+  let value = "";
 
-	if (!element || !property) {
-		return value;
-	}
+  if (!element || !property) {
+    return value;
+  }
 
-	if (property === "float") {
-		property = "cssFloat";
-	}
+  if (property === "float") {
+    property = "cssFloat";
+  }
 
-	try {
-		value = element.style[property];
+  try {
+    value = element.style[property];
 
-		if (value) {
-			return value;
-		}
+    if (value) {
+      return value;
+    }
 
-		const computedStyle = document.defaultView.getComputedStyle(element, "");
+    const computedStyle = document.defaultView.getComputedStyle(element, "");
 
-		if (computedStyle) {
-			return computedStyle[property] || value;
-		}
+    if (computedStyle) {
+      return computedStyle[property] || value;
+    }
 
-		return value;
-	}
-	catch(e) {
-		return element.style[property];
-	}
+    return value;
+  }
+  catch(e) {
+    return element.style[property];
+  }
 };
