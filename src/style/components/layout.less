@@ -19,6 +19,7 @@
     &-light {
       background-color:@layout-header-light-background-color;
     }
+
     &-dark {
       background-color:@layout-header-dark-background-color;
     }
@@ -26,68 +27,87 @@
 
   &-sider {
     position:relative;
-    display:block;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
     box-sizing:border-box;
     min-width:0;
     transition:all @transition-duration @transition-timing-function;
 
-    & &-children {
+    & &-body {
+      flex:1;
+      display:block;
       box-sizing:border-box;
       height:100%;
       overflow:hidden;
     }
-    & &-children-scrollbar {
+    & &-body-scrollbar {
+      display:block;
       box-sizing:border-box;
       height:100%;
       overflow-x:hidden;
       overflow-y:scroll;
     }
-    & &-trigger {
-      position:absolute;
-      bottom:0;
+
+    & &-footer {
       cursor:pointer;
+      display:block;
       box-sizing:border-box;
-      display:flex;
-      justify-content:center;
-      align-items:center;
       width:100%;
-      height:@layout-sider-trigger-height;
-      font-size:@layout-sider-trigger-font-size;
+      border-top:1px solid transparent;
       transition:all @transition-duration @transition-timing-function;
     }
 
-    &-with-trigger &-children {
-      padding-bottom:@layout-sider-trigger-height;
+    & &-trigger {
+      cursor:pointer;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      box-sizing:border-box;
+      width:100%;
+      height:@layout-sider-trigger-height;
+      border-top:1px solid transparent;
+      font-size:@layout-sider-trigger-font-size;
+      transition:all @transition-duration @transition-timing-function;
     }
 
     &-light {
       background-color:@layout-sider-light-background-color;
     }
-    &-light &-trigger {
+    &-light &-footer {
+      border-top-color:@layout-sider-footer-light-border-color;
       background-color:@layout-sider-light-background-color;
-      box-shadow:0 1px 0 @layout-sider-light-trigger-border-color inset;
-      color:@layout-sider-light-trigger-font-color;
+    }
+    &-light &-trigger {
+      border-top-color:@layout-sider-trigger-light-border-color;
+      background-color:@layout-sider-light-background-color;
+      color:@layout-sider-trigger-light-font-color;
     }
     &-light &-trigger:hover {
-      color:@layout-sider-light-trigger-hover-font-color;
+      color:@layout-sider-trigger-light-hover-font-color;
     }
     &-light &-trigger:active {
-      color:@layout-sider-light-trigger-active-font-color;
+      color:@layout-sider-trigger-light-active-font-color;
     }
 
     &-dark {
       background-color:@layout-sider-dark-background-color;
     }
-    &-dark &-trigger {
+    &-dark &-footer {
+      border-top-color:@layout-sider-footer-dark-border-color;
       background-color:@layout-sider-dark-background-color;
-      box-shadow:0 1px 0 @layout-sider-dark-trigger-border-color inset;
-      color:@layout-sider-dark-trigger-font-color;
+    }
+    &-dark &-trigger {
+      border-top-color:@layout-sider-trigger-dark-border-color;
+      background-color:@layout-sider-dark-background-color;
+      color:@layout-sider-trigger-dark-font-color;
     }
     &-dark &-trigger:hover {
-      color:@layout-sider-dark-trigger-hover-font-color;
+      color:@layout-sider-trigger-dark-hover-font-color;
     }
     &-dark &-trigger:active {
-      color:@layout-sider-dark-trigger-active-font-color;
+      color:@layout-sider-trigger-dark-active-font-color;
     }
   }
 

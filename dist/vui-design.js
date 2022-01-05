@@ -8731,9 +8731,10 @@ var VuiSider = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "layout-sider");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + color, withPresetColor), defineProperty_default()(_classes$el, classNamePrefix + "-with-trigger", showTrigger), _classes$el);
-    classes.elChildren = classNamePrefix + "-children";
-    classes.elChildrenScrollbar = classNamePrefix + "-children-scrollbar";
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + color, withPresetColor), _classes$el);
+    classes.elBody = classNamePrefix + "-body";
+    classes.elBodyScrollbar = classNamePrefix + "-body-scrollbar";
+    classes.elFooter = classNamePrefix + "-footer";
     classes.elTrigger = classNamePrefix + "-trigger";
 
     // style
@@ -8745,7 +8746,7 @@ var VuiSider = {
       minWidth: "" + width,
       maxWidth: "" + width
     };
-    styles.elChildrenScrollbar = {
+    styles.elBodyScrollbar = {
       marginRight: "-" + scrollbarSize + "px"
     };
 
@@ -8758,16 +8759,38 @@ var VuiSider = {
 
     children.push(h(
       "div",
-      { "class": classes.elChildren },
+      { "class": classes.elBody },
       [h(
         "div",
-        { "class": classes.elChildrenScrollbar, style: styles.elChildrenScrollbar },
+        { "class": classes.elBodyScrollbar, style: styles.elBodyScrollbar },
         [slots.default]
       )]
     ));
 
+    if (slots.footer) {
+      children.push(h(
+        "div",
+        { "class": classes.elFooter },
+        [slots.footer]
+      ));
+    }
+
     if (showTrigger) {
-      var iconType = state.collapsed ? "menu-unfold" : "menu-fold";
+      var indicator = void 0;
+
+      if (slots.trigger) {
+        indicator = slots.trigger;
+      } else if (props.trigger) {
+        indicator = h(components_icon, {
+          attrs: { type: props.trigger }
+        });
+      } else {
+        var type = state.collapsed ? "menu-unfold" : "menu-fold";
+
+        indicator = h(components_icon, {
+          attrs: { type: type }
+        });
+      }
 
       children.push(h(
         "div",
@@ -8775,9 +8798,7 @@ var VuiSider = {
             "click": handleTriggerClick
           }
         },
-        [h(components_icon, {
-          attrs: { type: iconType }
-        })]
+        [indicator]
       ));
     }
 
@@ -43209,7 +43230,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.0",
+  version: "1.9.1",
   install: src_install,
   // Locale
   locale: src_locale.use,

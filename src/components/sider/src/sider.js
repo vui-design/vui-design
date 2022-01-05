@@ -134,11 +134,11 @@ const VuiSider = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
-      [`${classNamePrefix}-${color}`]: withPresetColor,
-      [`${classNamePrefix}-with-trigger`]: showTrigger
+      [`${classNamePrefix}-${color}`]: withPresetColor
     };
-    classes.elChildren = `${classNamePrefix}-children`;
-    classes.elChildrenScrollbar = `${classNamePrefix}-children-scrollbar`;
+    classes.elBody = `${classNamePrefix}-body`;
+    classes.elBodyScrollbar = `${classNamePrefix}-body-scrollbar`;
+    classes.elFooter = `${classNamePrefix}-footer`;
     classes.elTrigger = `${classNamePrefix}-trigger`;
 
     // style
@@ -150,7 +150,7 @@ const VuiSider = {
       minWidth: `${width}`,
       maxWidth: `${width}`
     };
-    styles.elChildrenScrollbar = {
+    styles.elBodyScrollbar = {
       marginRight: `-${scrollbarSize}px`
     };
 
@@ -162,19 +162,43 @@ const VuiSider = {
     let children = [];
 
     children.push(
-      <div class={classes.elChildren}>
-        <div class={classes.elChildrenScrollbar} style={styles.elChildrenScrollbar}>
+      <div class={classes.elBody}>
+        <div class={classes.elBodyScrollbar} style={styles.elBodyScrollbar}>
           {slots.default}
         </div>
       </div>
     );
 
+    if (slots.footer) {
+      children.push(
+        <div class={classes.elFooter}>
+          {slots.footer}
+        </div>
+      );
+    }
+
     if (showTrigger) {
-      const iconType = state.collapsed ? "menu-unfold" : "menu-fold";
+      let indicator;
+
+      if (slots.trigger) {
+        indicator = slots.trigger;
+      }
+      else if (props.trigger) {
+        indicator = (
+          <VuiIcon type={props.trigger} />
+        );
+      }
+      else {
+        const type = state.collapsed ? "menu-unfold" : "menu-fold";
+
+        indicator = (
+          <VuiIcon type={type} />
+        );
+      }
 
       children.push(
         <div class={classes.elTrigger} onClick={handleTriggerClick}>
-          <VuiIcon type={iconType} />
+          {indicator}
         </div>
       );
     }
