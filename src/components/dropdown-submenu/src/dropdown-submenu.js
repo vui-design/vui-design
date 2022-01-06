@@ -1,6 +1,5 @@
 import VuiLazyRender from "../../lazy-render";
 import VuiIcon from "../../icon";
-import VuiDropdownMenu from "../../dropdown-menu";
 import Portal from "../../../directives/portal";
 import Popup from "../../../libs/popup";
 import PropTypes from "../../../utils/prop-types";
@@ -28,8 +27,7 @@ const VuiDropdownSubmenu = {
   },
   components: {
     VuiLazyRender,
-    VuiIcon,
-    VuiDropdownMenu
+    VuiIcon
   },
   directives: {
     Portal
@@ -182,7 +180,7 @@ const VuiDropdownSubmenu = {
     const title = slots.title || props.title;
 
     // class
-    const classNamePrefix = getClassNamePrefix(props.lassNamePrefix, "dropdown-submenu");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown-submenu");
     let classes = {};
 
     classes.el = {
@@ -195,6 +193,14 @@ const VuiDropdownSubmenu = {
     classes.elHeaderTitle = `${classNamePrefix}-header-title`;
     classes.elHeaderArrow = `${classNamePrefix}-header-arrow`;
     classes.elBody = `${classNamePrefix}-body`;
+
+    const menuClassNamePrefix = getClassNamePrefix(vuiDropdownMenuProps.classNamePrefix, "dropdown-menu");
+    const menuColor = vuiDropdownMenuProps.color;
+
+    classes.elMenu = {
+      [`${menuClassNamePrefix}`]: true,
+      [`${menuClassNamePrefix}-${menuColor}`]: menuColor
+    };
 
     // render
     return (
@@ -215,9 +221,7 @@ const VuiDropdownSubmenu = {
         <VuiLazyRender render={state.visible}>
           <transition appear name={props.animation} onBeforeEnter={handleBodyBeforeEnter} onAfterLeave={handleBodyAfterLeave}>
             <div ref="body" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elBody} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
-              <VuiDropdownMenu classNamePrefix={props.classNamePrefix} color={vuiDropdownMenuProps.color} width={props.width}>
-                {slots.default}
-              </VuiDropdownMenu>
+              <div class={classes.elMenu}>{slots.default}</div>
             </div>
           </transition>
         </VuiLazyRender>

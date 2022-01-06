@@ -19,6 +19,7 @@
   .@{vui}-icon {
     display:block;
     box-sizing:border-box;
+    margin:0 4px;
     transition:all @transition-duration @transition-timing-function;
 
     &:first-child {
@@ -160,28 +161,13 @@
 
   &-small {
     font-size:@link-font-size-sm;
-
-    .@{vui}-icon {
-      font-size:@link-font-size-sm - 2px;
-      margin:0 @link-icon-margin-sm;
-    }
   }
 
   &-medium {
     font-size:@link-font-size-md;
-
-    .@{vui}-icon {
-      font-size:@link-font-size-md - 2px;
-      margin:0 @link-icon-margin-md;
-    }
   }
 
   &-large {
     font-size:@button-font-size-lg;
-
-    .@{vui}-icon {
-      font-size:@link-font-size-lg - 2px;
-      margin:0 @link-icon-margin-lg;
-    }
   }
 }

@@ -11941,7 +11941,6 @@ dropdown_menu.install = function (Vue) {
 
 
 
-
 var VuiDropdownSubmenu = {
   name: "vui-dropdown-submenu",
   provide: function provide() {
@@ -11963,8 +11962,7 @@ var VuiDropdownSubmenu = {
   },
   components: {
     VuiLazyRender: components_lazy_render,
-    VuiIcon: components_icon,
-    VuiDropdownMenu: components_dropdown_menu
+    VuiIcon: components_icon
   },
   directives: {
     Portal: directives_portal
@@ -12114,7 +12112,7 @@ var VuiDropdownSubmenu = {
     }
   },
   render: function render(h) {
-    var _classes$el;
+    var _classes$el, _classes$elMenu;
 
     var vuiDropdownMenu = this.vuiDropdownMenu,
         slots = this.$slots,
@@ -12144,7 +12142,7 @@ var VuiDropdownSubmenu = {
     var title = slots.title || props.title;
 
     // class
-    var classNamePrefix = getClassNamePrefix(props.lassNamePrefix, "dropdown-submenu");
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown-submenu");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-open", state.visible), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
@@ -12153,6 +12151,11 @@ var VuiDropdownSubmenu = {
     classes.elHeaderTitle = classNamePrefix + "-header-title";
     classes.elHeaderArrow = classNamePrefix + "-header-arrow";
     classes.elBody = classNamePrefix + "-body";
+
+    var menuClassNamePrefix = getClassNamePrefix(vuiDropdownMenuProps.classNamePrefix, "dropdown-menu");
+    var menuColor = vuiDropdownMenuProps.color;
+
+    classes.elMenu = (_classes$elMenu = {}, defineProperty_default()(_classes$elMenu, "" + menuClassNamePrefix, true), defineProperty_default()(_classes$elMenu, menuClassNamePrefix + "-" + menuColor, menuColor), _classes$elMenu);
 
     // render
     return h(
@@ -12203,10 +12206,8 @@ var VuiDropdownSubmenu = {
               }
             },
             [h(
-              components_dropdown_menu,
-              {
-                attrs: { classNamePrefix: props.classNamePrefix, color: vuiDropdownMenuProps.color, width: props.width }
-              },
+              "div",
+              { "class": classes.elMenu },
               [slots.default]
             )]
           )]
@@ -43230,7 +43231,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.1",
+  version: "1.9.2",
   install: src_install,
   // Locale
   locale: src_locale.use,
