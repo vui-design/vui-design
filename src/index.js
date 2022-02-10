@@ -380,7 +380,7 @@ export {
 };
 
 export default {
-  version: "1.9.2",
+  version: "1.9.3",
   install,
   // Locale
   locale: locale.use,

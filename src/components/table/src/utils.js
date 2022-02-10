@@ -1,8 +1,8 @@
+import is from "../../../utils/is";
 import guid from "../../../utils/guid";
 import clone from "../../../utils/clone";
 import flatten from "../../../utils/flatten";
 import getTargetByPath from "../../../utils/getTargetByPath";
-import is from "../../../utils/is";
 
 // 判断事件源元素是否需要被忽略
 const isIgnoreElements = (event, predicate) => {

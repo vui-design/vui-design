@@ -74,21 +74,38 @@ const VuiRadio = {
       this.$emit("blur");
     },
     handleChange(e) {
-      const { vuiRadioGroup, vuiMutexGroup, $props: props } = this;
-      const checked = e.target.checked;
+      const { vuiRadioGroup, vuiMutexGroup, $refs: references, $props: props } = this;
 
       if (props.disabled) {
         return;
       }
 
       if (vuiRadioGroup) {
-        vuiRadioGroup.handleChange(checked, props.value);
+        const callback = () => {
+          vuiRadioGroup.handleChange(e.target.checked, props.value);
+        };
+
+        let hook = true;
+
+        if (is.function(vuiRadioGroup.beforeSelect)) {
+          hook = vuiRadioGroup.beforeSelect(props.value);
+        }
+
+        if (is.boolean(hook) && hook === false) {
+          references.input.checked = "";
+        }
+        else if (is.promise(hook)) {
+          hook.then(() => callback()).catch(error => references.input.checked = "");
+        }
+        else {
+          callback();
+        }
       }
       else if (vuiMutexGroup) {
-        vuiMutexGroup.handleChange("radio", checked, props.value);
+        vuiMutexGroup.handleChange("radio", e.target.checked, props.value);
       }
       else {
-        const value = checked ? props.checkedValue : props.uncheckedValue;
+        const value = e.target.checked ? props.checkedValue : props.uncheckedValue;
   
         this.state.checked = value;
         this.$emit("input", value);
@@ -199,6 +216,7 @@ const VuiRadio = {
 
     // render
     const radioInputProps = {
+      ref: "input",
       attrs: attrs,
       on: {
         focus: handleFocus,

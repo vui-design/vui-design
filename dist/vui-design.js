@@ -23367,20 +23367,40 @@ var VuiRadio = {
     handleChange: function handleChange(e) {
       var vuiRadioGroup = this.vuiRadioGroup,
           vuiMutexGroup = this.vuiMutexGroup,
+          references = this.$refs,
           props = this.$props;
 
-      var checked = e.target.checked;
 
       if (props.disabled) {
         return;
       }
 
       if (vuiRadioGroup) {
-        vuiRadioGroup.handleChange(checked, props.value);
+        var callback = function callback() {
+          vuiRadioGroup.handleChange(e.target.checked, props.value);
+        };
+
+        var hook = true;
+
+        if (is["a" /* default */].function(vuiRadioGroup.beforeSelect)) {
+          hook = vuiRadioGroup.beforeSelect(props.value);
+        }
+
+        if (is["a" /* default */].boolean(hook) && hook === false) {
+          references.input.checked = "";
+        } else if (is["a" /* default */].promise(hook)) {
+          hook.then(function () {
+            return callback();
+          }).catch(function (error) {
+            return references.input.checked = "";
+          });
+        } else {
+          callback();
+        }
       } else if (vuiMutexGroup) {
-        vuiMutexGroup.handleChange("radio", checked, props.value);
+        vuiMutexGroup.handleChange("radio", e.target.checked, props.value);
       } else {
-        var value = checked ? props.checkedValue : props.uncheckedValue;
+        var value = e.target.checked ? props.checkedValue : props.uncheckedValue;
 
         this.state.checked = value;
         this.$emit("input", value);
@@ -23492,6 +23512,7 @@ var VuiRadio = {
 
     // render
     var radioInputProps = {
+      ref: "input",
       attrs: attrs,
       on: {
         focus: handleFocus,
@@ -23754,6 +23775,7 @@ var VuiRadioGroup = {
       return [];
     }),
     disabled: prop_types["a" /* default */].bool.def(false),
+    beforeSelect: prop_types["a" /* default */].func,
     validator: prop_types["a" /* default */].bool.def(true)
   },
   data: function data() {
@@ -23793,7 +23815,7 @@ var VuiRadioGroup = {
 
       this.state.value = nextValue;
       this.$emit("input", nextValue);
-      this.$emit('change', nextValue);
+      this.$emit("change", nextValue);
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", nextValue);
@@ -43231,7 +43253,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.2",
+  version: "1.9.3",
   install: src_install,
   // Locale
   locale: src_locale.use,

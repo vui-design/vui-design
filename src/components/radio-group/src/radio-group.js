@@ -37,6 +37,7 @@ const VuiRadioGroup = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
     options: PropTypes.array.def(() => []),
     disabled: PropTypes.bool.def(false),
+    beforeSelect: PropTypes.func,
     validator: PropTypes.bool.def(true)
   },
   data() {
@@ -71,7 +72,7 @@ const VuiRadioGroup = {
 
       this.state.value = nextValue;
       this.$emit("input", nextValue);
-      this.$emit('change', nextValue);
+      this.$emit("change", nextValue);
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", nextValue);
