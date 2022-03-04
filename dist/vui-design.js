@@ -32460,6 +32460,7 @@ var VuiDescriptionsWrapper = {
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+    layoutStyle: prop_types["a" /* default */].oneOf(["auto", "fixed"]),
     bordered: prop_types["a" /* default */].bool.def(false),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
     columns: prop_types["a" /* default */].number.def(3),
@@ -32467,8 +32468,7 @@ var VuiDescriptionsWrapper = {
     labelWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     labelAlign: prop_types["a" /* default */].oneOf(["left", "center", "right"]),
     title: prop_types["a" /* default */].any,
-    extra: prop_types["a" /* default */].any,
-    equivalent: prop_types["a" /* default */].bool.def(false)
+    extra: prop_types["a" /* default */].any
   },
   render: function render() {
     var h = arguments[0];
@@ -43306,7 +43306,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.4",
+  version: "1.9.5",
   install: src_install,
   // Locale
   locale: src_locale.use,

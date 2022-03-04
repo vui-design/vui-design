@@ -11,6 +11,7 @@ const VuiDescriptionsWrapper = {
   props: {
     classNamePrefix: PropTypes.string,
     layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+    layoutStyle: PropTypes.oneOf(["auto", "fixed"]),
     bordered: PropTypes.bool.def(false),
     size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
     columns: PropTypes.number.def(3),
@@ -18,8 +19,7 @@ const VuiDescriptionsWrapper = {
     labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     labelAlign: PropTypes.oneOf(["left", "center", "right"]),
     title: PropTypes.any,
-    extra: PropTypes.any,
-    equivalent: PropTypes.bool.def(false)
+    extra: PropTypes.any
   },
   render() {
     const { $slots: slots, $props: props } = this;
