@@ -1,47 +1,125 @@
 @vui-input-number: ~"@{vui}-input-number";
 
+.@{vui-input-number} {
+  position:relative;
+  display:inline-block;
+  box-sizing:border-box;
+  border:1px solid @input-number-border-color;
+  border-radius:@input-number-border-radius;
+  background-color:@input-number-background-color;
+  overflow:hidden;
+  vertical-align:middle;
+  color:@input-number-font-color;
+  transition:all @transition-duration @transition-timing-function;
 
-// --------------------------------------------------
-// input-number
-.vui-input-number { position:relative; display:inline-block; box-sizing:border-box; border:1px solid #e0e0e0; border-radius:2px; background-color:#fff; overflow:hidden; vertical-align:middle; color:#595959; transition:all 0.2s; }
-.vui-input-number-input { cursor:inherit; outline:none; box-sizing:border-box; display:block; width:100%; height:100%; border:none; background:none; margin:0; color:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; font-family:inherit; }
-.vui-input-number-trigger { position:absolute; top:0; bottom:0; right:0; box-sizing:border-box; height:100%; border-left:1px solid #e0e0e0; background:#fff linear-gradient(0deg,#e0e0e0 50%,#e0e0e0 50%) no-repeat 50% 50%; background-size:100% 1px; opacity:0; transition:all 0.2s; }
-.vui-input-number-btn { position:relative; box-sizing:border-box; cursor:pointer; height:50%; overflow:hidden; color:#8c8c8c; line-height:1; transition:all 0.2s; }
-.vui-input-number-btn .vui-icon { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) scale(0.6); }
+  &-input {
+    cursor:inherit;
+    appearance:none;
+    outline:none;
+    box-sizing:border-box;
+    display:block;
+    width:100%;
+    height:100%;
+    border:none;
+    background:none;
+    margin:0;
+    color:inherit;
+    font-size:inherit;
+    font-style:inherit;
+    font-weight:inherit;
+    font-family:inherit;
+  }
+  
+  &-trigger {
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    box-sizing:border-box;
+    height:100%;
+    border-left:1px solid @input-number-border-color;
+    background:@input-number-background-color linear-gradient(0deg, @input-number-border-color 50%, @input-number-border-color 50%) no-repeat 50% 50%;
+    background-size:100% 1px;
+    transition:all @transition-duration @transition-timing-function;
+  }
 
+  &-btn {
+    position:relative;
+    box-sizing:border-box;
+    cursor:pointer;
+    height:50%;
+    overflow:hidden;
+    color:@input-number-btn-color;
+    line-height:1;
+    transition:all @transition-duration @transition-timing-function;
 
-// --------------------------------------------------
-// input-number status
-.vui-input-number-hovered { border-color:tint(#2d8cf0, 10%); }
-.vui-input-number-hovered .vui-input-number-trigger { opacity:1; }
-.vui-input-number-focused { border-color:shade(#2d8cf0, 10%); }
-.vui-input-number-focused .vui-input-number-trigger { opacity:1; }
-.vui-input-number-disabled { cursor:not-allowed; border-color:#e0e0e0; background-color:shade(@component-background-color, 2%); color:@font-disabled-color; }
-.vui-input-number-disabled .vui-input-number-trigger { opacity:0; }
+    .@{vui}-icon {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%) scale(0.5);
+    }
 
+    &:hover {
+      color:@input-number-btn-hover-color;
+    }
+    &:active {
+      color:@input-number-btn-active-color;
+    }
+    &&-disabled {
+      cursor:not-allowed;
+      color:@input-number-btn-disabled-color;
+    }
+  }
 
-// --------------------------------------------------
-// input-number size
-.vui-input-number-small { width:80px; height:24px; font-size:12px; }
-.vui-input-number-small .vui-input-number-input { padding:0 24px 0 6px; }
-.vui-input-number-small .vui-input-number-trigger { width:20px; }
-.vui-input-number-small .vui-input-number-btn { font-size:12px; }
-.vui-input-number-medium { width:100px; height:34px; font-size:14px; }
-.vui-input-number-medium .vui-input-number-input { padding:0 30px 0 8px; }
-.vui-input-number-medium .vui-input-number-trigger { width:24px; }
-.vui-input-number-medium .vui-input-number-btn { font-size:14px; }
-.vui-input-number-large { width:120px; height:44px; font-size:16px; }
-.vui-input-number-large .vui-input-number-input { padding:0 36px 0 10px; }
-.vui-input-number-large .vui-input-number-trigger { width:28px; }
-.vui-input-number-large .vui-input-number-btn { font-size:16px; }
+  &-small {
+    width:80px;
+    height:@input-number-size-sm;
+    font-size:@input-number-font-size-sm;
+  }
+  &-small &-input {
+    padding:0 @input-number-padding-sm + @input-number-trigger-size-sm 0 @input-number-padding-sm;
+  }
+  &-small &-trigger {
+    width:@input-number-trigger-size-sm;
+  }
 
+  &-medium {
+    width:100px;
+    height:@input-number-size-md;
+    font-size:@input-number-font-size-md;
+  }
+  &-medium &-input {
+    padding:0 @input-number-padding-md + @input-number-trigger-size-md 0 @input-number-padding-md;
+  }
+  &-medium &-trigger {
+    width:@input-number-trigger-size-md;
+  }
 
-// --------------------------------------------------
-// input-number-btn status
-.vui-input-number-btn:hover { color:tint(#2d8cf0, 10%); }
-.vui-input-number-btn:hover .vui-icon {  }
-.vui-input-number-btn:active { color:shade(#2d8cf0, 10%); }
-.vui-input-number-btn:active .vui-icon {  }
-.vui-input-number-btn.vui-input-number-btn-disabled { cursor:not-allowed; color:tint(#000, 75%); }
-.vui-input-number-btn.vui-input-number-btn-disabled .vui-icon {  }
+  &-large {
+    width:120px;
+    height:@input-number-size-lg;
+    font-size:@input-number-font-size-lg;
+  }
+  &-large &-input {
+    padding:0 @input-number-padding-lg + @input-number-trigger-size-lg 0 @input-number-padding-lg;
+  }
+  &-large &-trigger {
+    width:@input-number-trigger-size-lg;
+  }
 
+  &-hovered {
+    border-color:@input-number-hover-border-color;
+  }
+
+  &-focused {
+    border-color:@input-number-focus-border-color;
+  }
+
+  &-disabled {
+    cursor:not-allowed;
+    border-color:@input-number-disabled-border-color;
+    background-color:@input-number-disabled-background-color;
+    color:@input-number-disabled-font-color;
+  }
+}

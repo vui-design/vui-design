@@ -140,13 +140,16 @@
       padding:0 @input-padding-sm;
       font-size:@input-font-size-sm;
       line-height:@input-size-sm;
-
-      &:not(:first-child) {
-        padding-left:@input-padding-sm * 2 + @input-font-size-sm;
-      }
-      &:not(:last-child) {
-        padding-right:@input-padding-sm * 2 + @input-font-size-sm;
-      }
+    }
+  }
+  &-with-prefix&-small &-input {
+    input {
+      padding-left:@input-padding-sm * 2 + @input-font-size-sm;
+    }
+  }
+  &-with-suffix&-small &-input {
+    input {
+      padding-right:@input-padding-sm * 2 + @input-font-size-sm;
     }
   }
   &-bordered&-small &-prefix {
@@ -184,13 +187,16 @@
       padding:0 @input-padding-md;
       font-size:@input-font-size-md;
       line-height:@input-size-md;
-
-      &:not(:first-child) {
-        padding-left:@input-padding-md * 2 + @input-font-size-md;
-      }
-      &:not(:last-child) {
-        padding-right:@input-padding-md * 2 + @input-font-size-md;
-      }
+    }
+  }
+  &-with-prefix&-medium &-input {
+    input {
+      padding-left:@input-padding-md * 2 + @input-font-size-md;
+    }
+  }
+  &-with-suffix&-medium &-input {
+    input {
+      padding-right:@input-padding-md * 2 + @input-font-size-md;
     }
   }
   &-bordered&-medium &-prefix {
@@ -228,13 +234,16 @@
       padding:0 @input-padding-lg;
       font-size:@input-font-size-lg;
       line-height:@input-size-lg;
-
-      &:not(:first-child) {
-        padding-left:@input-padding-lg * 2 + @input-font-size-lg;
-      }
-      &:not(:last-child) {
-        padding-right:@input-padding-lg * 2 + @input-font-size-lg;
-      }
+    }
+  }
+  &-with-prefix&-large &-input {
+    input {
+      padding-left:@input-padding-lg * 2 + @input-font-size-lg;
+    }
+  }
+  &-with-suffix&-large &-input {
+    input {
+      padding-right:@input-padding-lg * 2 + @input-font-size-lg;
     }
   }
   &-bordered&-large &-prefix {

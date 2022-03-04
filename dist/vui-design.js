@@ -18125,7 +18125,7 @@ var VuiInput = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-with-prefix", slots.prefix || props.prefix), defineProperty_default()(_classes$el, classNamePrefix + "-with-suffix", slots.suffix || props.suffix), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
     classes.elPrepend = classNamePrefix + "-prepend";
     classes.elAppend = classNamePrefix + "-append";
     classes.elPrefix = classNamePrefix + "-prefix";
@@ -22765,514 +22765,567 @@ function getNumberPrecision(value) {
 
 
 
-var regexp = {
-	numeric: /^[\+\-]?\d*?\.?\d*?$/,
-	endWithDecimalPoint: /^[\+\-]?\d*?\.$/
-};
+var numeric = /^[\+\-]?\d*?\.?\d*?$/;
 
 var VuiInputNumber = {
-	name: "vui-input-number",
-	inject: {
-		vuiForm: {
-			default: undefined
-		},
-		vuiInputGroup: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon: components_icon
-	},
-	mixins: [emitter],
-	directives: {
-		Longpress: longpress
-	},
-	inheritAttrs: false,
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		value: prop_types["a" /* default */].number,
-		min: prop_types["a" /* default */].number.def(-Infinity),
-		max: prop_types["a" /* default */].number.def(Infinity),
-		step: prop_types["a" /* default */].number.def(1),
-		precision: prop_types["a" /* default */].number,
-		formatter: prop_types["a" /* default */].func,
-		parser: prop_types["a" /* default */].func,
-		size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-		readonly: prop_types["a" /* default */].bool.def(false),
-		disabled: prop_types["a" /* default */].bool.def(false),
-		validator: prop_types["a" /* default */].bool.def(true)
-	},
-	data: function data() {
-		var props = this.$props;
-
-		var state = {
-			hovered: false,
-			focused: false,
-			value: this.getStateValueFromProps(props)
-		};
-
-		return {
-			state: state
-		};
-	},
-
-	watch: {
-		value: function value() {
-			var props = this.$props;
-
-
-			this.setStateValueFromProps(props);
-		},
-		min: function min() {
-			var props = this.$props;
-
-
-			this.setStateValueFromProps(props);
-		},
-		max: function max() {
-			var props = this.$props;
-
-
-			this.setStateValueFromProps(props);
-		},
-		precision: function precision() {
-			var props = this.$props;
-
-
-			this.setStateValueFromProps(props);
-		}
-	},
-	methods: {
-		focus: function focus() {
-			this.$refs.input.focus();
-		},
-		blur: function blur() {
-			this.$refs.input.blur();
-		},
-		getStateValueFromProps: function getStateValueFromProps(props) {
-			var value = void 0;
-
-			if (is["a" /* default */].number(props.value)) {
-				value = props.value;
-			} else if (is["a" /* default */].string(props.value)) {
-				value = props.value.trim();
-				value = value.length ? Number(value) : undefined;
-				value = is["a" /* default */].number(value) ? value : undefined;
-			}
-
-			return this.getStateValue(value);
-		},
-		setStateValueFromProps: function setStateValueFromProps(props) {
-			var state = this.state;
-
-			var value = this.getStateValueFromProps(props);
-
-			if (state.value === value) {
-				return;
-			}
-
-			this.setStateValue(value);
-		},
-		getPrecision: function getPrecision() {
-			var props = this.$props;
-
-			var map = {
-				value: getNumberPrecision(props.value),
-				step: getNumberPrecision(props.step)
-			};
-
-			if (!is["a" /* default */].number(props.precision)) {
-				return Math.max(map.value, map.step);
-			}
-
-			if (map.step > props.precision) {
-				console.warn("[Vui warn][VuiInputNumber]: the \"precision\" should not be less than the decimal places of \"step\"!");
-			}
-
-			return props.precision;
-		},
-		setPrecision: function setPrecision(value, precision) {
-			if (!is["a" /* default */].number(precision)) {
-				precision = this.getPrecision();
-			}
-
-			return parseFloat(Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision));
-		},
-		getStateValue: function getStateValue(value) {
-			var props = this.$props;
-
-
-			if (is["a" /* default */].number(value) && is["a" /* default */].number(props.precision)) {
-				value = this.setPrecision(value, props.precision);
-			}
-
-			if (value < props.min) {
-				value = props.min;
-			}
-
-			if (value > props.max) {
-				value = props.max;
-			}
-
-			return value;
-		},
-		setStateValue: function setStateValue(value) {
-			this.state.value = value;
-			this.$emit("input", value);
-			this.$emit("change", value);
-
-			if (this.validator) {
-				this.dispatch("vui-form-item", "change", value);
-			}
-		},
-		increase: function increase(value, step) {
-			value = value || 0;
-
-			if (!is["a" /* default */].number(value)) {
-				return this.state.value;
-			}
-
-			var factor = Math.pow(10, this.getPrecision());
-
-			return this.setPrecision((factor * value + factor * step) / factor);
-		},
-		decrease: function decrease(value, step) {
-			value = value || 0;
-
-			if (!is["a" /* default */].number(value)) {
-				return this.state.value;
-			}
-
-			var factor = Math.pow(10, this.getPrecision());
-
-			return this.setPrecision((factor * value - factor * step) / factor);
-		},
-		handleMouseenter: function handleMouseenter(e) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.state.hovered = true;
-			this.$emit("mouseenter", e);
-		},
-		handleMouseleave: function handleMouseleave(e) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.state.hovered = false;
-			this.$emit("mouseleave", e);
-		},
-		handleFocus: function handleFocus(e) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.state.focused = true;
-			this.$emit("focus", e);
-		},
-		handleBlur: function handleBlur(e) {
-			var props = this.$props,
-			    state = this.state;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.state.focused = false;
-			this.$emit("blur", e);
-
-			if (props.validator) {
-				this.dispatch("vui-form-item", "blur", state.value);
-			}
-		},
-		handleKeydown: function handleKeydown(e) {
-			var props = this.$props;
-
-			var keyCode = e.keyCode;
-
-			if (keyCode === 38) {
-				e.preventDefault();
-				this.handleIncrease();
-			} else if (keyCode === 40) {
-				e.preventDefault();
-				this.handleDecrease();
-			} else if (keyCode === 8) {
-				var value = e.target.value;
-
-				if (is["a" /* default */].function(props.parser)) {
-					value = props.parser(value);
-				}
-
-				this.$refs.input.value = value;
-			}
-
-			this.$emit("keydown", e);
-		},
-		handleKeyup: function handleKeyup(e) {
-			this.$emit("keyup", e);
-		},
-		handleInput: function handleInput(e) {
-			var props = this.$props,
-			    state = this.state;
-
-			var value = e.target.value;
-
-			if (is["a" /* default */].function(props.parser)) {
-				value = props.parser(value);
-			}
-
-			if (is["a" /* default */].string(value)) {
-				value = value.trim();
-			}
-
-			// When the input string is empty, clear the value
-			if (value.length === 0) {
-				this.setStateValue(undefined);
-			}
-			// When the input string matches the numeric type, do the following
-			else if (regexp.numeric.test(value)) {
-					var number = Number(value);
-
-					if (is["a" /* default */].nan(number) || regexp.endWithDecimalPoint.test(value)) {
-						if (is["a" /* default */].function(props.formatter)) {
-							value = props.formatter(value);
-						}
-
-						this.$refs.input.value = value;
-					} else {
-						number = this.getStateValue(number);
-
-						if (state.value === number) {
-							value = state.value;
-
-							if (is["a" /* default */].number(value) && is["a" /* default */].number(props.precision)) {
-								value = value.toFixed(props.precision);
-							}
-
-							if (is["a" /* default */].number(value) && is["a" /* default */].function(props.formatter)) {
-								value = props.formatter(value);
-							}
-
-							this.$refs.input.value = is["a" /* default */].number(value) || is["a" /* default */].string(value) ? value : "";
-						} else {
-							this.setStateValue(number);
-						}
-					}
-				}
-				// In other cases, return to the previous value
-				else {
-						value = state.value;
-
-						if (is["a" /* default */].number(value) && is["a" /* default */].number(props.precision)) {
-							value = value.toFixed(props.precision);
-						}
-
-						if (is["a" /* default */].number(value) && is["a" /* default */].function(props.formatter)) {
-							value = props.formatter(value);
-						}
-
-						this.$refs.input.value = is["a" /* default */].number(value) || is["a" /* default */].string(value) ? value : "";
-					}
-		},
-		handleChange: function handleChange(e) {
-			this.handleInput(e);
-		},
-		handleIncrease: function handleIncrease() {
-			var props = this.$props,
-			    state = this.state;
-
-			var value = this.increase(state.value, props.step);
-			var disabledBtnIncrease = value > props.max;
-
-			if (!state.focused) {
-				this.focus();
-			}
-
-			if (disabledBtnIncrease) {
-				return;
-			}
-
-			this.setStateValue(value);
-		},
-		handleDecrease: function handleDecrease() {
-			var state = this.state,
-			    props = this.$props;
-
-			var value = this.decrease(state.value, props.step);
-			var disabledBtnDecrease = value < props.min;
-
-			if (!state.focused) {
-				this.focus();
-			}
-
-			if (disabledBtnDecrease) {
-				return;
-			}
-
-			this.setStateValue(value);
-		},
-		handleIncreaseMousedown: function handleIncreaseMousedown(e) {
-			e.preventDefault();
-		},
-		handleDecreaseMousedown: function handleDecreaseMousedown(e) {
-			e.preventDefault();
-		}
-	},
-	render: function render(h) {
-		var _classes$el, _classes$elBtnIncreas, _classes$elBtnDecreas;
-
-		var vui = this.$vui,
-		    vuiForm = this.vuiForm,
-		    vuiInputGroup = this.vuiInputGroup,
-		    listeners = this.$listeners,
-		    attrs = this.$attrs,
-		    props = this.$props,
-		    state = this.state;
-		var handleMouseenter = this.handleMouseenter,
-		    handleMouseleave = this.handleMouseleave,
-		    handleFocus = this.handleFocus,
-		    handleBlur = this.handleBlur,
-		    handleKeydown = this.handleKeydown,
-		    handleKeyup = this.handleKeyup,
-		    handleInput = this.handleInput,
-		    handleChange = this.handleChange,
-		    handleIncrease = this.handleIncrease,
-		    handleDecrease = this.handleDecrease,
-		    handleIncreaseMousedown = this.handleIncreaseMousedown,
-		    handleDecreaseMousedown = this.handleDecreaseMousedown;
-
-		// size: self > vuiInputGroup > vuiForm > vui
-
-		var size = void 0;
-
-		if (props.size) {
-			size = props.size;
-		} else if (vuiInputGroup && vuiInputGroup.size) {
-			size = vuiInputGroup.size;
-		} else if (vuiForm && vuiForm.size) {
-			size = vuiForm.size;
-		} else if (vui && vui.size) {
-			size = vui.size;
-		} else {
-			size = "medium";
-		}
-
-		// disabled: vuiForm > vuiInputGroup > self
-		var disabled = void 0;
-
-		if (vuiForm && vuiForm.disabled) {
-			disabled = vuiForm.disabled;
-		} else if (vuiInputGroup && vuiInputGroup.disabled) {
-			disabled = vuiInputGroup.disabled;
-		} else {
-			disabled = props.disabled;
-		}
-
-		// disabled increase button
-		var disabledBtnIncrease = this.increase(state.value, props.step) > props.max;
-
-		// disabled decrease button
-		var disabledBtnDecrease = this.decrease(state.value, props.step) < props.min;
-
-		// value
-		var value = state.value;
-
-		if (is["a" /* default */].number(value) && is["a" /* default */].number(props.precision)) {
-			value = value.toFixed(props.precision);
-		}
-
-		if (is["a" /* default */].number(value) && is["a" /* default */].function(props.formatter)) {
-			value = props.formatter(value);
-		}
-
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input-number");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
-		classes.elInput = classNamePrefix + "-input";
-		classes.elTrigger = classNamePrefix + "-trigger";
-		classes.elBtnIncrease = (_classes$elBtnIncreas = {}, defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn-increase", true), defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn-disabled", disabledBtnIncrease), _classes$elBtnIncreas);
-		classes.elBtnDecrease = (_classes$elBtnDecreas = {}, defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn-decrease", true), defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn-disabled", disabledBtnDecrease), _classes$elBtnDecreas);
-
-		// render
-		var elInputProps = {
-			ref: "input",
-			attrs: extends_default()({}, attrs, {
-				type: "text",
-				autocomplete: "off",
-				spellcheck: false,
-				placeholder: props.placeholder,
-				readonly: props.readonly,
-				disabled: disabled,
-				class: classes.elInput
-			}),
-			on: extends_default()({}, listeners, {
-				focus: handleFocus,
-				blur: handleBlur,
-				keydown: handleKeydown,
-				keyup: handleKeyup,
-				input: handleInput,
-				change: handleChange
-			})
-		};
-
-		return h(
-			"div",
-			{ "class": classes.el, on: {
-					"mouseenter": handleMouseenter,
-					"mouseleave": handleMouseleave
-				}
-			},
-			[h("input", babel_helper_vue_jsx_merge_props_default()([elInputProps, {
-				domProps: {
-					"value": value
-				}
-			}])), !props.readonly && !disabled && h(
-				"div",
-				{ "class": classes.elTrigger },
-				[h(
-					"div",
-					{ "class": classes.elBtnIncrease, directives: [{
-							name: "longpress",
-							value: handleIncrease
-						}],
-						on: {
-							"mousedown": handleIncreaseMousedown
-						}
-					},
-					[h(components_icon, {
-						attrs: { type: "chevron-up" }
-					})]
-				), h(
-					"div",
-					{ "class": classes.elBtnDecrease, directives: [{
-							name: "longpress",
-							value: handleDecrease
-						}],
-						on: {
-							"mousedown": handleDecreaseMousedown
-						}
-					},
-					[h(components_icon, {
-						attrs: { type: "chevron-down" }
-					})]
-				)]
-			)]
-		);
-	}
+  name: "vui-input-number",
+  inject: {
+    vuiForm: {
+      default: undefined
+    },
+    vuiInputGroup: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon: components_icon
+  },
+  mixins: [emitter],
+  directives: {
+    Longpress: longpress
+  },
+  inheritAttrs: false,
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].string]),
+    min: prop_types["a" /* default */].number.def(-Infinity),
+    max: prop_types["a" /* default */].number.def(Infinity),
+    step: prop_types["a" /* default */].number.def(1),
+    precision: prop_types["a" /* default */].number,
+    formatter: prop_types["a" /* default */].func,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    autofocus: prop_types["a" /* default */].bool.def(false),
+    readonly: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  },
+  data: function data() {
+    var state = {
+      hovered: false,
+      focused: false,
+      inputting: false,
+      value: undefined,
+      text: ""
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  computed: {
+    nextProps: function nextProps() {
+      return {
+        value: this.value,
+        min: this.min,
+        max: this.max,
+        step: this.step,
+        precision: this.precision
+      };
+    }
+  },
+  watch: {
+    nextProps: {
+      immediate: true,
+      deep: true,
+      handler: function handler(value) {
+        this.state.value = this.getValueFromProps(value);
+        this.state.text = this.state.inputting ? this.state.text : this.getTextByValue(this.state.value, value);
+      }
+    }
+  },
+  methods: {
+    focus: function focus() {
+      this.$refs.input.focus();
+    },
+    blur: function blur() {
+      this.$refs.input.blur();
+    },
+    isCompleteNumber: function isCompleteNumber(text) {
+      var string = text.trim();
+      var bool = false;
+
+      if (string.length === 0 || string.length > 0 && numeric.test(string)) {
+        bool = true;
+      }
+
+      return bool;
+    },
+    isValidNumber: function isValidNumber(text) {
+      var string = text.trim();
+      var bool = false;
+
+      if (string.length > 0 && numeric.test(string)) {
+        bool = true;
+      }
+
+      return bool;
+    },
+    getPrecision: function getPrecision(value, step, precision) {
+      var a = getNumberPrecision(value);
+      var b = getNumberPrecision(step);
+
+      if (!is["a" /* default */].number(precision)) {
+        return Math.max(a, b);
+      }
+
+      if (b > precision) {
+        console.warn("[Vui warn][InputNumber]: the \"precision\" should not be less than the decimal places of \"step\"!");
+      }
+
+      return precision;
+    },
+    setPrecision: function setPrecision(value, precision) {
+      return parseFloat(Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision));
+    },
+    getValueFromProps: function getValueFromProps(props) {
+      var value = void 0;
+
+      if (is["a" /* default */].number(props.value)) {
+        value = props.value;
+      } else if (is["a" /* default */].string(props.value)) {
+        value = props.value.trim();
+        value = value.length > 0 ? Number(value) : undefined;
+      }
+
+      if (!is["a" /* default */].number(value)) {
+        return;
+      }
+
+      var precision = this.getPrecision(value, props.step, props.precision);
+
+      if (is["a" /* default */].number(precision)) {
+        value = this.setPrecision(value, precision);
+      }
+
+      if (is["a" /* default */].number(props.min) && value < props.min) {
+        value = props.min;
+      }
+
+      if (is["a" /* default */].number(props.max) && value > props.max) {
+        value = props.max;
+      }
+
+      return value;
+    },
+    getTextByValue: function getTextByValue(value, props) {
+      var text = "";
+
+      if (!is["a" /* default */].existy(value)) {
+        return text;
+      }
+
+      var precision = this.getPrecision(value, props.step, props.precision);
+
+      if (is["a" /* default */].number(precision)) {
+        text = value.toFixed(precision);
+      } else {
+        text = value.toString();
+      }
+
+      return text;
+    },
+    increase: function increase(value, step, precision) {
+      if (!is["a" /* default */].existy(value)) {
+        return 0;
+      }
+
+      if (!is["a" /* default */].number(value)) {
+        return this.state.value;
+      }
+
+      precision = this.getPrecision(value, step, precision);
+
+      var factor = Math.pow(10, precision);
+
+      return this.setPrecision((factor * value + factor * step) / factor, precision);
+    },
+    decrease: function decrease(value, step, precision) {
+      if (!is["a" /* default */].existy(value)) {
+        return 0;
+      }
+
+      if (!is["a" /* default */].number(value)) {
+        return this.state.value;
+      }
+
+      precision = this.getPrecision(value, step, precision);
+
+      var factor = Math.pow(10, this.getPrecision());
+
+      return this.setPrecision((factor * value - factor * step) / factor, precision);
+    },
+    change: function change(value) {
+      if (this.state.value === value) {
+        return;
+      }
+
+      this.state.value = value;
+      this.$emit("input", value);
+      this.$emit("change", value);
+
+      if (this.validator) {
+        this.dispatch("vui-form-item", "change", value);
+      }
+    },
+    handleMouseenter: function handleMouseenter(e) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.state.hovered = true;
+      this.$emit("mouseenter", e);
+    },
+    handleMouseleave: function handleMouseleave(e) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.state.hovered = false;
+      this.$emit("mouseleave", e);
+    },
+    handleFocus: function handleFocus(e) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.state.focused = true;
+      this.$emit("focus", e);
+    },
+    handleBlur: function handleBlur(e) {
+      var props = this.$props,
+          state = this.state;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.state.focused = false;
+      this.$emit("blur", e);
+
+      if (props.validator) {
+        this.dispatch("vui-form-item", "blur", state.value);
+      }
+    },
+    handleKeydown: function handleKeydown(e) {
+      var props = this.$props;
+
+      var keyCode = e.keyCode;
+
+      if (keyCode === 38) {
+        e.preventDefault();
+        this.handleIncrease();
+      } else if (keyCode === 40) {
+        e.preventDefault();
+        this.handleDecrease();
+      }
+
+      this.$emit("keydown", e);
+    },
+    handleKeyup: function handleKeyup(e) {
+      this.$emit("keyup", e);
+    },
+    handleInput: function handleInput(e) {
+      var props = this.$props;
+
+      var text = e.target.value;
+
+      this.state.inputting = true;
+      this.state.text = text;
+
+      if (this.isCompleteNumber(text)) {
+        var string = text.trim();
+
+        if (string.length === 0) {
+          this.change(undefined);
+        } else {
+          var value = Number(string);
+
+          if (!is["a" /* default */].number(value)) {
+            return;
+          }
+
+          var precision = this.getPrecision(value, props.step, props.precision);
+
+          if (is["a" /* default */].number(precision)) {
+            value = this.setPrecision(value, precision);
+          }
+
+          if (is["a" /* default */].number(props.min) && value < props.min) {
+            return;
+          }
+
+          if (is["a" /* default */].number(props.max) && value > props.max) {
+            return;
+          }
+
+          this.change(value);
+        }
+      }
+    },
+    handleChange: function handleChange(e) {
+      var props = this.$props;
+
+      var text = e.target.value;
+
+      this.state.inputting = false;
+
+      if (this.isValidNumber(text)) {
+        var string = text.trim();
+        var value = Number(text);
+
+        if (!is["a" /* default */].number(value)) {
+          return;
+        }
+
+        var precision = this.getPrecision(value, props.step, props.precision);
+
+        if (is["a" /* default */].number(precision)) {
+          value = this.setPrecision(value, precision);
+        }
+
+        if (is["a" /* default */].number(props.min) && value < props.min) {
+          value = props.min;
+        }
+
+        if (is["a" /* default */].number(props.max) && value > props.max) {
+          value = props.max;
+        }
+
+        if (value === this.state.value) {
+          this.state.text = this.getTextByValue(this.state.value, props);
+        } else {
+          this.change(value);
+        }
+      } else {
+        this.state.text = this.getTextByValue(this.state.value, props);
+      }
+    },
+    handleIncrease: function handleIncrease() {
+      var props = this.$props,
+          state = this.state;
+
+      var value = this.increase(state.value, props.step, props.precision);
+      var btnIncreaseDisabled = value > props.max;
+
+      if (!state.focused) {
+        this.focus();
+      }
+
+      if (btnIncreaseDisabled) {
+        return;
+      }
+
+      this.change(value);
+    },
+    handleDecrease: function handleDecrease() {
+      var state = this.state,
+          props = this.$props;
+
+      var value = this.decrease(state.value, props.step, props.precision);
+      var btnDecreaseDisabled = value < props.min;
+
+      if (!state.focused) {
+        this.focus();
+      }
+
+      if (btnDecreaseDisabled) {
+        return;
+      }
+
+      this.change(value);
+    },
+    handleIncreaseMousedown: function handleIncreaseMousedown(e) {
+      e.preventDefault();
+    },
+    handleDecreaseMousedown: function handleDecreaseMousedown(e) {
+      e.preventDefault();
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var props = this.$props;
+
+
+    if (props.autofocus) {
+      this.timeout = setTimeout(function () {
+        return _this.focus();
+      }, 0);
+    }
+  },
+  beforeDesotry: function beforeDesotry() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  },
+  render: function render(h) {
+    var _classes$el, _classes$elBtnIncreas, _classes$elBtnDecreas;
+
+    var vui = this.$vui,
+        vuiForm = this.vuiForm,
+        vuiInputGroup = this.vuiInputGroup,
+        listeners = this.$listeners,
+        attrs = this.$attrs,
+        props = this.$props,
+        state = this.state;
+    var handleMouseenter = this.handleMouseenter,
+        handleMouseleave = this.handleMouseleave,
+        handleFocus = this.handleFocus,
+        handleBlur = this.handleBlur,
+        handleKeydown = this.handleKeydown,
+        handleKeyup = this.handleKeyup,
+        handleInput = this.handleInput,
+        handleChange = this.handleChange,
+        handleIncrease = this.handleIncrease,
+        handleDecrease = this.handleDecrease,
+        handleIncreaseMousedown = this.handleIncreaseMousedown,
+        handleDecreaseMousedown = this.handleDecreaseMousedown;
+
+    // size: self > vuiInputGroup > vuiForm > vui
+
+    var size = void 0;
+
+    if (props.size) {
+      size = props.size;
+    } else if (vuiInputGroup && vuiInputGroup.size) {
+      size = vuiInputGroup.size;
+    } else if (vuiForm && vuiForm.size) {
+      size = vuiForm.size;
+    } else if (vui && vui.size) {
+      size = vui.size;
+    } else {
+      size = "medium";
+    }
+
+    // disabled: vuiForm > vuiInputGroup > self
+    var disabled = void 0;
+
+    if (vuiForm && vuiForm.disabled) {
+      disabled = vuiForm.disabled;
+    } else if (vuiInputGroup && vuiInputGroup.disabled) {
+      disabled = vuiInputGroup.disabled;
+    } else {
+      disabled = props.disabled;
+    }
+
+    // the disabled of increase button
+    var btnIncreaseDisabled = this.increase(state.value, props.step, props.precision) > props.max;
+
+    // the disabled of decrease button
+    var btnDecreaseDisabled = this.decrease(state.value, props.step, props.precision) < props.min;
+
+    // value
+    var value = "";
+
+    if (state.focused) {
+      value = state.text;
+    } else {
+      value = state.value;
+
+      if (is["a" /* default */].number(value)) {
+        var precision = this.getPrecision(value, props.step, props.precision);
+
+        if (is["a" /* default */].number(precision)) {
+          value = value.toFixed(precision);
+        } else {
+          value = value.toString();
+        }
+      }
+    }
+
+    if (state.focused === false && is["a" /* default */].existy(value) && is["a" /* default */].function(props.formatter)) {
+      value = props.formatter(value);
+    }
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "input-number");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-hovered", state.hovered), defineProperty_default()(_classes$el, classNamePrefix + "-focused", state.focused), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.elInput = classNamePrefix + "-input";
+    classes.elTrigger = classNamePrefix + "-trigger";
+    classes.elBtnIncrease = (_classes$elBtnIncreas = {}, defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn-increase", true), defineProperty_default()(_classes$elBtnIncreas, classNamePrefix + "-btn-disabled", btnIncreaseDisabled), _classes$elBtnIncreas);
+    classes.elBtnDecrease = (_classes$elBtnDecreas = {}, defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn-decrease", true), defineProperty_default()(_classes$elBtnDecreas, classNamePrefix + "-btn-disabled", btnDecreaseDisabled), _classes$elBtnDecreas);
+
+    // render
+    var elInputProps = {
+      ref: "input",
+      attrs: extends_default()({}, attrs, {
+        type: "text",
+        autocomplete: "off",
+        spellcheck: false,
+        placeholder: props.placeholder,
+        readonly: props.readonly,
+        disabled: disabled,
+        class: classes.elInput
+      }),
+      on: extends_default()({}, listeners, {
+        focus: handleFocus,
+        blur: handleBlur,
+        keydown: handleKeydown,
+        keyup: handleKeyup,
+        input: handleInput,
+        change: handleChange
+      })
+    };
+
+    return h(
+      "div",
+      { "class": classes.el, on: {
+          "mouseenter": handleMouseenter,
+          "mouseleave": handleMouseleave
+        }
+      },
+      [h("input", babel_helper_vue_jsx_merge_props_default()([elInputProps, {
+        domProps: {
+          "value": value
+        }
+      }])), !props.readonly && !disabled && h(
+        "div",
+        { "class": classes.elTrigger },
+        [h(
+          "div",
+          { "class": classes.elBtnIncrease, directives: [{
+              name: "longpress",
+              value: handleIncrease
+            }],
+            on: {
+              "mousedown": handleIncreaseMousedown
+            }
+          },
+          [h(components_icon, {
+            attrs: { type: "chevron-up" }
+          })]
+        ), h(
+          "div",
+          { "class": classes.elBtnDecrease, directives: [{
+              name: "longpress",
+              value: handleDecrease
+            }],
+            on: {
+              "mousedown": handleDecreaseMousedown
+            }
+          },
+          [h(components_icon, {
+            attrs: { type: "chevron-down" }
+          })]
+        )]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var input_number = (VuiInputNumber);
@@ -43253,7 +43306,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.3",
+  version: "1.9.4",
   install: src_install,
   // Locale
   locale: src_locale.use,

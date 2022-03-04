@@ -257,6 +257,8 @@ const VuiInput = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-with-prefix`]: slots.prefix || props.prefix,
+      [`${classNamePrefix}-with-suffix`]: slots.suffix || props.suffix,
       [`${classNamePrefix}-${size}`]: size,
       [`${classNamePrefix}-bordered`]: props.bordered,
       [`${classNamePrefix}-hovered`]: state.hovered,
