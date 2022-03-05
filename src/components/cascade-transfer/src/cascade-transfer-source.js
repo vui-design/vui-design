@@ -1,5 +1,6 @@
 import VuiCheckbox from "../../checkbox";
 import VuiIcon from "../../icon";
+import VuiBadge from "../../badge";
 import VuiCascadeTransferEmpty from "./cascade-transfer-empty";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
@@ -12,6 +13,7 @@ const VuiCascadeTransferSource = {
 	components: {
 		VuiCheckbox,
 		VuiIcon,
+		VuiBadge,
 		VuiCascadeTransferEmpty
 	},
 	props: {
@@ -27,6 +29,7 @@ const VuiCascadeTransferSource = {
 		body: PropTypes.func,
 		locale: PropTypes.object,
 		showSelectAll: PropTypes.bool.def(true),
+		showChildrenCount: PropTypes.bool.def(false),
 		disabled: PropTypes.bool.def(false)
 	},
 	data() {
@@ -151,6 +154,7 @@ const VuiCascadeTransferSource = {
 								indeterminate: indeterminate,
 								checked: checked,
 								disabled: props.disabled,
+								showChildrenCount: props.showChildrenCount,
 								onClick: props.onClick,
 								onSelect: props.onSelect
 							};
@@ -175,6 +179,7 @@ const VuiCascadeTransferSource = {
 			};
 			classes.elCheckbox = `${classNamePrefix}-checkbox`;
 			classes.elLabel = `${classNamePrefix}-label`;
+			classes.elCount = `${classNamePrefix}-count`;
 			classes.elArrow = `${classNamePrefix}-arrow`;
 
 			// content
@@ -223,6 +228,14 @@ const VuiCascadeTransferSource = {
 			);
 
 			if (props.option[props.childrenKey] && props.option[props.childrenKey].length > 0) {
+				if (props.showChildrenCount) {
+					children.push(
+						<div class={classes.elCount}>
+							<VuiBadge type="default" count={props.option[props.childrenKey].length} />
+						</div>
+					);
+				}
+
 				children.push(
 					<div class={classes.elArrow}>
 						<VuiIcon type="chevron-right" />
@@ -291,6 +304,7 @@ const VuiCascadeTransferSource = {
 			locale: props.locale,
 			showSelectAll: props.showSelectAll,
 			disabled: props.disabled,
+			showChildrenCount: props.showChildrenCount,
 			onClick: handleClick,
 			onSelectAll: handleSelectAll,
 			onSelect: handleSelect

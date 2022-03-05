@@ -39,6 +39,8 @@ const VuiCascadeTransfer = {
 		showTargetPanel: PropTypes.bool.def(true),
 		showSelectAll: PropTypes.bool.def(true),
 		showClear: PropTypes.bool.def(true),
+		showChildrenCount: PropTypes.bool.def(false),
+		showCheckedStrategy: PropTypes.string.def("parent"),
 		disabled: PropTypes.bool.def(false),
 		validator: PropTypes.bool.def(true)
 	},
@@ -52,7 +54,7 @@ const VuiCascadeTransfer = {
 
 		return {
 			state: {
-				selectedKeys: utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey),
+				selectedKeys: utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy),
 				value: clone(props.value),
 				sourceList: sourceList.concat(source)
 			}
@@ -62,7 +64,7 @@ const VuiCascadeTransfer = {
 		value(value) {
 			const { $props: props } = this;
 
-			this.state.selectedKeys = utils.mapValueToSelectedKeys(value, props.options, props.valueKey, props.childrenKey);
+			this.state.selectedKeys = utils.mapValueToSelectedKeys(value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 			this.state.value = clone(value);
 		},
 		options(value) {
@@ -73,7 +75,7 @@ const VuiCascadeTransfer = {
 				options: value
 			};
 
-			this.state.selectedKeys = utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey);
+			this.state.selectedKeys = utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 			this.state.value = clone(props.value);
 			this.state.sourceList = sourceList.concat(source);
 		}
@@ -156,6 +158,9 @@ const VuiCascadeTransfer = {
 				};
 
 				this.state.sourceList = sourceList.concat(source);
+			}
+			else {
+				this.state.sourceList = this.state.sourceList.slice(0, level);
 			}
 
 			this.$emit("click", option);
@@ -241,7 +246,7 @@ const VuiCascadeTransfer = {
 				return;
 			}
 
-			const value = utils.mapSelectedKeysToValue(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey);
+			const value = utils.mapSelectedKeysToValue(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 
 			this.state.value = value;
 			this.$emit("input", value);
@@ -294,6 +299,7 @@ const VuiCascadeTransfer = {
 								locale={props.locale}
 								showSelectAll={props.showSelectAll}
 								disabled={props.disabled}
+								showChildrenCount={props.showChildrenCount}
 								onClick={handleClick}
 								onSelectAll={handleSelectAll}
 								onSelect={handleSelect}

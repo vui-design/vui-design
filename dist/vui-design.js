@@ -27963,6 +27963,149 @@ var VuiCascadeTransferSourceList = {
 };
 
 /* harmony default export */ var cascade_transfer_source_list = (VuiCascadeTransferSourceList);
+// EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/slicedToArray.js
+var slicedToArray = __webpack_require__(81);
+var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
+
+// CONCATENATED MODULE: ./src/components/badge/src/badge.js
+
+
+
+
+
+var badge_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
+
+var VuiBadge = {
+	name: "vui-badge",
+	props: {
+		classNamePrefix: prop_types["a" /* default */].string,
+		type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("error"),
+		status: prop_types["a" /* default */].oneOf(["default", "processing", "warning", "success", "error"]),
+		color: prop_types["a" /* default */].string,
+		count: prop_types["a" /* default */].number,
+		overflowCount: prop_types["a" /* default */].number.def(99),
+		text: prop_types["a" /* default */].string,
+		dot: prop_types["a" /* default */].bool.def(false),
+		offset: prop_types["a" /* default */].array
+	},
+	render: function render() {
+		var h = arguments[0];
+		var slots = this.$slots,
+		    props = this.$props;
+
+		var withPresetColor = props.color && badge_colors.indexOf(props.color) > -1;
+		var withCustomColor = props.color && badge_colors.indexOf(props.color) === -1;
+		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "badge");
+
+		if (props.status || props.color) {
+			var _classes$el;
+
+			// class
+			var classes = {};
+
+			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-status", true), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.status, props.status), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.color, withPresetColor), _classes$el);
+			classes.elDot = classNamePrefix + "-status-dot";
+			classes.elText = classNamePrefix + "-status-text";
+
+			// style
+			var styles = {};
+
+			if (withCustomColor) {
+				styles.elDot = {
+					borderColor: props.color,
+					backgroundColor: props.color
+				};
+			}
+
+			// render
+			var children = [];
+
+			children.push(h("i", { "class": classes.elDot, style: styles.elDot }));
+
+			if (props.text) {
+				children.push(h(
+					"div",
+					{ "class": classes.elText },
+					[props.text]
+				));
+			}
+
+			return h(
+				"div",
+				{ "class": classes.el },
+				[children]
+			);
+		} else {
+			var _classes$el2;
+
+			var alone = slots.default === undefined;
+
+			// class
+			var _classes = {};
+
+			_classes.el = (_classes$el2 = {}, defineProperty_default()(_classes$el2, "" + classNamePrefix, true), defineProperty_default()(_classes$el2, classNamePrefix + "-alone", alone), defineProperty_default()(_classes$el2, classNamePrefix + "-" + props.type, props.type), _classes$el2);
+			_classes.elDot = classNamePrefix + "-dot";
+			_classes.elCount = classNamePrefix + "-count";
+
+			// offset
+			var offset = {};
+
+			if (!alone && props.offset && props.offset.length === 2) {
+				var _props$offset = slicedToArray_default()(props.offset, 2),
+				    x = _props$offset[0],
+				    y = _props$offset[1];
+
+				offset.top = -y + "px";
+				offset.right = -x + "px";
+			}
+
+			// render
+			var _children = [];
+
+			if (!alone) {
+				_children.push(slots.default);
+			}
+
+			if (props.dot) {
+				if (props.count || props.text) {
+					_children.push(h("sup", { "class": _classes.elDot, style: offset }));
+				}
+			} else {
+				if (props.count) {
+					var count = props.count > props.overflowCount ? props.overflowCount + "+" : props.count;
+
+					_children.push(h(
+						"sup",
+						{ "class": _classes.elCount, style: offset },
+						[count]
+					));
+				} else if (props.text) {
+					_children.push(h(
+						"sup",
+						{ "class": _classes.elCount, style: offset },
+						[props.text]
+					));
+				}
+			}
+
+			return h(
+				"div",
+				{ "class": _classes.el },
+				[_children]
+			);
+		}
+	}
+};
+
+/* harmony default export */ var badge = (VuiBadge);
+// CONCATENATED MODULE: ./src/components/badge/index.js
+
+
+badge.install = function (Vue) {
+	Vue.component(badge.name, badge);
+};
+
+/* harmony default export */ var components_badge = (badge);
 // CONCATENATED MODULE: ./src/components/cascade-transfer/src/cascade-transfer-empty.js
 
 
@@ -28076,30 +28219,49 @@ var utils_mapper = function mapper(options, parent, valueKey, childrenKey, map) 
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 * @param {String} childrenKey 选项子选项对应的键名
+* @param {String} showCheckedStrategy 定义选中项回填的方式
 */
-var utils_mapValueToSelectedKeys = function mapValueToSelectedKeys(value, options, valueKey, childrenKey) {
+var utils_mapValueToSelectedKeys = function mapValueToSelectedKeys(value, options, valueKey, childrenKey, showCheckedStrategy) {
 	var map = getMap(options, valueKey, childrenKey);
 	var selectedKeys = [];
 
-	value.forEach(function (key) {
-		var target = map[key];
+	if (showCheckedStrategy === "parent") {
+		value.forEach(function (key) {
+			var target = map[key];
 
-		if (!target) {
-			return;
-		}
+			if (!target) {
+				return;
+			}
 
-		selectedKeys.push(target.option[valueKey]);
+			selectedKeys.push(target.option[valueKey]);
 
-		if (target.children && target.children.length > 0) {
-			var children = flatten_flatten(target.children, childrenKey, true);
+			if (target.children && target.children.length > 0) {
+				var children = flatten_flatten(target.children, childrenKey, true);
 
-			children.forEach(function (child) {
-				if (selectedKeys.indexOf(child[valueKey]) === -1) {
-					selectedKeys.push(child[valueKey]);
-				}
-			});
-		}
-	});
+				children.forEach(function (child) {
+					if (selectedKeys.indexOf(child[valueKey]) === -1) {
+						selectedKeys.push(child[valueKey]);
+					}
+				});
+			}
+		});
+	} else if (showCheckedStrategy === "children") {
+		value.forEach(function (key) {
+			var target = map[key];
+
+			if (!target) {
+				return;
+			}
+
+			selectedKeys.push(target.option[valueKey]);
+
+			if (target.parent && target.parent.children.every(function (child) {
+				return value.indexOf(child[valueKey]) > -1;
+			})) {
+				selectedKeys.push(target.parent[valueKey]);
+			}
+		});
+	}
 
 	return selectedKeys;
 };
@@ -28110,24 +28272,42 @@ var utils_mapValueToSelectedKeys = function mapValueToSelectedKeys(value, option
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 * @param {String} childrenKey 选项子选项对应的键名
+* @param {String} showCheckedStrategy 定义选中项回填的方式
 */
-var mapSelectedKeysToValue = function mapSelectedKeysToValue(selectedKeys, options, valueKey, childrenKey) {
+var mapSelectedKeysToValue = function mapSelectedKeysToValue(selectedKeys, options, valueKey, childrenKey, showCheckedStrategy) {
 	var map = getMap(options, valueKey, childrenKey);
+
 	var value = [];
 
-	selectedKeys.forEach(function (selectedKey) {
-		var target = map[selectedKey];
+	if (showCheckedStrategy === "parent") {
+		selectedKeys.forEach(function (selectedKey) {
+			var target = map[selectedKey];
 
-		if (!target) {
-			return;
-		}
+			if (!target) {
+				return;
+			}
 
-		if (!target.parent) {
-			value.push(selectedKey);
-		} else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-			value.push(selectedKey);
-		}
-	});
+			if (!target.parent) {
+				value.push(selectedKey);
+			} else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+				value.push(selectedKey);
+			}
+		});
+	} else if (showCheckedStrategy === "children") {
+		selectedKeys.forEach(function (selectedKey) {
+			var target = map[selectedKey];
+
+			if (!target) {
+				return;
+			}
+
+			if (!target.children) {
+				value.push(selectedKey);
+			} else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+				value.push(selectedKey);
+			}
+		});
+	}
 
 	return value;
 };
@@ -28269,11 +28449,13 @@ var utils_getSelectedOptions = function getSelectedOptions(value, options, value
 
 
 
+
 var VuiCascadeTransferSource = {
 	name: "vui-cascade-transfer-source",
 	components: {
 		VuiCheckbox: components_checkbox,
 		VuiIcon: components_icon,
+		VuiBadge: components_badge,
 		VuiCascadeTransferEmpty: cascade_transfer_empty
 	},
 	props: {
@@ -28293,6 +28475,7 @@ var VuiCascadeTransferSource = {
 		body: prop_types["a" /* default */].func,
 		locale: prop_types["a" /* default */].object,
 		showSelectAll: prop_types["a" /* default */].bool.def(true),
+		showChildrenCount: prop_types["a" /* default */].bool.def(false),
 		disabled: prop_types["a" /* default */].bool.def(false)
 	},
 	data: function data() {
@@ -28429,6 +28612,7 @@ var VuiCascadeTransferSource = {
 						indeterminate: indeterminate,
 						checked: checked,
 						disabled: props.disabled,
+						showChildrenCount: props.showChildrenCount,
 						onClick: props.onClick,
 						onSelect: props.onSelect
 					};
@@ -28449,6 +28633,7 @@ var VuiCascadeTransferSource = {
 			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-expanded", props.expanded), defineProperty_default()(_classes$el, classNamePrefix + "-indeterminate", props.indeterminate), defineProperty_default()(_classes$el, classNamePrefix + "-checked", props.checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
 			classes.elCheckbox = classNamePrefix + "-checkbox";
 			classes.elLabel = classNamePrefix + "-label";
+			classes.elCount = classNamePrefix + "-count";
 			classes.elArrow = classNamePrefix + "-arrow";
 
 			// content
@@ -28506,6 +28691,16 @@ var VuiCascadeTransferSource = {
 			));
 
 			if (props.option[props.childrenKey] && props.option[props.childrenKey].length > 0) {
+				if (props.showChildrenCount) {
+					children.push(h(
+						"div",
+						{ "class": classes.elCount },
+						[h(components_badge, {
+							attrs: { type: "default", count: props.option[props.childrenKey].length }
+						})]
+					));
+				}
+
 				children.push(h(
 					"div",
 					{ "class": classes.elArrow },
@@ -28586,6 +28781,7 @@ var VuiCascadeTransferSource = {
 			locale: props.locale,
 			showSelectAll: props.showSelectAll,
 			disabled: props.disabled,
+			showChildrenCount: props.showChildrenCount,
 			onClick: handleClick,
 			onSelectAll: handleSelectAll,
 			onSelect: handleSelect
@@ -28924,6 +29120,8 @@ var VuiCascadeTransfer = {
 		showTargetPanel: prop_types["a" /* default */].bool.def(true),
 		showSelectAll: prop_types["a" /* default */].bool.def(true),
 		showClear: prop_types["a" /* default */].bool.def(true),
+		showChildrenCount: prop_types["a" /* default */].bool.def(false),
+		showCheckedStrategy: prop_types["a" /* default */].string.def("parent"),
 		disabled: prop_types["a" /* default */].bool.def(false),
 		validator: prop_types["a" /* default */].bool.def(true)
 	},
@@ -28938,7 +29136,7 @@ var VuiCascadeTransfer = {
 
 		return {
 			state: {
-				selectedKeys: cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey),
+				selectedKeys: cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy),
 				value: Object(utils_clone["a" /* default */])(props.value),
 				sourceList: sourceList.concat(source)
 			}
@@ -28950,7 +29148,7 @@ var VuiCascadeTransfer = {
 			var props = this.$props;
 
 
-			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(_value, props.options, props.valueKey, props.childrenKey);
+			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(_value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 			this.state.value = Object(utils_clone["a" /* default */])(_value);
 		},
 		options: function options(value) {
@@ -28962,7 +29160,7 @@ var VuiCascadeTransfer = {
 				options: value
 			};
 
-			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey);
+			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 			this.state.value = Object(utils_clone["a" /* default */])(props.value);
 			this.state.sourceList = sourceList.concat(source);
 		}
@@ -29050,6 +29248,8 @@ var VuiCascadeTransfer = {
 				};
 
 				this.state.sourceList = sourceList.concat(source);
+			} else {
+				this.state.sourceList = this.state.sourceList.slice(0, level);
 			}
 
 			this.$emit("click", option);
@@ -29142,7 +29342,7 @@ var VuiCascadeTransfer = {
 				return;
 			}
 
-			var value = cascade_transfer_src_utils.mapSelectedKeysToValue(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey);
+			var value = cascade_transfer_src_utils.mapSelectedKeysToValue(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
 
 			this.state.value = value;
 			this.$emit("input", value);
@@ -29202,7 +29402,8 @@ var VuiCascadeTransfer = {
 						body: props.body,
 						locale: props.locale,
 						showSelectAll: props.showSelectAll,
-						disabled: props.disabled
+						disabled: props.disabled,
+						showChildrenCount: props.showChildrenCount
 					},
 					on: {
 						"click": handleClick,
@@ -30752,149 +30953,6 @@ avatar_group.install = function (Vue) {
 };
 
 /* harmony default export */ var components_avatar_group = (avatar_group);
-// EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/slicedToArray.js
-var slicedToArray = __webpack_require__(81);
-var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
-
-// CONCATENATED MODULE: ./src/components/badge/src/badge.js
-
-
-
-
-
-var badge_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
-
-var VuiBadge = {
-	name: "vui-badge",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("error"),
-		status: prop_types["a" /* default */].oneOf(["default", "processing", "warning", "success", "error"]),
-		color: prop_types["a" /* default */].string,
-		count: prop_types["a" /* default */].number,
-		overflowCount: prop_types["a" /* default */].number.def(99),
-		text: prop_types["a" /* default */].string,
-		dot: prop_types["a" /* default */].bool.def(false),
-		offset: prop_types["a" /* default */].array
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props;
-
-		var withPresetColor = props.color && badge_colors.indexOf(props.color) > -1;
-		var withCustomColor = props.color && badge_colors.indexOf(props.color) === -1;
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "badge");
-
-		if (props.status || props.color) {
-			var _classes$el;
-
-			// class
-			var classes = {};
-
-			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-status", true), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.status, props.status), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.color, withPresetColor), _classes$el);
-			classes.elDot = classNamePrefix + "-status-dot";
-			classes.elText = classNamePrefix + "-status-text";
-
-			// style
-			var styles = {};
-
-			if (withCustomColor) {
-				styles.elDot = {
-					borderColor: props.color,
-					backgroundColor: props.color
-				};
-			}
-
-			// render
-			var children = [];
-
-			children.push(h("i", { "class": classes.elDot, style: styles.elDot }));
-
-			if (props.text) {
-				children.push(h(
-					"div",
-					{ "class": classes.elText },
-					[props.text]
-				));
-			}
-
-			return h(
-				"div",
-				{ "class": classes.el },
-				[children]
-			);
-		} else {
-			var _classes$el2;
-
-			var alone = slots.default === undefined;
-
-			// class
-			var _classes = {};
-
-			_classes.el = (_classes$el2 = {}, defineProperty_default()(_classes$el2, "" + classNamePrefix, true), defineProperty_default()(_classes$el2, classNamePrefix + "-alone", alone), defineProperty_default()(_classes$el2, classNamePrefix + "-" + props.type, props.type), _classes$el2);
-			_classes.elDot = classNamePrefix + "-dot";
-			_classes.elCount = classNamePrefix + "-count";
-
-			// offset
-			var offset = {};
-
-			if (!alone && props.offset && props.offset.length === 2) {
-				var _props$offset = slicedToArray_default()(props.offset, 2),
-				    x = _props$offset[0],
-				    y = _props$offset[1];
-
-				offset.top = -y + "px";
-				offset.right = -x + "px";
-			}
-
-			// render
-			var _children = [];
-
-			if (!alone) {
-				_children.push(slots.default);
-			}
-
-			if (props.dot) {
-				if (props.count || props.text) {
-					_children.push(h("sup", { "class": _classes.elDot, style: offset }));
-				}
-			} else {
-				if (props.count) {
-					var count = props.count > props.overflowCount ? props.overflowCount + "+" : props.count;
-
-					_children.push(h(
-						"sup",
-						{ "class": _classes.elCount, style: offset },
-						[count]
-					));
-				} else if (props.text) {
-					_children.push(h(
-						"sup",
-						{ "class": _classes.elCount, style: offset },
-						[props.text]
-					));
-				}
-			}
-
-			return h(
-				"div",
-				{ "class": _classes.el },
-				[_children]
-			);
-		}
-	}
-};
-
-/* harmony default export */ var badge = (VuiBadge);
-// CONCATENATED MODULE: ./src/components/badge/index.js
-
-
-badge.install = function (Vue) {
-	Vue.component(badge.name, badge);
-};
-
-/* harmony default export */ var components_badge = (badge);
 // CONCATENATED MODULE: ./src/components/card/src/card.js
 
 
@@ -43306,7 +43364,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.5",
+  version: "1.9.6",
   install: src_install,
   // Locale
   locale: src_locale.use,

@@ -25,30 +25,48 @@ const mapper = (options, parent, valueKey, childrenKey, map) => {
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 * @param {String} childrenKey 选项子选项对应的键名
+* @param {String} showCheckedStrategy 定义选中项回填的方式
 */
-export const mapValueToSelectedKeys = (value, options, valueKey, childrenKey) => {
+export const mapValueToSelectedKeys = (value, options, valueKey, childrenKey, showCheckedStrategy) => {
 	const map = getMap(options, valueKey, childrenKey);
 	let selectedKeys = [];
 
-	value.forEach(key => {
-		const target = map[key];
+	if (showCheckedStrategy === "parent") {
+		value.forEach(key => {
+			const target = map[key];
 
-		if (!target) {
-			return;
-		}
+			if (!target) {
+				return;
+			}
 
-		selectedKeys.push(target.option[valueKey]);
+			selectedKeys.push(target.option[valueKey]);
 
-		if (target.children && target.children.length > 0) {
-			const children = flatten(target.children, childrenKey, true);
+			if (target.children && target.children.length > 0) {
+				const children = flatten(target.children, childrenKey, true);
 
-			children.forEach(child => {
-				if (selectedKeys.indexOf(child[valueKey]) === -1) {
-					selectedKeys.push(child[valueKey]);
-				}
-			});
-		}
-	});
+				children.forEach(child => {
+					if (selectedKeys.indexOf(child[valueKey]) === -1) {
+						selectedKeys.push(child[valueKey]);
+					}
+				});
+			}
+		});
+	}
+	else if (showCheckedStrategy === "children") {
+		value.forEach(key => {
+			const target = map[key];
+
+			if (!target) {
+				return;
+			}
+
+			selectedKeys.push(target.option[valueKey]);
+
+			if (target.parent && target.parent.children.every(child => value.indexOf(child[valueKey]) > -1)) {
+				selectedKeys.push(target.parent[valueKey]);
+			}
+		});
+	}
 
 	return selectedKeys;
 };
@@ -59,25 +77,45 @@ export const mapValueToSelectedKeys = (value, options, valueKey, childrenKey) =>
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 * @param {String} childrenKey 选项子选项对应的键名
+* @param {String} showCheckedStrategy 定义选中项回填的方式
 */
-export const mapSelectedKeysToValue = (selectedKeys, options, valueKey, childrenKey) => {
+export const mapSelectedKeysToValue = (selectedKeys, options, valueKey, childrenKey, showCheckedStrategy) => {
 	const map = getMap(options, valueKey, childrenKey);
+
 	let value = [];
 
-	selectedKeys.forEach(selectedKey => {
-		const target = map[selectedKey];
+	if (showCheckedStrategy === "parent") {
+		selectedKeys.forEach(selectedKey => {
+			const target = map[selectedKey];
 
-		if (!target) {
-			return;
-		}
+			if (!target) {
+				return;
+			}
 
-		if (!target.parent) {
-			value.push(selectedKey);
-		}
-		else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-			value.push(selectedKey);
-		}
-	});
+			if (!target.parent) {
+				value.push(selectedKey);
+			}
+			else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+				value.push(selectedKey);
+			}
+		});
+	}
+	else if (showCheckedStrategy === "children") {
+		selectedKeys.forEach(selectedKey => {
+			const target = map[selectedKey];
+
+			if (!target) {
+				return;
+			}
+
+			if (!target.children) {
+				value.push(selectedKey);
+			}
+			else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+				value.push(selectedKey);
+			}
+		});
+	}
 
 	return value;
 };
