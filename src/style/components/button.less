@@ -571,28 +571,94 @@
     vertical-align:middle;
     font-size:0;
   }
-  &-group & {
-    border-radius:0;
-
-    &:first-child {
-      border-top-left-radius:@button-border-radius;
-      border-bottom-left-radius:@button-border-radius;
-    }
-    &:last-child {
-      border-top-right-radius:@button-border-radius;
-      border-bottom-right-radius:@button-border-radius;
-    }
-  }
-  &-group &-default + &-default,
-  &-group &-dashed + &-dashed,
-  &-group &-text + &-text {
+  &-group & + & {
     margin-left:-1px;
   }
-  &-group &-primary + &-primary,
-  &-group &-info + &-info,
-  &-group &-warning + &-warning,
-  &-group &-success + &-success,
-  &-group &-danger + &-danger {
-    margin-left:1px;
+
+  &-group & {
+    border-radius:0;
+  }
+  &-group &:first-child {
+    border-top-left-radius:@button-border-radius;
+    border-bottom-left-radius:@button-border-radius;
+  }
+  &-group &:last-child {
+    border-top-right-radius:@button-border-radius;
+    border-bottom-right-radius:@button-border-radius;
+  }
+  &-group &-round&-small:first-child {
+    border-top-left-radius:@button-size-sm;
+    border-bottom-left-radius:@button-size-sm;
+  }
+  &-group &-round&-small:last-child {
+    border-top-right-radius:@button-size-sm;
+    border-bottom-right-radius:@button-size-sm;
+  }
+  &-group &-round&-medium:first-child {
+    border-top-left-radius:@button-size-md;
+    border-bottom-left-radius:@button-size-md;
+  }
+  &-group &-round&-medium:last-child {
+    border-top-right-radius:@button-size-md;
+    border-bottom-right-radius:@button-size-md;
+  }
+  &-group &-round&-large:first-child {
+    border-top-left-radius:@button-size-lg;
+    border-bottom-left-radius:@button-size-lg;
+  }
+  &-group &-round&-large:last-child {
+    border-top-right-radius:@button-size-lg;
+    border-bottom-right-radius:@button-size-lg;
+  }
+
+  &-group &-primary:not(&-ghost):not(&-disabled):not(:first-child):not(:last-child) {
+    border-left-color:@button-primary-active-border-color;
+    border-right-color:@button-primary-active-border-color;
+  }
+  &-group &-primary:not(&-ghost):not(&-disabled):first-child:not(:last-child) {
+    border-right-color:@button-primary-active-border-color;
+  }
+  &-group &-primary:not(&-ghost):not(&-disabled):last-child:not(:first-child) {
+    border-left-color:@button-primary-active-border-color;
+  }
+  &-group &-info:not(&-ghost):not(&-disabled):not(:first-child):not(:last-child) {
+    border-left-color:@button-info-active-border-color;
+    border-right-color:@button-info-active-border-color;
+  }
+  &-group &-info:not(&-ghost):not(&-disabled):first-child:not(:last-child) {
+    border-right-color:@button-info-active-border-color;
+  }
+  &-group &-info:not(&-ghost):not(&-disabled):last-child:not(:first-child) {
+    border-left-color:@button-info-active-border-color;
+  }
+  &-group &-warning:not(&-ghost):not(&-disabled):not(:first-child):not(:last-child) {
+    border-left-color:@button-warning-active-border-color;
+    border-right-color:@button-warning-active-border-color;
+  }
+  &-group &-warning:not(&-ghost):not(&-disabled):first-child:not(:last-child) {
+    border-right-color:@button-warning-active-border-color;
+  }
+  &-group &-warning:not(&-ghost):not(&-disabled):last-child:not(:first-child) {
+    border-left-color:@button-warning-active-border-color;
+  }
+  &-group &-success:not(&-ghost):not(&-disabled):not(:first-child):not(:last-child) {
+    border-left-color:@button-success-active-border-color;
+    border-right-color:@button-success-active-border-color;
+  }
+  &-group &-success:not(&-ghost):not(&-disabled):first-child:not(:last-child) {
+    border-right-color:@button-success-active-border-color;
+  }
+  &-group &-success:not(&-ghost):not(&-disabled):last-child:not(:first-child) {
+    border-left-color:@button-success-active-border-color;
+  }
+  &-group &-danger:not(&-ghost):not(&-disabled):not(:first-child):not(:last-child) {
+    border-left-color:@button-danger-active-border-color;
+    border-right-color:@button-danger-active-border-color;
+  }
+  &-group &-danger:not(&-ghost):not(&-disabled):first-child:not(:last-child) {
+    border-right-color:@button-danger-active-border-color;
+  }
+  &-group &-danger:not(&-ghost):not(&-disabled):last-child:not(:first-child) {
+    border-left-color:@button-danger-active-border-color;
   }
 }

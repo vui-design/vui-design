@@ -7760,6 +7760,7 @@ var VuiButtonGroup = {
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed"]).def("default"),
+    ghost: prop_types["a" /* default */].bool.def(false),
     shape: prop_types["a" /* default */].oneOf(["round"]),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     disabled: prop_types["a" /* default */].bool.def(false)
@@ -7972,6 +7973,15 @@ var VuiButton = {
       type = "danger";
     }
 
+    // ghost
+    var ghost = void 0;
+
+    if (vuiButtonGroup) {
+      ghost = vuiButtonGroup.ghost;
+    } else {
+      ghost = props.ghost;
+    }
+
     // shape
     var shape = void 0;
 
@@ -8015,7 +8025,7 @@ var VuiButton = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "button");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + type, type), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-ghost", props.ghost), defineProperty_default()(_classes$el, classNamePrefix + "-" + shape, shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-loading", props.loading), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + type, type), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-ghost", ghost), defineProperty_default()(_classes$el, classNamePrefix + "-" + shape, shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-loading", props.loading), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
 
     // render
     var children = [];
@@ -43364,7 +43374,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.6",
+  version: "1.9.7",
   install: src_install,
   // Locale
   locale: src_locale.use,

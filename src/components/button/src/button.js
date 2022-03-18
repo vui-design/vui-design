@@ -84,6 +84,16 @@ const VuiButton = {
       type = "danger";
     }
 
+    // ghost
+    let ghost;
+
+    if (vuiButtonGroup) {
+      ghost = vuiButtonGroup.ghost;
+    }
+    else {
+      ghost = props.ghost;
+    }
+
     // shape
     let shape;
 
@@ -140,7 +150,7 @@ const VuiButton = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-${type}`]: type,
       [`${classNamePrefix}-block`]: props.block,
-      [`${classNamePrefix}-ghost`]: props.ghost,
+      [`${classNamePrefix}-ghost`]: ghost,
       [`${classNamePrefix}-${shape}`]: shape,
       [`${classNamePrefix}-${size}`]: size,
       [`${classNamePrefix}-loading`]: props.loading,

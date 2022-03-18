@@ -11,6 +11,7 @@ const VuiButtonGroup = {
   props: {
     classNamePrefix: PropTypes.string,
     type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed"]).def("default"),
+    ghost: PropTypes.bool.def(false),
     shape: PropTypes.oneOf(["round"]),
     size: PropTypes.oneOf(["small", "medium", "large"]),
     disabled: PropTypes.bool.def(false)
