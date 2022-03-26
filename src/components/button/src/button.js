@@ -66,7 +66,7 @@ const VuiButton = {
     }
   },
   render() {
-    const { $vui: vui, vuiForm, vuiInputGroup, vuiButtonGroup } = this;
+    const { vuiForm, vuiInputGroup, vuiButtonGroup } = this;
     const { $slots: slots, $props: props, $attrs: attrs, $listeners: listeners } = this;
     const { insertTextIntoSpan, getNextRoute, handleButtonClick, handleLinkClick } = this;
 
@@ -118,9 +118,6 @@ const VuiButton = {
     }
     else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    }
-    else if (vui && vui.size) {
-      size = vui.size;
     }
     else {
       size = "medium";

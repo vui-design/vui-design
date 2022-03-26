@@ -1,6 +1,7 @@
 import VuiIcon from "../../icon";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
+import noop from "../../../utils/noop";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSteps = {
@@ -12,7 +13,8 @@ const VuiSteps = {
     size: PropTypes.oneOf(["small"]),
     step: PropTypes.number.def(0),
     steps: PropTypes.array.def([]),
-    status: PropTypes.oneOf(["wait", "process", "finish", "error"]).def("process")
+    status: PropTypes.oneOf(["wait", "process", "finish", "error"]).def("process"),
+    changeOnTitle: PropTypes.bool.def(false)
   },
   methods: {
     handleStepClick(index) {
@@ -41,8 +43,7 @@ const VuiSteps = {
       [`${classNamePrefix}`]: true,
       [`${classNamePrefix}-${props.type}`]: props.type,
       [`${classNamePrefix}-${props.direction}`]: props.direction,
-      [`${classNamePrefix}-${props.size}`]: props.size,
-      [`${classNamePrefix}-clickable`]: clickable
+      [`${classNamePrefix}-${props.size}`]: props.size
     };
 
     // render
@@ -50,6 +51,7 @@ const VuiSteps = {
       <div class={classes.el}>
         {
           props.steps.map(step => {
+            // 
             const nextStep = props.steps[step.index + 1];
             let nextStepStatus;
 
@@ -57,6 +59,7 @@ const VuiSteps = {
               nextStepStatus = nextStep.status;
             }
 
+            // 
             let stepClasses = {};
 
             stepClasses.el = {
@@ -64,18 +67,28 @@ const VuiSteps = {
               [`${classNamePrefix}-item-${step.status}`]: step.status,
               [`${classNamePrefix}-item-next-${nextStepStatus}`]: nextStepStatus
             };
-            stepClasses.elContent = `${classNamePrefix}-item-content`;
-            stepClasses.elTitle = `${classNamePrefix}-item-title`;
+            stepClasses.elContent = {
+              [`${classNamePrefix}-item-content`]: true,
+              [`${classNamePrefix}-item-content-clickable`]: clickable && !props.changeOnTitle
+            };
+            stepClasses.elTitle = {
+              [`${classNamePrefix}-item-title`]: true,
+              [`${classNamePrefix}-item-title-clickable`]: clickable && props.changeOnTitle
+            };
             stepClasses.elDot = `${classNamePrefix}-item-dot`;
             stepClasses.elIcon = `${classNamePrefix}-item-icon`;
             stepClasses.elCustomIcon = `${classNamePrefix}-item-custom-icon`;
             stepClasses.elDescription = `${classNamePrefix}-item-description`;
             stepClasses.elSeparator = `${classNamePrefix}-item-separator`;
 
+            // 
+            const handleClick = e => handleStepClick(step.index);
+
+            // 
             let stepChildren = [];
 
             stepChildren.push(
-              <div class={stepClasses.elTitle}>{step.title}</div>
+              <div class={stepClasses.elTitle} onClick={clickable && props.changeOnTitle ? handleClick : noop}>{step.title}</div>
             );
 
             if (props.type === "dot") {
@@ -120,11 +133,14 @@ const VuiSteps = {
               );
             }
 
-            const handleClick = e => handleStepClick(step.index);
-
             return (
               <div class={stepClasses.el}>
-                <div class={stepClasses.elContent} onClick={handleClick}>{stepChildren}</div>
+                <div
+                  class={stepClasses.elContent}
+                  onClick={clickable && !props.changeOnTitle ? handleClick : noop}
+                >
+                  {stepChildren}
+                </div>
                 <div class={stepClasses.elSeparator}></div>
               </div>
             );

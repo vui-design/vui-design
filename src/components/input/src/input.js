@@ -206,7 +206,7 @@ const VuiInput = {
     }
   },
   render(h) {
-    const { $vui: vui, vuiForm, vuiInputGroup, $slots: slots, $listeners: listeners, $attrs: attrs, $props: props, state  } = this;
+    const { vuiForm, vuiInputGroup, $slots: slots, $listeners: listeners, $attrs: attrs, $props: props, state  } = this;
     const { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleKeydown, handleKeypress, handleKeyup, handleChange, handleInput, handleClear, handleToggle } = this;
 
     // type
@@ -230,9 +230,6 @@ const VuiInput = {
     }
     else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    }
-    else if (vui && vui.size) {
-      size = vui.size;
     }
     else {
       size = "medium";

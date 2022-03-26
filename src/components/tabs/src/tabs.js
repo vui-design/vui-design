@@ -66,7 +66,7 @@ const VuiTabs = {
     }
   },
   render() {
-    const { $vui: vui, $props: props, state } = this;
+    const { $props: props, state } = this;
     const { handleChange, handleAdd, handleClose } = this;
 
     // size
@@ -74,9 +74,6 @@ const VuiTabs = {
 
     if (props.size) {
       size = props.size;
-    }
-    else if (vui && vui.size) {
-      size = vui.size;
     }
     else {
       size = "medium";

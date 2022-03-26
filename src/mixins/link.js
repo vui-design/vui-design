@@ -27,12 +27,13 @@ export default {
       else if (props.to && guardLinkEvent(e)) {
         try {
           const route = this.getNextRoute();
+          const method = props.replace ? router.replace : router.push;
           const fallback = error => {};
 
-          props.replace ? router.replace(route.location).catch(fallback) : router.push(route.location).catch(fallback);
+          method.call(router, route.location).catch(fallback);
         }
-        catch(e) {
-          console.error(e);
+        catch(error) {
+          console.error(error);
         }
       }
     }

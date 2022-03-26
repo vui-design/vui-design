@@ -180,7 +180,7 @@ const VuiTableFilter = {
               <div class={classes.elDropdownBody}>
                 {
                   props.multiple ? (
-                    <VuiCheckboxGroup value={state.value} validator={false} onChange={handleChange}>
+                    <VuiCheckboxGroup layout="vertical" value={state.value} validator={false} onChange={handleChange}>
                       {
                         props.options.map(option => {
                           return (
@@ -190,7 +190,7 @@ const VuiTableFilter = {
                       }
                     </VuiCheckboxGroup>
                   ) : (
-                    <VuiRadioGroup value={state.value} validator={false} onChange={handleChange}>
+                    <VuiRadioGroup layout="vertical" value={state.value} validator={false} onChange={handleChange}>
                       {
                         props.options.map(option => {
                           return (

@@ -335,7 +335,7 @@ const VuiCascader = {
     }
   },
   render(h) {
-    const { $vui: vui, vuiForm, vuiInputGroup, $props: props, state } = this;
+    const { vuiForm, vuiInputGroup, $props: props, state } = this;
     const { handleMouseenter, handleMouseleave, handleClick, handleFocus, handleBlur, handleKeydown, handleInput, handleClear, handleResize } = this;
     const { handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleAfterClose } = this;
     const { handleMenuListSelect, handleMenuSelect } = this;
@@ -351,9 +351,6 @@ const VuiCascader = {
     }
     else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    }
-    else if (vui && vui.size) {
-      size = vui.size;
     }
     else {
       size = "medium";

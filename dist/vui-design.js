@@ -7861,11 +7861,12 @@ function guardLinkEvent(e) {
       if (props.href) {} else if (props.to && guardLinkEvent(e)) {
         try {
           var route = this.getNextRoute();
+          var method = props.replace ? router.replace : router.push;
           var fallback = function fallback(error) {};
 
-          props.replace ? router.replace(route.location).catch(fallback) : router.push(route.location).catch(fallback);
-        } catch (e) {
-          console.error(e);
+          method.call(router, route.location).catch(fallback);
+        } catch (error) {
+          console.error(error);
         }
       }
     }
@@ -7946,8 +7947,7 @@ var VuiButton = {
     var _classes$el;
 
     var h = arguments[0];
-    var vui = this.$vui,
-        vuiForm = this.vuiForm,
+    var vuiForm = this.vuiForm,
         vuiInputGroup = this.vuiInputGroup,
         vuiButtonGroup = this.vuiButtonGroup;
     var slots = this.$slots,
@@ -8002,8 +8002,6 @@ var VuiButton = {
       size = vuiInputGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -18075,8 +18073,7 @@ var VuiInput = {
   render: function render(h) {
     var _classes$el;
 
-    var vui = this.$vui,
-        vuiForm = this.vuiForm,
+    var vuiForm = this.vuiForm,
         vuiInputGroup = this.vuiInputGroup,
         slots = this.$slots,
         listeners = this.$listeners,
@@ -18114,8 +18111,6 @@ var VuiInput = {
       size = vuiInputGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -18834,6 +18829,7 @@ pagination.install = function (Vue) {
 
 
 
+
 var VuiSteps = {
   name: "vui-steps",
   props: {
@@ -18843,7 +18839,8 @@ var VuiSteps = {
     size: prop_types["a" /* default */].oneOf(["small"]),
     step: prop_types["a" /* default */].number.def(0),
     steps: prop_types["a" /* default */].array.def([]),
-    status: prop_types["a" /* default */].oneOf(["wait", "process", "finish", "error"]).def("process")
+    status: prop_types["a" /* default */].oneOf(["wait", "process", "finish", "error"]).def("process"),
+    changeOnTitle: prop_types["a" /* default */].bool.def(false)
   },
   methods: {
     handleStepClick: function handleStepClick(index) {
@@ -18875,15 +18872,16 @@ var VuiSteps = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "steps");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.direction, props.direction), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_classes$el, classNamePrefix + "-clickable", clickable), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.direction, props.direction), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), _classes$el);
 
     // render
     return h(
       "div",
       { "class": classes.el },
       [props.steps.map(function (step) {
-        var _stepClasses$el;
+        var _stepClasses$el, _stepClasses$elConten, _stepClasses$elTitle;
 
+        // 
         var nextStep = props.steps[step.index + 1];
         var nextStepStatus = void 0;
 
@@ -18891,22 +18889,32 @@ var VuiSteps = {
           nextStepStatus = nextStep.status;
         }
 
+        // 
         var stepClasses = {};
 
         stepClasses.el = (_stepClasses$el = {}, defineProperty_default()(_stepClasses$el, classNamePrefix + "-item", true), defineProperty_default()(_stepClasses$el, classNamePrefix + "-item-" + step.status, step.status), defineProperty_default()(_stepClasses$el, classNamePrefix + "-item-next-" + nextStepStatus, nextStepStatus), _stepClasses$el);
-        stepClasses.elContent = classNamePrefix + "-item-content";
-        stepClasses.elTitle = classNamePrefix + "-item-title";
+        stepClasses.elContent = (_stepClasses$elConten = {}, defineProperty_default()(_stepClasses$elConten, classNamePrefix + "-item-content", true), defineProperty_default()(_stepClasses$elConten, classNamePrefix + "-item-content-clickable", clickable && !props.changeOnTitle), _stepClasses$elConten);
+        stepClasses.elTitle = (_stepClasses$elTitle = {}, defineProperty_default()(_stepClasses$elTitle, classNamePrefix + "-item-title", true), defineProperty_default()(_stepClasses$elTitle, classNamePrefix + "-item-title-clickable", clickable && props.changeOnTitle), _stepClasses$elTitle);
         stepClasses.elDot = classNamePrefix + "-item-dot";
         stepClasses.elIcon = classNamePrefix + "-item-icon";
         stepClasses.elCustomIcon = classNamePrefix + "-item-custom-icon";
         stepClasses.elDescription = classNamePrefix + "-item-description";
         stepClasses.elSeparator = classNamePrefix + "-item-separator";
 
+        // 
+        var handleClick = function handleClick(e) {
+          return handleStepClick(step.index);
+        };
+
+        // 
         var stepChildren = [];
 
         stepChildren.push(h(
           "div",
-          { "class": stepClasses.elTitle },
+          { "class": stepClasses.elTitle, on: {
+              "click": clickable && props.changeOnTitle ? handleClick : noop
+            }
+          },
           [step.title]
         ));
 
@@ -18952,17 +18960,15 @@ var VuiSteps = {
           ));
         }
 
-        var handleClick = function handleClick(e) {
-          return handleStepClick(step.index);
-        };
-
         return h(
           "div",
           { "class": stepClasses.el },
           [h(
             "div",
-            { "class": stepClasses.elContent, on: {
-                "click": handleClick
+            {
+              "class": stepClasses.elContent,
+              on: {
+                "click": clickable && !props.changeOnTitle ? handleClick : noop
               }
             },
             [stepChildren]
@@ -19066,37 +19072,38 @@ var utils_getStepsFromChildren = function getStepsFromChildren(props, children) 
 
 
 var VuiStepsWrapper = {
-   name: src_steps.name,
-   components: {
-      VuiSteps: src_steps
-   },
-   props: {
-      classNamePrefix: prop_types["a" /* default */].string,
-      type: prop_types["a" /* default */].oneOf(["default", "dot"]).def("default"),
-      direction: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
-      size: prop_types["a" /* default */].oneOf(["small"]),
-      step: prop_types["a" /* default */].number.def(0),
-      status: prop_types["a" /* default */].oneOf(["wait", "process", "finish", "error"]).def("process")
-   },
-   render: function render() {
-      var h = arguments[0];
-      var slots = this.$slots,
-          listeners = this.$listeners,
-          props = this.$props;
+  name: src_steps.name,
+  components: {
+    VuiSteps: src_steps
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["default", "dot"]).def("default"),
+    direction: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+    size: prop_types["a" /* default */].oneOf(["small"]),
+    step: prop_types["a" /* default */].number.def(0),
+    status: prop_types["a" /* default */].oneOf(["wait", "process", "finish", "error"]).def("process"),
+    changeOnTitle: prop_types["a" /* default */].bool.def(false)
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        listeners = this.$listeners,
+        props = this.$props;
 
-      var attributes = {
-         props: extends_default()({}, props, {
-            steps: steps_src_utils.getStepsFromChildren(props, slots.default)
-         }),
-         on: extends_default()({}, listeners)
-      };
+    var attributes = {
+      props: extends_default()({}, props, {
+        steps: steps_src_utils.getStepsFromChildren(props, slots.default)
+      }),
+      on: extends_default()({}, listeners)
+    };
 
-      return h(src_steps, attributes);
-   }
+    return h(src_steps, attributes);
+  }
 };
 
 VuiStepsWrapper.install = function (Vue) {
-   Vue.component(VuiStepsWrapper.name, VuiStepsWrapper);
+  Vue.component(VuiStepsWrapper.name, VuiStepsWrapper);
 };
 
 /* harmony default export */ var components_steps = (VuiStepsWrapper);
@@ -19373,8 +19380,7 @@ var VuiTabs = {
     var _classes$el;
 
     var h = arguments[0];
-    var vui = this.$vui,
-        props = this.$props,
+    var props = this.$props,
         state = this.state;
     var handleChange = this.handleChange,
         handleAdd = this.handleAdd,
@@ -19386,8 +19392,6 @@ var VuiTabs = {
 
     if (props.size) {
       size = props.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -21160,8 +21164,7 @@ var VuiCascader = {
   render: function render(h) {
     var _classes$el;
 
-    var vui = this.$vui,
-        vuiForm = this.vuiForm,
+    var vuiForm = this.vuiForm,
         vuiInputGroup = this.vuiInputGroup,
         props = this.$props,
         state = this.state;
@@ -21191,8 +21194,6 @@ var VuiCascader = {
       size = vuiInputGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -23184,8 +23185,7 @@ var VuiInputNumber = {
   render: function render(h) {
     var _classes$el, _classes$elBtnIncreas, _classes$elBtnDecreas;
 
-    var vui = this.$vui,
-        vuiForm = this.vuiForm,
+    var vuiForm = this.vuiForm,
         vuiInputGroup = this.vuiInputGroup,
         listeners = this.$listeners,
         attrs = this.$attrs,
@@ -23214,8 +23214,6 @@ var VuiInputNumber = {
       size = vuiInputGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -34332,7 +34330,7 @@ var VuiTableFilter = {
               [props.multiple ? h(
                 components_checkbox_group,
                 {
-                  attrs: { value: state.value, validator: false },
+                  attrs: { layout: "vertical", value: state.value, validator: false },
                   on: {
                     "change": handleChange
                   }
@@ -34344,7 +34342,7 @@ var VuiTableFilter = {
               ) : h(
                 components_radio_group,
                 {
-                  attrs: { value: state.value, validator: false },
+                  attrs: { layout: "vertical", value: state.value, validator: false },
                   on: {
                     "change": handleChange
                   }
@@ -43374,7 +43372,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.7",
+  version: "1.9.8",
   install: src_install,
   // Locale
   locale: src_locale.use,
