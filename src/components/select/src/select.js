@@ -72,28 +72,20 @@ const VuiSelect = {
   },
   data() {
     const { $props: props } = this;
-    let state = {
-      hovered: false,
-      focused: false,
-      actived: false,
-      searching: false,
-      keyword: "",
-      value: undefined,
-      options: [],
-      activedEventType: "navigate",
-      activedMenuItemIndex: -1,
-      activedMenuItem: undefined
-    };
-
-    if (props.multiple) {
-      state.value = utils.getSelectedOptionsByValue(props.value, props.options);
-    }
-    else {
-      state.value = utils.getSelectedOptionByValue(props.value, props.options);
-    }
 
     return {
-      state
+      state: {
+        hovered: false,
+        focused: false,
+        actived: false,
+        searching: false,
+        keyword: "",
+        value: utils.getValueFromProps(props.value, undefined, props),
+        options: [],
+        activedEventType: "navigate",
+        activedMenuItemIndex: 0,
+        activedMenuItem: undefined
+      }
     };
   },
   computed: {
@@ -106,30 +98,12 @@ const VuiSelect = {
   },
   watch: {
     value(value) {
-      const { $props: props, state } = this;
-
-      if (props.multiple) {
-        this.state.value = utils.getSelectedOptionsByValue(value, props.options, state.value);
-      }
-      else {
-        this.state.value = utils.getSelectedOptionByValue(value, props.options, state.value);
-      }
+      this.state.value = utils.getValueFromProps(value, this.state.value, this.$props);
     },
     options(value) {
-      const { $props: props, state } = this;
-
-      if (props.multiple) {
-        this.state.value = utils.getSelectedOptionsByValue(props.value, value, state.value);
-      }
-      else {
-        this.state.value = utils.getSelectedOptionByValue(props.value, value, state.value);
-      }
+      this.state.value = utils.getValueFromProps(this.value, this.state.value, this.$props);
     },
     actived(value) {
-      if (!value) {
-        return;
-      }
-
       this.$nextTick(() => this.resetActivedMenuItem());
     },
     keyword(value) {
@@ -148,7 +122,7 @@ const VuiSelect = {
     },
     changeActivedMenuItem(direction, lastIndex) {
       const { $props: props, state } = this;
-      const options = utils.getFlattenedOptions(state.searching ? state.options : props.options);
+      const options = state.searching ? state.options : props.options;
 
       if (!options.length) {
         return;
@@ -161,14 +135,13 @@ const VuiSelect = {
       if (index < min) {
         index = max;
       }
-
-      if (index > max) {
+      else if (index > max) {
         index = min;
       }
 
       const option = options[index];
 
-      if (option.disabled) {
+      if (option.type === "option-group" || option.disabled) {
         this.changeActivedMenuItem(direction, index);
       }
       else {
@@ -180,20 +153,20 @@ const VuiSelect = {
     resetActivedMenuItem() {
       const { $props: props, state } = this;
 
-      if (props.loading) {
+      if (props.loading || !state.actived) {
         return;
       }
 
-      const options = utils.getFlattenedOptions(state.searching ? state.options : props.options);
-      const enabledOptions = options.filter(option => !option.disabled);
+      const options = state.searching ? state.options : props.options;
+      const enabledOptions = options.filter(option => option.type !== "option-group" && !option.disabled);
 
       let index = -1;
       let option = undefined;
 
-      if (enabledOptions.length) {
+      if (enabledOptions.length > 0) {
         const firstSelectedOption = enabledOptions.find(option => {
           if (props.multiple) {
-            return state.value.findIndex(item => item.value === option.value) > -1;
+            return state.value.findIndex(target => target.value === option.value) > -1;
           }
           else {
             return state.value && state.value.value === option.value;
@@ -201,13 +174,13 @@ const VuiSelect = {
         });
 
         if (firstSelectedOption) {
-          index = options.findIndex(option => option.value === firstSelectedOption.value);
+          index = options.findIndex(target => target.type !== "option-group" && target.value === firstSelectedOption.value);
           option = firstSelectedOption;
         }
         else {
           const firstEnabledOption = enabledOptions[0];
 
-          index = options.findIndex(option => option.value === firstEnabledOption.value);
+          index = options.findIndex(target => target.type !== "option-group" && target.value === firstEnabledOption.value);
           option = firstEnabledOption;
         }
       }
@@ -229,11 +202,9 @@ const VuiSelect = {
       this.$emit("focus", e);
     },
     handleBlur(e) {
-      const keyword = "";
-
       this.state.focused = false;
       this.state.actived = false;
-      this.state.keyword = keyword;
+      this.state.keyword = "";
       this.$emit("blur", e);
     },
     handleToggle(e) {
@@ -272,18 +243,17 @@ const VuiSelect = {
         e.preventDefault();
         this.state.actived = true;
       }
-
-      if (keyCode === 8 && props.multiple && props.searchable && state.value.length > 0 && e.target.value === "") {
-        const value = state.value.filter(item => !item.disabled);
+      else if (keyCode === 8 && props.multiple && props.searchable && state.value.length > 0 && e.target.value === "") {
+        const value = state.value.filter(target => !target.disabled);
 
         if (value.length === 0) {
           return;
         }
 
-        const item = value[value.length - 1];
+        const option = value[value.length - 1];
 
-        if (item) {
-          this.handleDeselect(item);
+        if (option) {
+          this.handleDeselect(option);
         }
       }
     },
@@ -334,7 +304,7 @@ const VuiSelect = {
         this.$emit("search", keyword);
       }
     },
-    handleActive(data) {
+    handleActive(option) {
       const { $props: props, state } = this;
       let options = [];
 
@@ -344,16 +314,14 @@ const VuiSelect = {
       else {
         options = props.options;
       }
-      
-      options = utils.getFlattenedOptions(options);
 
-      const index = options.findIndex(option => option.value === data.value);
+      const index = options.findIndex(target => target.type !== "option-group" && target.value === option.value);
 
       this.state.activedEventType = "mouseenter";
       this.state.activedMenuItemIndex = index;
-      this.state.activedMenuItem = data;
+      this.state.activedMenuItem = option;
     },
-    handleSelect(data) {
+    handleSelect(option) {
       const { $props: props, state } = this;
 
       if (props.multiple) {
@@ -370,14 +338,14 @@ const VuiSelect = {
           }
 
           if (index === -1) {
-            this.state.value.push(data);
+            this.state.value.push(option);
           }
           else {
             this.state.value.splice(index, 1);
           }
 
-          const value = this.state.value.map(item => item.value);
-          const label = this.state.value.map(item => item.label);
+          const value = this.state.value.map(target => target.value);
+          const label = this.state.value.map(target => target.label);
 
           this.$emit("input", value);
           this.$emit("change", value, label);
@@ -387,12 +355,12 @@ const VuiSelect = {
           }
         };
 
-        const index = state.value.findIndex(item => item.value === data.value);
+        const index = state.value.findIndex(target => target.value === option.value);
         const beforeCallback = index === -1 ? props.beforeSelect : props.beforeDeselect;
         let hook = true;
 
         if (is.function(beforeCallback)) {
-          hook = beforeCallback(data.value, data);
+          hook = beforeCallback(option.value, option);
         }
 
         if (is.promise(hook)) {
@@ -420,10 +388,10 @@ const VuiSelect = {
             }
           }
 
-          this.state.value = data;
+          this.state.value = option;
 
-          const value = data.value;
-          const label = data.label;
+          const value = option.value;
+          const label = option.label;
 
           this.$emit("input", value);
           this.$emit("change", value, label);
@@ -436,7 +404,7 @@ const VuiSelect = {
         let hook = true;
 
         if (is.function(props.beforeSelect)) {
-          hook = props.beforeSelect(data.value, data);
+          hook = props.beforeSelect(option.value, option);
         }
 
         if (is.boolean(hook) && hook === false) {
@@ -451,15 +419,15 @@ const VuiSelect = {
         }
       }
     },
-    handleDeselect(data) {
+    handleDeselect(option) {
       const { $props: props, state } = this;
       const deselect = () => {
-        const index = state.value.findIndex(item => item.value === data.value);
+        const index = state.value.findIndex(target => target.value === option.value);
 
         this.state.value.splice(index, 1);
 
-        const value = this.state.value.map(item => item.value);
-        const label = this.state.value.map(item => item.label);
+        const value = this.state.value.map(target => target.value);
+        const label = this.state.value.map(target => target.label);
 
         this.$emit("input", value);
         this.$emit("change", value, label);
@@ -472,7 +440,7 @@ const VuiSelect = {
       let hook = true;
 
       if (is.function(props.beforeDeselect)) {
-        hook = props.beforeDeselect(data.value, data);
+        hook = props.beforeDeselect(option.value, option);
       }
 
       if (is.promise(hook)) {
@@ -503,15 +471,7 @@ const VuiSelect = {
       }
     },
     handleResize(e) {
-      const callback = () => {
-        if (!this.$refs.dropdown) {
-          return;
-        }
-
-        this.$refs.dropdown.reregister();
-      }
-
-      this.$nextTick(callback);
+      this.$nextTick(() => this.$refs.dropdown && this.$refs.dropdown.reregister());
     },
     handleBeforeOpen() {
       this.$emit("beforeOpen");
@@ -529,7 +489,7 @@ const VuiSelect = {
     }
   },
   render() {
-    const { $vui: vui, vuiForm, vuiInputGroup, $props: props, state } = this;
+    const { vuiForm, vuiInputGroup, $props: props, state } = this;
     const { handleMouseenter, handleMouseleave, handleFocus, handleBlur, handleToggle, handleKeydown, handleInput, handleActive, handleSelect, handleDeselect, handleClear, handleResize } = this;
     const { handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleAfterClose } = this;
 
@@ -544,9 +504,6 @@ const VuiSelect = {
     }
     else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    }
-    else if (vui && vui.size) {
-      size = vui.size;
     }
     else {
       size = "medium";
@@ -621,7 +578,10 @@ const VuiSelect = {
       menu = (
         <VuiSelectMenu
           classNamePrefix={classNamePrefix}
+          value={state.value}
           options={options}
+          multiple={props.multiple}
+          visible={dropdownVisible}
           onActive={handleActive}
           onSelect={handleSelect}
           onDeselect={handleDeselect}

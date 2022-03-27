@@ -6,12 +6,6 @@ const VuiSelectMenuItemGroup = {
   inject: {
     vuiSelect: {
       default: undefined
-    },
-    vuiSelectDropdown: {
-      default: undefined
-    },
-    vuiSelectMenu: {
-      default: undefined
     }
   },
   props: {
@@ -19,7 +13,7 @@ const VuiSelectMenuItemGroup = {
     data: PropTypes.object.def({})
   },
   render(h) {
-    const { $slots: slots, $props: props } = this;
+    const { $props: props } = this;
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item-group");
@@ -27,16 +21,15 @@ const VuiSelectMenuItemGroup = {
 
     classes.el = {
       [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-level-${props.data.level}`]: true,
       [`${classNamePrefix}-disabled`]: props.data.disabled
     };
-    classes.elHeader = `${classNamePrefix}-header`;
-    classes.elBody = `${classNamePrefix}-body`;
+    classes.elContent = `${classNamePrefix}-content`;
 
     // render
     return (
       <div class={classes.el}>
-        <div class={classes.elHeader}>{props.data.label}</div>
-        <div class={classes.elBody}>{slots.default}</div>
+        <div class={classes.elContent}>{props.data.label}</div>
       </div>
     );
   }

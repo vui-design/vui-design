@@ -15490,17 +15490,6 @@ var i18n = function i18n(fn) {
 
 var VuiSelectDropdown = {
   name: "vui-select-dropdown",
-  inject: {
-    vuiSelect: {
-      default: undefined
-    }
-  },
-  provide: function provide() {
-    return {
-      vuiSelectDropdown: this
-    };
-  },
-
   components: {
     VuiLazyRender: components_lazy_render,
     VuiResizeObserver: components_resize_observer
@@ -15520,20 +15509,6 @@ var VuiSelectDropdown = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
       return document.body;
     })
-  },
-  computed: {
-    keyword: function keyword() {
-      return this.vuiSelect.state.keyword;
-    }
-  },
-  watch: {
-    keyword: function keyword(value) {
-      var _this = this;
-
-      this.$nextTick(function () {
-        return _this.reregister();
-      });
-    }
   },
   methods: {
     register: function register() {
@@ -15600,10 +15575,10 @@ var VuiSelectDropdown = {
       }
     },
     handleBeforeOpen: function handleBeforeOpen() {
-      var _this2 = this;
+      var _this = this;
 
       this.$nextTick(function () {
-        return _this2.register();
+        return _this.register();
       });
       this.$emit("beforeOpen");
     },
@@ -15614,18 +15589,18 @@ var VuiSelectDropdown = {
       this.$emit("beforeClose");
     },
     handleAfterClose: function handleAfterClose() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.$nextTick(function () {
-        return _this3.unregister();
+        return _this2.unregister();
       });
       this.$emit("afterClose");
     },
     handleResize: function handleResize() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.$nextTick(function () {
-        return _this4.reregister();
+        return _this3.reregister();
       });
     },
     handleMousedown: function handleMousedown(e) {
@@ -15665,10 +15640,7 @@ var VuiSelectDropdown = {
         [h(
           "transition",
           {
-            attrs: {
-              appear: true,
-              name: props.animation
-            },
+            attrs: { appear: true, name: props.animation },
             on: {
               "beforeEnter": handleBeforeOpen,
               "afterEnter": handleAfterOpen,
@@ -15686,9 +15658,7 @@ var VuiSelectDropdown = {
                 name: "show",
                 value: props.visible
               }],
-
-              "class": classes.el,
-              on: {
+              "class": classes.el, on: {
                 "mousedown": handleMousedown
               }
             },
@@ -16276,12 +16246,6 @@ var VuiSelectMenuItemGroup = {
   inject: {
     vuiSelect: {
       default: undefined
-    },
-    vuiSelectDropdown: {
-      default: undefined
-    },
-    vuiSelectMenu: {
-      default: undefined
     }
   },
   props: {
@@ -16291,17 +16255,15 @@ var VuiSelectMenuItemGroup = {
   render: function render(h) {
     var _classes$el;
 
-    var slots = this.$slots,
-        props = this.$props;
+    var props = this.$props;
 
     // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item-group");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.data.disabled), _classes$el);
-    classes.elHeader = classNamePrefix + "-header";
-    classes.elBody = classNamePrefix + "-body";
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-level-" + props.data.level, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.data.disabled), _classes$el);
+    classes.elContent = classNamePrefix + "-content";
 
     // render
     return h(
@@ -16309,12 +16271,8 @@ var VuiSelectMenuItemGroup = {
       { "class": classes.el },
       [h(
         "div",
-        { "class": classes.elHeader },
+        { "class": classes.elContent },
         [props.data.label]
-      ), h(
-        "div",
-        { "class": classes.elBody },
-        [slots.default]
       )]
     );
   }
@@ -16390,10 +16348,8 @@ var utils_defaults = {
 * @param {Array} options 选项列表
 */
 var isExisted = function isExisted(keyword, options) {
-  options = getFlattenedOptions(options);
-
   return options.some(function (option) {
-    return option.label === keyword || option.value === keyword || utils_getTextFromChildren(option.children) === keyword;
+    return (option.type === "option" || option.type === "keyword") && (option.label === keyword || option.value === keyword || utils_getTextFromChildren(option.children) === keyword);
   });
 };
 
@@ -16402,14 +16358,17 @@ var isExisted = function isExisted(keyword, options) {
 * @param {Array} children 子组件
 * @param {Boolean} parent 父级
 */
-var utils_getOptionsFromChildren = function getOptionsFromChildren(children, parent) {
+var utils_getOptionsFromChildren = function getOptionsFromChildren(children) {
+  var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var parent = arguments[2];
+
   var options = [];
 
   if (!is["a" /* default */].array(children)) {
     return options;
   }
 
-  children.forEach(function (node) {
+  children.forEach(function (node, index) {
     if (!node) {
       return;
     }
@@ -16427,30 +16386,31 @@ var utils_getOptionsFromChildren = function getOptionsFromChildren(children, par
       return;
     }
 
-    var option = extends_default()({}, props);
-    var disabled = void 0;
+    var option = extends_default()({}, props, {
+      key: parent ? parent.key + "-" + index : "" + index,
+      level: level
+    });
 
     if (parent && parent.disabled) {
-      disabled = parent.disabled;
-    } else {
-      disabled = option.disabled;
+      option.disabled = parent.disabled;
     }
 
-    if (disabled === undefined || disabled === null || disabled === false) {
+    if (option.disabled === undefined || option.disabled === null || option.disabled === false) {
       option.disabled = false;
-    } else {
-      option.disabled = true;
     }
 
     if (config.name === "vui-option-group") {
       option.type = "option-group";
-      option.children = getOptionsFromChildren(component.children, option);
+      option.children = getOptionsFromChildren(component.children, level + 1, option);
+
+      options.push(option);
+      options.push.apply(options, option.children);
     } else if (config.name === "vui-option") {
       option.type = "option";
       option.children = component.children;
-    }
 
-    options.push(option);
+      options.push(option);
+    }
   });
 
   return options;
@@ -16486,24 +16446,6 @@ var utils_getTextFromChildren = function getTextFromChildren(children) {
   });
 
   return text;
-};
-
-/**
-* 将 options 选项列表转换为一维数组形式
-* @param {Array} options 选项列表
-*/
-var getFlattenedOptions = function getFlattenedOptions(options) {
-  var array = [];
-
-  options.forEach(function (element) {
-    if (element.type === "option-group") {
-      array.push.apply(array, getFlattenedOptions(element.children));
-    } else if (element.type === "option" || element.type === "keyword") {
-      array.push(element);
-    }
-  });
-
-  return array;
 };
 
 /**
@@ -16543,27 +16485,24 @@ var utils_getFilteredOptions = function getFilteredOptions(keyword, options, fil
 /**
 * 根据选中值及选项列表获取选中的选项列表（单选）
 * @param {Array} value 选中值
-* @param {Array} options 选项
-* @param {Array} selectedOption 历史选中项
-* @param {Boolean} multiple 是否为多选模式
+* @param {Array} option 历史选中项
+* @param {Array} props 属性
 */
-var utils_getSelectedOptionByValue = function getSelectedOptionByValue(value, options, selectedOption) {
+var utils_getSelectedOption = function getSelectedOption(value, option, props) {
   if (is["a" /* default */].undefined(value)) {
     return;
   }
 
-  options = getFlattenedOptions(options);
-
-  var option = options.find(function (option) {
-    return option.value === value;
+  var target = props.options.find(function (target) {
+    return (target.type === "option" || target.type === "keyword") && target.value === value;
   });
 
-  if (option) {
-    return option;
+  if (target) {
+    return target;
   }
 
-  if (selectedOption && selectedOption.value === value) {
-    return selectedOption;
+  if (option && option.value === value) {
+    return option;
   }
 
   if (is["a" /* default */].string(value) && is["a" /* default */].falsy(value)) {
@@ -16581,33 +16520,51 @@ var utils_getSelectedOptionByValue = function getSelectedOptionByValue(value, op
 /**
 * 根据选中值及选项列表获取选中的选项列表（多选）
 * @param {Array} value 选中值
-* @param {Array} selectedOptions 选中项
-* @param {Array} options 选项
+* @param {Array} options 历史选中项
+* @param {Array} props 属性
 */
-var utils_getSelectedOptionsByValue = function getSelectedOptionsByValue(value, options, selectedOptions) {
+var utils_getSelectedOptions = function getSelectedOptions(value, options, props) {
   var array = [];
 
   if (is["a" /* default */].array(value)) {
     value.forEach(function (element) {
-      var selectedOption = void 0;
+      var option = void 0;
 
-      if (selectedOptions && selectedOptions.length) {
-        selectedOption = selectedOptions.find(function (selectedOption) {
-          return selectedOption.value === element;
+      if (options && options.length > 0) {
+        option = options.find(function (target) {
+          return target.value === element;
         });
       }
 
-      var option = utils_getSelectedOptionByValue(element, options, selectedOption);
+      var target = utils_getSelectedOption(element, option, props);
 
-      if (!option) {
+      if (!target) {
         return;
       }
 
-      array.push(option);
+      array.push(target);
     });
   }
 
   return array;
+};
+
+/**
+* 根据选中值及选项列表获取组件内部状态值
+* @param {Array} value 选中值
+* @param {Array} selectedOptions 选中项
+* @param {Array} props 属性
+*/
+var utils_getValueFromProps = function getValueFromProps(value, options, props) {
+  var getter = void 0;
+
+  if (props.multiple) {
+    getter = utils_getSelectedOptions;
+  } else {
+    getter = utils_getSelectedOption;
+  }
+
+  return getter(value, options, props);
 };
 
 /**
@@ -16617,13 +16574,10 @@ var utils_getSelectedOptionsByValue = function getSelectedOptionsByValue(value, 
   isExisted: isExisted,
   getOptionsFromChildren: utils_getOptionsFromChildren,
   getTextFromChildren: utils_getTextFromChildren,
-  getFlattenedOptions: getFlattenedOptions,
   getFilteredOptions: utils_getFilteredOptions,
-  getSelectedOptionsByValue: utils_getSelectedOptionsByValue,
-  getSelectedOptionByValue: utils_getSelectedOptionByValue
+  getValueFromProps: utils_getValueFromProps
 });
 // CONCATENATED MODULE: ./src/components/select/src/select-menu-item.js
-
 
 
 
@@ -16636,19 +16590,7 @@ var VuiSelectMenuItem = {
   inject: {
     vuiSelect: {
       default: undefined
-    },
-    vuiSelectDropdown: {
-      default: undefined
-    },
-    vuiSelectMenu: {
-      default: undefined
-    },
-    vuiSelectMenuGroup: {
-      default: undefined
     }
-  },
-  components: {
-    VuiIcon: components_icon
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
@@ -16695,67 +16637,6 @@ var VuiSelectMenuItem = {
 
 
       return props.data.disabled;
-    },
-    visible: function visible() {
-      var vuiSelectDropdown = this.vuiSelectDropdown;
-      var vuiSelectDropdownProps = vuiSelectDropdown.$props;
-
-
-      return vuiSelectDropdownProps.visible;
-    }
-  },
-  watch: {
-    actived: {
-      immediate: true,
-      handler: function handler(value) {
-        var vuiSelect = this.vuiSelect,
-            vuiSelectDropdown = this.vuiSelectDropdown,
-            element = this.$el;
-        var vuiSelectState = vuiSelect.state;
-        var containter = vuiSelectDropdown.$el;
-
-
-        if (!value) {
-          return;
-        }
-
-        if (!this.visible) {
-          return;
-        }
-
-        if (vuiSelectState.activedEventType !== "navigate") {
-          return;
-        }
-
-        if (!containter || !element) {
-          return;
-        }
-
-        scrollIntoView(containter, element);
-      }
-    },
-    visible: {
-      immediate: true,
-      handler: function handler(value) {
-        var vuiSelectDropdown = this.vuiSelectDropdown,
-            element = this.$el;
-        var containter = vuiSelectDropdown.$el;
-
-
-        if (!value) {
-          return;
-        }
-
-        if (!this.actived) {
-          return;
-        }
-
-        if (!containter || !element) {
-          return;
-        }
-
-        scrollIntoView(containter, element);
-      }
     }
   },
   methods: {
@@ -16763,7 +16644,7 @@ var VuiSelectMenuItem = {
       var props = this.$props;
 
 
-      if (props.data.disabled) {
+      if (this.disabled) {
         return;
       }
 
@@ -16773,7 +16654,7 @@ var VuiSelectMenuItem = {
       var props = this.$props;
 
 
-      if (props.data.disabled) {
+      if (this.disabled) {
         return;
       }
 
@@ -16792,25 +16673,21 @@ var VuiSelectMenuItem = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-actived", this.actived), defineProperty_default()(_classes$el, classNamePrefix + "-selected", this.selected), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", this.disabled), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-level-" + props.data.level, true), defineProperty_default()(_classes$el, classNamePrefix + "-actived", this.actived), defineProperty_default()(_classes$el, classNamePrefix + "-selected", this.selected), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", this.disabled), _classes$el);
     classes.elContent = classNamePrefix + "-content";
     classes.elIcon = classNamePrefix + "-icon";
 
     // render
-    return h(
+    var children = [];
+
+    children.push(h(
       "div",
-      {
-        "class": classes.el,
-        on: {
-          "mouseenter": handleMouseenter,
-          "click": handleClick
-        }
-      },
-      [h(
-        "div",
-        { "class": classes.elContent },
-        [props.data.children || props.data.label || props.data.value]
-      ), props.data.type === "keyword" && h(
+      { "class": classes.elContent },
+      [props.data.children || props.data.label || props.data.value]
+    ));
+
+    if (props.data.type === "keyword") {
+      children.push(h(
         "div",
         { "class": classes.elIcon },
         [h(
@@ -16822,7 +16699,17 @@ var VuiSelectMenuItem = {
             attrs: { d: "M965.6,80h-77.3c-5.6,0-10.3,4.5-10.3,10.1v653.3H251.6v-92c-0.1-5.7-4.8-10.2-10.5-10.2c-2.3,0-4.5,0.8-6.3,2.2L51.9,784.6c-4.4,3.4-5.3,9.7-1.9,14.1c0.5,0.7,1.2,1.3,1.9,1.8l182.9,141.2c4.5,3.5,11,2.8,14.5-1.6c1.4-1.8,2.2-4,2.3-6.3v-94.7h641.9c45.5,0,82.5-36.2,82.5-80.7V90.1C975.9,84.5,971.3,79.9,965.6,80C965.6,80,965.6,80,965.6,80z" }
           })]
         )]
-      )]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el, on: {
+          "mouseenter": handleMouseenter,
+          "click": handleClick
+        }
+      },
+      [children]
     );
   }
 };
@@ -16836,13 +16723,11 @@ var VuiSelectMenuItem = {
 
 
 
-/* harmony default export */ var select_menu = ({
+
+var VuiSelectMenu = {
   name: "vui-select-menu",
   inject: {
     vuiSelect: {
-      default: undefined
-    },
-    vuiSelectDropdown: {
       default: undefined
     }
   },
@@ -16858,97 +16743,275 @@ var VuiSelectMenuItem = {
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
-    options: prop_types["a" /* default */].array.def([])
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].array]),
+    options: prop_types["a" /* default */].array.def([]),
+    multiple: prop_types["a" /* default */].bool.def(false),
+    visible: prop_types["a" /* default */].bool.def(false)
+  },
+  data: function data() {
+    return {
+      pagination: {
+        pageSize: 8,
+        averageSize: 34,
+        range: [0, 16],
+        pageable: true,
+        preventScrolling: false
+      }
+    };
+  },
+
+  computed: {
+    getPageListParameters: function getPageListParameters() {
+      return {
+        options: this.options,
+        visible: this.visible,
+        activedMenuItemIndex: this.vuiSelect.state.activedMenuItemIndex
+      };
+    }
+  },
+  watch: {
+    getPageListParameters: {
+      immediate: true,
+      deep: true,
+      handler: function handler(value) {
+        var _this = this;
+
+        this.$nextTick(function () {
+          return _this.getPageList();
+        });
+      }
+    }
   },
   methods: {
-    handleMenuItemActive: function handleMenuItemActive(data) {
-      if (data.disabled) {
-        return;
-      }
-
-      this.$emit("active", data);
-    },
-    handleMenuItemClick: function handleMenuItemClick(data) {
+    getPageList: function getPageList() {
       var vuiSelect = this.vuiSelect,
-          props = this.$props;
-      var vuiSelectProps = vuiSelect.$props,
-          vuiSelectState = vuiSelect.state;
+          props = this.$props,
+          pagination = this.pagination;
+      var vuiSelectState = vuiSelect.state;
+
+      var pageable = props.options.length > pagination.pageSize * 2;
+
+      if (pageable) {
+        // 
+        var paddingTop = parseInt(getStyle_getStyle(this.$refs.wrapper, "paddingTop"));
+        var itemRectTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
+        var itemRectBottom = itemRectTop + pagination.averageSize;
+        var viewRectTop = this.$refs.wrapper.scrollTop;
+        var viewRectBottom = viewRectTop + this.$refs.wrapper.clientHeight;
+        var scrollTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
+
+        if (itemRectTop < viewRectTop) {
+          scrollTop = itemRectTop - paddingTop;
+        } else if (itemRectBottom > viewRectBottom) {
+          scrollTop = itemRectBottom - this.$refs.wrapper.clientHeight + paddingTop;
+        } else {
+          scrollTop = this.$refs.wrapper.scrollTop;
+        }
+
+        // 
+        var reserve = pagination.pageSize / 2;
+        var scrollSize = scrollTop < paddingTop ? 0 : scrollTop - paddingTop;
+        var startIndex = Math.floor(scrollSize / pagination.averageSize);
+        var endIndex = 0;
+
+        if (startIndex < reserve) {
+          startIndex = 0;
+        } else {
+          startIndex = startIndex - reserve;
+        }
+
+        var options = props.options.slice(startIndex, props.options.length);
+
+        if (options.length < pagination.pageSize * 2) {
+          startIndex = props.options.length - pagination.pageSize * 2;
+          endIndex = props.options.length;
+        } else {
+          endIndex = startIndex + pagination.pageSize * 2;
+        }
+
+        // 
+        if (vuiSelectState.activedEventType === "navigate") {
+          if (itemRectTop < viewRectTop || itemRectBottom > viewRectBottom) {
+            this.$refs.wrapper.scrollTop = scrollTop;
+          }
+        }
+
+        // 
+        this.pagination.range = [startIndex, endIndex];
+        this.pagination.pageable = pageable;
+        this.pagination.preventScrolling = true;
+      } else {
+        // 
+        var _paddingTop = parseInt(getStyle_getStyle(this.$refs.wrapper, "paddingTop"));
+        var _itemRectTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + _paddingTop;
+        var _itemRectBottom = _itemRectTop + pagination.averageSize;
+        var _viewRectTop = this.$refs.wrapper.scrollTop;
+        var _viewRectBottom = _viewRectTop + this.$refs.wrapper.clientHeight;
+        var _scrollTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + _paddingTop;
+
+        if (_itemRectTop < _viewRectTop) {
+          _scrollTop = _itemRectTop - _paddingTop;
+        } else if (_itemRectBottom > _viewRectBottom) {
+          _scrollTop = _itemRectBottom - this.$refs.wrapper.clientHeight + _paddingTop;
+        } else {
+          _scrollTop = this.$refs.wrapper.scrollTop;
+        }
+
+        // 
+        if (vuiSelectState.activedEventType === "navigate") {
+          if (_itemRectTop < _viewRectTop || _itemRectBottom > _viewRectBottom) {
+            this.$refs.wrapper.scrollTop = _scrollTop;
+          }
+        }
+
+        // 
+        this.pagination.range = [0, 0];
+        this.pagination.pageable = pageable;
+        this.pagination.preventScrolling = false;
+      }
+    },
+    handleScroll: function handleScroll(e) {
+      var props = this.$props,
+          pagination = this.pagination;
 
 
-      if (data.disabled) {
+      if (pagination.preventScrolling) {
+        this.pagination.preventScrolling = false;
+      } else {
+        var pageable = props.options.length > pagination.pageSize * 2;
+
+        if (pageable) {
+          // 
+          var paddingTop = parseInt(getStyle_getStyle(e.target, "paddingTop"));
+          var scrollTop = e.target.scrollTop;
+
+          // 
+          var reserve = pagination.pageSize / 2;
+          var scrollSize = scrollTop < paddingTop ? 0 : scrollTop - paddingTop;
+          var startIndex = Math.floor(scrollSize / pagination.averageSize);
+          var endIndex = 0;
+
+          if (startIndex < reserve) {
+            startIndex = 0;
+          } else {
+            startIndex = startIndex - reserve;
+          }
+
+          var options = props.options.slice(startIndex, props.options.length);
+
+          if (options.length < pagination.pageSize * 2) {
+            startIndex = props.options.length - pagination.pageSize * 2;
+            endIndex = props.options.length;
+          } else {
+            endIndex = startIndex + pagination.pageSize * 2;
+          }
+
+          // 
+          this.pagination.range = [startIndex, endIndex];
+          this.pagination.pageable = pageable;
+          this.pagination.preventScrolling = false;
+        } else {
+          // 
+          this.pagination.range = [0, 0];
+          this.pagination.pageable = pageable;
+          this.pagination.preventScrolling = false;
+        }
+      }
+    },
+    handleActiveMenuItem: function handleActiveMenuItem(option) {
+      if (option.disabled) {
         return;
       }
 
-      if (vuiSelectProps.multiple) {
-        var index = vuiSelectState.value.findIndex(function (item) {
-          return item.value === data.value;
+      this.$emit("active", option);
+    },
+    handleClickMenuItem: function handleClickMenuItem(option) {
+      var props = this.$props;
+
+
+      if (option.disabled) {
+        return;
+      }
+
+      if (props.multiple) {
+        var index = props.value.findIndex(function (target) {
+          return target.value === option.value;
         });
 
         if (index === -1) {
-          this.$emit("select", data);
+          this.$emit("select", option);
         } else {
-          this.$emit("deselect", data);
+          this.$emit("deselect", option);
         }
       } else {
-        this.$emit("select", data);
+        this.$emit("select", option);
       }
     }
   },
   render: function render(h) {
-    var props = this.$props;
-    var handleMenuItemActive = this.handleMenuItemActive,
-        handleMenuItemClick = this.handleMenuItemClick;
+    var props = this.$props,
+        state = this.state,
+        pagination = this.pagination;
+    var handleScroll = this.handleScroll,
+        handleActiveMenuItem = this.handleActiveMenuItem,
+        handleClickMenuItem = this.handleClickMenuItem;
+
+    var options = pagination.pageable ? props.options.slice(pagination.range[0], pagination.range[1]) : props.options;
 
     // class
-
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
     var classes = {};
 
+    classes.elWrapper = classNamePrefix + "-wrapper";
     classes.el = "" + classNamePrefix;
+
+    // style
+    var styles = {};
+
+    if (pagination.pageable) {
+      styles.el = {
+        height: props.options.length * pagination.averageSize + "px",
+        paddingTop: pagination.range[0] * pagination.averageSize + "px"
+      };
+    }
 
     // render
     return h(
       "div",
-      { "class": classes.el },
-      [props.options.map(function (option, optionIndex) {
-        if (option.type === "option-group") {
-          return h(
-            select_menu_item_group,
-            {
-              key: optionIndex,
+      { ref: "wrapper", "class": classes.elWrapper, on: {
+          "scroll": handleScroll
+        }
+      },
+      [h(
+        "div",
+        { "class": classes.el, style: styles.el },
+        [options.map(function (option) {
+          if (option.type === "option-group") {
+            return h(select_menu_item_group, {
+              key: option.key,
               attrs: { classNamePrefix: classNamePrefix,
                 data: option
               }
-            },
-            [option.children.map(function (subOption, subOptionIndex) {
-              return h(select_menu_item, {
-                key: subOptionIndex,
-                attrs: { classNamePrefix: classNamePrefix,
-                  data: subOption
-                },
-                on: {
-                  "mouseenter": handleMenuItemActive,
-                  "click": handleMenuItemClick
-                }
-              });
-            })]
-          );
-        } else if (option.type === "option" || option.type === "keyword") {
-          return h(select_menu_item, {
-            key: optionIndex,
-            attrs: { classNamePrefix: classNamePrefix,
-              data: option
-            },
-            on: {
-              "mouseenter": handleMenuItemActive,
-              "click": handleMenuItemClick
-            }
-          });
-        }
-      })]
+            });
+          } else if (option.type === "option" || option.type === "keyword") {
+            return h(select_menu_item, {
+              key: option.key,
+              attrs: { classNamePrefix: classNamePrefix,
+                data: option
+              },
+              on: {
+                "mouseenter": handleActiveMenuItem,
+                "click": handleClickMenuItem
+              }
+            });
+          }
+        })]
+      )]
     );
   }
-});
+};
+
+/* harmony default export */ var select_menu = (VuiSelectMenu);
 // CONCATENATED MODULE: ./src/mixins/emitter.js
 function _dispatch(component, event, params) {
   var parent = this.$parent || this.$root;
@@ -17069,27 +17132,20 @@ var VuiSelect = {
   data: function data() {
     var props = this.$props;
 
-    var state = {
-      hovered: false,
-      focused: false,
-      actived: false,
-      searching: false,
-      keyword: "",
-      value: undefined,
-      options: [],
-      activedEventType: "navigate",
-      activedMenuItemIndex: -1,
-      activedMenuItem: undefined
-    };
-
-    if (props.multiple) {
-      state.value = src_utils.getSelectedOptionsByValue(props.value, props.options);
-    } else {
-      state.value = src_utils.getSelectedOptionByValue(props.value, props.options);
-    }
 
     return {
-      state: state
+      state: {
+        hovered: false,
+        focused: false,
+        actived: false,
+        searching: false,
+        keyword: "",
+        value: src_utils.getValueFromProps(props.value, undefined, props),
+        options: [],
+        activedEventType: "navigate",
+        activedMenuItemIndex: 0,
+        activedMenuItem: undefined
+      }
     };
   },
 
@@ -17103,33 +17159,13 @@ var VuiSelect = {
   },
   watch: {
     value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (props.multiple) {
-        this.state.value = src_utils.getSelectedOptionsByValue(_value, props.options, state.value);
-      } else {
-        this.state.value = src_utils.getSelectedOptionByValue(_value, props.options, state.value);
-      }
+      this.state.value = src_utils.getValueFromProps(_value, this.state.value, this.$props);
     },
     options: function options(value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (props.multiple) {
-        this.state.value = src_utils.getSelectedOptionsByValue(props.value, value, state.value);
-      } else {
-        this.state.value = src_utils.getSelectedOptionByValue(props.value, value, state.value);
-      }
+      this.state.value = src_utils.getValueFromProps(this.value, this.state.value, this.$props);
     },
     actived: function actived(value) {
       var _this = this;
-
-      if (!value) {
-        return;
-      }
 
       this.$nextTick(function () {
         return _this.resetActivedMenuItem();
@@ -17157,7 +17193,7 @@ var VuiSelect = {
       var props = this.$props,
           state = this.state;
 
-      var options = src_utils.getFlattenedOptions(state.searching ? state.options : props.options);
+      var options = state.searching ? state.options : props.options;
 
       if (!options.length) {
         return;
@@ -17169,15 +17205,13 @@ var VuiSelect = {
 
       if (index < min) {
         index = max;
-      }
-
-      if (index > max) {
+      } else if (index > max) {
         index = min;
       }
 
       var option = options[index];
 
-      if (option.disabled) {
+      if (option.type === "option-group" || option.disabled) {
         this.changeActivedMenuItem(direction, index);
       } else {
         this.state.activedEventType = "navigate";
@@ -17190,23 +17224,23 @@ var VuiSelect = {
           state = this.state;
 
 
-      if (props.loading) {
+      if (props.loading || !state.actived) {
         return;
       }
 
-      var options = src_utils.getFlattenedOptions(state.searching ? state.options : props.options);
+      var options = state.searching ? state.options : props.options;
       var enabledOptions = options.filter(function (option) {
-        return !option.disabled;
+        return option.type !== "option-group" && !option.disabled;
       });
 
       var index = -1;
       var option = undefined;
 
-      if (enabledOptions.length) {
+      if (enabledOptions.length > 0) {
         var firstSelectedOption = enabledOptions.find(function (option) {
           if (props.multiple) {
-            return state.value.findIndex(function (item) {
-              return item.value === option.value;
+            return state.value.findIndex(function (target) {
+              return target.value === option.value;
             }) > -1;
           } else {
             return state.value && state.value.value === option.value;
@@ -17214,15 +17248,15 @@ var VuiSelect = {
         });
 
         if (firstSelectedOption) {
-          index = options.findIndex(function (option) {
-            return option.value === firstSelectedOption.value;
+          index = options.findIndex(function (target) {
+            return target.type !== "option-group" && target.value === firstSelectedOption.value;
           });
           option = firstSelectedOption;
         } else {
           var firstEnabledOption = enabledOptions[0];
 
-          index = options.findIndex(function (option) {
-            return option.value === firstEnabledOption.value;
+          index = options.findIndex(function (target) {
+            return target.type !== "option-group" && target.value === firstEnabledOption.value;
           });
           option = firstEnabledOption;
         }
@@ -17245,11 +17279,9 @@ var VuiSelect = {
       this.$emit("focus", e);
     },
     handleBlur: function handleBlur(e) {
-      var keyword = "";
-
       this.state.focused = false;
       this.state.actived = false;
-      this.state.keyword = keyword;
+      this.state.keyword = "";
       this.$emit("blur", e);
     },
     handleToggle: function handleToggle(e) {
@@ -17289,21 +17321,19 @@ var VuiSelect = {
       } else if (!state.actived && [38, 40].indexOf(keyCode) > -1) {
         e.preventDefault();
         this.state.actived = true;
-      }
-
-      if (keyCode === 8 && props.multiple && props.searchable && state.value.length > 0 && e.target.value === "") {
-        var value = state.value.filter(function (item) {
-          return !item.disabled;
+      } else if (keyCode === 8 && props.multiple && props.searchable && state.value.length > 0 && e.target.value === "") {
+        var value = state.value.filter(function (target) {
+          return !target.disabled;
         });
 
         if (value.length === 0) {
           return;
         }
 
-        var item = value[value.length - 1];
+        var option = value[value.length - 1];
 
-        if (item) {
-          this.handleDeselect(item);
+        if (option) {
+          this.handleDeselect(option);
         }
       }
     },
@@ -17354,7 +17384,7 @@ var VuiSelect = {
         this.$emit("search", keyword);
       }
     },
-    handleActive: function handleActive(data) {
+    handleActive: function handleActive(option) {
       var props = this.$props,
           state = this.state;
 
@@ -17366,17 +17396,15 @@ var VuiSelect = {
         options = props.options;
       }
 
-      options = src_utils.getFlattenedOptions(options);
-
-      var index = options.findIndex(function (option) {
-        return option.value === data.value;
+      var index = options.findIndex(function (target) {
+        return target.type !== "option-group" && target.value === option.value;
       });
 
       this.state.activedEventType = "mouseenter";
       this.state.activedMenuItemIndex = index;
-      this.state.activedMenuItem = data;
+      this.state.activedMenuItem = option;
     },
-    handleSelect: function handleSelect(data) {
+    handleSelect: function handleSelect(option) {
       var _this3 = this;
 
       var props = this.$props,
@@ -17397,16 +17425,16 @@ var VuiSelect = {
           }
 
           if (index === -1) {
-            _this3.state.value.push(data);
+            _this3.state.value.push(option);
           } else {
             _this3.state.value.splice(index, 1);
           }
 
-          var value = _this3.state.value.map(function (item) {
-            return item.value;
+          var value = _this3.state.value.map(function (target) {
+            return target.value;
           });
-          var label = _this3.state.value.map(function (item) {
-            return item.label;
+          var label = _this3.state.value.map(function (target) {
+            return target.label;
           });
 
           _this3.$emit("input", value);
@@ -17417,14 +17445,14 @@ var VuiSelect = {
           }
         };
 
-        var index = state.value.findIndex(function (item) {
-          return item.value === data.value;
+        var index = state.value.findIndex(function (target) {
+          return target.value === option.value;
         });
         var beforeCallback = index === -1 ? props.beforeSelect : props.beforeDeselect;
         var hook = true;
 
         if (is["a" /* default */].function(beforeCallback)) {
-          hook = beforeCallback(data.value, data);
+          hook = beforeCallback(option.value, option);
         }
 
         if (is["a" /* default */].promise(hook)) {
@@ -17451,10 +17479,10 @@ var VuiSelect = {
             }
           }
 
-          _this3.state.value = data;
+          _this3.state.value = option;
 
-          var value = data.value;
-          var label = data.label;
+          var value = option.value;
+          var label = option.label;
 
           _this3.$emit("input", value);
           _this3.$emit("change", value, label);
@@ -17467,7 +17495,7 @@ var VuiSelect = {
         var _hook = true;
 
         if (is["a" /* default */].function(props.beforeSelect)) {
-          _hook = props.beforeSelect(data.value, data);
+          _hook = props.beforeSelect(option.value, option);
         }
 
         if (is["a" /* default */].boolean(_hook) && _hook === false) {
@@ -17483,24 +17511,24 @@ var VuiSelect = {
         }
       }
     },
-    handleDeselect: function handleDeselect(data) {
+    handleDeselect: function handleDeselect(option) {
       var _this4 = this;
 
       var props = this.$props,
           state = this.state;
 
       var deselect = function deselect() {
-        var index = state.value.findIndex(function (item) {
-          return item.value === data.value;
+        var index = state.value.findIndex(function (target) {
+          return target.value === option.value;
         });
 
         _this4.state.value.splice(index, 1);
 
-        var value = _this4.state.value.map(function (item) {
-          return item.value;
+        var value = _this4.state.value.map(function (target) {
+          return target.value;
         });
-        var label = _this4.state.value.map(function (item) {
-          return item.label;
+        var label = _this4.state.value.map(function (target) {
+          return target.label;
         });
 
         _this4.$emit("input", value);
@@ -17514,7 +17542,7 @@ var VuiSelect = {
       var hook = true;
 
       if (is["a" /* default */].function(props.beforeDeselect)) {
-        hook = props.beforeDeselect(data.value, data);
+        hook = props.beforeDeselect(option.value, option);
       }
 
       if (is["a" /* default */].promise(hook)) {
@@ -17548,15 +17576,9 @@ var VuiSelect = {
     handleResize: function handleResize(e) {
       var _this5 = this;
 
-      var callback = function callback() {
-        if (!_this5.$refs.dropdown) {
-          return;
-        }
-
-        _this5.$refs.dropdown.reregister();
-      };
-
-      this.$nextTick(callback);
+      this.$nextTick(function () {
+        return _this5.$refs.dropdown && _this5.$refs.dropdown.reregister();
+      });
     },
     handleBeforeOpen: function handleBeforeOpen() {
       this.$emit("beforeOpen");
@@ -17577,8 +17599,7 @@ var VuiSelect = {
     var _classes$el;
 
     var h = arguments[0];
-    var vui = this.$vui,
-        vuiForm = this.vuiForm,
+    var vuiForm = this.vuiForm,
         vuiInputGroup = this.vuiInputGroup,
         props = this.$props,
         state = this.state;
@@ -17609,8 +17630,6 @@ var VuiSelect = {
       size = vuiInputGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
-    } else if (vui && vui.size) {
-      size = vui.size;
     } else {
       size = "medium";
     }
@@ -17669,7 +17688,10 @@ var VuiSelect = {
       menu = h(select_menu, {
         attrs: {
           classNamePrefix: classNamePrefix,
-          options: options
+          value: state.value,
+          options: options,
+          multiple: props.multiple,
+          visible: dropdownVisible
         },
         on: {
           "active": handleActive,
@@ -18813,15 +18835,15 @@ var VuiPagination = {
   }
 };
 
-/* harmony default export */ var pagination = (VuiPagination);
+/* harmony default export */ var src_pagination = (VuiPagination);
 // CONCATENATED MODULE: ./src/components/pagination/index.js
 
 
-pagination.install = function (Vue) {
-  Vue.component(pagination.name, pagination);
+src_pagination.install = function (Vue) {
+  Vue.component(src_pagination.name, src_pagination);
 };
 
-/* harmony default export */ var components_pagination = (pagination);
+/* harmony default export */ var components_pagination = (src_pagination);
 // CONCATENATED MODULE: ./src/components/steps/src/steps.js
 
 
@@ -24371,7 +24393,7 @@ var utils_getPrecision = function getPrecision(min, max, step) {
 };
 
 // 根据组件的 props 属性获取内部 value 状态值
-var utils_getValueFromProps = function getValueFromProps(value, props) {
+var src_utils_getValueFromProps = function getValueFromProps(value, props) {
 	if (props.range) {
 		if (is["a" /* default */].array(value) && value.length === 2) {
 			value = [Math.max(props.min, value[0]), Math.min(props.max, value[1])];
@@ -24449,7 +24471,7 @@ var utils_getMarks = function getMarks(min, max, marks) {
 	getSliderSize: utils_getSliderSize,
 	getSliderDraggerValue: getSliderDraggerValue,
 	getPrecision: utils_getPrecision,
-	getValueFromProps: utils_getValueFromProps,
+	getValueFromProps: src_utils_getValueFromProps,
 	getSteps: utils_getSteps,
 	getMarks: utils_getMarks
 });
@@ -28414,7 +28436,7 @@ var utils_getIndeterminateStatus = function getIndeterminateStatus(selectedKeys,
 * @param {String} valueKey 选项值对应的键名
 * @param {String} childrenKey 选项子选项对应的键名
 */
-var utils_getSelectedOptions = function getSelectedOptions(value, options, valueKey, childrenKey) {
+var src_utils_getSelectedOptions = function getSelectedOptions(value, options, valueKey, childrenKey) {
 	var result = [];
 
 	if (value.length === 0) {
@@ -28444,7 +28466,7 @@ var utils_getSelectedOptions = function getSelectedOptions(value, options, value
 	getParent: getParent,
 	getCheckedStatus: getCheckedStatus,
 	getIndeterminateStatus: utils_getIndeterminateStatus,
-	getSelectedOptions: utils_getSelectedOptions
+	getSelectedOptions: src_utils_getSelectedOptions
 });
 // CONCATENATED MODULE: ./src/components/cascade-transfer/src/cascade-transfer-source.js
 
@@ -43372,7 +43394,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.8",
+  version: "1.9.9",
   install: src_install,
   // Locale
   locale: src_locale.use,

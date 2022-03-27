@@ -9,16 +9,6 @@ import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiSelectDropdown = {
   name: "vui-select-dropdown",
-  inject: {
-    vuiSelect: {
-      default: undefined
-    }
-  },
-  provide() {
-    return {
-      vuiSelectDropdown: this
-    };
-  },
   components: {
     VuiLazyRender,
     VuiResizeObserver
@@ -34,16 +24,6 @@ const VuiSelectDropdown = {
     animation: PropTypes.string.def("vui-select-dropdown-scale"),
     getPopupReference: PropTypes.func.def(() => null),
     getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
-  },
-  computed: {
-    keyword() {
-      return this.vuiSelect.state.keyword;
-    }
-  },
-  watch: {
-    keyword(value) {
-      this.$nextTick(() => this.reregister());
-    }
   },
   methods: {
     register() {
@@ -143,20 +123,8 @@ const VuiSelectDropdown = {
     return (
       <VuiLazyRender render={props.visible}>
         <VuiResizeObserver onResize={handleResize}>
-          <transition
-            appear
-            name={props.animation}
-            onBeforeEnter={handleBeforeOpen}
-            onAfterEnter={handleAfterOpen}
-            onBeforeLeave={handleBeforeClose}
-            onAfterLeave={handleAfterClose}
-          >
-            <div
-              v-portal={props.getPopupContainer}
-              v-show={props.visible}
-              class={classes.el}
-              onMousedown={handleMousedown}
-            >
+          <transition appear name={props.animation} onBeforeEnter={handleBeforeOpen} onAfterEnter={handleAfterOpen} onBeforeLeave={handleBeforeClose} onAfterLeave={handleAfterClose}>
+            <div v-portal={props.getPopupContainer} v-show={props.visible} class={classes.el} onMousedown={handleMousedown}>
               {slots.default}
             </div>
           </transition>

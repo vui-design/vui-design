@@ -26,10 +26,8 @@ const defaults = {
 * @param {Array} options 选项列表
 */
 export const isExisted = (keyword, options) => {
-  options = getFlattenedOptions(options);
-
   return options.some(option => {
-    return option.label === keyword || option.value === keyword || getTextFromChildren(option.children) === keyword;
+    return (option.type === "option" || option.type === "keyword") && (option.label === keyword || option.value === keyword || getTextFromChildren(option.children) === keyword);
   });
 };
 
@@ -38,14 +36,14 @@ export const isExisted = (keyword, options) => {
 * @param {Array} children 子组件
 * @param {Boolean} parent 父级
 */
-export const getOptionsFromChildren = (children, parent) => {
+export const getOptionsFromChildren = (children, level = 1, parent) => {
   let options = [];
 
   if (!is.array(children)) {
     return options;
   }
 
-  children.forEach(node => {
+  children.forEach((node, index) => {
     if (!node) {
       return;
     }
@@ -64,34 +62,32 @@ export const getOptionsFromChildren = (children, parent) => {
     }
 
     let option = {
-      ...props
+      ...props,
+      key: parent ? `${parent.key}-${index}` : `${index}`,
+      level: level
     };
-    let disabled;
 
     if (parent && parent.disabled) {
-      disabled = parent.disabled;
-    }
-    else {
-      disabled = option.disabled;
+      option.disabled = parent.disabled;
     }
 
-    if (disabled === undefined || disabled === null || disabled === false) {
+    if (option.disabled === undefined || option.disabled === null || option.disabled === false) {
       option.disabled = false;
-    }
-    else {
-      option.disabled = true;
     }
 
     if (config.name === "vui-option-group") {
       option.type = "option-group";
-      option.children = getOptionsFromChildren(component.children, option);
+      option.children = getOptionsFromChildren(component.children, level + 1, option);
+
+      options.push(option);
+      options.push.apply(options, option.children);
     }
     else if (config.name === "vui-option") {
       option.type = "option";
       option.children = component.children;
-    }
 
-    options.push(option);
+      options.push(option);
+    }
   });
 
   return options;
@@ -127,25 +123,6 @@ export const getTextFromChildren = children => {
   });
 
   return text;
-};
-
-/**
-* 将 options 选项列表转换为一维数组形式
-* @param {Array} options 选项列表
-*/
-export const getFlattenedOptions = options => {
-  let array = [];
-
-  options.forEach(element => {
-    if (element.type === "option-group") {
-      array.push.apply(array, getFlattenedOptions(element.children));
-    }
-    else if (element.type === "option" || element.type === "keyword") {
-      array.push(element);
-    }
-  });
-
-  return array;
 };
 
 /**
@@ -189,25 +166,22 @@ export const getFilteredOptions = (keyword, options, filter, property) => {
 /**
 * 根据选中值及选项列表获取选中的选项列表（单选）
 * @param {Array} value 选中值
-* @param {Array} options 选项
-* @param {Array} selectedOption 历史选中项
-* @param {Boolean} multiple 是否为多选模式
+* @param {Array} option 历史选中项
+* @param {Array} props 属性
 */
-export const getSelectedOptionByValue = (value, options, selectedOption) => {
+export const getSelectedOption = (value, option, props) => {
   if (is.undefined(value)) {
     return;
   }
 
-  options = getFlattenedOptions(options);
+  const target = props.options.find(target => (target.type === "option" || target.type === "keyword") && target.value === value);
 
-  const option = options.find(option => option.value === value);
-
-  if (option) {
-    return option;
+  if (target) {
+    return target;
   }
 
-  if (selectedOption && selectedOption.value === value) {
-    return selectedOption;
+  if (option && option.value === value) {
+    return option;
   }
 
   if (is.string(value) && is.falsy(value)) {
@@ -225,31 +199,50 @@ export const getSelectedOptionByValue = (value, options, selectedOption) => {
 /**
 * 根据选中值及选项列表获取选中的选项列表（多选）
 * @param {Array} value 选中值
-* @param {Array} selectedOptions 选中项
-* @param {Array} options 选项
+* @param {Array} options 历史选中项
+* @param {Array} props 属性
 */
-export const getSelectedOptionsByValue = (value, options, selectedOptions) => {
+export const getSelectedOptions = (value, options, props) => {
   let array = [];
 
   if (is.array(value)) {
     value.forEach(element => {
-      let selectedOption;
+      let option;
 
-      if (selectedOptions && selectedOptions.length) {
-        selectedOption = selectedOptions.find(selectedOption => selectedOption.value === element);
+      if (options && options.length > 0) {
+        option = options.find(target => target.value === element);
       }
 
-      const option = getSelectedOptionByValue(element, options, selectedOption);
+      const target = getSelectedOption(element, option, props);
 
-      if (!option) {
+      if (!target) {
         return;
       }
 
-      array.push(option);
+      array.push(target);
     });
   }
 
   return array;
+};
+
+/**
+* 根据选中值及选项列表获取组件内部状态值
+* @param {Array} value 选中值
+* @param {Array} selectedOptions 选中项
+* @param {Array} props 属性
+*/
+export const getValueFromProps = (value, options, props) => {
+  let getter;
+
+  if (props.multiple) {
+    getter = getSelectedOptions;
+  }
+  else {
+    getter = getSelectedOption;
+  }
+
+  return getter(value, options, props);
 };
 
 /**
@@ -259,8 +252,6 @@ export default {
   isExisted,
   getOptionsFromChildren,
   getTextFromChildren,
-  getFlattenedOptions,
   getFilteredOptions,
-  getSelectedOptionsByValue,
-  getSelectedOptionByValue
+  getValueFromProps
 };
