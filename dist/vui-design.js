@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_keys__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_typeof__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_core_js_number_is_integer__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_core_js_number_is_integer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_core_js_number_is_integer__);
@@ -629,7 +629,7 @@ Object.defineProperty(VuePropTypes, "sensibleDefaults", {
 /* unused harmony export isTruthy */
 /* unused harmony export isEffective */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isMergeableObject; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_symbol_for__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_symbol_for___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_symbol_for__);
@@ -949,7 +949,7 @@ exports.default = _assign2.default || function (target) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_core_js_object_get_prototype_of__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_core_js_object_create__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_core_js_object_create___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_core_js_object_create__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__is__ = __webpack_require__(1);
 
@@ -1189,7 +1189,7 @@ var global = __webpack_require__(7);
 var core = __webpack_require__(5);
 var ctx = __webpack_require__(15);
 var hide = __webpack_require__(16);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -1314,7 +1314,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(17)(function () {
+module.exports = !__webpack_require__(18)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -1386,79 +1386,6 @@ module.exports = __webpack_require__(11) ? function (object, key, value) {
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(43);
-var defined = __webpack_require__(44);
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(44);
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _iterator = __webpack_require__(98);
-
-var _iterator2 = _interopRequireDefault(_iterator);
-
-var _symbol = __webpack_require__(69);
-
-var _symbol2 = _interopRequireDefault(_symbol);
-
-var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-} : function (obj) {
-  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-};
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
 var nestRE = /^(attrs|props|on|nativeOn|class|style|hook)$/
 
 module.exports = function mergeJSXProps (objs) {
@@ -1510,6 +1437,79 @@ function mergeFn (a, b) {
   }
 }
 
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = __webpack_require__(43);
+var defined = __webpack_require__(44);
+module.exports = function (it) {
+  return IObject(defined(it));
+};
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(44);
+module.exports = function (it) {
+  return Object(defined(it));
+};
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _iterator = __webpack_require__(98);
+
+var _iterator2 = _interopRequireDefault(_iterator);
+
+var _symbol = __webpack_require__(69);
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
+  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
+} : function (obj) {
+  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
+};
 
 /***/ }),
 /* 23 */
@@ -1602,7 +1602,7 @@ module.exports = true;
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(9).f;
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var TAG = __webpack_require__(8)('toStringTag');
 
 module.exports = function (it, tag, stat) {
@@ -1709,7 +1709,7 @@ exports.f = {}.propertyIsEnumerable;
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(6);
 var core = __webpack_require__(5);
-var fails = __webpack_require__(17);
+var fails = __webpack_require__(18);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
   var exp = {};
@@ -2214,12 +2214,12 @@ exports.f = __webpack_require__(8);
 
 // ECMAScript 6 symbols shim
 var global = __webpack_require__(7);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var DESCRIPTORS = __webpack_require__(11);
 var $export = __webpack_require__(6);
 var redefine = __webpack_require__(65);
 var META = __webpack_require__(54).KEY;
-var $fails = __webpack_require__(17);
+var $fails = __webpack_require__(18);
 var shared = __webpack_require__(47);
 var setToStringTag = __webpack_require__(30);
 var uid = __webpack_require__(35);
@@ -2230,8 +2230,8 @@ var enumKeys = __webpack_require__(106);
 var isArray = __webpack_require__(70);
 var anObject = __webpack_require__(13);
 var isObject = __webpack_require__(10);
-var toObject = __webpack_require__(20);
-var toIObject = __webpack_require__(19);
+var toObject = __webpack_require__(21);
+var toIObject = __webpack_require__(20);
 var toPrimitive = __webpack_require__(42);
 var createDesc = __webpack_require__(26);
 var _create = __webpack_require__(38);
@@ -2465,13 +2465,13 @@ setToStringTag(global.JSON, 'JSON', true);
 
 var META = __webpack_require__(35)('meta');
 var isObject = __webpack_require__(10);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var setDesc = __webpack_require__(9).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !__webpack_require__(17)(function () {
+var FREEZE = !__webpack_require__(18)(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -2633,7 +2633,7 @@ module.exports.f = function (C) {
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(11) && !__webpack_require__(17)(function () {
+module.exports = !__webpack_require__(11) && !__webpack_require__(18)(function () {
   return Object.defineProperty(__webpack_require__(41)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -2642,8 +2642,8 @@ module.exports = !__webpack_require__(11) && !__webpack_require__(17)(function (
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(18);
-var toIObject = __webpack_require__(19);
+var has = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 var arrayIndexOf = __webpack_require__(92)(false);
 var IE_PROTO = __webpack_require__(46)('IE_PROTO');
 
@@ -2687,8 +2687,8 @@ module.exports = document && document.documentElement;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(18);
-var toObject = __webpack_require__(20);
+var has = __webpack_require__(19);
+var toObject = __webpack_require__(21);
 var IE_PROTO = __webpack_require__(46)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -2732,7 +2732,7 @@ module.exports = Array.isArray || function isArray(arg) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 var gOPN = __webpack_require__(72).f;
 var toString = {}.toString;
 
@@ -2771,9 +2771,9 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 var pIE = __webpack_require__(36);
 var createDesc = __webpack_require__(26);
-var toIObject = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 var toPrimitive = __webpack_require__(42);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var IE8_DOM_DEFINE = __webpack_require__(62);
 var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -9185,7 +9185,7 @@ function requestAnimationFrameThrottle(callback) {
   return throttled;
 };
 // EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/typeof.js
-var helpers_typeof = __webpack_require__(21);
+var helpers_typeof = __webpack_require__(22);
 var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // CONCATENATED MODULE: ./src/utils/addEventListener.js
@@ -14168,169 +14168,169 @@ var shapes = ["circle", "square"];
 var avatar_sizes = ["small", "medium", "large"];
 
 var avatar_VuiAvatar = {
-	name: "vui-avatar",
-	inject: {
-		vuiAvatarGroup: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon: components_icon
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		src: prop_types["a" /* default */].string,
-		replacement: prop_types["a" /* default */].string,
-		alt: prop_types["a" /* default */].string,
-		icon: prop_types["a" /* default */].string,
-		shape: prop_types["a" /* default */].oneOf(shapes),
-		size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(avatar_sizes), prop_types["a" /* default */].number])
-	},
-	data: function data() {
-		var state = {
-			scale: 1
-		};
+  name: "vui-avatar",
+  inject: {
+    vuiAvatarGroup: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon: components_icon
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    src: prop_types["a" /* default */].string,
+    replacement: prop_types["a" /* default */].string,
+    alt: prop_types["a" /* default */].string,
+    icon: prop_types["a" /* default */].string,
+    shape: prop_types["a" /* default */].oneOf(shapes),
+    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(avatar_sizes), prop_types["a" /* default */].number])
+  },
+  data: function data() {
+    var state = {
+      scale: 1
+    };
 
-		return {
-			state: state
-		};
-	},
+    return {
+      state: state
+    };
+  },
 
-	methods: {
-		response: function response() {
-			var el = this.$el,
-			    references = this.$refs;
+  methods: {
+    response: function response() {
+      var el = this.$el,
+          references = this.$refs;
 
 
-			if (!references.children) {
-				return;
-			}
+      if (!references.children) {
+        return;
+      }
 
-			var boundary = el.getBoundingClientRect().width;
-			var width = references.children.offsetWidth;
-			var isOverflowed = boundary - 8 < width;
+      var boundary = el.getBoundingClientRect().width;
+      var width = references.children.offsetWidth;
+      var isOverflowed = boundary - 8 < width;
 
-			this.state.scale = isOverflowed ? (boundary - 8) / width : 1;
-		},
-		handleError: function handleError(e) {
-			this.$emit("error", e);
-		}
-	},
-	mounted: function mounted() {
-		this.response();
-	},
-	updated: function updated() {
-		this.response();
-	},
-	render: function render() {
-		var _classes$el;
+      this.state.scale = isOverflowed ? (boundary - 8) / width : 1;
+    },
+    handleError: function handleError(e) {
+      this.$emit("error", e);
+    }
+  },
+  mounted: function mounted() {
+    this.response();
+  },
+  updated: function updated() {
+    this.response();
+  },
+  render: function render() {
+    var _classes$el;
 
-		var h = arguments[0];
-		var vuiAvatarGroup = this.vuiAvatarGroup,
-		    slots = this.$slots,
-		    props = this.$props,
-		    state = this.state,
-		    listeners = this.$listeners;
-		var handleError = this.handleError;
+    var h = arguments[0];
+    var vuiAvatarGroup = this.vuiAvatarGroup,
+        slots = this.$slots,
+        props = this.$props,
+        state = this.state,
+        listeners = this.$listeners;
+    var handleError = this.handleError;
 
-		// src
+    // src
 
-		var src = props.src || props.replacement;
+    var src = props.src || props.replacement;
 
-		// type
-		var type = void 0;
+    // type
+    var type = void 0;
 
-		if (src) {
-			type = "image";
-		} else if (slots.icon || props.icon) {
-			type = "icon";
-		} else if (slots.default) {
-			type = "children";
-		}
+    if (src) {
+      type = "image";
+    } else if (slots.icon || props.icon) {
+      type = "icon";
+    } else if (slots.default) {
+      type = "children";
+    }
 
-		// shape
-		var shape = void 0;
+    // shape
+    var shape = void 0;
 
-		if (vuiAvatarGroup && vuiAvatarGroup.shape) {
-			shape = vuiAvatarGroup.shape;
-		} else if (props.shape) {
-			shape = props.shape;
-		} else {
-			shape = "circle";
-		}
+    if (vuiAvatarGroup && vuiAvatarGroup.shape) {
+      shape = vuiAvatarGroup.shape;
+    } else if (props.shape) {
+      shape = props.shape;
+    } else {
+      shape = "circle";
+    }
 
-		// size
-		var size = void 0;
+    // size
+    var size = void 0;
 
-		if (vuiAvatarGroup && vuiAvatarGroup.size) {
-			size = vuiAvatarGroup.size;
-		} else if (props.size) {
-			size = props.size;
-		} else {
-			size = "medium";
-		}
+    if (vuiAvatarGroup && vuiAvatarGroup.size) {
+      size = vuiAvatarGroup.size;
+    } else if (props.size) {
+      size = props.size;
+    } else {
+      size = "medium";
+    }
 
-		var isPresetSize = avatar_sizes.indexOf(size) > -1;
+    var isPresetSize = avatar_sizes.indexOf(size) > -1;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
+    var classes = {};
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-with-" + type, type), defineProperty_default()(_classes$el, classNamePrefix + "-" + shape, shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size && isPresetSize), _classes$el);
-		classes.elChildren = classNamePrefix + "-" + type;
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-with-" + type, type), defineProperty_default()(_classes$el, classNamePrefix + "-" + shape, shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size && isPresetSize), _classes$el);
+    classes.elChildren = classNamePrefix + "-" + type;
 
-		// style
-		var styles = {};
+    // style
+    var styles = {};
 
-		if (size && !isPresetSize) {
-			styles.el = {
-				width: size + "px",
-				height: size + "px",
-				lineHeight: size + "px",
-				fontSize: size / 2 + "px"
-			};
-		}
+    if (size && !isPresetSize) {
+      styles.el = {
+        width: size + "px",
+        height: size + "px",
+        lineHeight: size + "px",
+        fontSize: size / 2 + "px"
+      };
+    }
 
-		if (type === "children") {
-			styles.elChildren = {
-				transform: "scale(" + state.scale + ") translateX(-50%)"
-			};
-		}
+    if (type === "children") {
+      styles.elChildren = {
+        transform: "scale(" + state.scale + ") translateX(-50%)"
+      };
+    }
 
-		// attributes
-		var attributes = {
-			class: classes.el,
-			style: styles.el,
-			on: extends_default()({}, listeners)
-		};
+    // attributes
+    var attributes = {
+      class: classes.el,
+      style: styles.el,
+      on: extends_default()({}, listeners)
+    };
 
-		// render
-		var children = void 0;
+    // render
+    var children = void 0;
 
-		if (type === "image") {
-			children = h("img", { "class": classes.elChildren, attrs: { src: src, alt: props.alt },
-				on: {
-					"error": handleError
-				}
-			});
-		} else if (type === "icon") {
-			children = slots.icon || h(components_icon, {
-				attrs: { type: props.icon },
-				"class": classes.elChildren });
-		} else if (type === "children") {
-			children = h(
-				"div",
-				{ ref: "children", "class": classes.elChildren, style: styles.elChildren },
-				[slots.default]
-			);
-		}
+    if (type === "image") {
+      children = h("img", { "class": classes.elChildren, attrs: { src: src, alt: props.alt },
+        on: {
+          "error": handleError
+        }
+      });
+    } else if (type === "icon") {
+      children = slots.icon || h(components_icon, {
+        attrs: { type: props.icon },
+        "class": classes.elChildren });
+    } else if (type === "children") {
+      children = h(
+        "div",
+        { ref: "children", "class": classes.elChildren, style: styles.elChildren },
+        [slots.default]
+      );
+    }
 
-		return h(
-			"div",
-			attributes,
-			[children]
-		);
-	}
+    return h(
+      "div",
+      attributes,
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var src_avatar = (avatar_VuiAvatar);
@@ -14338,7 +14338,7 @@ var avatar_VuiAvatar = {
 
 
 src_avatar.install = function (Vue) {
-	Vue.component(src_avatar.name, src_avatar);
+  Vue.component(src_avatar.name, src_avatar);
 };
 
 /* harmony default export */ var components_avatar = (src_avatar);
@@ -17861,7 +17861,7 @@ src_option.install = function (Vue) {
 
 /* harmony default export */ var components_option = (src_option);
 // EXTERNAL MODULE: ./node_modules/babel-helper-vue-jsx-merge-props/index.js
-var babel_helper_vue_jsx_merge_props = __webpack_require__(22);
+var babel_helper_vue_jsx_merge_props = __webpack_require__(17);
 var babel_helper_vue_jsx_merge_props_default = /*#__PURE__*/__webpack_require__.n(babel_helper_vue_jsx_merge_props);
 
 // CONCATENATED MODULE: ./src/components/input/src/input.js
@@ -19147,7 +19147,7 @@ var VuiStep = {
 
 
 src_step.install = function (Vue) {
-	Vue.component(src_step.name, src_step);
+  Vue.component(src_step.name, src_step);
 };
 
 /* harmony default export */ var components_step = (src_step);
@@ -29947,342 +29947,258 @@ var VuiUploadTrigger = {
 };
 
 /* harmony default export */ var upload_trigger = (VuiUploadTrigger);
+// CONCATENATED MODULE: ./src/utils/clamp.js
+/**
+* 返回限制在 lower 和 upper 之间的值
+* @param {Number} number 被限制的值
+* @param {Number} lower 下限
+* @param {Number} upper 上限
+*/
+function clamp(number, lower, upper) {
+  return Math.min.call(null, Math.max.call(null, number, lower), upper);
+};
 // CONCATENATED MODULE: ./src/components/progress/src/progress.js
 
 
 
 
+
+
+
+var progress_defaults = {
+  width: {
+    small: 80,
+    medium: 120,
+    large: 160
+  },
+  strokeWidth: {
+    small: 6,
+    medium: 8,
+    large: 10
+  }
+};
+
 var VuiProgress = {
-	name: "vui-progress",
+  name: "vui-progress",
+  components: {
+    VuiIcon: components_icon
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["line", "circle", "dashboard"]).def("line"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+    percentage: prop_types["a" /* default */].number.def(0),
+    status: prop_types["a" /* default */].oneOf(["normal", "active", "exception", "success"]).def("normal"),
+    trackColor: prop_types["a" /* default */].string,
+    strokeColor: prop_types["a" /* default */].string,
+    strokeWidth: prop_types["a" /* default */].number,
+    strokeLinecap: prop_types["a" /* default */].oneOf(["round", "square"]).def("round"),
+    width: prop_types["a" /* default */].number,
+    gapDegree: prop_types["a" /* default */].number.def(75),
+    formatter: prop_types["a" /* default */].func,
+    showInfo: prop_types["a" /* default */].bool.def(true)
+  },
+  render: function render(h) {
+    var _classes$el;
 
-	components: {
-		VuiIcon: components_icon
-	},
+    var slots = this.$slots,
+        props = this.$props;
 
-	props: {
-		// 样式类名前缀
-		classNamePrefix: {
-			type: String,
-			default: "vui-progress"
-		},
-		// 进度条类型 line/circle/dashboard
-		type: {
-			type: String,
-			default: "line",
-			validator: function validator(value) {
-				return ["line", "circle", "dashboard"].indexOf(value) > -1;
-			}
-		},
-		// 进度条尺寸 small/medium/large
-		size: {
-			type: String,
-			default: "medium",
-			validator: function validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
-		},
-		// 进度条进度 0-100
-		percentage: {
-			type: Number,
-			default: 0,
-			validator: function validator(value) {
-				return value >= 0 && value <= 100;
-			}
-		},
-		// 进度条状态 normal/active/exception/success
-		status: {
-			type: String,
-			default: "normal",
-			validator: function validator(value) {
-				return ["normal", "active", "exception", "success"].indexOf(value) > -1;
-			}
-		},
-		// 进度条颜色，会覆盖 status 状态下的默认颜色
-		color: {
-			type: String,
-			default: undefined
-		},
-		// 轨道颜色
-		trackColor: {
-			type: String,
-			default: undefined
-		},
-		// 进度条内容的模板函数
-		format: {
-			type: Function,
-			default: undefined
-		},
-		// 画布尺寸，单位 px
-		canvas: {
-			type: Number,
-			default: undefined
-		},
-		// 线条尺寸，单位 px
-		stroke: {
-			type: Number,
-			default: undefined
-		},
-		// 线条边缘形状 round/square
-		linecap: {
-			type: String,
-			default: "round",
-			validator: function validator(value) {
-				return ["round", "square"].indexOf(value) > -1;
-			}
-		},
-		// 是否显示进度数值或状态图标
-		showInfo: {
-			type: Boolean,
-			default: true
-		}
-	},
+    // percentage
 
-	render: function render(h) {
-		var _classes;
+    var percentage = clamp(props.percentage, 0, 100);
 
-		var classNamePrefix = this.classNamePrefix,
-		    type = this.type,
-		    size = this.size,
-		    percentage = this.percentage,
-		    status = this.status,
-		    color = this.color,
-		    trackColor = this.trackColor,
-		    format = this.format,
-		    canvas = this.canvas,
-		    stroke = this.stroke,
-		    linecap = this.linecap,
-		    showInfo = this.showInfo;
+    // status
+    var status = props.status;
 
-		// status
+    if (percentage === 100 && status === "normal") {
+      status = "success";
+    }
 
-		if (percentage === 100 && status === "normal") {
-			status = "success";
-		}
+    // width
+    var width = props.width;
 
-		// canvas
-		if (type !== "line" && !canvas) {
-			var defaultCanvases = {
-				small: 80,
-				medium: 120,
-				large: 160
-			};
+    if (props.type !== "line" && !width) {
+      width = progress_defaults.width[props.size];
+    }
 
-			canvas = defaultCanvases[size];
-		}
+    // strokeWidth
+    var strokeWidth = props.strokeWidth;
 
-		// stroke
-		if (!stroke) {
-			var defaultStrokes = {
-				small: 6,
-				medium: 8,
-				large: 10
-			};
+    if (!strokeWidth) {
+      strokeWidth = progress_defaults.strokeWidth[props.size];
+    }
 
-			stroke = defaultStrokes[size];
-		}
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "progress");
+    var classes = {};
 
-		// classes
-		var classes = (_classes = {}, defineProperty_default()(_classes, "" + classNamePrefix, true), defineProperty_default()(_classes, classNamePrefix + "-" + type, type), defineProperty_default()(_classes, classNamePrefix + "-" + size, size), defineProperty_default()(_classes, classNamePrefix + "-status-" + status, status), defineProperty_default()(_classes, classNamePrefix + "-with-info", showInfo), _classes);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-with-info", props.showInfo), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + status, status), _classes$el);
 
-		// render
-		if (type === "line") {
-			var lineStrokeWidth = stroke;
-			var lineStrokeColor = color;
-			var lineStrokeLinecap = linecap;
+    // style
+    var styles = {};
 
-			var lineTrackStyle = {
-				height: lineStrokeWidth + "px",
-				borderRadius: (lineStrokeLinecap === "round" ? lineStrokeWidth : 0) + "px",
-				backgroundColor: trackColor
-			};
-			var lineThumbStyle = {
-				width: percentage + "%",
-				height: lineStrokeWidth + "px",
-				borderRadius: (lineStrokeLinecap === "round" ? lineStrokeWidth : 0) + "px",
-				backgroundColor: lineStrokeColor
-			};
+    // render
+    if (props.type === "line") {
+      classes.elMain = classNamePrefix + "-main";
+      classes.elMainTrach = classNamePrefix + "-main-track";
+      classes.elMainThumb = classNamePrefix + "-main-thumb";
 
-			var children = [];
+      styles.elMainTrack = {
+        height: strokeWidth + "px",
+        borderRadius: (props.strokeLinecap === "round" ? strokeWidth : 0) + "px",
+        backgroundColor: props.trackColor
+      };
+      styles.elMainThumb = {
+        width: percentage + "%",
+        height: strokeWidth + "px",
+        borderRadius: (props.strokeLinecap === "round" ? strokeWidth : 0) + "px",
+        backgroundColor: props.strokeColor
+      };
 
-			children.push(h(
-				"div",
-				{ "class": classNamePrefix + "-main" },
-				[h(
-					"div",
-					{ "class": classNamePrefix + "-main-track", style: lineTrackStyle },
-					[h("div", { "class": classNamePrefix + "-main-thumb", style: lineThumbStyle })]
-				)]
-			));
+      var children = [];
 
-			if (showInfo) {
-				var lineInfo = void 0;
-				var lineInfoStyles = {
-					color: status !== "normal" && lineStrokeColor ? lineStrokeColor : undefined
-				};
+      children.push(h(
+        "div",
+        { "class": classes.elMain },
+        [h(
+          "div",
+          { "class": classes.elMainTrach, style: styles.elMainTrack },
+          [h("div", { "class": classes.elMainThumb, style: styles.elMainThumb })]
+        )]
+      ));
 
-				if (format) {
-					lineInfo = format(percentage);
-				} else if (status === "exception") {
-					lineInfo = h(components_icon, {
-						attrs: { type: "crossmark-circle-filled" }
-					});
-				} else if (status === "success") {
-					lineInfo = h(components_icon, {
-						attrs: { type: "checkmark-circle-filled" }
-					});
-				} else {
-					lineInfo = percentage + "%";
-				}
+      if (props.showInfo) {
+        var info = void 0;
 
-				children.push(h(
-					"div",
-					{ "class": classNamePrefix + "-info", style: lineInfoStyles },
-					[lineInfo]
-				));
-			}
+        if (props.formatter) {
+          info = props.formatter(percentage);
+        } else if (status === "exception") {
+          info = h(components_icon, {
+            attrs: { type: "crossmark-circle-filled" }
+          });
+        } else if (status === "success") {
+          info = h(components_icon, {
+            attrs: { type: "checkmark-circle-filled" }
+          });
+        } else {
+          info = percentage + "%";
+        }
 
-			return h(
-				"div",
-				{ "class": classes },
-				[children]
-			);
-		} else if (type === "circle") {
-			var circleStrokeWidth = Number((stroke / canvas * 100).toFixed(2));
-			var circleStrokeColor = color;
-			var circleStrokeLinecap = linecap;
-			var radius = 50 - circleStrokeWidth / 2;
-			var perimeter = 2 * Math.PI * radius;
-			var directive = "M 50,50 m 0,-" + radius + " a " + radius + "," + radius + " 0 1 1 0," + radius * 2 + " a " + radius + "," + radius + " 0 1 1 0,-" + radius * 2;
+        classes.elInfo = classNamePrefix + "-info";
+        styles.elInfo = {
+          color: status !== "normal" && props.strokeColor ? props.strokeColor : undefined
+        };
 
-			var circleTrackStyle = {
-				strokeWidth: circleStrokeWidth + "px",
-				strokeLinecap: circleStrokeLinecap,
-				strokeDasharray: perimeter + "px, " + perimeter + "px",
-				strokeDashoffset: "0px",
-				stroke: trackColor
-			};
-			var circleThumbStyle = {
-				stroke: circleStrokeColor,
-				strokeWidth: (percentage === 0 ? 0 : circleStrokeWidth) + "px",
-				strokeLinecap: circleStrokeLinecap,
-				strokeDasharray: percentage / 100 * perimeter + "px, " + perimeter + "px",
-				strokeDashoffset: "0px",
-				transition: "stroke 0.2s ease 0s, stroke-width 0s ease " + (percentage === 0 ? 0.2 : 0) + "s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s"
-			};
+        children.push(h(
+          "div",
+          { "class": classes.elInfo, style: styles.elInfo },
+          [info]
+        ));
+      }
 
-			var _children = [];
+      return h(
+        "div",
+        { "class": classes.el },
+        [children]
+      );
+    } else if (props.type === "circle" || props.type === "dashboard") {
+      strokeWidth = Number((strokeWidth / width * 100).toFixed(2));
 
-			_children.push(h(
-				"svg",
-				{
-					attrs: { viewBox: "0 0 100 100" },
-					"class": classNamePrefix + "-main" },
-				[h("path", { "class": classNamePrefix + "-main-track", attrs: { d: directive },
-					style: circleTrackStyle }), h("path", { "class": classNamePrefix + "-main-thumb", attrs: { d: directive },
-					style: circleThumbStyle })]
-			));
+      var radius = 50 - strokeWidth / 2;
+      var perimeter = 2 * Math.PI * radius;
+      var directive = void 0;
 
-			if (showInfo) {
-				var circleInfo = void 0;
-				var circleInfoStyles = {
-					color: status !== "normal" && circleStrokeColor ? circleStrokeColor : undefined
-				};
+      if (props.type === "circle") {
+        directive = "M 50,50 m 0,-" + radius + " a " + radius + "," + radius + " 0 1 1 0," + radius * 2 + " a " + radius + "," + radius + " 0 1 1 0,-" + radius * 2;
+      } else if (props.type === "dashboard") {
+        directive = "M 50,50 m 0," + radius + " a " + radius + "," + radius + " 0 1 1 0,-" + radius * 2 + " a " + radius + "," + radius + " 0 1 1 0," + radius * 2;
+      }
 
-				if (format) {
-					circleInfo = format(percentage);
-				} else if (status === "exception") {
-					circleInfo = h(components_icon, {
-						attrs: { type: "crossmark" }
-					});
-				} else if (status === "success") {
-					circleInfo = h(components_icon, {
-						attrs: { type: "checkmark" }
-					});
-				} else {
-					circleInfo = percentage + "%";
-				}
+      classes.elMain = classNamePrefix + "-main";
+      classes.elMainTrach = classNamePrefix + "-main-track";
+      classes.elMainThumb = classNamePrefix + "-main-thumb";
 
-				_children.push(h(
-					"div",
-					{ "class": classNamePrefix + "-info", style: circleInfoStyles },
-					[circleInfo]
-				));
-			}
+      styles.el = {
+        width: width + "px",
+        height: width + "px"
+      };
+      styles.elMainTrack = {
+        strokeWidth: strokeWidth + "px",
+        strokeLinecap: props.strokeLinecap,
+        stroke: props.trackColor
+      };
+      styles.elMainThumb = {
+        stroke: props.strokeColor,
+        strokeWidth: (percentage === 0 ? 0 : strokeWidth) + "px",
+        strokeLinecap: props.strokeLinecap,
+        transition: "stroke 0.2s ease 0s, stroke-width 0s ease " + (percentage === 0 ? 0.2 : 0) + "s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s"
+      };
 
-			return h(
-				"div",
-				{ "class": classes, style: { width: canvas + "px", height: canvas + "px" } },
-				[_children]
-			);
-		} else if (type === "dashboard") {
-			var dashboardStrokeWidth = Number((stroke / canvas * 100).toFixed(2));
-			var dashboardStrokeColor = color;
-			var dashboardStrokeLinecap = linecap;
-			var _radius = 50 - dashboardStrokeWidth / 2;
-			var _perimeter = 2 * Math.PI * _radius;
-			var _directive = "M 50,50 m 0," + _radius + " a " + _radius + "," + _radius + " 0 1 1 0,-" + _radius * 2 + " a " + _radius + "," + _radius + " 0 1 1 0," + _radius * 2;
+      if (props.type === "circle") {
+        styles.elMainTrack.strokeDasharray = perimeter + "px, " + perimeter + "px";
+        styles.elMainTrack.strokeDashoffset = "0px";
+        styles.elMainThumb.strokeDasharray = percentage / 100 * perimeter + "px, " + perimeter + "px";
+        styles.elMainThumb.strokeDashoffset = "0px";
+      } else if (props.type === "dashboard") {
+        var gapDegree = clamp(props.gapDegree, 0, 295);
 
-			var dashboardTrackStyle = {
-				strokeWidth: dashboardStrokeWidth + "px",
-				strokeLinecap: dashboardStrokeLinecap,
-				strokeDasharray: _perimeter - 75 + "px, " + _perimeter + "px",
-				strokeDashoffset: "-" + 75 / 2 + "px"
-			};
-			var dashboardThumbStyle = {
-				stroke: dashboardStrokeColor,
-				strokeWidth: (percentage === 0 ? 0 : dashboardStrokeWidth) + "px",
-				strokeLinecap: dashboardStrokeLinecap,
-				strokeDasharray: percentage / 100 * (_perimeter - 75) + "px, " + _perimeter + "px",
-				strokeDashoffset: "-" + 75 / 2 + "px",
-				transition: "stroke 0.2s ease 0s, stroke-width 0s ease " + (percentage === 0 ? 0.2 : 0) + "s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s"
-			};
+        styles.elMainTrack.strokeDasharray = perimeter - gapDegree + "px, " + perimeter + "px";
+        styles.elMainTrack.strokeDashoffset = "-" + gapDegree / 2 + "px";
+        styles.elMainThumb.strokeDasharray = percentage / 100 * (perimeter - gapDegree) + "px, " + perimeter + "px";
+        styles.elMainThumb.strokeDashoffset = "-" + gapDegree / 2 + "px";
+      }
 
-			var _children2 = [];
+      var _children = [];
 
-			_children2.push(h(
-				"svg",
-				{
-					attrs: { viewBox: "0 0 100 100" },
-					"class": classNamePrefix + "-main" },
-				[h("path", { "class": classNamePrefix + "-main-track", attrs: { d: _directive },
-					style: dashboardTrackStyle }), h("path", { "class": classNamePrefix + "-main-thumb", attrs: { d: _directive },
-					style: dashboardThumbStyle })]
-			));
+      _children.push(h(
+        "svg",
+        {
+          attrs: { viewBox: "0 0 100 100" },
+          "class": classes.elMain },
+        [h("path", {
+          attrs: { d: directive },
+          "class": classes.elMainTrach, style: styles.elMainTrack }), h("path", {
+          attrs: { d: directive },
+          "class": classes.elMainThumb, style: styles.elMainThumb })]
+      ));
 
-			if (showInfo) {
-				var dashboardInfo = void 0;
-				var dashboardInfoStyles = {
-					color: status !== "normal" && dashboardStrokeColor ? dashboardStrokeColor : undefined
-				};
+      if (props.showInfo) {
+        var _info = void 0;
 
-				if (format) {
-					dashboardInfo = format(percentage);
-				} else if (status === "exception") {
-					dashboardInfo = h(components_icon, {
-						attrs: { type: "crossmark" }
-					});
-				} else if (status === "success") {
-					dashboardInfo = h(components_icon, {
-						attrs: { type: "checkmark" }
-					});
-				} else {
-					dashboardInfo = percentage + "%";
-				}
+        if (props.formatter) {
+          _info = props.formatter(percentage);
+        } else if (status === "exception") {
+          _info = h(components_icon, {
+            attrs: { type: "crossmark" }
+          });
+        } else if (status === "success") {
+          _info = h(components_icon, {
+            attrs: { type: "checkmark" }
+          });
+        } else {
+          _info = percentage + "%";
+        }
 
-				_children2.push(h(
-					"div",
-					{ "class": classNamePrefix + "-info", style: dashboardInfoStyles },
-					[dashboardInfo]
-				));
-			}
+        classes.elInfo = classNamePrefix + "-info";
+        styles.elInfo = {
+          color: status !== "normal" && props.strokeColor ? props.strokeColor : undefined
+        };
 
-			return h(
-				"div",
-				{ "class": classes, style: { width: canvas + "px", height: canvas + "px" } },
-				[_children2]
-			);
-		}
-	}
+        _children.push(h(
+          "div",
+          { "class": classes.elInfo, style: styles.elInfo },
+          [_info]
+        ));
+      }
+
+      return h(
+        "div",
+        { "class": classes.el, style: styles.el },
+        [_children]
+      );
+    }
+  }
 };
 
 /* harmony default export */ var progress = (VuiProgress);
@@ -30290,7 +30206,7 @@ var VuiProgress = {
 
 
 progress.install = function (Vue) {
-	Vue.component(progress.name, progress);
+  Vue.component(progress.name, progress);
 };
 
 /* harmony default export */ var components_progress = (progress);
@@ -30889,89 +30805,89 @@ src_upload.install = function (Vue) {
 
 
 var VuiAvatarGroup = {
-	name: "vui-avatar-group",
-	provide: function provide() {
-		return {
-			vuiAvatarGroup: this
-		};
-	},
+  name: "vui-avatar-group",
+  provide: function provide() {
+    return {
+      vuiAvatarGroup: this
+    };
+  },
 
-	components: {
-		VuiTooltip: components_tooltip,
-		VuiAvatar: components_avatar,
-		VuiSpace: components_space
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		shape: prop_types["a" /* default */].oneOf(["circle", "square"]).def("circle"),
-		size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(["small", "medium", "large"]), prop_types["a" /* default */].number]).def("medium"),
-		maxCount: prop_types["a" /* default */].number,
-		maxTooltipTheme: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
-		maxTooltipPlacement: prop_types["a" /* default */].oneOf(["top", "bottom"]).def("top")
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props;
+  components: {
+    VuiTooltip: components_tooltip,
+    VuiAvatar: components_avatar,
+    VuiSpace: components_space
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    shape: prop_types["a" /* default */].oneOf(["circle", "square"]).def("circle"),
+    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(["small", "medium", "large"]), prop_types["a" /* default */].number]).def("medium"),
+    maxCount: prop_types["a" /* default */].number,
+    maxTooltipColor: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
+    maxTooltipPlacement: prop_types["a" /* default */].oneOf(["top", "bottom"]).def("top")
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
 
-		var maxCount = props.maxCount && props.maxCount > 0 ? props.maxCount : 0;
+    var maxCount = props.maxCount && props.maxCount > 0 ? props.maxCount : 0;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar-group");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar-group");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
-		classes.elItem = classNamePrefix + "-item";
-		classes.elPlaceholder = classNamePrefix + "-placeholder";
-		classes.elTooltipContent = classNamePrefix + "-tooltip-content";
+    classes.el = "" + classNamePrefix;
+    classes.elItem = classNamePrefix + "-item";
+    classes.elPlaceholder = classNamePrefix + "-placeholder";
+    classes.elTooltipContent = classNamePrefix + "-tooltip-content";
 
-		// render
-		var avatars = getValidElements(slots.default);
-		var overflowedCount = avatars.length - maxCount;
-		var children = [];
+    // render
+    var avatars = getValidElements(slots.default);
+    var overflowedCount = avatars.length - maxCount;
+    var children = [];
 
-		avatars.forEach(function (avatar, index) {
-			if (maxCount && index >= maxCount) {
-				return;
-			}
+    avatars.forEach(function (avatar, index) {
+      if (maxCount && index >= maxCount) {
+        return;
+      }
 
-			children.push(h(
-				"div",
-				{ "class": classes.elItem },
-				[avatar]
-			));
-		});
+      children.push(h(
+        "div",
+        { "class": classes.elItem },
+        [avatar]
+      ));
+    });
 
-		if (maxCount && overflowedCount > 0) {
-			children.push(h(
-				"div",
-				{ "class": classes.elPlaceholder },
-				[h(
-					components_tooltip,
-					{
-						attrs: { color: props.maxTooltipTheme, placement: props.maxTooltipPlacement }
-					},
-					[h(components_avatar, ["+", overflowedCount]), h(
-						"div",
-						{ slot: "content", "class": classes.elTooltipContent },
-						[h(
-							components_space,
-							{
-								attrs: { size: "small" }
-							},
-							[avatars.slice(maxCount)]
-						)]
-					)]
-				)]
-			));
-		}
+    if (maxCount && overflowedCount > 0) {
+      children.push(h(
+        "div",
+        { "class": classes.elPlaceholder },
+        [h(
+          components_tooltip,
+          {
+            attrs: { color: props.maxTooltipColor, placement: props.maxTooltipPlacement }
+          },
+          [h(components_avatar, ["+", overflowedCount]), h(
+            "div",
+            { slot: "content", "class": classes.elTooltipContent },
+            [h(
+              components_space,
+              {
+                attrs: { size: "small" }
+              },
+              [avatars.slice(maxCount)]
+            )]
+          )]
+        )]
+      ));
+    }
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var avatar_group = (VuiAvatarGroup);
@@ -30979,7 +30895,7 @@ var VuiAvatarGroup = {
 
 
 avatar_group.install = function (Vue) {
-	Vue.component(avatar_group.name, avatar_group);
+  Vue.component(avatar_group.name, avatar_group);
 };
 
 /* harmony default export */ var components_avatar_group = (avatar_group);
@@ -33351,327 +33267,328 @@ list_item_meta.install = function (Vue) {
 
 
 var VuiPopover = {
-	name: "vui-popover",
-	components: {
-		VuiLazyRender: components_lazy_render
-	},
-	directives: {
-		Portal: directives_portal,
-		Outclick: outclick
-	},
-	model: {
-		prop: "visible",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
-		visible: prop_types["a" /* default */].bool.def(false),
-		title: prop_types["a" /* default */].string,
-		content: prop_types["a" /* default */].string,
-		minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(150),
-		maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
-		animation: prop_types["a" /* default */].string.def("vui-popover-popup-scale"),
-		getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-			return document.body;
-		}),
-		beforeOpen: prop_types["a" /* default */].func,
-		beforeClose: prop_types["a" /* default */].func
-	},
-	data: function data() {
-		var props = this.$props;
+  name: "vui-popover",
+  components: {
+    VuiLazyRender: components_lazy_render
+  },
+  directives: {
+    Portal: directives_portal,
+    Outclick: outclick
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    visible: prop_types["a" /* default */].bool.def(false),
+    trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
+    title: prop_types["a" /* default */].string,
+    content: prop_types["a" /* default */].string,
+    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(160),
+    maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
+    animation: prop_types["a" /* default */].string.def("vui-popover-popup-scale"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    }),
+    beforeOpen: prop_types["a" /* default */].func,
+    beforeClose: prop_types["a" /* default */].func
+  },
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      visible: props.trigger === "always" ? true : props.visible
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    visible: function visible(value) {
+      var props = this.$props;
 
 
-		return {
-			state: {
-				visible: props.trigger === "always" ? true : props.visible
-			}
-		};
-	},
+      this.state.visible = props.trigger === "always" ? true : value;
+    }
+  },
+  methods: {
+    toggle: function toggle(visible) {
+      var _this = this;
 
-	watch: {
-		visible: function visible(value) {
-			var props = this.$props;
+      var props = this.$props;
 
+      var callback = function callback() {
+        _this.state.visible = visible;
+        _this.$emit("input", visible);
+        _this.$emit("change", visible);
+      };
+      var beforeCallback = visible ? props.beforeOpen : props.beforeClose;
+      var hook = true;
 
-			this.state.visible = props.trigger === "always" ? true : value;
-		}
-	},
-	methods: {
-		toggle: function toggle(visible) {
-			var _this = this;
+      if (is["a" /* default */].function(beforeCallback)) {
+        hook = beforeCallback();
+      }
 
-			var props = this.$props;
+      if (is["a" /* default */].promise(hook)) {
+        hook.then(function () {
+          return callback();
+        }).catch(function (error) {});
+      } else if (is["a" /* default */].boolean(hook) && hook === false) {
+        return;
+      } else {
+        callback();
+      }
+    },
+    register: function register() {
+      if (is["a" /* default */].server || this.popup) {
+        return;
+      }
 
-			var callback = function callback() {
-				_this.state.visible = visible;
-				_this.$emit("input", visible);
-				_this.$emit("change", visible);
-			};
-			var beforeCallback = visible ? props.beforeOpen : props.beforeClose;
-			var hook = true;
+      var references = this.$refs,
+          props = this.$props;
 
-			if (is["a" /* default */].function(beforeCallback)) {
-				hook = beforeCallback();
-			}
+      var reference = references.trigger;
+      var target = references.popup;
+      var settings = {
+        placement: props.placement
+      };
 
-			if (is["a" /* default */].promise(hook)) {
-				hook.then(function () {
-					return callback();
-				}).catch(function (error) {});
-			} else if (is["a" /* default */].boolean(hook) && hook === false) {
-				return;
-			} else {
-				callback();
-			}
-		},
-		register: function register() {
-			if (is["a" /* default */].server || this.popup) {
-				return;
-			}
+      if (!reference || !target || !settings.placement) {
+        return;
+      }
 
-			var references = this.$refs,
-			    props = this.$props;
+      this.popup = new popup(reference, target, settings);
+      this.popup.target.style.zIndex = popup.nextZIndex();
+    },
+    reregister: function reregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
 
-			var reference = references.trigger;
-			var target = references.popup;
-			var settings = {
-				placement: props.placement
-			};
+      this.popup.update();
+    },
+    unregister: function unregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
 
-			if (!reference || !target || !settings.placement) {
-				return;
-			}
+      this.popup.destroy();
+      this.popup = null;
+    },
+    handleMouseenter: function handleMouseenter(e) {
+      var _this2 = this;
 
-			this.popup = new popup(reference, target, settings);
-			this.popup.target.style.zIndex = popup.nextZIndex();
-		},
-		reregister: function reregister() {
-			if (is["a" /* default */].server || !this.popup) {
-				return;
-			}
-
-			this.popup.update();
-		},
-		unregister: function unregister() {
-			if (is["a" /* default */].server || !this.popup) {
-				return;
-			}
-
-			this.popup.destroy();
-			this.popup = null;
-		},
-		handleMouseenter: function handleMouseenter(e) {
-			var _this2 = this;
-
-			var props = this.$props;
+      var props = this.$props;
 
 
-			if (props.trigger === "hover") {
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(function () {
-					return _this2.toggle(true);
-				}, 100);
-			}
-		},
-		handleMouseleave: function handleMouseleave(e) {
-			var _this3 = this;
+      if (props.trigger === "hover") {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(function () {
+          return _this2.toggle(true);
+        }, 100);
+      }
+    },
+    handleMouseleave: function handleMouseleave(e) {
+      var _this3 = this;
 
-			var props = this.$props;
-
-
-			if (props.trigger === "hover") {
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(function () {
-					return _this3.toggle(false);
-				}, 100);
-			}
-		},
-		handleFocusin: function handleFocusin(e) {
-			var props = this.$props;
+      var props = this.$props;
 
 
-			if (props.trigger === "focus") {
-				this.toggle(true);
-			}
-		},
-		handleFocusout: function handleFocusout(e) {
-			var props = this.$props;
+      if (props.trigger === "hover") {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(function () {
+          return _this3.toggle(false);
+        }, 100);
+      }
+    },
+    handleFocusin: function handleFocusin(e) {
+      var props = this.$props;
 
 
-			if (props.trigger === "focus") {
-				this.toggle(false);
-			}
-		},
-		handleClick: function handleClick(e) {
-			var props = this.$props,
-			    state = this.state;
+      if (props.trigger === "focus") {
+        this.toggle(true);
+      }
+    },
+    handleFocusout: function handleFocusout(e) {
+      var props = this.$props;
 
 
-			if (props.trigger === "click") {
-				this.toggle(!state.visible);
-			}
-		},
-		handleOutClick: function handleOutClick(e) {
-			var props = this.$props;
+      if (props.trigger === "focus") {
+        this.toggle(false);
+      }
+    },
+    handleClick: function handleClick(e) {
+      var props = this.$props,
+          state = this.state;
 
 
-			if (props.trigger === "click") {
-				var references = this.$refs;
+      if (props.trigger === "click") {
+        this.toggle(!state.visible);
+      }
+    },
+    handleOutClick: function handleOutClick(e) {
+      var props = this.$props;
 
-				var element = getElementByEvent(e);
 
-				if (!element || !references.popup || references.popup === element || references.popup.contains(element)) {
-					return;
-				}
+      if (props.trigger === "click") {
+        var references = this.$refs;
 
-				this.toggle(false);
-			}
-		},
-		handleBeforeEnter: function handleBeforeEnter() {
-			var _this4 = this;
+        var element = getElementByEvent(e);
 
-			this.$nextTick(function () {
-				return _this4.register();
-			});
-			this.$emit("beforeOpen");
-		},
-		handleEnter: function handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter: function handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleBeforeLeave: function handleBeforeLeave() {
-			this.$emit("beforeClose");
-		},
-		handleLeave: function handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave: function handleAfterLeave() {
-			var _this5 = this;
+        if (!element || !references.popup || references.popup === element || references.popup.contains(element)) {
+          return;
+        }
 
-			this.$nextTick(function () {
-				return _this5.unregister();
-			});
-			this.$emit("afterClose");
-		}
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var handleMouseenter = this.handleMouseenter,
-		    handleMouseleave = this.handleMouseleave,
-		    handleFocusin = this.handleFocusin,
-		    handleFocusout = this.handleFocusout,
-		    handleClick = this.handleClick,
-		    handleOutClick = this.handleOutClick,
-		    handleBeforeEnter = this.handleBeforeEnter,
-		    handleEnter = this.handleEnter,
-		    handleAfterEnter = this.handleAfterEnter,
-		    handleBeforeLeave = this.handleBeforeLeave,
-		    handleLeave = this.handleLeave,
-		    handleAfterLeave = this.handleAfterLeave;
+        this.toggle(false);
+      }
+    },
+    handleBeforeEnter: function handleBeforeEnter() {
+      var _this4 = this;
 
-		// title
+      this.$nextTick(function () {
+        return _this4.register();
+      });
+      this.$emit("beforeOpen");
+    },
+    handleEnter: function handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter: function handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleBeforeLeave: function handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
+    handleLeave: function handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave: function handleAfterLeave() {
+      var _this5 = this;
 
-		var title = slots.title || props.title;
+      this.$nextTick(function () {
+        return _this5.unregister();
+      });
+      this.$emit("afterClose");
+    }
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleMouseenter = this.handleMouseenter,
+        handleMouseleave = this.handleMouseleave,
+        handleFocusin = this.handleFocusin,
+        handleFocusout = this.handleFocusout,
+        handleClick = this.handleClick,
+        handleOutClick = this.handleOutClick,
+        handleBeforeEnter = this.handleBeforeEnter,
+        handleEnter = this.handleEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
+        handleLeave = this.handleLeave,
+        handleAfterLeave = this.handleAfterLeave;
 
-		// content
-		var content = slots.content || props.content;
+    // title
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "popover");
-		var classes = {};
+    var title = slots.title || props.title;
 
-		classes.el = "" + classNamePrefix;
-		classes.elTrigger = classNamePrefix + "-trigger";
-		classes.elPopup = classNamePrefix + "-popup";
-		classes.elPopupHeader = classNamePrefix + "-popup-header";
-		classes.elPopupBody = classNamePrefix + "-popup-body";
-		classes.elPopupArrow = classNamePrefix + "-popup-arrow";
+    // content
+    var content = slots.content || props.content;
 
-		// style
-		var styles = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "popover");
+    var classes = {};
 
-		styles.elPopup = {};
+    classes.el = "" + classNamePrefix;
+    classes.elTrigger = classNamePrefix + "-trigger";
+    classes.elPopup = classNamePrefix + "-popup";
+    classes.elPopupHeader = classNamePrefix + "-popup-header";
+    classes.elPopupBody = classNamePrefix + "-popup-body";
+    classes.elPopupArrow = classNamePrefix + "-popup-arrow";
 
-		if (props.minWidth) {
-			styles.elPopup.minWidth = is["a" /* default */].string(props.minWidth) ? props.minWidth : props.minWidth + "px";
-		}
+    // style
+    var styles = {};
 
-		if (props.maxWidth) {
-			styles.elPopup.maxWidth = is["a" /* default */].string(props.maxWidth) ? props.maxWidth : props.maxWidth + "px";
-		}
+    styles.elPopup = {};
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[h(
-				"div",
-				{ ref: "trigger", "class": classes.elTrigger, on: {
-						"mouseenter": handleMouseenter,
-						"mouseleave": handleMouseleave,
-						"focusin": handleFocusin,
-						"focusout": handleFocusout,
-						"click": handleClick
-					},
-					directives: [{
-						name: "outclick",
-						value: handleOutClick
-					}]
-				},
-				[slots.default]
-			), h(
-				components_lazy_render,
-				{
-					attrs: { render: state.visible }
-				},
-				[h(
-					"transition",
-					{
-						attrs: { appear: true, name: props.animation },
-						on: {
-							"beforeEnter": handleBeforeEnter,
-							"enter": handleEnter,
-							"afterEnter": handleAfterEnter,
-							"beforeLeave": handleBeforeLeave,
-							"leave": handleLeave,
-							"afterLeave": handleAfterLeave
-						}
-					},
-					[h(
-						"div",
-						{ ref: "popup", directives: [{
-								name: "portal",
-								value: props.getPopupContainer
-							}, {
-								name: "show",
-								value: state.visible
-							}],
-							"class": classes.elPopup, style: styles.elPopup, on: {
-								"mouseenter": handleMouseenter,
-								"mouseleave": handleMouseleave
-							}
-						},
-						[title && h(
-							"div",
-							{ "class": classes.elPopupHeader },
-							[title]
-						), h(
-							"div",
-							{ "class": classes.elPopupBody },
-							[content]
-						), h("div", { "class": classes.elPopupArrow })]
-					)]
-				)]
-			)]
-		);
-	}
+    if (props.minWidth) {
+      styles.elPopup.minWidth = is["a" /* default */].string(props.minWidth) ? props.minWidth : props.minWidth + "px";
+    }
+
+    if (props.maxWidth) {
+      styles.elPopup.maxWidth = is["a" /* default */].string(props.maxWidth) ? props.maxWidth : props.maxWidth + "px";
+    }
+
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [h(
+        "div",
+        { ref: "trigger", "class": classes.elTrigger, on: {
+            "mouseenter": handleMouseenter,
+            "mouseleave": handleMouseleave,
+            "focusin": handleFocusin,
+            "focusout": handleFocusout,
+            "click": handleClick
+          },
+          directives: [{
+            name: "outclick",
+            value: handleOutClick
+          }]
+        },
+        [slots.default]
+      ), h(
+        components_lazy_render,
+        {
+          attrs: { render: state.visible }
+        },
+        [h(
+          "transition",
+          {
+            attrs: { appear: true, name: props.animation },
+            on: {
+              "beforeEnter": handleBeforeEnter,
+              "enter": handleEnter,
+              "afterEnter": handleAfterEnter,
+              "beforeLeave": handleBeforeLeave,
+              "leave": handleLeave,
+              "afterLeave": handleAfterLeave
+            }
+          },
+          [h(
+            "div",
+            { ref: "popup", directives: [{
+                name: "portal",
+                value: props.getPopupContainer
+              }, {
+                name: "show",
+                value: state.visible
+              }],
+              "class": classes.elPopup, style: styles.elPopup, on: {
+                "mouseenter": handleMouseenter,
+                "mouseleave": handleMouseleave
+              }
+            },
+            [title ? h(
+              "div",
+              { "class": classes.elPopupHeader },
+              [title]
+            ) : null, h(
+              "div",
+              { "class": classes.elPopupBody },
+              [content]
+            ), h("div", { "class": classes.elPopupArrow })]
+          )]
+        )]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var popover = (VuiPopover);
@@ -33679,7 +33596,7 @@ var VuiPopover = {
 
 
 popover.install = function (Vue) {
-	Vue.component(popover.name, popover);
+  Vue.component(popover.name, popover);
 };
 
 /* harmony default export */ var components_popover = (popover);
@@ -36689,14 +36606,16 @@ var VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is["a" /* default */].json(props.affixHeader)) {
-            props.affixHeader = {};
+          var affixHeader = props.affixHeader;
+
+          if (!is["a" /* default */].json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = h(
             components_affix,
             {
-              attrs: { offsetTop: props.affixHeader.offsetTop, offsetBottom: props.affixHeader.offsetBottom, getScrollContainer: props.affixHeader.getScrollContainer }
+              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
             },
             [header]
           );
@@ -36819,14 +36738,16 @@ var VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is["a" /* default */].json(props.affixHeader)) {
-            props.affixHeader = {};
+          var affixHeader = props.affixHeader;
+
+          if (!is["a" /* default */].json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = h(
             components_affix,
             {
-              attrs: { offsetTop: props.affixHeader.offsetTop, offsetBottom: props.affixHeader.offsetBottom, getScrollContainer: props.affixHeader.getScrollContainer }
+              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
             },
             [header]
           );
@@ -36955,14 +36876,16 @@ var VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is["a" /* default */].json(props.affixHeader)) {
-            props.affixHeader = {};
+          var affixHeader = props.affixHeader;
+
+          if (!is["a" /* default */].json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = h(
             components_affix,
             {
-              attrs: { offsetTop: props.affixHeader.offsetTop, offsetBottom: props.affixHeader.offsetBottom, getScrollContainer: props.affixHeader.getScrollContainer }
+              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
             },
             [header]
           );
@@ -38147,159 +38070,159 @@ watermark.install = function (Vue) {
 
 
 var mapIconTypes = {
-	info: "info",
-	warning: "warning",
-	success: "checkmark-circle",
-	error: "crossmark-circle"
+  info: "info",
+  warning: "warning",
+  success: "checkmark-circle",
+  error: "crossmark-circle"
 };
 
 var VuiAlert = {
-	name: "vui-alert",
-	components: {
-		VuiIcon: components_icon
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error"]).def("info"),
-		icon: prop_types["a" /* default */].string,
-		message: prop_types["a" /* default */].string,
-		description: prop_types["a" /* default */].string,
-		banner: prop_types["a" /* default */].bool.def(false),
-		showIcon: prop_types["a" /* default */].bool.def(false),
-		closable: prop_types["a" /* default */].bool.def(false),
-		closeText: prop_types["a" /* default */].string,
-		animation: prop_types["a" /* default */].string.def("vui-alert-slide-up")
-	},
-	data: function data() {
-		var state = {
-			closed: false,
-			closing: false
-		};
+  name: "vui-alert",
+  components: {
+    VuiIcon: components_icon
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error"]).def("info"),
+    icon: prop_types["a" /* default */].string,
+    message: prop_types["a" /* default */].string,
+    description: prop_types["a" /* default */].string,
+    showIcon: prop_types["a" /* default */].bool.def(false),
+    banner: prop_types["a" /* default */].bool.def(false),
+    closable: prop_types["a" /* default */].bool.def(false),
+    closeText: prop_types["a" /* default */].string,
+    animation: prop_types["a" /* default */].string.def("vui-alert-slide-up")
+  },
+  data: function data() {
+    var state = {
+      closing: false,
+      closed: false
+    };
 
-		return {
-			state: state
-		};
-	},
+    return {
+      state: state
+    };
+  },
 
-	methods: {
-		handleClose: function handleClose(e) {
-			e.preventDefault();
+  methods: {
+    handleClose: function handleClose(e) {
+      e.preventDefault();
 
-			var element = this.$el;
+      var element = this.$el;
 
-			element.style.height = element.offsetHeight + "px";
-			// 重复一次才能正确设置 height 高度，why？
-			element.style.height = element.offsetHeight + "px";
+      element.style.height = element.offsetHeight + "px";
+      // 重复一次才能正确设置 height 高度，why？
+      element.style.height = element.offsetHeight + "px";
 
-			this.state.closing = true;
-			this.$emit("close", e);
-		},
-		handleAfterLeave: function handleAfterLeave() {
-			this.state.closed = true;
-			this.state.closing = false;
-			this.$emit("afterClose");
-		}
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var handleClose = this.handleClose,
-		    handleAfterLeave = this.handleAfterLeave;
+      this.state.closing = true;
+      this.$emit("close", e);
+    },
+    handleAfterLeave: function handleAfterLeave() {
+      this.state.closing = false;
+      this.state.closed = true;
+      this.$emit("afterClose");
+    }
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleClose = this.handleClose,
+        handleAfterLeave = this.handleAfterLeave;
 
-		var message = slots.default || slots.message || props.message;
-		var description = slots.description || props.description;
-		var closeText = slots.closeText || props.closeText;
+    var message = slots.default || slots.message || props.message;
+    var description = slots.description || props.description;
+    var closeText = slots.closeText || props.closeText;
 
-		if (state.closed) {
-			return null;
-		} else {
-			var _classes$el;
+    if (state.closed) {
+      return null;
+    } else {
+      var _classes$el;
 
-			var icon = void 0;
+      var icon = void 0;
 
-			if (props.showIcon) {
-				if (slots.icon) {
-					icon = slots.icon;
-				} else if (props.icon) {
-					icon = h(components_icon, {
-						attrs: { type: prop.icon }
-					});
-				} else {
-					var iconType = mapIconTypes[props.type];
+      if (props.showIcon) {
+        if (slots.icon) {
+          icon = slots.icon;
+        } else if (props.icon) {
+          icon = h(components_icon, {
+            attrs: { type: props.icon }
+          });
+        } else {
+          var iconType = mapIconTypes[props.type];
 
-					if (!description) {
-						iconType = iconType + "-filled";
-					}
+          if (!description) {
+            iconType = iconType + "-filled";
+          }
 
-					icon = h(components_icon, {
-						attrs: { type: iconType }
-					});
-				}
-			}
+          icon = h(components_icon, {
+            attrs: { type: iconType }
+          });
+        }
+      }
 
-			var btnClose = void 0;
+      var btnClose = void 0;
 
-			if (props.closable) {
-				if (closeText) {
-					btnClose = closeText;
-				} else {
-					btnClose = h(components_icon, {
-						attrs: { type: "crossmark" }
-					});
-				}
-			}
+      if (props.closable) {
+        if (closeText) {
+          btnClose = closeText;
+        } else {
+          btnClose = h(components_icon, {
+            attrs: { type: "crossmark" }
+          });
+        }
+      }
 
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "alert");
-			var classes = {};
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "alert");
+      var classes = {};
 
-			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-banner", props.banner), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-with-description", description), defineProperty_default()(_classes$el, classNamePrefix + "-closable", btnClose), defineProperty_default()(_classes$el, classNamePrefix + "-closing", state.closing), _classes$el);
-			classes.elIcon = classNamePrefix + "-icon";
-			classes.elMessage = classNamePrefix + "-message";
-			classes.elDescription = classNamePrefix + "-description";
-			classes.elBtnClose = classNamePrefix + "-btn-close";
+      classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-banner", props.banner), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-with-description", description), defineProperty_default()(_classes$el, classNamePrefix + "-closable", btnClose), defineProperty_default()(_classes$el, classNamePrefix + "-closing", state.closing), _classes$el);
+      classes.elIcon = classNamePrefix + "-icon";
+      classes.elMessage = classNamePrefix + "-message";
+      classes.elDescription = classNamePrefix + "-description";
+      classes.elBtnClose = classNamePrefix + "-btn-close";
 
-			return h(
-				"transition",
-				{
-					attrs: { name: props.animation },
-					on: {
-						"afterLeave": handleAfterLeave
-					}
-				},
-				[h(
-					"div",
-					{
-						directives: [{
-							name: "show",
-							value: !state.closing
-						}],
-						"class": classes.el },
-					[icon && h(
-						"div",
-						{ "class": classes.elIcon },
-						[icon]
-					), h(
-						"div",
-						{ "class": classes.elMessage },
-						[message]
-					), description && h(
-						"div",
-						{ "class": classes.elDescription },
-						[description]
-					), btnClose && h(
-						"div",
-						{ "class": classes.elBtnClose, on: {
-								"click": handleClose
-							}
-						},
-						[btnClose]
-					)]
-				)]
-			);
-		}
-	}
+      return h(
+        "transition",
+        {
+          attrs: { name: props.animation },
+          on: {
+            "afterLeave": handleAfterLeave
+          }
+        },
+        [h(
+          "div",
+          {
+            directives: [{
+              name: "show",
+              value: !state.closing
+            }],
+            "class": classes.el },
+          [icon && h(
+            "div",
+            { "class": classes.elIcon },
+            [icon]
+          ), h(
+            "div",
+            { "class": classes.elMessage },
+            [message]
+          ), description && h(
+            "div",
+            { "class": classes.elDescription },
+            [description]
+          ), btnClose && h(
+            "div",
+            { "class": classes.elBtnClose, on: {
+                "click": handleClose
+              }
+            },
+            [btnClose]
+          )]
+        )]
+      );
+    }
+  }
 };
 
 /* harmony default export */ var src_alert = (VuiAlert);
@@ -38307,7 +38230,7 @@ var VuiAlert = {
 
 
 src_alert.install = function (Vue) {
-	Vue.component(src_alert.name, src_alert);
+  Vue.component(src_alert.name, src_alert);
 };
 
 /* harmony default export */ var components_alert = (src_alert);
@@ -38433,7 +38356,6 @@ function addScrollbarEffect(container) {
 
 
 
-
 var VuiDrawer = {
   name: "vui-drawer",
   provide: function provide() {
@@ -38473,10 +38395,11 @@ var VuiDrawer = {
     okButtonProps: prop_types["a" /* default */].object,
     okText: prop_types["a" /* default */].string,
     okAsync: prop_types["a" /* default */].bool.def(false),
+    autofocusButton: prop_types["a" /* default */].oneOf(["ok", "cancel"]),
     closable: prop_types["a" /* default */].bool.def(true),
     placement: prop_types["a" /* default */].oneOf(["top", "bottom", "left", "right"]).def("right"),
-    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(500),
-    height: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(500),
+    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(480),
+    height: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(480),
     className: prop_types["a" /* default */].string,
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
@@ -38485,6 +38408,7 @@ var VuiDrawer = {
     backdropClassName: prop_types["a" /* default */].string,
     backdropStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     clickBackdropToClose: prop_types["a" /* default */].bool.def(true),
+    destroyOnClose: prop_types["a" /* default */].bool.def(false),
     animations: prop_types["a" /* default */].array.def(["vui-drawer-backdrop-fade", "vui-drawer-slide"]),
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
@@ -38495,9 +38419,10 @@ var VuiDrawer = {
 
     var state = {
       visible: props.visible,
-      zIndex: popup.nextZIndex(),
+      closed: props.visible ? false : true,
       cancelLoading: false,
-      okLoading: false
+      okLoading: false,
+      zIndex: popup.nextZIndex()
     };
 
     return {
@@ -38539,7 +38464,7 @@ var VuiDrawer = {
 
       var drawer = references.drawer;
       var placement = props.placement;
-      var distance = parseInt(getStyle_getStyle(drawer, placement)) + 200;
+      var distance = parseInt(getStyle_getStyle(drawer, placement)) + 240;
 
       setStyle_setStyles(drawer, placement, distance + "px");
 
@@ -38554,7 +38479,7 @@ var VuiDrawer = {
 
       var drawer = references.drawer;
       var placement = props.placement;
-      var distance = parseInt(getStyle_getStyle(drawer, placement)) - 200;
+      var distance = parseInt(getStyle_getStyle(drawer, placement)) - 240;
 
       setStyle_setStyles(drawer, placement, distance + "px");
 
@@ -38562,9 +38487,18 @@ var VuiDrawer = {
         vuiDrawer.pull();
       }
     },
+    handleBackdropClick: function handleBackdropClick() {
+      var props = this.$props;
+
+
+      if (!props.backdrop || !props.clickBackdropToClose) {
+        return;
+      }
+
+      this.handleCancel();
+    },
     handleWrapperClick: function handleWrapperClick(e) {
-      var references = this.$refs,
-          props = this.$props;
+      var references = this.$refs;
 
       var target = getElementByEvent(e);
 
@@ -38572,11 +38506,7 @@ var VuiDrawer = {
         return;
       }
 
-      if (!props.backdrop || !props.clickBackdropToClose) {
-        return;
-      }
-
-      this.handleCancel();
+      this.handleBackdropClick();
     },
     handleCancel: function handleCancel() {
       var _this = this;
@@ -38626,31 +38556,40 @@ var VuiDrawer = {
         this.$emit("ok");
       }
     },
+    handleBeforeEnter: function handleBeforeEnter() {
+      this.state.closed = false;
+      this.$emit("beforeOpen");
+    },
     handleEnter: function handleEnter() {
-      this.$emit("open");
-
       if (this.vuiDrawer) {
         this.vuiDrawer.push();
       } else {
         this.scrollbarEffect = addScrollbarEffect();
       }
+
+      this.$emit("open");
     },
     handleAfterEnter: function handleAfterEnter() {
       this.$emit("afterOpen");
     },
+    handleBeforeLeave: function handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
     handleLeave: function handleLeave() {
-      this.$emit("close");
-
       if (this.vuiDrawer) {
         this.vuiDrawer.pull();
       }
+
+      this.$emit("close");
     },
     handleAfterLeave: function handleAfterLeave() {
-      this.$emit("afterClose");
+      this.state.closed = true;
 
       if (this.scrollbarEffect) {
         this.scrollbarEffect.remove();
       }
+
+      this.$emit("afterClose");
     }
   },
   beforeDestroy: function beforeDestroy() {
@@ -38666,11 +38605,14 @@ var VuiDrawer = {
         props = this.$props,
         state = this.state,
         translate = this.t;
-    var handleWrapperClick = this.handleWrapperClick,
+    var handleBackdropClick = this.handleBackdropClick,
+        handleWrapperClick = this.handleWrapperClick,
         handleCancel = this.handleCancel,
         handleOk = this.handleOk,
+        handleBeforeEnter = this.handleBeforeEnter,
         handleEnter = this.handleEnter,
         handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
         handleLeave = this.handleLeave,
         handleAfterLeave = this.handleAfterLeave;
 
@@ -38717,7 +38659,7 @@ var VuiDrawer = {
 
       if (props.clickBackdropToClose) {
         backdropProps.on = {
-          click: handleCancel
+          click: handleBackdropClick
         };
       }
 
@@ -38753,7 +38695,7 @@ var VuiDrawer = {
     body = h(
       "div",
       { "class": classes.elBody, style: props.bodyStyle },
-      [slots.default]
+      [props.destroyOnClose && state.closed ? null : slots.default]
     );
 
     var footer = void 0;
@@ -38771,7 +38713,8 @@ var VuiDrawer = {
         if (props.showCancelButton) {
           var cancelButtonProps = {
             props: {
-              loading: state.cancelLoading
+              loading: state.cancelLoading,
+              autofocus: props.autofocusButton === "cancel"
             },
             on: {
               click: handleCancel
@@ -38790,7 +38733,8 @@ var VuiDrawer = {
           var okButtonProps = {
             props: {
               type: "primary",
-              loading: state.okLoading
+              loading: state.okLoading,
+              autofocus: props.autofocusButton === "ok"
             },
             on: {
               click: handleOk
@@ -38848,8 +38792,10 @@ var VuiDrawer = {
           {
             attrs: { appear: true, name: props.animations[1] },
             on: {
+              "beforeEnter": handleBeforeEnter,
               "enter": handleEnter,
               "afterEnter": handleAfterEnter,
+              "beforeLeave": handleBeforeLeave,
               "leave": handleLeave,
               "afterLeave": handleAfterLeave
             }
@@ -38914,7 +38860,7 @@ var VuiMessage = {
   },
   model: {
     prop: "visible",
-    event: "change"
+    event: "input"
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
@@ -38924,10 +38870,10 @@ var VuiMessage = {
     background: prop_types["a" /* default */].bool.def(false),
     closable: prop_types["a" /* default */].bool.def(false),
     closeText: prop_types["a" /* default */].string,
-    top: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(20),
+    top: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(24),
     visible: prop_types["a" /* default */].bool.def(false),
     animation: prop_types["a" /* default */].string.def("vui-message-fade"),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
   },
@@ -38935,7 +38881,8 @@ var VuiMessage = {
     var props = this.$props;
 
     var state = {
-      visible: props.visible
+      visible: props.visible,
+      zIndex: popup.nextZIndex()
     };
 
     return {
@@ -38950,25 +38897,40 @@ var VuiMessage = {
       }
 
       this.state.visible = value;
+
+      if (!value) {
+        return;
+      }
+
+      this.state.zIndex = popup.nextZIndex();
     }
   },
   methods: {
+    toggle: function toggle(visible) {
+      this.state.visible = visible;
+      this.$emit("input", visible);
+      this.$emit("change", visible);
+    },
     open: function open() {
-      this.state.visible = true;
-      this.$emit("change", this.state.visible);
+      this.toggle(true);
     },
     close: function close() {
-      this.state.visible = false;
-      this.$emit("change", this.state.visible);
+      this.toggle(false);
     },
-    handleBtnCloseClick: function handleBtnCloseClick() {
+    handleClose: function handleClose() {
       this.close();
+    },
+    handleBeforeEnter: function handleBeforeEnter() {
+      this.$emit("beforeOpen");
     },
     handleEnter: function handleEnter() {
       this.$emit("open");
     },
     handleAfterEnter: function handleAfterEnter() {
       this.$emit("afterOpen");
+    },
+    handleBeforeLeave: function handleBeforeLeave() {
+      this.$emit("beforeClose");
     },
     handleLeave: function handleLeave() {
       this.$emit("close");
@@ -38983,9 +38945,11 @@ var VuiMessage = {
     var slots = this.$slots,
         props = this.$props,
         state = this.state;
-    var handleBtnCloseClick = this.handleBtnCloseClick,
+    var handleClose = this.handleClose,
+        handleBeforeEnter = this.handleBeforeEnter,
         handleEnter = this.handleEnter,
         handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
         handleLeave = this.handleLeave,
         handleAfterLeave = this.handleAfterLeave;
 
@@ -39037,7 +39001,7 @@ var VuiMessage = {
 
     styles.el = {
       top: is["a" /* default */].string(props.top) ? props.top : props.top + "px",
-      zIndex: state.visible ? popup.nextZIndex() : popup.zIndex
+      zIndex: state.zIndex
     };
 
     // render
@@ -39061,7 +39025,7 @@ var VuiMessage = {
       children.push(h(
         "div",
         { "class": classes.elBtnClose, on: {
-            "click": handleBtnCloseClick
+            "click": handleClose
           }
         },
         [btnClose]
@@ -39072,13 +39036,14 @@ var VuiMessage = {
       "transition",
       {
         attrs: {
-          name: props.animation,
-
-          appear: true
+          appear: true,
+          name: props.animation
         },
         on: {
+          "beforeEnter": handleBeforeEnter,
           "enter": handleEnter,
           "afterEnter": handleAfterEnter,
+          "beforeLeave": handleBeforeLeave,
           "leave": handleLeave,
           "afterLeave": handleAfterLeave
         }
@@ -39135,7 +39100,7 @@ function createChainedFunction() {
 * 默认配置
 */
 var message_defaults = {
-  top: 20,
+  top: 24,
   duration: 3,
   getPopupContainer: function getPopupContainer() {
     return document.body;
@@ -39333,7 +39298,7 @@ var message_createMessageInstance = function createMessageInstance(options) {
 * 对外提供 open 接口
 * @param {String/Object} options
 */
-src_message.open = function (options) {
+src_message.open = function (options, type) {
   if (is["a" /* default */].server) {
     return;
   }
@@ -39346,6 +39311,23 @@ src_message.open = function (options) {
     options = {
       content: options
     };
+  }
+
+  if (type === "info") {
+    options.type = type;
+    options.icon = "info-filled";
+  } else if (type === "warning") {
+    options.type = type;
+    options.icon = "warning-filled";
+  } else if (type === "success") {
+    options.type = type;
+    options.icon = "checkmark-circle-filled";
+  } else if (type === "error") {
+    options.type = type;
+    options.icon = "crossmark-circle-filled";
+  } else if (type === "loading") {
+    options.type = type;
+    options.icon = "loading-filled";
   }
 
   options = extends_default()({}, message_defaults, options);
@@ -39362,30 +39344,7 @@ src_message.open = function (options) {
 * @param {String/Object} options 
 */
 src_message.info = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = extends_default()({
-    type: "info",
-    icon: "info-filled"
-  }, message_defaults, options);
-
-  var instance = message_createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+  return src_message.open(options, "info");
 };
 
 /**
@@ -39393,30 +39352,7 @@ src_message.info = function (options) {
 * @param {String/Object} options 
 */
 src_message.warning = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = extends_default()({
-    type: "warning",
-    icon: "warning-filled"
-  }, message_defaults, options);
-
-  var instance = message_createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+  return src_message.open(options, "warning");
 };
 
 /**
@@ -39424,30 +39360,7 @@ src_message.warning = function (options) {
 * @param {String/Object} options 
 */
 src_message.success = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = extends_default()({
-    type: "success",
-    icon: "checkmark-circle-filled"
-  }, message_defaults, options);
-
-  var instance = message_createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+  return src_message.open(options, "success");
 };
 
 /**
@@ -39455,30 +39368,7 @@ src_message.success = function (options) {
 * @param {String/Object} options 
 */
 src_message.error = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = extends_default()({
-    type: "error",
-    icon: "crossmark-circle-filled"
-  }, message_defaults, options);
-
-  var instance = message_createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+  return src_message.open(options, "error");
 };
 
 /**
@@ -39486,30 +39376,7 @@ src_message.error = function (options) {
 * @param {String/Object} options 
 */
 src_message.loading = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = extends_default()({
-    type: "loading",
-    icon: "loading"
-  }, message_defaults, options);
-
-  var instance = message_createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+  return src_message.open(options, "loading");
 };
 
 /**
@@ -39522,6 +39389,8 @@ src_message.install = function (Vue) {
 
 /* harmony default export */ var components_message = (src_message);
 // CONCATENATED MODULE: ./src/components/modal/src/modal.js
+
+
 
 
 
@@ -39569,18 +39438,19 @@ var VuiModal = {
     autofocusButton: prop_types["a" /* default */].oneOf(["ok", "cancel"]),
     closable: prop_types["a" /* default */].bool.def(true),
     top: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(100),
-    centered: prop_types["a" /* default */].bool.def(false),
-    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(500),
+    centered: prop_types["a" /* default */].bool.def(true),
+    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(480),
     className: prop_types["a" /* default */].string,
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     backdrop: prop_types["a" /* default */].bool.def(true),
     backdropClassName: prop_types["a" /* default */].string,
+    backdropStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     clickBackdropToClose: prop_types["a" /* default */].bool.def(true),
     destroyOnClose: prop_types["a" /* default */].bool.def(false),
     animations: prop_types["a" /* default */].array.def(["vui-modal-backdrop-fade", "vui-modal-zoom"]),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
   },
@@ -39668,8 +39538,8 @@ var VuiModal = {
           _this.close();
         });
       } else {
-        this.$emit("cancel");
         this.close();
+        this.$emit("cancel");
       }
     },
     handleOk: function handleOk() {
@@ -39692,8 +39562,8 @@ var VuiModal = {
           _this2.close();
         });
       } else {
-        this.$emit("ok");
         this.close();
+        this.$emit("ok");
       }
     },
     handleBeforeEnter: function handleBeforeEnter() {
@@ -39715,7 +39585,11 @@ var VuiModal = {
     },
     handleAfterLeave: function handleAfterLeave() {
       this.state.closed = true;
-      this.scrollbarEffect && this.scrollbarEffect.remove();
+
+      if (this.scrollbarEffect) {
+        this.scrollbarEffect.remove();
+      }
+
       this.$emit("afterClose");
     }
   },
@@ -39782,19 +39656,27 @@ var VuiModal = {
     var children = [];
 
     if (props.backdrop) {
+      var backdropProps = {
+        class: classes.elBackdrop,
+        style: [styles.elBackdrop, is["a" /* default */].string(props.backdropStyle) ? styleToObject(props.backdropStyle) : props.backdropStyle]
+      };
+
+      if (props.clickBackdropToClose) {
+        backdropProps.on = {
+          click: handleBackdropClick
+        };
+      }
+
       children.push(h(
         "transition",
         {
           attrs: { appear: true, name: props.animations[0] }
         },
-        [h("div", { ref: "backdrop", directives: [{
+        [h("div", babel_helper_vue_jsx_merge_props_default()([{ ref: "backdrop", directives: [{
             name: "show",
             value: state.visible
-          }],
-          "class": classes.elBackdrop, style: styles.elBackdrop, on: {
-            "click": handleBackdropClick
-          }
-        })]
+          }]
+        }, backdropProps]))]
       ));
     }
 
@@ -40010,7 +39892,7 @@ var modal_createModalInstance = function createModalInstance(options) {
         this.visible = false;
       },
       update: function update(options) {
-        if (!is["a" /* default */].plainObject(options)) {
+        if (!is["a" /* default */].json(options)) {
           return;
         }
 
@@ -40157,31 +40039,56 @@ var modal_createModalInstance = function createModalInstance(options) {
 };
 
 /**
-* 对外提供 info 接口
-* @param {Object} options 
+* 对外提供 open 接口
+* @param {String/Function/Object} options 
 */
-modal.info = function (options) {
-  if (is["a" /* default */].server) {
+modal.open = function (options, type) {
+  if (is["a" /* default */].server || !is["a" /* default */].json(options)) {
     return;
   }
 
-  if (!is["a" /* default */].plainObject(options)) {
-    return;
+  options = extends_default()({}, modal_defaults, options);
+
+  if (type === "info") {
+    options.type = type;
+    options.icon = "info";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  } else if (type === "warning") {
+    options.type = type;
+    options.icon = "warning";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  } else if (type === "success") {
+    options.type = type;
+    options.icon = "checkmark-circle";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  } else if (type === "error") {
+    options.type = type;
+    options.icon = "crossmark-circle";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  } else if (type === "confirm") {
+    options.type = type;
+    options.icon = "help";
+    options.showCancelButton = true;
+    options.showOkButton = true;
   }
-
-  options = extends_default()({
-    type: "info",
-    icon: "info"
-  }, modal_defaults, options);
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
 
   var instance = modal_createModalInstance(options);
 
   instance.open();
 
   return instance;
+};
+
+/**
+* 对外提供 info 接口
+* @param {Object} options 
+*/
+modal.info = function (options) {
+  return modal.open(options, "info");
 };
 
 /**
@@ -40189,27 +40096,7 @@ modal.info = function (options) {
 * @param {Object} options 
 */
 modal.warning = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].plainObject(options)) {
-    return;
-  }
-
-  options = extends_default()({
-    type: "warning",
-    icon: "warning"
-  }, modal_defaults, options);
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  var instance = modal_createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return modal.open(options, "warning");
 };
 
 /**
@@ -40217,27 +40104,7 @@ modal.warning = function (options) {
 * @param {Object} options 
 */
 modal.success = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].plainObject(options)) {
-    return;
-  }
-
-  options = extends_default()({
-    type: "success",
-    icon: "checkmark-circle"
-  }, modal_defaults, options);
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  var instance = modal_createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return modal.open(options, "success");
 };
 
 /**
@@ -40245,27 +40112,7 @@ modal.success = function (options) {
 * @param {Object} options 
 */
 modal.error = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].plainObject(options)) {
-    return;
-  }
-
-  options = extends_default()({
-    type: "error",
-    icon: "crossmark-circle"
-  }, modal_defaults, options);
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  var instance = modal_createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return modal.open(options, "error");
 };
 
 /**
@@ -40273,27 +40120,7 @@ modal.error = function (options) {
 * @param {Object} options 
 */
 modal.confirm = function (options) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!is["a" /* default */].plainObject(options)) {
-    return;
-  }
-
-  options = extends_default()({
-    type: "confirm",
-    icon: "help"
-  }, modal_defaults, options);
-
-  options.showCancelButton = true;
-  options.showOkButton = true;
-
-  var instance = modal_createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return modal.open(options, "confirm");
 };
 
 /**
@@ -40313,292 +40140,247 @@ modal.install = function (Vue) {
 
 
 
+
 var VuiNotice = {
-	name: "vui-notice",
+  name: "vui-notice",
+  components: {
+    VuiIcon: components_icon
+  },
+  directives: {
+    Portal: directives_portal
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error"]).def("info"),
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
+    description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
+    icon: prop_types["a" /* default */].string,
+    closable: prop_types["a" /* default */].bool.def(true),
+    closeText: prop_types["a" /* default */].string,
+    placement: prop_types["a" /* default */].oneOf(["top-left", "top-right", "bottom-left", "bottom-right"]).def("top-right"),
+    top: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(24),
+    bottom: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(24),
+    visible: prop_types["a" /* default */].bool.def(false),
+    animation: prop_types["a" /* default */].string.def("vui-notice-fade"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    })
+  },
+  data: function data() {
+    var props = this.$props;
 
-	components: {
-		VuiIcon: components_icon
-	},
+    var state = {
+      visible: props.visible,
+      zIndex: popup.nextZIndex()
+    };
 
-	directives: {
-		Portal: directives_portal
-	},
+    return {
+      state: state
+    };
+  },
 
-	model: {
-		prop: "visible",
-		event: "change"
-	},
+  watch: {
+    visible: function visible(value) {
+      if (this.state.visible === value) {
+        return;
+      }
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "info",
-			validator: function validator(value) {
-				return ["info", "warning", "success", "error"].indexOf(value) > -1;
-			}
-		},
-		title: {
-			type: [String, Function, Object],
-			default: undefined
-		},
-		description: {
-			type: [String, Function, Object],
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		closable: {
-			type: Boolean,
-			default: true
-		},
-		closeText: {
-			type: String,
-			default: undefined
-		},
-		placement: {
-			type: String,
-			default: "top-right",
-			validator: function validator(value) {
-				return ["top-left", "top-right", "bottom-left", "bottom-right"].indexOf(value) > -1;
-			}
-		},
-		top: {
-			type: Number,
-			default: 20
-		},
-		bottom: {
-			type: Number,
-			default: 20
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		animation: {
-			type: String,
-			default: "vui-notice-fade"
-		},
-		getPopupContainer: {
-			type: [Function, Boolean],
-			default: function _default() {
-				return document.body;
-			}
-		}
-	},
+      this.state.visible = value;
 
-	data: function data() {
-		var props = this.$props;
+      if (!value) {
+        return;
+      }
 
+      this.state.zIndex = popup.nextZIndex();
+    }
+  },
+  methods: {
+    toggle: function toggle(visible) {
+      this.state.visible = visible;
+      this.$emit("input", visible);
+      this.$emit("change", visible);
+    },
+    open: function open() {
+      this.toggle(true);
+    },
+    close: function close() {
+      this.toggle(false);
+    },
+    handleClose: function handleClose() {
+      this.close();
+    },
+    handleBeforeEnter: function handleBeforeEnter() {
+      this.$emit("beforeOpen");
+    },
+    handleEnter: function handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter: function handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleBeforeLeave: function handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
+    handleLeave: function handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave: function handleAfterLeave() {
+      this.$emit("afterClose");
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
 
-		return {
-			state: {
-				visible: props.visible,
-				zIndex: popup.nextZIndex(),
-				cancelLoading: false,
-				okLoading: false
-			}
-		};
-	},
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleClose = this.handleClose,
+        handleBeforeEnter = this.handleBeforeEnter,
+        handleEnter = this.handleEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
+        handleLeave = this.handleLeave,
+        handleAfterLeave = this.handleAfterLeave;
 
+    // icon
 
-	computed: {
-		visibility: function visibility() {
-			return this.state.visible;
-		}
-	},
+    var icon = void 0;
 
-	watch: {
-		visible: function visible(value) {
-			if (this.state.visible === value) {
-				return;
-			}
+    if (slots.icon) {
+      icon = slots.icon;
+    } else if (props.icon) {
+      icon = h(components_icon, {
+        attrs: { type: props.icon }
+      });
+    }
 
-			this.state.visible = value;
-		},
-		visibility: function visibility(value) {
-			if (!value) {
-				return;
-			}
+    // title
+    var title = void 0;
 
-			this.state.zIndex = popup.nextZIndex();
-		}
-	},
+    if (slots.default) {
+      title = slots.default;
+    } else if (props.title) {
+      title = is["a" /* default */].function(props.title) ? props.title(h) : props.title;
+    }
 
-	methods: {
-		open: function open() {
-			this.state.visible = true;
-			this.$emit("change", true);
-		},
-		close: function close() {
-			this.state.visible = false;
-			this.$emit("change", false);
-		},
-		handleBtnCloseClick: function handleBtnCloseClick() {
-			this.close();
-		},
-		handleEnter: function handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter: function handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleLeave: function handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave: function handleAfterLeave() {
-			this.$emit("afterClose");
-		}
-	},
+    // description
+    var description = void 0;
 
-	render: function render(h) {
-		var _classes$el;
+    if (slots.description) {
+      description = slots.description;
+    } else if (props.description) {
+      description = is["a" /* default */].function(props.description) ? props.description(h) : props.description;
+    }
 
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var handleBtnCloseClick = this.handleBtnCloseClick,
-		    handleEnter = this.handleEnter,
-		    handleAfterEnter = this.handleAfterEnter,
-		    handleLeave = this.handleLeave,
-		    handleAfterLeave = this.handleAfterLeave;
+    // btnClose
+    var btnClose = void 0;
 
-		var portal = props.getPopupContainer();
+    if (props.closable) {
+      if (props.closeText) {
+        btnClose = props.closeText;
+      } else {
+        btnClose = h(components_icon, {
+          attrs: { type: "crossmark" }
+        });
+      }
+    }
 
-		// icon
-		var icon = void 0;
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "notice");
+    var classes = {};
 
-		if (slots.icon) {
-			icon = slots.icon;
-		} else if (props.icon) {
-			icon = h(components_icon, {
-				attrs: { type: props.icon }
-			});
-		}
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-with-description", description), defineProperty_default()(_classes$el, classNamePrefix + "-closable", props.closable), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.placement, props.placement), _classes$el);
+    classes.elIcon = classNamePrefix + "-icon";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elDescription = classNamePrefix + "-description";
+    classes.elBtnClose = classNamePrefix + "-btn-close";
 
-		// title
-		var title = void 0;
+    // style
+    var styles = {};
 
-		if (slots.default) {
-			title = slots.default;
-		} else if (props.title) {
-			title = is["a" /* default */].function(props.title) ? props.title(h) : props.title;
-		}
+    styles.el = {
+      zIndex: state.zIndex
+    };
 
-		// description
-		var description = void 0;
+    if (/^(top)(-left|-right)?$/g.test(props.placement)) {
+      styles.el.top = is["a" /* default */].string(props.top) ? props.top : props.top + "px";
+    } else if (/^(bottom)(-left|-right)?$/g.test(props.placement)) {
+      styles.el.bottom = is["a" /* default */].string(props.bottom) ? props.bottom : props.bottom + "px";
+    }
 
-		if (slots.description) {
-			description = slots.description;
-		} else if (props.description) {
-			description = is["a" /* default */].function(props.description) ? props.description(h) : props.description;
-		}
+    // render
+    var children = [];
 
-		// btnClose
-		var btnClose = void 0;
+    if (icon) {
+      children.push(h(
+        "div",
+        { "class": classes.elIcon },
+        [icon]
+      ));
+    }
 
-		if (props.closable) {
-			if (props.closeText) {
-				btnClose = props.closeText;
-			} else {
-				btnClose = h(components_icon, {
-					attrs: { type: "crossmark" }
-				});
-			}
-		}
+    if (title) {
+      children.push(h(
+        "div",
+        { "class": classes.elTitle },
+        [title]
+      ));
+    }
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "notice");
-		var classes = {};
+    if (description) {
+      children.push(h(
+        "div",
+        { "class": classes.elDescription },
+        [description]
+      ));
+    }
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type), defineProperty_default()(_classes$el, classNamePrefix + "-with-icon", icon), defineProperty_default()(_classes$el, classNamePrefix + "-with-description", description), defineProperty_default()(_classes$el, classNamePrefix + "-closable", props.closable), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.placement, props.placement), _classes$el);
-		classes.elIcon = classNamePrefix + "-icon";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elDescription = classNamePrefix + "-description";
-		classes.elBtnClose = classNamePrefix + "-btn-close";
+    if (props.closable) {
+      children.push(h(
+        "div",
+        { "class": classes.elBtnClose, on: {
+            "click": handleClose
+          }
+        },
+        [btnClose]
+      ));
+    }
 
-		// style
-		var styles = {};
-
-		styles.el = {
-			zIndex: state.zIndex
-		};
-
-		if (/^(top)(-left|-right)?$/g.test(props.placement)) {
-			styles.el.top = props.top + "px";
-		} else if (/^(bottom)(-left|-right)?$/g.test(props.placement)) {
-			styles.el.bottom = props.bottom + "px";
-		}
-
-		// render
-		var children = [];
-
-		if (icon) {
-			children.push(h(
-				"div",
-				{ "class": classes.elIcon },
-				[icon]
-			));
-		}
-
-		if (title) {
-			children.push(h(
-				"div",
-				{ "class": classes.elTitle },
-				[title]
-			));
-		}
-
-		if (description) {
-			children.push(h(
-				"div",
-				{ "class": classes.elDescription },
-				[description]
-			));
-		}
-
-		if (props.closable) {
-			children.push(h(
-				"div",
-				{ "class": classes.elBtnClose, on: {
-						"click": handleBtnCloseClick
-					}
-				},
-				[btnClose]
-			));
-		}
-
-		return h(
-			"transition",
-			{
-				attrs: { name: props.animation, appear: true },
-				on: {
-					"enter": handleEnter,
-					"afterEnter": handleAfterEnter,
-					"leave": handleLeave,
-					"afterLeave": handleAfterLeave
-				}
-			},
-			[h(
-				"div",
-				{
-					directives: [{
-						name: "portal",
-						value: portal
-					}, {
-						name: "show",
-						value: state.visible
-					}],
-					"class": classes.el, style: styles.el },
-				[children]
-			)]
-		);
-	}
+    return h(
+      "transition",
+      {
+        attrs: {
+          appear: true,
+          name: props.animation
+        },
+        on: {
+          "beforeEnter": handleBeforeEnter,
+          "enter": handleEnter,
+          "afterEnter": handleAfterEnter,
+          "beforeLeave": handleBeforeLeave,
+          "leave": handleLeave,
+          "afterLeave": handleAfterLeave
+        }
+      },
+      [h(
+        "div",
+        {
+          directives: [{
+            name: "portal",
+            value: props.getPopupContainer
+          }, {
+            name: "show",
+            value: state.visible
+          }],
+          "class": classes.el, style: styles.el },
+        [children]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var notice = (VuiNotice);
@@ -40614,57 +40396,57 @@ var VuiNotice = {
  */
 var placements = ["top-left", "top-right", "bottom-left", "bottom-right"];
 var notice_defaults = {
-	placement: placements[1],
-	top: 20,
-	bottom: 20,
-	duration: 5,
-	getPopupContainer: function getPopupContainer() {
-		return document.body;
-	}
+  placement: placements[1],
+  top: 24,
+  bottom: 24,
+  duration: 5,
+  getPopupContainer: function getPopupContainer() {
+    return document.body;
+  }
 };
 
 /**
 * 存储已打开的 Notice，用于更新 top 或 bottom 属性
 */
 var notice_storage = {
-	value: {},
-	addItem: function addItem(placement, item) {
-		var index = this.value[placement].indexOf(item);
+  value: {},
+  addItem: function addItem(placement, item) {
+    var index = this.value[placement].indexOf(item);
 
-		if (index > -1) {
-			return;
-		}
+    if (index > -1) {
+      return;
+    }
 
-		this.value[placement].push(item);
-	},
-	removeItem: function removeItem(placement, item) {
-		var index = this.value[placement].indexOf(item);
+    this.value[placement].push(item);
+  },
+  removeItem: function removeItem(placement, item) {
+    var index = this.value[placement].indexOf(item);
 
-		if (index === -1) {
-			return;
-		}
+    if (index === -1) {
+      return;
+    }
 
-		var length = this.value[placement].length;
-		var distance = item.$el.offsetHeight + 16;
+    var length = this.value[placement].length;
+    var distance = item.$el.offsetHeight + 16;
 
-		this.value[placement].splice(index, 1);
+    this.value[placement].splice(index, 1);
 
-		while (index < length - 1) {
-			var next = this.value[placement][index];
+    while (index < length - 1) {
+      var next = this.value[placement][index];
 
-			if (/^(top)(-left|-right)?$/g.test(placement)) {
-				next.top = next.top - distance;
-			} else if (/^(bottom)(-left|-right)?$/g.test(placement)) {
-				next.bottom = next.bottom - distance;
-			}
+      if (/^(top)(-left|-right)?$/g.test(placement)) {
+        next.top = next.top - distance;
+      } else if (/^(bottom)(-left|-right)?$/g.test(placement)) {
+        next.bottom = next.bottom - distance;
+      }
 
-			index++;
-		}
-	}
+      index++;
+    }
+  }
 };
 
 placements.forEach(function (placement) {
-	notice_storage.value[placement] = [];
+  return notice_storage.value[placement] = [];
 });
 
 /**
@@ -40672,193 +40454,205 @@ placements.forEach(function (placement) {
 * @param {Object} options 
 */
 var notice_createNoticeInstance = function createNoticeInstance(options) {
-	// 创建 Notice 挂载的 html 根节点
-	var container = options.getPopupContainer();
-	var el = document.createElement("div");
+  // 创建 Notice 挂载的 html 根节点
+  var container = options.getPopupContainer();
+  var el = document.createElement("div");
 
-	container.appendChild(el);
+  container.appendChild(el);
 
-	// 根据之前已打开的 Notice 计算当前 Notice 的垂直位置
-	var placement = options.placement;
+  // 根据之前已打开的 Notice 计算当前 Notice 的垂直位置
+  var placement = options.placement;
 
-	notice_storage.value[placement].forEach(function (prev) {
-		if (/^(top)(-left|-right)?$/g.test(placement)) {
-			options.top += prev.$el.offsetHeight + 16;
-		} else if (/^(bottom)(-left|-right)?$/g.test(placement)) {
-			options.bottom += prev.$el.offsetHeight + 16;
-		}
-	});
+  notice_storage.value[placement].forEach(function (prev) {
+    if (/^(top)(-left|-right)?$/g.test(placement)) {
+      options.top += prev.$el.offsetHeight + 16;
+    } else if (/^(bottom)(-left|-right)?$/g.test(placement)) {
+      options.bottom += prev.$el.offsetHeight + 16;
+    }
+  });
 
-	// 上述已创建 Notice 挂载的 html 根节点，这里对 getPopupContainer 选项进行重置，避免在组件实例化后又进行一次挂载
-	options.getPopupContainer = function () {
-		return false;
-	};
+  // 上述已创建 Notice 挂载的 html 根节点，这里对 getPopupContainer 选项进行重置，避免在组件实例化后又进行一次挂载
+  options.getPopupContainer = false;
 
-	// 创建 Notice 实例
-	return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a({
-		el: el,
-		components: {
-			VuiNotice: notice
-		},
-		data: function data() {
-			return extends_default()({}, options, {
-				visible: false
-			});
-		},
+  // 创建 Notice 实例
+  return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a({
+    el: el,
+    components: {
+      VuiNotice: notice
+    },
+    data: function data() {
+      return extends_default()({}, options, {
+        visible: false
+      });
+    },
 
-		methods: {
-			setTimeout: function (_setTimeout) {
-				function setTimeout() {
-					return _setTimeout.apply(this, arguments);
-				}
+    methods: {
+      setTimeout: function (_setTimeout) {
+        function setTimeout() {
+          return _setTimeout.apply(this, arguments);
+        }
 
-				setTimeout.toString = function () {
-					return _setTimeout.toString();
-				};
+        setTimeout.toString = function () {
+          return _setTimeout.toString();
+        };
 
-				return setTimeout;
-			}(function () {
-				if (this.duration <= 0) {
-					return;
-				}
+        return setTimeout;
+      }(function () {
+        if (this.duration <= 0) {
+          return;
+        }
 
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(this.close, this.duration * 1000);
-			}),
-			clearTimeout: function (_clearTimeout) {
-				function clearTimeout() {
-					return _clearTimeout.apply(this, arguments);
-				}
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(this.close, this.duration * 1000);
+      }),
+      clearTimeout: function (_clearTimeout) {
+        function clearTimeout() {
+          return _clearTimeout.apply(this, arguments);
+        }
 
-				clearTimeout.toString = function () {
-					return _clearTimeout.toString();
-				};
+        clearTimeout.toString = function () {
+          return _clearTimeout.toString();
+        };
 
-				return clearTimeout;
-			}(function () {
-				if (!this.timeout) {
-					return;
-				}
+        return clearTimeout;
+      }(function () {
+        if (!this.timeout) {
+          return;
+        }
 
-				clearTimeout(this.timeout);
-				this.timeout = null;
-			}),
-			open: function open() {
-				this.visible = true;
-				notice_storage.addItem(this.placement, this);
-			},
-			close: function close() {
-				this.visible = false;
-				notice_storage.removeItem(this.placement, this);
-			},
-			update: function update(options) {
-				if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-					return;
-				}
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }),
+      open: function open() {
+        this.visible = true;
+        notice_storage.addItem(this.placement, this);
+      },
+      close: function close() {
+        this.visible = false;
+        notice_storage.removeItem(this.placement, this);
+      },
+      update: function update(options) {
+        if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+          return;
+        }
 
-				if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-					options = {
-						title: options
-					};
-				}
+        if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+          options = {
+            title: options
+          };
+        }
 
-				for (var key in options) {
-					this[key] = options[key];
-				}
-			},
-			handleOpen: function handleOpen() {
-				notice_storage.addItem(this.placement, this);
-			},
-			handleAfterOpen: function handleAfterOpen() {
-				this.setTimeout();
-			},
-			handleClose: function handleClose() {
-				notice_storage.removeItem(this.placement, this);
-			},
-			handleAfterClose: function handleAfterClose() {
-				this.clearTimeout();
-				this.$destroy();
-				this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
-			}
-		},
-		render: function render(h) {
-			var type = this.type,
-			    title = this.title,
-			    description = this.description,
-			    icon = this.icon,
-			    closable = this.closable,
-			    closeText = this.closeText,
-			    placement = this.placement,
-			    top = this.top,
-			    bottom = this.bottom,
-			    visible = this.visible,
-			    animation = this.animation,
-			    getPopupContainer = this.getPopupContainer;
+        for (var key in options) {
+          this[key] = options[key];
+        }
+      },
+      handleOpen: function handleOpen() {
+        notice_storage.addItem(this.placement, this);
+      },
+      handleAfterOpen: function handleAfterOpen() {
+        this.setTimeout();
+      },
+      handleClose: function handleClose() {
+        notice_storage.removeItem(this.placement, this);
+      },
+      handleAfterClose: function handleAfterClose() {
+        this.clearTimeout();
+        this.$destroy();
+        this.$el.parentNode && this.$el.parentNode.removeChild(this.$el);
+      }
+    },
+    render: function render(h) {
+      var visible = this.visible,
+          type = this.type,
+          title = this.title,
+          description = this.description,
+          icon = this.icon,
+          closable = this.closable,
+          closeText = this.closeText,
+          placement = this.placement,
+          top = this.top,
+          bottom = this.bottom,
+          animation = this.animation,
+          getPopupContainer = this.getPopupContainer;
 
 
-			var open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
-			var afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
-			var close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
-			var afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
+      var open = createChainedFunction(this.handleOpen.bind(this), this.open || this.onOpen);
+      var afterOpen = createChainedFunction(this.handleAfterOpen.bind(this), this.afterOpen || this.onAfterOpen);
+      var close = createChainedFunction(this.handleClose.bind(this), this.close || this.onClose);
+      var afterClose = createChainedFunction(this.handleAfterClose.bind(this), this.afterClose || this.onAfterClose);
 
-			var attrs = {
-				props: {
-					type: type,
-					title: title,
-					description: description,
-					icon: icon,
-					closable: closable,
-					closeText: closeText,
-					placement: placement,
-					top: top,
-					bottom: bottom,
-					visible: visible,
-					animation: animation,
-					getPopupContainer: getPopupContainer
-				},
-				on: {
-					open: open,
-					afterOpen: afterOpen,
-					close: close,
-					afterClose: afterClose
-				}
-			};
+      var attrs = {
+        props: {
+          visible: visible,
+          type: type,
+          title: title,
+          description: description,
+          icon: icon,
+          closable: closable,
+          closeText: closeText,
+          placement: placement,
+          top: top,
+          bottom: bottom,
+          animation: animation,
+          getPopupContainer: getPopupContainer
+        },
+        on: {
+          open: open,
+          afterOpen: afterOpen,
+          close: close,
+          afterClose: afterClose
+        }
+      };
 
-			return h(notice, attrs);
-		}
-	});
+      return h(notice, attrs);
+    }
+  });
 };
 
 /**
 * 对外提供 open 接口
 * @param {String/Function/Object} options 
 */
-notice.open = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
+notice.open = function (options, type) {
+  if (is["a" /* default */].server) {
+    return;
+  }
 
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
+  if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].json(options)) {
+    return;
+  }
 
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			title: options
-		};
-	}
+  if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
+    options = {
+      title: options
+    };
+  }
 
-	options = extends_default()({}, notice_defaults, options);
+  if (type === "info") {
+    options.type = type;
+    options.icon = options.description ? "info" : "info-filled";
+  } else if (type === "warning") {
+    options.type = type;
+    options.icon = options.description ? "warning" : "warning-filled";
+  } else if (type === "success") {
+    options.type = type;
+    options.icon = options.description ? "checkmark-circle" : "checkmark-circle-filled";
+  } else if (type === "error") {
+    options.type = type;
+    options.icon = options.description ? "crossmark-circle" : "crossmark-circle-filled";
+  }
 
-	if (placements.indexOf(options.placement) == -1) {
-		options.placement = notice_defaults.placement;
-	}
+  options = extends_default()({}, notice_defaults, options);
 
-	var instance = notice_createNoticeInstance(options);
+  if (placements.indexOf(options.placement) === -1) {
+    options.placement = notice_defaults.placement;
+  }
 
-	instance.open();
+  var instance = notice_createNoticeInstance(options);
 
-	return instance;
+  instance.open();
+
+  return instance;
 };
 
 /**
@@ -40866,35 +40660,7 @@ notice.open = function (options) {
 * @param {String/Function/Object} options 
 */
 notice.info = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
-
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
-
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			title: options
-		};
-	}
-
-	options = extends_default()({
-		icon: options.description ? "info" : "info-filled"
-	}, notice_defaults, options, {
-		type: "info"
-	});
-
-	if (placements.indexOf(options.placement) == -1) {
-		options.placement = notice_defaults.placement;
-	}
-
-	var instance = notice_createNoticeInstance(options);
-
-	instance.open();
-
-	return instance;
+  return notice.open(options, "info");
 };
 
 /**
@@ -40902,35 +40668,7 @@ notice.info = function (options) {
 * @param {String/Function/Object} options 
 */
 notice.warning = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
-
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
-
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			title: options
-		};
-	}
-
-	options = extends_default()({
-		icon: options.description ? "warning" : "warning-filled"
-	}, notice_defaults, options, {
-		type: "warning"
-	});
-
-	if (placements.indexOf(options.placement) == -1) {
-		options.placement = notice_defaults.placement;
-	}
-
-	var instance = notice_createNoticeInstance(options);
-
-	instance.open();
-
-	return instance;
+  return notice.open(options, "warning");
 };
 
 /**
@@ -40938,35 +40676,7 @@ notice.warning = function (options) {
 * @param {String/Function/Object} options 
 */
 notice.success = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
-
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
-
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			title: options
-		};
-	}
-
-	options = extends_default()({
-		icon: options.description ? "checkmark-circle" : "checkmark-circle-filled"
-	}, notice_defaults, options, {
-		type: "success"
-	});
-
-	if (placements.indexOf(options.placement) == -1) {
-		options.placement = notice_defaults.placement;
-	}
-
-	var instance = notice_createNoticeInstance(options);
-
-	instance.open();
-
-	return instance;
+  return notice.open(options, "success");
 };
 
 /**
@@ -40974,35 +40684,7 @@ notice.success = function (options) {
 * @param {String/Function/Object} options 
 */
 notice.error = function (options) {
-	if (is["a" /* default */].server) {
-		return;
-	}
-
-	if (!is["a" /* default */].string(options) && !is["a" /* default */].function(options) && !is["a" /* default */].plainObject(options)) {
-		return;
-	}
-
-	if (is["a" /* default */].string(options) || is["a" /* default */].function(options)) {
-		options = {
-			title: options
-		};
-	}
-
-	options = extends_default()({
-		icon: options.description ? "crossmark-circle" : "crossmark-circle-filled"
-	}, notice_defaults, options, {
-		type: "error"
-	});
-
-	if (placements.indexOf(options.placement) == -1) {
-		options.placement = notice_defaults.placement;
-	}
-
-	var instance = notice_createNoticeInstance(options);
-
-	instance.open();
-
-	return instance;
+  return notice.open(options, "error");
 };
 
 /**
@@ -41010,7 +40692,7 @@ notice.error = function (options) {
 * @param {Function} Vue 
 */
 notice.install = function (Vue) {
-	Vue.component(notice.name, notice);
+  Vue.component(notice.name, notice);
 };
 
 /* harmony default export */ var components_notice = (notice);
@@ -41024,149 +40706,160 @@ notice.install = function (Vue) {
 
 
 var VuiPopconfirm = {
-	name: "vui-popconfirm",
-	components: {
-		VuiPopover: components_popover,
-		VuiIcon: components_icon,
-		VuiButton: components_button
-	},
-	mixins: [mixins_locale],
-	model: {
-		prop: "visible",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		visible: prop_types["a" /* default */].bool.def(false),
-		icon: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].string,
-		cancelButtonType: prop_types["a" /* default */].string.def("text"),
-		okButtonType: prop_types["a" /* default */].string.def("primary"),
-		cancelText: prop_types["a" /* default */].string,
-		okText: prop_types["a" /* default */].string,
-		minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(150),
-		maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(300),
-		placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
-		animation: prop_types["a" /* default */].string,
-		getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-			return document.body;
-		})
-	},
-	data: function data() {
-		var props = this.$props;
+  name: "vui-popconfirm",
+  components: {
+    VuiPopover: components_popover,
+    VuiIcon: components_icon,
+    VuiButton: components_button
+  },
+  mixins: [mixins_locale],
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    visible: prop_types["a" /* default */].bool.def(false),
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    cancelButtonType: prop_types["a" /* default */].string.def("text"),
+    cancelText: prop_types["a" /* default */].string,
+    okButtonType: prop_types["a" /* default */].string.def("primary"),
+    okText: prop_types["a" /* default */].string,
+    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(160),
+    maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(320),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
+    animation: prop_types["a" /* default */].string,
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    })
+  },
+  data: function data() {
+    var props = this.$props;
 
+    var state = {
+      visible: props.visible
+    };
 
-		return {
-			state: {
-				visible: props.visible
-			}
-		};
-	},
+    return {
+      state: state
+    };
+  },
 
-	watch: {
-		visible: function visible(value) {
-			this.state.visible = value;
-		}
-	},
-	methods: {
-		toggle: function toggle(visible) {
-			this.state.visible = visible;
-			this.$emit("input", visible);
-			this.$emit("change", visible);
-		},
-		handleCancel: function handleCancel() {
-			this.toggle(false);
-			this.$emit("cancel");
-		},
-		handleOk: function handleOk() {
-			this.toggle(false);
-			this.$emit("ok");
-		},
-		handleChange: function handleChange(visible) {
-			this.toggle(visible);
-		}
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state,
-		    translate = this.t;
-		var handleCancel = this.handleCancel,
-		    handleOk = this.handleOk,
-		    handleChange = this.handleChange;
+  watch: {
+    visible: function visible(value) {
+      this.state.visible = value;
+    }
+  },
+  methods: {
+    toggle: function toggle(visible) {
+      this.state.visible = visible;
+      this.$emit("input", visible);
+      this.$emit("change", visible);
+    },
+    handleCancel: function handleCancel() {
+      this.toggle(false);
+      this.$emit("cancel");
+    },
+    handleOk: function handleOk() {
+      this.toggle(false);
+      this.$emit("ok");
+    },
+    handleChange: function handleChange(visible) {
+      this.toggle(visible);
+    }
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state,
+        translate = this.t;
+    var handleCancel = this.handleCancel,
+        handleOk = this.handleOk,
+        handleChange = this.handleChange;
 
-		// icon
+    // icon
 
-		var icon = void 0;
+    var icon = void 0;
 
-		if (slots.icon) {
-			icon = slots.icon;
-		} else {
-			var iconType = props.icon || "help-filled";
+    if (slots.icon) {
+      icon = slots.icon;
+    } else {
+      var iconType = props.icon || "help-filled";
 
-			icon = h(components_icon, {
-				attrs: { type: iconType }
-			});
-		}
+      icon = h(components_icon, {
+        attrs: { type: iconType }
+      });
+    }
 
-		// title
-		var title = slots.title || props.title;
+    // title
+    var title = slots.title || props.title;
 
-		// button text
-		var cancelText = props.cancelText || translate("vui.popconfirm.cancelText");
-		var okText = props.okText || translate("vui.popconfirm.okText");
+    // button text
+    var cancelText = props.cancelText || translate("vui.popconfirm.cancelText");
+    var okText = props.okText || translate("vui.popconfirm.okText");
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "popover");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "popover");
+    var classes = {};
 
-		classes.elConfirm = classNamePrefix + "-confirm";
-		classes.elConfirmBody = classNamePrefix + "-confirm-body";
-		classes.elConfirmFooter = classNamePrefix + "-confirm-footer";
+    classes.elConfirm = classNamePrefix + "-confirm";
+    classes.elConfirmBody = classNamePrefix + "-confirm-body";
+    classes.elConfirmIcon = classNamePrefix + "-confirm-icon";
+    classes.elConfirmTitle = classNamePrefix + "-confirm-title";
+    classes.elConfirmFooter = classNamePrefix + "-confirm-footer";
 
-		// render
-		return h(
-			components_popover,
-			{
-				attrs: { trigger: "click", classNamePrefix: props.classNamePrefix, visible: state.visible, minWidth: props.minWidth, maxWidth: props.maxWidth, placement: props.placement, animation: props.animation, getPopupContainer: props.getPopupContainer },
-				on: {
-					"change": handleChange
-				}
-			},
-			[slots.default, h(
-				"div",
-				{ slot: "content", "class": classes.elConfirm },
-				[h(
-					"div",
-					{ "class": classes.elConfirmBody },
-					[icon, title]
-				), h(
-					"div",
-					{ "class": classes.elConfirmFooter },
-					[h(
-						components_button,
-						{
-							attrs: { size: "small", type: props.cancelButtonType },
-							on: {
-								"click": handleCancel
-							}
-						},
-						[cancelText]
-					), h(
-						components_button,
-						{
-							attrs: { size: "small", type: props.okButtonType },
-							on: {
-								"click": handleOk
-							}
-						},
-						[okText]
-					)]
-				)]
-			)]
-		);
-	}
+    // render
+    return h(
+      components_popover,
+      {
+        attrs: { trigger: "click", classNamePrefix: props.classNamePrefix, visible: state.visible, minWidth: props.minWidth, maxWidth: props.maxWidth, placement: props.placement, animation: props.animation, getPopupContainer: props.getPopupContainer },
+        on: {
+          "change": handleChange
+        }
+      },
+      [slots.default, h(
+        "div",
+        { slot: "content", "class": classes.elConfirm },
+        [h(
+          "div",
+          { "class": classes.elConfirmBody },
+          [h(
+            "div",
+            { "class": classes.elConfirmIcon },
+            [icon]
+          ), h(
+            "div",
+            { "class": classes.elConfirmTitle },
+            [title]
+          )]
+        ), h(
+          "div",
+          { "class": classes.elConfirmFooter },
+          [h(
+            components_button,
+            {
+              attrs: { size: "small", type: props.cancelButtonType },
+              on: {
+                "click": handleCancel
+              }
+            },
+            [cancelText]
+          ), h(
+            components_button,
+            {
+              attrs: { size: "small", type: props.okButtonType },
+              on: {
+                "click": handleOk
+              }
+            },
+            [okText]
+          )]
+        )]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var popconfirm = (VuiPopconfirm);
@@ -41174,7 +40867,7 @@ var VuiPopconfirm = {
 
 
 popconfirm.install = function (Vue) {
-	Vue.component(popconfirm.name, popconfirm);
+  Vue.component(popconfirm.name, popconfirm);
 };
 
 /* harmony default export */ var components_popconfirm = (popconfirm);
@@ -41600,8 +41293,9 @@ var VuiSkeletonAvatar = {
   name: "vui-skeleton-avatar",
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false),
     shape: prop_types["a" /* default */].oneOf(skeleton_avatar_shapes).def("circle"),
-    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(skeleton_avatar_sizes), prop_types["a" /* default */].number]).def("large")
+    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(skeleton_avatar_sizes), prop_types["a" /* default */].number]).def("medium")
   },
   render: function render() {
     var _classes$el;
@@ -41611,18 +41305,17 @@ var VuiSkeletonAvatar = {
 
     var isPresetSize = skeleton_avatar_sizes.indexOf(props.size) > -1;
 
-    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-avatar");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.shape, props.shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size && isPresetSize), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.shape, props.shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size && isPresetSize), _classes$el);
 
     var styles = {};
 
     if (props.size && !isPresetSize) {
       styles.el = {
         width: props.size + "px",
-        height: props.size + "px",
-        lineHeight: props.size + "px"
+        height: props.size + "px"
       };
     }
 
@@ -41636,21 +41329,25 @@ var VuiSkeletonAvatar = {
 
 
 
+
 var VuiSkeletonTitle = {
   name: "vui-skeleton-title",
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false),
     width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
   },
   render: function render() {
+    var _classes$el;
+
     var h = arguments[0];
     var props = this.$props;
 
 
-    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "title");
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-title");
     var classes = {};
 
-    classes.el = "" + classNamePrefix;
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
 
     var styles = {};
 
@@ -41669,16 +41366,16 @@ var VuiSkeletonTitle = {
 
 
 
-var widthProp = prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]);
-var skeletonParagraphProps = {
-  classNamePrefix: prop_types["a" /* default */].string,
-  rows: prop_types["a" /* default */].number,
-  width: prop_types["a" /* default */].oneOfType([widthProp, prop_types["a" /* default */].arrayOf(widthProp)])
-};
 
+var widthProp = prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]);
 var VuiSkeletonParagraph = {
   name: "vui-skeleton-paragraph",
-  props: skeletonParagraphProps,
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false),
+    rows: prop_types["a" /* default */].number,
+    width: prop_types["a" /* default */].oneOfType([widthProp, prop_types["a" /* default */].arrayOf(widthProp)])
+  },
   methods: {
     getWidthProperty: function getWidthProperty(index) {
       var props = this.$props;
@@ -41696,16 +41393,17 @@ var VuiSkeletonParagraph = {
     }
   },
   render: function render() {
-    var _this = this;
+    var _classes$el,
+        _this = this;
 
     var h = arguments[0];
     var props = this.$props;
 
 
-    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "paragraph");
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-paragraph");
     var classes = {};
 
-    classes.el = "" + classNamePrefix;
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
 
     var rows = range(0, props.rows).map(function (row, index) {
       var width = _this.getWidthProperty(index);
@@ -41726,7 +41424,6 @@ var VuiSkeletonParagraph = {
 
 /* harmony default export */ var skeleton_paragraph = (VuiSkeletonParagraph);
 // CONCATENATED MODULE: ./src/components/skeleton/src/skeleton.js
-
 
 
 
@@ -41803,8 +41500,6 @@ var VuiSkeleton = {
     paragraph: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(true)
   },
   render: function render() {
-    var _classes$el, _classes$elAvatar;
-
     var h = arguments[0];
     var slots = this.$slots,
         props = this.$props;
@@ -41817,17 +41512,17 @@ var VuiSkeleton = {
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
+    classes.el = "" + classNamePrefix;
     classes.elHeader = classNamePrefix + "-header";
     classes.elBody = classNamePrefix + "-body";
-    classes.elAvatar = (_classes$elAvatar = {}, defineProperty_default()(_classes$elAvatar, "" + classNamePrefix, true), defineProperty_default()(_classes$elAvatar, classNamePrefix + "-animated", props.animated), _classes$elAvatar);
 
     var children = [];
 
     if (props.avatar) {
       var mergedAvatarProps = {
         props: extends_default()({
-          classNamePrefix: classNamePrefix
+          classNamePrefix: props.classNamePrefix,
+          animated: props.animated
         }, getAvatarBasicProps(props), getComponentProps(props.avatar))
       };
 
@@ -41844,7 +41539,8 @@ var VuiSkeleton = {
       if (props.title) {
         var mergedTitleProps = {
           props: extends_default()({
-            classNamePrefix: classNamePrefix
+            classNamePrefix: props.classNamePrefix,
+            animated: props.animated
           }, getTitleBasicProps(props), getComponentProps(props.title))
         };
 
@@ -41856,7 +41552,8 @@ var VuiSkeleton = {
       if (props.paragraph) {
         var mergedParagraphProps = {
           props: extends_default()({
-            classNamePrefix: classNamePrefix
+            classNamePrefix: props.classNamePrefix,
+            animated: props.animated
           }, getParagraphBasicProps(props), getComponentProps(props.paragraph))
         };
 
@@ -41887,6 +41584,155 @@ skeleton.install = function (Vue) {
 };
 
 /* harmony default export */ var components_skeleton = (skeleton);
+// CONCATENATED MODULE: ./src/components/skeleton-avatar/index.js
+
+
+skeleton_avatar.install = function (Vue) {
+  Vue.component(skeleton_avatar.name, skeleton_avatar);
+};
+
+/* harmony default export */ var components_skeleton_avatar = (skeleton_avatar);
+// CONCATENATED MODULE: ./src/components/skeleton-title/index.js
+
+
+skeleton_title.install = function (Vue) {
+  Vue.component(skeleton_title.name, skeleton_title);
+};
+
+/* harmony default export */ var components_skeleton_title = (skeleton_title);
+// CONCATENATED MODULE: ./src/components/skeleton-paragraph/index.js
+
+
+skeleton_paragraph.install = function (Vue) {
+  Vue.component(skeleton_paragraph.name, skeleton_paragraph);
+};
+
+/* harmony default export */ var components_skeleton_paragraph = (skeleton_paragraph);
+// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-input.js
+
+
+
+
+var VuiSkeletonInput = {
+  name: "vui-skeleton-input",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false),
+    block: prop_types["a" /* default */].bool.def(false),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium")
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var props = this.$props;
+
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-input");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), _classes$el);
+
+    return h("div", { "class": classes.el });
+  }
+};
+
+/* harmony default export */ var skeleton_input = (VuiSkeletonInput);
+// CONCATENATED MODULE: ./src/components/skeleton-input/index.js
+
+
+skeleton_input.install = function (Vue) {
+  Vue.component(skeleton_input.name, skeleton_input);
+};
+
+/* harmony default export */ var components_skeleton_input = (skeleton_input);
+// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-button.js
+
+
+
+
+var VuiSkeletonButton = {
+  name: "vui-skeleton-button",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false),
+    block: prop_types["a" /* default */].bool.def(false),
+    shape: prop_types["a" /* default */].oneOf(["default", "round", "circle"]).def("default"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium")
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var props = this.$props;
+
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-button");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.shape, props.shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), _classes$el);
+
+    return h("div", { "class": classes.el });
+  }
+};
+
+/* harmony default export */ var skeleton_button = (VuiSkeletonButton);
+// CONCATENATED MODULE: ./src/components/skeleton-button/index.js
+
+
+skeleton_button.install = function (Vue) {
+  Vue.component(skeleton_button.name, skeleton_button);
+};
+
+/* harmony default export */ var components_skeleton_button = (skeleton_button);
+// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-image.js
+
+
+
+
+var VuiSkeletonImage = {
+  name: "vui-skeleton-image",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    animated: prop_types["a" /* default */].bool.def(false)
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var props = this.$props;
+
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-image");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [h(
+        "svg",
+        {
+          attrs: { viewBox: "0 0 1098 1024", xmlns: "http://www.w3.org/2000/svg" }
+        },
+        [h("path", {
+          attrs: { d: "M365.714286 329.142857q0 45.714286-32.036571 77.677714t-77.677714 32.036571-77.677714-32.036571-32.036571-77.677714 32.036571-77.677714 77.677714-32.036571 77.677714 32.036571 32.036571 77.677714zM950.857143 548.571429l0 256-804.571429 0 0-109.714286 182.857143-182.857143 91.428571 91.428571 292.571429-292.571429zM1005.714286 146.285714l-914.285714 0q-7.460571 0-12.873143 5.412571t-5.412571 12.873143l0 694.857143q0 7.460571 5.412571 12.873143t12.873143 5.412571l914.285714 0q7.460571 0 12.873143-5.412571t5.412571-12.873143l0-694.857143q0-7.460571-5.412571-12.873143t-12.873143-5.412571zM1097.142857 164.571429l0 694.857143q0 37.741714-26.843429 64.585143t-64.585143 26.843429l-914.285714 0q-37.741714 0-64.585143-26.843429t-26.843429-64.585143l0-694.857143q0-37.741714 26.843429-64.585143t64.585143-26.843429l914.285714 0q37.741714 0 64.585143 26.843429t26.843429 64.585143z" }
+        })]
+      )]
+    );
+  }
+};
+
+/* harmony default export */ var skeleton_image = (VuiSkeletonImage);
+// CONCATENATED MODULE: ./src/components/skeleton-image/index.js
+
+
+skeleton_image.install = function (Vue) {
+  Vue.component(skeleton_image.name, skeleton_image);
+};
+
+/* harmony default export */ var components_skeleton_image = (skeleton_image);
 // CONCATENATED MODULE: ./src/utils/getScroll.js
 
 
@@ -42901,16 +42747,6 @@ src_fullscreen.install = function (Vue) {
 };
 
 /* harmony default export */ var components_fullscreen = (src_fullscreen);
-// CONCATENATED MODULE: ./src/utils/clamp.js
-/**
-* 返回限制在 lower 和 upper 之间的值
-* @param {Number} number 被限制的值
-* @param {Number} lower 下限
-* @param {Number} upper 上限
-*/
-function clamp(number, lower, upper) {
-  return Math.min.call(null, Math.max.call(null, number, lower), upper);
-};
 // CONCATENATED MODULE: ./src/utils/queue.js
 var queue_pending = [];
 
@@ -43214,6 +43050,12 @@ VuiLoading.remove = function () {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Progress", function() { return components_progress; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Result", function() { return components_result; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Skeleton", function() { return components_skeleton; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonAvatar", function() { return components_skeleton_avatar; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonTitle", function() { return components_skeleton_title; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonParagraph", function() { return components_skeleton_paragraph; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonInput", function() { return components_skeleton_input; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonButton", function() { return components_skeleton_button; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "SkeletonImage", function() { return components_skeleton_image; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Spin", function() { return components_spin; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Anchor", function() { return components_anchor; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AnchorLink", function() { return components_anchor_link; });
@@ -43332,6 +43174,12 @@ if (typeof console !== "undefined" && console.warn && typeof window !== "undefin
 
 
 
+
+
+
+
+
+
 // Other
 
 
@@ -43356,7 +43204,7 @@ components_cascader, components_checkbox, components_checkbox_group, components_
 // Data Display
 components_avatar_group, components_avatar, components_badge, components_card, components_card_grid, components_card_meta, components_cell, components_cell_group, components_collapse, components_countdown, components_panel, components_descriptions, components_description, components_empty, components_image, components_list, components_list_item, components_list_item_meta, components_popover, components_qrcode, components_ratio, components_statistic, components_table, components_tag, components_time, components_timeline, components_timeline_item, components_tooltip, components_tree, components_watermark,
 // Feedback
-components_alert, components_drawer, components_message, components_modal, components_notice, components_popconfirm, components_progress, components_result, components_skeleton, components_spin,
+components_alert, components_drawer, components_message, components_modal, components_notice, components_popconfirm, components_progress, components_result, components_skeleton, components_skeleton_avatar, components_skeleton_title, components_skeleton_paragraph, components_skeleton_input, components_skeleton_button, components_skeleton_image, components_spin,
 // Other
 components_anchor, components_anchor_link, components_authorizer, components_backtop, components_collapser, components_fullscreen, components_resize_observer];
 
@@ -43394,7 +43242,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.9.9",
+  version: "1.10.0",
   install: src_install,
   // Locale
   locale: src_locale.use,
@@ -43502,6 +43350,12 @@ if (typeof window !== "undefined" && window.Vue) {
   Progress: components_progress,
   Result: components_result,
   Skeleton: components_skeleton,
+  SkeletonAvatar: components_skeleton_avatar,
+  SkeletonTitle: components_skeleton_title,
+  SkeletonParagraph: components_skeleton_paragraph,
+  SkeletonInput: components_skeleton_input,
+  SkeletonButton: components_skeleton_button,
+  SkeletonImage: components_skeleton_image,
   Spin: components_spin,
   // Other
   Anchor: components_anchor,
@@ -43549,12 +43403,12 @@ var DESCRIPTORS = __webpack_require__(11);
 var getKeys = __webpack_require__(27);
 var gOPS = __webpack_require__(49);
 var pIE = __webpack_require__(36);
-var toObject = __webpack_require__(20);
+var toObject = __webpack_require__(21);
 var IObject = __webpack_require__(43);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(17)(function () {
+module.exports = !$assign || __webpack_require__(18)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -43589,7 +43443,7 @@ module.exports = !$assign || __webpack_require__(17)(function () {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 var toLength = __webpack_require__(34);
 var toAbsoluteIndex = __webpack_require__(93);
 module.exports = function (IS_INCLUDES) {
@@ -43658,7 +43512,7 @@ module.exports = __webpack_require__(5).Object.keys;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(20);
+var toObject = __webpack_require__(21);
 var $keys = __webpack_require__(27);
 
 __webpack_require__(37)('keys', function () {
@@ -43754,7 +43608,7 @@ module.exports = __webpack_require__(11) ? Object.defineProperties : function de
 var addToUnscopables = __webpack_require__(104);
 var step = __webpack_require__(68);
 var Iterators = __webpack_require__(24);
-var toIObject = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -43888,7 +43742,7 @@ module.exports = __webpack_require__(5).Object.getPrototypeOf;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = __webpack_require__(20);
+var toObject = __webpack_require__(21);
 var $getPrototypeOf = __webpack_require__(67);
 
 __webpack_require__(37)('getPrototypeOf', function () {
@@ -44898,7 +44752,7 @@ module.exports = __webpack_require__(5).Array.from;
 
 var ctx = __webpack_require__(15);
 var $export = __webpack_require__(6);
-var toObject = __webpack_require__(20);
+var toObject = __webpack_require__(21);
 var call = __webpack_require__(75);
 var isArrayIter = __webpack_require__(76);
 var toLength = __webpack_require__(34);
@@ -45302,7 +45156,7 @@ module.exports = {
 var global = __webpack_require__(7);
 var $export = __webpack_require__(6);
 var meta = __webpack_require__(54);
-var fails = __webpack_require__(17);
+var fails = __webpack_require__(18);
 var hide = __webpack_require__(16);
 var redefineAll = __webpack_require__(59);
 var forOf = __webpack_require__(33);
@@ -45372,7 +45226,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
 // 6 -> Array#findIndex
 var ctx = __webpack_require__(15);
 var IObject = __webpack_require__(43);
-var toObject = __webpack_require__(20);
+var toObject = __webpack_require__(21);
 var toLength = __webpack_require__(34);
 var asc = __webpack_require__(133);
 module.exports = function (TYPE, $create) {
@@ -47644,7 +47498,7 @@ module.exports = function getOwnPropertyDescriptor(it, key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = __webpack_require__(19);
+var toIObject = __webpack_require__(20);
 var $getOwnPropertyDescriptor = __webpack_require__(73).f;
 
 __webpack_require__(37)('getOwnPropertyDescriptor', function () {

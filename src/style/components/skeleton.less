@@ -10,44 +10,43 @@
     vertical-align:top;
   }
 
-  &-avatar {
-    display:inline-block;
-    background-color:@skeleton-color;
-    vertical-align:top;
-
-    &-circle {
-      border-radius:50%;
-    }
-    &-square {
-      border-radius:2px;
-    }
-
-    &-small {
-      width:24px;
-      height:24px;
-      line-height:24px;
-    }
-    &-medium {
-      width:32px;
-      height:32px;
-      line-height:32px;
-    }
-    &-large {
-      width:40px;
-      height:40px;
-      line-height:40px;
-    }
-  }
-
   &-body {
     display:table-cell;
     width:100%;
     vertical-align:top;
   }
 
+  &-avatar {
+    display:inline-block;
+    background-color:@skeleton-color;
+    vertical-align:top;
+
+    &-small {
+      width:@skeleton-avatar-size-sm;
+      height:@skeleton-avatar-size-sm;
+    }
+    &-medium {
+      width:@skeleton-avatar-size-md;
+      height:@skeleton-avatar-size-md;
+    }
+    &-large {
+      width:@skeleton-avatar-size-lg;
+      height:@skeleton-avatar-size-lg;
+    }
+
+    &-circle {
+      border-radius:50%;
+    }
+
+    &-square {
+      border-radius:@skeleton-avatar-border-radius;
+    }
+  }
+
   &-title {
     width:100%;
     height:@skeleton-title-height;
+    border-radius:@skeleton-title-border-radius;
     background-color:@skeleton-color;
   }
 
@@ -58,26 +57,121 @@
 
     & > li {
       width:100%;
-      height:@skeleton-paragraph-li-height;
+      height:@skeleton-paragraph-row-height;
+      border-radius:@skeleton-paragraph-row-border-radius;
       background-color:@skeleton-color;
     }
 
     & > li + li {
-      margin-top:@skeleton-paragraph-li-margin-top;
+      margin-top:@skeleton-paragraph-row-margin-top;
     }
 
     & > li:last-child:not(:first-child):not(:nth-child(2)) {
       width:60%;
     }
   }
-
   &-title + &-paragraph {
     margin-top:@skeleton-paragraph-margin-top;
   }
 
-  &-animated &-avatar,
-  &-animated &-title,
-  &-animated &-paragraph > li {
+  &-input {
+    display:inline-block;
+    border-radius:@skeleton-input-border-radius;
+    background-color:@skeleton-color;
+    vertical-align:top;
+
+    &-small {
+      width:120px;
+      height:@skeleton-input-size-sm;
+    }
+    &-medium {
+      width:160px;
+      height:@skeleton-input-size-md;
+    }
+    &-large {
+      width:200px;
+      height:@skeleton-input-size-lg;
+    }
+
+    &-block {
+      width:100%;
+    }
+  }
+
+  &-button {
+    display:inline-block;
+    border-radius:2px;
+    background-color:@skeleton-color;
+    vertical-align:top;
+
+    &-small {
+      width:48px;
+      height:@skeleton-button-size-sm;
+    }
+    &-medium {
+      width:64px;
+      height:@skeleton-button-size-md;
+    }
+    &-large {
+      width:80px;
+      height:@skeleton-button-size-lg;
+    }
+
+    &-round&-small {
+      border-radius:@skeleton-button-size-sm;
+    }
+    &-round&-medium {
+      border-radius:@skeleton-button-size-md;
+    }
+    &-round&-large {
+      border-radius:@skeleton-button-size-lg;
+    }
+
+    &-circle&-small {
+      width:@skeleton-button-size-sm;
+      height:@skeleton-button-size-sm;
+      border-radius:50%;
+    }
+    &-circle&-medium {
+      width:@skeleton-button-size-md;
+      height:@skeleton-button-size-md;
+      border-radius:50%;
+    }
+    &-circle&-large {
+      width:@skeleton-button-size-lg;
+      height:@skeleton-button-size-lg;
+      border-radius:50%;
+    }
+
+    &-block {
+      width:100%;
+    }
+  }
+
+  &-image {
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    width:@skeleton-image-size;
+    height:@skeleton-image-size;
+    border-radius:@skeleton-image-border-radius;
+    background-color:@skeleton-color;
+    vertical-align:top;
+
+    svg {
+      display:block;
+      width:@skeleton-image-size / 2;
+      height:@skeleton-image-size / 2;
+      fill:@font-disabled-color;
+    }
+  }
+
+  &-avatar-animated,
+  &-title-animated,
+  &-paragraph-animated > li,
+  &-input-animated,
+  &-button-animated,
+  &-image-animated {
     background-image:linear-gradient(90deg,@skeleton-from-color 25%,@skeleton-to-color 50%,@skeleton-from-color 75%);
     background-size:400% 100%;
     animation:vuiSkeletonLoading 1s ease infinite;

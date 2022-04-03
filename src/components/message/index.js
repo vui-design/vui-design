@@ -7,7 +7,7 @@ import is from "../../utils/is";
 * 默认配置
 */
 const defaults = {
-  top: 20,
+  top: 24,
   duration: 3,
   getPopupContainer: () => document.body
 };
@@ -17,7 +17,7 @@ const defaults = {
 */
 const storage = {
   value: [],
-  addItem(item) {
+  addItem: function(item) {
     const index = this.value.indexOf(item);
 
     if (index > -1) {
@@ -26,7 +26,7 @@ const storage = {
 
     this.value.push(item);
   },
-  removeItem(item) {
+  removeItem: function(item) {
     let index = this.value.indexOf(item);
 
     if (index === -1) {
@@ -51,7 +51,7 @@ const storage = {
 * 创建 Message 实例
 * @param {Object} options 
 */
-const createMessageInstance = options => {
+const createMessageInstance = function(options) {
   // 创建 Message 挂载的 html 根节点
   const container = options.getPopupContainer();
   const el = document.createElement("div");
@@ -173,7 +173,7 @@ const createMessageInstance = options => {
 * 对外提供 open 接口
 * @param {String/Object} options
 */
-VuiMessage.open = options => {
+VuiMessage.open = function(options, type) {
   if (is.server) {
     return;
   }
@@ -186,6 +186,27 @@ VuiMessage.open = options => {
     options = {
       content: options
     };
+  }
+
+  if (type === "info") {
+    options.type = type;
+    options.icon = "info-filled";
+  }
+  else if (type === "warning") {
+    options.type = type;
+    options.icon = "warning-filled";
+  }
+  else if (type === "success") {
+    options.type = type;
+    options.icon = "checkmark-circle-filled";
+  }
+  else if (type === "error") {
+    options.type = type;
+    options.icon = "crossmark-circle-filled";
+  }
+  else if (type === "loading") {
+    options.type = type;
+    options.icon = "loading-filled";
   }
 
   options = {
@@ -204,165 +225,40 @@ VuiMessage.open = options => {
 * 对外提供 info 接口
 * @param {String/Object} options 
 */
-VuiMessage.info = options => {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.string(options) && !is.function(options) && !is.json(options)) {
-    return;
-  }
-
-  if (is.string(options) || is.function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = {
-    type: "info",
-    icon: "info-filled",
-    ...defaults,
-    ...options
-  };
-
-  const instance = createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+VuiMessage.info = function(options) {
+  return VuiMessage.open(options, "info");
 };
 
 /**
 * 对外提供 warning 接口
 * @param {String/Object} options 
 */
-VuiMessage.warning = options => {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.string(options) && !is.function(options) && !is.json(options)) {
-    return;
-  }
-
-  if (is.string(options) || is.function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = {
-    type: "warning",
-    icon: "warning-filled",
-    ...defaults,
-    ...options
-  };
-
-  const instance = createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+VuiMessage.warning = function(options) {
+  return VuiMessage.open(options, "warning");
 };
 
 /**
 * 对外提供 success 接口
 * @param {String/Object} options 
 */
-VuiMessage.success = options => {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.string(options) && !is.function(options) && !is.json(options)) {
-    return;
-  }
-
-  if (is.string(options) || is.function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = {
-    type: "success",
-    icon: "checkmark-circle-filled",
-    ...defaults,
-    ...options
-  };
-
-  const instance = createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+VuiMessage.success = function(options) {
+  return VuiMessage.open(options, "success");
 };
 
 /**
 * 对外提供 error 接口
 * @param {String/Object} options 
 */
-VuiMessage.error = options => {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.string(options) && !is.function(options) && !is.json(options)) {
-    return;
-  }
-
-  if (is.string(options) || is.function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = {
-    type: "error",
-    icon: "crossmark-circle-filled",
-    ...defaults,
-    ...options
-  };
-
-  const instance = createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+VuiMessage.error = function(options) {
+  return VuiMessage.open(options, "error");
 };
 
 /**
 * 对外提供 loading 接口
 * @param {String/Object} options 
 */
-VuiMessage.loading = options => {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.string(options) && !is.function(options) && !is.json(options)) {
-    return;
-  }
-
-  if (is.string(options) || is.function(options)) {
-    options = {
-      content: options
-    };
-  }
-
-  options = {
-    type: "loading",
-    icon: "loading",
-    ...defaults,
-    ...options
-  };
-
-  const instance = createMessageInstance(options);
-
-  instance.open();
-
-  return instance;
+VuiMessage.loading = function(options) {
+  return VuiMessage.open(options, "loading");
 };
 
 /**

@@ -12,7 +12,6 @@ import addScrollbarEffect from "../../../utils/addScrollbarEffect";
 import getStyle from "../../../utils/getStyle";
 import setStyle from "../../../utils/setStyle";
 import getElementByEvent from "../../../utils/getElementByEvent";
-import getContainer from "../../../utils/getContainer";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDrawer = {
@@ -55,10 +54,11 @@ const VuiDrawer = {
     okButtonProps: PropTypes.object,
     okText: PropTypes.string,
     okAsync: PropTypes.bool.def(false),
+    autofocusButton: PropTypes.oneOf(["ok", "cancel"]),
     closable: PropTypes.bool.def(true),
     placement: PropTypes.oneOf(["top", "bottom", "left", "right"]).def("right"),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(500),
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(500),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(480),
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(480),
     className: PropTypes.string,
     headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -67,6 +67,7 @@ const VuiDrawer = {
     backdropClassName: PropTypes.string,
     backdropStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     clickBackdropToClose: PropTypes.bool.def(true),
+    destroyOnClose: PropTypes.bool.def(false),
     animations: PropTypes.array.def(["vui-drawer-backdrop-fade", "vui-drawer-slide"]),
     getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
   },
@@ -74,9 +75,10 @@ const VuiDrawer = {
     const { $props: props } = this;
     const state = {
       visible: props.visible,
-      zIndex: Popup.nextZIndex(),
+      closed: props.visible ? false : true,
       cancelLoading: false,
-      okLoading: false
+      okLoading: false,
+      zIndex: Popup.nextZIndex()
     };
 
     return {
@@ -114,7 +116,7 @@ const VuiDrawer = {
       const { vuiDrawer, $refs: references, $props: props } = this;
       const drawer = references.drawer;
       const placement = props.placement;
-      const distance = parseInt(getStyle(drawer, placement)) + 200;
+      const distance = parseInt(getStyle(drawer, placement)) + 240;
 
       setStyle(drawer, placement, distance + "px");
 
@@ -126,7 +128,7 @@ const VuiDrawer = {
       const { vuiDrawer, $refs: references, $props: props } = this;
       const drawer = references.drawer;
       const placement = props.placement;
-      const distance = parseInt(getStyle(drawer, placement)) - 200;
+      const distance = parseInt(getStyle(drawer, placement)) - 240;
 
       setStyle(drawer, placement, distance + "px");
 
@@ -134,19 +136,24 @@ const VuiDrawer = {
         vuiDrawer.pull();
       }
     },
-    handleWrapperClick(e) {
-      const { $refs: references, $props: props } = this;
-      const target = getElementByEvent(e);
-
-      if (!target || !references.wrapper || target !== references.wrapper) {
-        return;
-      }
+    handleBackdropClick() {
+      const { $props: props } = this;
 
       if (!props.backdrop || !props.clickBackdropToClose) {
         return;
       }
 
       this.handleCancel();
+    },
+    handleWrapperClick(e) {
+      const { $refs: references } = this;
+      const target = getElementByEvent(e);
+
+      if (!target || !references.wrapper || target !== references.wrapper) {
+        return;
+      }
+
+      this.handleBackdropClick();
     },
     handleCancel() {
       const { $props: props } = this;
@@ -192,32 +199,41 @@ const VuiDrawer = {
         this.$emit("ok");
       }
     },
+    handleBeforeEnter() {
+      this.state.closed = false;
+      this.$emit("beforeOpen");
+    },
     handleEnter() {
-      this.$emit("open");
-
       if (this.vuiDrawer) {
         this.vuiDrawer.push();
       }
       else {
         this.scrollbarEffect = addScrollbarEffect();
       }
+
+      this.$emit("open");
     },
     handleAfterEnter() {
       this.$emit("afterOpen");
     },
+    handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
     handleLeave() {
-      this.$emit("close");
-
       if (this.vuiDrawer) {
         this.vuiDrawer.pull();
       }
+
+      this.$emit("close");
     },
     handleAfterLeave() {
-      this.$emit("afterClose");
+      this.state.closed = true;
 
       if (this.scrollbarEffect) {
         this.scrollbarEffect.remove();
       }
+
+      this.$emit("afterClose");
     }
   },
   beforeDestroy() {
@@ -227,7 +243,7 @@ const VuiDrawer = {
   },
   render() {
     const { $slots: slots, $props: props, state, t: translate } = this;
-    const { handleWrapperClick, handleCancel, handleOk, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+    const { handleBackdropClick, handleWrapperClick, handleCancel, handleOk, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
     const showHeader = slots.title || props.title;
 
     // class
@@ -284,7 +300,7 @@ const VuiDrawer = {
 
       if (props.clickBackdropToClose) {
         backdropProps.on = {
-          click: handleCancel
+          click: handleBackdropClick
         };
       }
 
@@ -308,7 +324,7 @@ const VuiDrawer = {
     let body;
 
     body = (
-      <div class={classes.elBody} style={props.bodyStyle}>{slots.default}</div>
+      <div class={classes.elBody} style={props.bodyStyle}>{props.destroyOnClose && state.closed ? null : slots.default}</div>
     );
 
     let footer;
@@ -325,7 +341,8 @@ const VuiDrawer = {
         if (props.showCancelButton) {
           const cancelButtonProps = {
             props: {
-              loading: state.cancelLoading
+              loading: state.cancelLoading,
+              autofocus: props.autofocusButton === "cancel"
             },
             on: {
               click: handleCancel
@@ -342,7 +359,8 @@ const VuiDrawer = {
           const okButtonProps = {
             props: {
               type: "primary",
-              loading: state.okLoading
+              loading: state.okLoading,
+              autofocus: props.autofocusButton === "ok"
             },
             on: {
               click: handleOk
@@ -374,7 +392,7 @@ const VuiDrawer = {
     children.push(
       <transition appear name={props.animations[0]}>
         <div ref="wrapper" v-show={state.visible} class={classes.elWrapper} style={styles.elWrapper} onClick={handleWrapperClick}>
-          <transition appear name={props.animations[1]} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
+          <transition appear name={props.animations[1]} onBeforeEnter={handleBeforeEnter} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onBeforeLeave={handleBeforeLeave} onLeave={handleLeave} onAfterLeave={handleAfterLeave}>
             <div ref="drawer" v-show={state.visible} class={classes.el} style={styles.el}>
               {header}
               {body}

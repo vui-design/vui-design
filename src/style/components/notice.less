@@ -1,191 +1,171 @@
 @vui-notice: ~"@{vui}-notice";
 
-
 .@{vui-notice} {
-	position:fixed;
-	box-sizing:border-box;
-	max-width:@notice-max-width;
-	border-radius:@notice-border-radius;
-	background-color:@notice-background-color;
-	box-shadow:@notice-box-shadow;
-	line-height:@notice-line-height;
-	transition:top @transition-duration @transition-timing-function, bottom @transition-duration @transition-timing-function;
+  position:fixed;
+  display:block;
+  box-sizing:border-box;
+  max-width:@notice-max-width;
+  border-radius:@notice-border-radius;
+  background-color:@notice-background-color;
+  box-shadow:@notice-box-shadow;
+  line-height:@notice-line-height;
+  transition:top @transition-duration @transition-timing-function, bottom @transition-duration @transition-timing-function;
 
-	&-icon {
-		position:absolute;
-		line-height:1;
+  &-icon {
+    position:absolute;
+    display:block;
+    box-sizing:border-box;
+    line-height:1;
 
-		.@{vui}-icon {
-			display:block;
-		}
-	}
+    .@{vui}-icon {
+      display:block;
+    }
+  }
 
-	&-title {
-		text-align:left;
-		white-space:normal;
-		word-break:break-all;
-		word-wrap:break-word; 
-	}
+  &-title {
+    display:block;
+    box-sizing:border-box;
+    text-align:left;
+    .writeBreak;
+  }
 
-	&-description {
-		margin-top:8px;
-		color:@font-color;
-		font-size:@font-size;
-		text-align:left;
-		white-space:normal;
-		word-break:break-all;
-		word-wrap:break-word; 
-	}
+  &-description {
+    display:block;
+    box-sizing:border-box;
+    margin-top:@notice-description-margin-top;
+    color:@notice-description-font-color;
+    font-size:@notice-description-font-size;
+    text-align:left;
+    .writeBreak;
+  }
 
-	&-btn-close {
-		position:absolute;
-		cursor:pointer;
-		color:@font-secondary-color;
-		line-height:1;
-		transition:color @transition-duration @transition-timing-function;
+  &-btn-close {
+    position:absolute;
+    cursor:pointer;
+    display:block;
+    box-sizing:border-box;
+    color:@notice-btn-close-font-color;
+    font-size:@notice-btn-close-font-size;
+    line-height:1;
+    transition:color @transition-duration @transition-timing-function;
 
-		.@{vui}-icon {
-			display:block;
-		}
+    .@{vui}-icon {
+      display:block;
+      transform:scale(0.85);
+    }
 
-		&:hover {
-			color:@font-color;
-		}
-	}
+    &:hover {
+      color:@notice-btn-close-hover-font-color;
+    }
+  }
 
+  &-info &-icon {
+    color:@notice-info-icon-color;
+  }
+  &-warning &-icon {
+    color:@notice-warning-icon-color;
+  }
+  &-success &-icon {
+    color:@notice-success-icon-color;
+  }
+  &-error &-icon {
+    color:@notice-error-icon-color;
+  }
 
-	&-info &-icon {
-		color:@notice-info-icon-color;
-	}
+  & {
+    padding:@notice-padding-vertical @notice-padding-horizontal;
+  }
+  &&-with-icon {
+    padding-left:@notice-with-icon-padding-left;
+  }
+  &&-closable {
+    padding-right:@notice-closable-padding-right;
+  }
+  & &-icon {
+    top:@notice-icon-top;
+    left:@notice-icon-left;
+    font-size:@notice-icon-font-size;
+  }
+  & &-title {
+    color:@notice-title-font-color;
+    font-size:@notice-title-font-size;
+  }
+  & &-btn-close {
+    top:@notice-btn-close-top;
+    right:@notice-btn-close-right;
+  }
 
-	&-warning &-icon {
-		color:@notice-warning-icon-color;
-	}
+  &-with-description {
+    padding:@notice-with-description-padding-vertical @notice-with-description-padding-horizontal;
+  }
+  &-with-description&-with-icon {
+    padding-left:@notice-with-description-with-icon-padding-left;
+  }
+  &-with-description&-closable {
+    padding-right:@notice-with-description-closable-padding-right;
+  }
+  &-with-description &-icon {
+    top:@notice-with-description-icon-top;
+    left:@notice-with-description-icon-left;
+    font-size:@notice-with-description-icon-font-size;
+  }
+  &-with-description &-title {
+    color:@notice-with-description-title-font-color;
+    font-size:@notice-with-description-title-font-size;
+  }
+  &-with-description &-btn-close {
+    top:@notice-with-description-btn-close-top;
+    right:@notice-with-description-btn-close-right;
+  }
 
-	&-success &-icon {
-		color:@notice-success-icon-color;
-	}
+  &-top-left {
+    top:24px;
+    left:24px;
+  }
+  &-top-right {
+    top:24px;
+    right:24px;
+  }
+  &-bottom-left {
+    bottom:24px;
+    left:24px;
+  }
+  &-bottom-right {
+    bottom:24px;
+    right:24px;
+  }
 
-	&-error &-icon {
-		color:@notice-error-icon-color;
-	}
+  &-fade-enter-active { animation:@animation-in-duration @animation-in-timing-function both; }
+  &-fade-leave-active { animation:@animation-out-duration @animation-out-timing-function both; }
 
-
-	& {
-		padding:@notice-padding-vertical @notice-padding-horizontal;
-	}
-
-	&&-with-icon {
-		padding-left:@notice-with-icon-padding-left;
-	}
-
-	&&-closable {
-		padding-right:@notice-closable-padding-right;
-	}
-
-	& &-icon {
-		top:@notice-icon-top;
-		left:@notice-icon-left;
-		font-size:@notice-icon-font-size;
-	}
-
-	& &-title {
-		color:@notice-title-color;
-		font-size:@notice-title-font-size;
-	}
-
-	& &-btn-close {
-		top:@notice-btn-close-top;
-		right:@notice-btn-close-right;
-		font-size:@notice-btn-close-font-size;
-	}
-
-
-	&-with-description {
-		padding:@notice-with-description-padding-vertical @notice-with-description-padding-horizontal;
-	}
-
-	&-with-description&-with-icon {
-		padding-left:@notice-with-description-with-icon-padding-left;
-	}
-
-	&-with-description&-closable {
-		padding-right:@notice-with-description-closable-padding-right;
-	}
-
-	&-with-description &-icon {
-		top:@notice-with-description-icon-top;
-		left:@notice-with-description-icon-left;
-		font-size:@notice-with-description-icon-font-size;
-	}
-
-	&-with-description &-title {
-		color:@notice-with-description-title-color;
-		font-size:@notice-with-description-title-font-size;
-	}
-
-	&-with-description &-btn-close {
-		top:@notice-with-description-btn-close-top;
-		right:@notice-with-description-btn-close-right;
-		font-size:@notice-with-description-btn-close-font-size;
-	}
-
-
-	&-top-left {
-		top:20px;
-		left:20px;
-	}
-
-	&-top-right {
-		top:20px;
-		right:20px;
-	}
-
-	&-bottom-left {
-		bottom:20px;
-		left:20px;
-	}
-
-	&-bottom-right {
-		bottom:20px;
-		right:20px;
-	}
-
-
-	&-fade-enter-active { animation:@animation-in-duration @animation-in-timing-function both; }
-	&-fade-leave-active { animation:@animation-out-duration @animation-out-timing-function both; }
-
-
-	&-top-left&-fade-enter-active { animation-name:vuiNoticeLeftFadeIn; }
-	&-top-left&-fade-leave-active { animation-name:vuiNoticeLeftFadeOut; }
-	&-top-right&-fade-enter-active { animation-name:vuiNoticeRightFadeIn; }
-	&-top-right&-fade-leave-active { animation-name:vuiNoticeRightFadeOut; }
-	&-bottom-left&-fade-enter-active { animation-name:vuiNoticeLeftFadeIn; }
-	&-bottom-left&-fade-leave-active { animation-name:vuiNoticeLeftFadeOut; }
-	&-bottom-right&-fade-enter-active { animation-name:vuiNoticeRightFadeIn; }
-	&-bottom-right&-fade-leave-active { animation-name:vuiNoticeRightFadeOut; }
+  &-top-left&-fade-enter-active,
+  &-bottom-left&-fade-enter-active { animation-name:vuiNoticeLeftFadeIn; }
+  &-top-left&-fade-leave-active,
+  &-bottom-left&-fade-leave-active { animation-name:vuiNoticeLeftFadeOut; }
+  &-top-right&-fade-enter-active,
+  &-bottom-right&-fade-enter-active { animation-name:vuiNoticeRightFadeIn; }
+  &-top-right&-fade-leave-active,
+  &-bottom-right&-fade-leave-active { animation-name:vuiNoticeRightFadeOut; }
 }
 
-
 @keyframes vuiNoticeLeftFadeIn {
-	0% { opacity:0; transform:translate(-100%, 0); }
-	100% { opacity:1; transform:translate(0,0); }
+  0% { opacity:0; transform:translate(-100%, 0); }
+  100% { opacity:1; transform:translate(0,0); }
 }
 
 @keyframes vuiNoticeLeftFadeOut {
-	0% { opacity:1; }
-	30% { opacity:1; }
-	100% { opacity:0; }
+  0% { opacity:1; }
+  30% { opacity:1; }
+  100% { opacity:0; }
 }
 
 @keyframes vuiNoticeRightFadeIn {
-	0% { opacity:0; transform:translate(100%, 0); }
-	100% { opacity:1; transform:translate(0,0); }
+  0% { opacity:0; transform:translate(100%, 0); }
+  100% { opacity:1; transform:translate(0,0); }
 }
 
 @keyframes vuiNoticeRightFadeOut {
-	0% { opacity:1; }
-	30% { opacity:1; }
-	100% { opacity:0; }
+  0% { opacity:1; }
+  30% { opacity:1; }
+  100% { opacity:0; }
 }
-

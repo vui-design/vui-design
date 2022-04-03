@@ -1,261 +1,222 @@
 import VuiIcon from "../../icon";
 import Portal from "../../../directives/portal";
 import Popup from "../../../libs/popup";
+import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiNotice = {
-	name: "vui-notice",
+  name: "vui-notice",
+  components: {
+    VuiIcon
+  },
+  directives: {
+    Portal
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["info", "warning", "success", "error"]).def("info"),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
+    description: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
+    icon: PropTypes.string,
+    closable: PropTypes.bool.def(true),
+    closeText: PropTypes.string,
+    placement: PropTypes.oneOf(["top-left", "top-right", "bottom-left", "bottom-right"]).def("top-right"),
+    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(24),
+    bottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(24),
+    visible: PropTypes.bool.def(false),
+    animation: PropTypes.string.def("vui-notice-fade"),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
+  },
+  data() {
+    const { $props: props } = this;
+    const state = {
+      visible: props.visible,
+      zIndex: Popup.nextZIndex()
+    };
 
-	components: {
-		VuiIcon
-	},
+    return {
+      state
+    };
+  },
+  watch: {
+    visible(value) {
+      if (this.state.visible === value) {
+        return;
+      }
 
-	directives: {
-		Portal
-	},
+      this.state.visible = value;
 
-	model: {
-		prop: "visible",
-		event: "change"
-	},
+      if (!value) {
+        return;
+      }
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		type: {
-			type: String,
-			default: "info",
-			validator: value => ["info", "warning", "success", "error"].indexOf(value) > -1
-		},
-		title: {
-			type: [String, Function, Object],
-			default: undefined
-		},
-		description: {
-			type: [String, Function, Object],
-			default: undefined
-		},
-		icon: {
-			type: String,
-			default: undefined
-		},
-		closable: {
-			type: Boolean,
-			default: true
-		},
-		closeText: {
-			type: String,
-			default: undefined
-		},
-		placement: {
-			type: String,
-			default: "top-right",
-			validator: value => ["top-left", "top-right", "bottom-left", "bottom-right"].indexOf(value) > -1
-		},
-		top: {
-			type: Number,
-			default: 20
-		},
-		bottom: {
-			type: Number,
-			default: 20
-		},
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		animation: {
-			type: String,
-			default: "vui-notice-fade"
-		},
-		getPopupContainer: {
-			type: [Function, Boolean],
-			default: () => document.body
-		}
-	},
+      this.state.zIndex = Popup.nextZIndex();
+    }
+  },
+  methods: {
+    toggle(visible) {
+      this.state.visible = visible;
+      this.$emit("input", visible);
+      this.$emit("change", visible);
+    },
+    open() {
+      this.toggle(true);
+    },
+    close() {
+      this.toggle(false);
+    },
+    handleClose() {
+      this.close();
+    },
+    handleBeforeEnter() {
+      this.$emit("beforeOpen");
+    },
+    handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
+    handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave() {
+      this.$emit("afterClose");
+    }
+  },
+  render(h) {
+    const { $slots: slots, $props: props, state } = this;
+    const { handleClose, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 
-	data() {
-		let { $props: props } = this;
+    // icon
+    let icon;
 
-		return {
-			state: {
-				visible: props.visible,
-				zIndex: Popup.nextZIndex(),
-				cancelLoading: false,
-				okLoading: false
-			}
-		};
-	},
+    if (slots.icon) {
+      icon = slots.icon;
+    }
+    else if (props.icon) {
+      icon = (
+        <VuiIcon type={props.icon} />
+      );
+    }
 
-	computed: {
-		visibility() {
-			return this.state.visible;
-		}
-	},
+    // title
+    let title;
 
-	watch: {
-		visible(value) {
-			if (this.state.visible === value) {
-				return;
-			}
+    if (slots.default) {
+      title = slots.default;
+    }
+    else if (props.title) {
+      title = is.function(props.title) ? props.title(h) : props.title;
+    }
 
-			this.state.visible = value;
-		},
-		visibility(value) {
-			if (!value) {
-				return;
-			}
+    // description
+    let description;
 
-			this.state.zIndex = Popup.nextZIndex();
-		}
-	},
+    if (slots.description) {
+      description = slots.description;
+    }
+    else if (props.description) {
+      description = is.function(props.description) ? props.description(h) : props.description;
+    }
 
-	methods: {
-		open() {
-			this.state.visible = true;
-			this.$emit("change", true);
-		},
-		close() {
-			this.state.visible = false;
-			this.$emit("change", false);
-		},
-		handleBtnCloseClick() {
-			this.close();
-		},
-		handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave() {
-			this.$emit("afterClose");
-		}
-	},
+    // btnClose
+    let btnClose;
 
-	render(h) {
-		let { $slots: slots, $props: props, state } = this;
-		let { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
-		let portal = props.getPopupContainer();
+    if (props.closable) {
+      if (props.closeText) {
+        btnClose = props.closeText;
+      }
+      else {
+        btnClose = (
+          <VuiIcon type="crossmark" />
+        );
+      }
+    }
 
-		// icon
-		let icon;
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "notice");
+    let classes = {};
 
-		if (slots.icon) {
-			icon = slots.icon;
-		}
-		else if (props.icon) {
-			icon = (
-				<VuiIcon type={props.icon} />
-			);
-		}
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${props.type}`]: props.type,
+      [`${classNamePrefix}-with-icon`]: icon,
+      [`${classNamePrefix}-with-description`]: description,
+      [`${classNamePrefix}-closable`]: props.closable,
+      [`${classNamePrefix}-${props.placement}`]: props.placement
+    };
+    classes.elIcon = `${classNamePrefix}-icon`;
+    classes.elTitle = `${classNamePrefix}-title`;
+    classes.elDescription = `${classNamePrefix}-description`;
+    classes.elBtnClose = `${classNamePrefix}-btn-close`;
 
-		// title
-		let title;
+    // style
+    let styles = {};
 
-		if (slots.default) {
-			title = slots.default;
-		}
-		else if (props.title) {
-			title = is.function(props.title) ? props.title(h) : props.title;
-		}
+    styles.el = {
+      zIndex: state.zIndex
+    };
 
-		// description
-		let description;
+    if (/^(top)(-left|-right)?$/g.test(props.placement)) {
+      styles.el.top = is.string(props.top) ? props.top : (props.top + "px");
+    }
+    else if (/^(bottom)(-left|-right)?$/g.test(props.placement)) {
+      styles.el.bottom = is.string(props.bottom) ? props.bottom : (props.bottom + "px");
+    }
 
-		if (slots.description) {
-			description = slots.description;
-		}
-		else if (props.description) {
-			description = is.function(props.description) ? props.description(h) : props.description;
-		}
+    // render
+    let children = [];
 
-		// btnClose
-		let btnClose;
+    if (icon) {
+      children.push(
+        <div class={classes.elIcon}>{icon}</div>
+      );
+    }
 
-		if (props.closable) {
-			if (props.closeText) {
-				btnClose = props.closeText;
-			}
-			else {
-				btnClose = (
-					<VuiIcon type="crossmark" />
-				);
-			}
-		}
+    if (title) {
+      children.push(
+        <div class={classes.elTitle}>{title}</div>
+      );
+    }
 
-		// class
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "notice");
-		let classes = {};
+    if (description) {
+      children.push(
+        <div class={classes.elDescription}>{description}</div>
+      );
+    }
 
-		classes.el = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${props.type}`]: props.type,
-			[`${classNamePrefix}-with-icon`]: icon,
-			[`${classNamePrefix}-with-description`]: description,
-			[`${classNamePrefix}-closable`]: props.closable,
-			[`${classNamePrefix}-${props.placement}`]: props.placement
-		};
-		classes.elIcon = `${classNamePrefix}-icon`;
-		classes.elTitle = `${classNamePrefix}-title`;
-		classes.elDescription = `${classNamePrefix}-description`;
-		classes.elBtnClose = `${classNamePrefix}-btn-close`;
+    if (props.closable) {
+      children.push(
+        <div class={classes.elBtnClose} onClick={handleClose}>{btnClose}</div>
+      );
+    }
 
-		// style
-		let styles = {};
-
-		styles.el = {
-			zIndex: state.zIndex
-		};
-
-		if (/^(top)(-left|-right)?$/g.test(props.placement)) {
-			styles.el.top = `${props.top}px`;
-		}
-		else if (/^(bottom)(-left|-right)?$/g.test(props.placement)) {
-			styles.el.bottom = `${props.bottom}px`;
-		}
-
-		// render
-		let children = [];
-
-		if (icon) {
-			children.push(
-				<div class={classes.elIcon}>{icon}</div>
-			);
-		}
-
-		if (title) {
-			children.push(
-				<div class={classes.elTitle}>{title}</div>
-			);
-		}
-
-		if (description) {
-			children.push(
-				<div class={classes.elDescription}>{description}</div>
-			);
-		}
-
-		if (props.closable) {
-			children.push(
-				<div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
-			);
-		}
-
-		return (
-			<transition name={props.animation} onEnter={handleEnter} onAfterEnter={handleAfterEnter} onLeave={handleLeave} onAfterLeave={handleAfterLeave} appear>
-				<div v-portal={portal} v-show={state.visible} class={classes.el} style={styles.el}>
-					{children}
-				</div>
-			</transition>
-		);
-	}
+    return (
+      <transition
+        appear
+        name={props.animation}
+        onBeforeEnter={handleBeforeEnter}
+        onEnter={handleEnter}
+        onAfterEnter={handleAfterEnter}
+        onBeforeLeave={handleBeforeLeave}
+        onLeave={handleLeave}
+        onAfterLeave={handleAfterLeave}
+      >
+        <div v-portal={props.getPopupContainer} v-show={state.visible} class={classes.el} style={styles.el}>
+          {children}
+        </div>
+      </transition>
+    );
+  }
 };
 
 export default VuiNotice;

@@ -48,7 +48,7 @@ const createModalInstance = function(options) {
         this.visible = false;
       },
       update(options) {
-        if (!is.plainObject(options)) {
+        if (!is.json(options)) {
           return;
         }
 
@@ -177,33 +177,63 @@ const createModalInstance = function(options) {
 };
 
 /**
-* 对外提供 info 接口
-* @param {Object} options 
+* 对外提供 open 接口
+* @param {String/Function/Object} options 
 */
-VuiModal.info = function(options) {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.plainObject(options)) {
+VuiModal.open = function(options, type) {
+  if (is.server || !is.json(options)) {
     return;
   }
 
   options = {
-    type: "info",
-    icon: "info",
     ...defaults,
     ...options
   };
 
-  options.showCancelButton = false;
-  options.showOkButton = true;
+  if (type === "info") {
+    options.type = type;
+    options.icon = "info";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  }
+  else if (type === "warning") {
+    options.type = type;
+    options.icon = "warning";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  }
+  else if (type === "success") {
+    options.type = type;
+    options.icon = "checkmark-circle";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  }
+  else if (type === "error") {
+    options.type = type;
+    options.icon = "crossmark-circle";
+    options.showCancelButton = false;
+    options.showOkButton = true;
+  }
+  else if (type === "confirm") {
+    options.type = type;
+    options.icon = "help";
+    options.showCancelButton = true;
+    options.showOkButton = true;
+  }
 
   const instance = createModalInstance(options);
 
   instance.open();
 
   return instance;
+};
+
+/**
+* 对外提供 info 接口
+* @param {Object} options 
+*/
+VuiModal.info = function(options) {
+  return VuiModal.open(options, "info");
 };
 
 /**
@@ -211,29 +241,7 @@ VuiModal.info = function(options) {
 * @param {Object} options 
 */
 VuiModal.warning = function(options) {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.plainObject(options)) {
-    return;
-  }
-
-  options = {
-    type: "warning",
-    icon: "warning",
-    ...defaults,
-    ...options
-  };
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  const instance = createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return VuiModal.open(options, "warning");
 };
 
 /**
@@ -241,29 +249,7 @@ VuiModal.warning = function(options) {
 * @param {Object} options 
 */
 VuiModal.success = function(options) {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.plainObject(options)) {
-    return;
-  }
-
-  options = {
-    type: "success",
-    icon: "checkmark-circle",
-    ...defaults,
-    ...options
-  };
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  const instance = createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return VuiModal.open(options, "success");
 };
 
 /**
@@ -271,29 +257,7 @@ VuiModal.success = function(options) {
 * @param {Object} options 
 */
 VuiModal.error = function(options) {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.plainObject(options)) {
-    return;
-  }
-
-  options = {
-    type: "error",
-    icon: "crossmark-circle",
-    ...defaults,
-    ...options
-  };
-
-  options.showCancelButton = false;
-  options.showOkButton = true;
-
-  const instance = createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return VuiModal.open(options, "error");
 };
 
 /**
@@ -301,29 +265,7 @@ VuiModal.error = function(options) {
 * @param {Object} options 
 */
 VuiModal.confirm = function(options) {
-  if (is.server) {
-    return;
-  }
-
-  if (!is.plainObject(options)) {
-    return;
-  }
-
-  options = {
-    type: "confirm",
-    icon: "help",
-    ...defaults,
-    ...options
-  };
-
-  options.showCancelButton = true;
-  options.showOkButton = true;
-
-  const instance = createModalInstance(options);
-
-  instance.open();
-
-  return instance;
+  return VuiModal.open(options, "confirm");
 };
 
 /**

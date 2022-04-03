@@ -7,6 +7,7 @@ import Popup from "../../../libs/popup";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import merge from "../../../utils/merge";
+import styleToObject from "../../../utils/styleToObject";
 import addScrollbarEffect from "../../../utils/addScrollbarEffect";
 import getElementByEvent from "../../../utils/getElementByEvent";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
@@ -45,18 +46,19 @@ const VuiModal = {
     autofocusButton: PropTypes.oneOf(["ok", "cancel"]),
     closable: PropTypes.bool.def(true),
     top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(100),
-    centered: PropTypes.bool.def(false),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(500),
+    centered: PropTypes.bool.def(true),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(480),
     className: PropTypes.string,
     headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     footerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     backdrop: PropTypes.bool.def(true),
     backdropClassName: PropTypes.string,
+    backdropStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     clickBackdropToClose: PropTypes.bool.def(true),
     destroyOnClose: PropTypes.bool.def(false),
     animations: PropTypes.array.def(["vui-modal-backdrop-fade", "vui-modal-zoom"]),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
+    getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
   },
   data() {
     const { $props: props } = this;
@@ -136,8 +138,8 @@ const VuiModal = {
         });
       }
       else {
-        this.$emit("cancel");
         this.close();
+        this.$emit("cancel");
       }
     },
     handleOk() {
@@ -158,8 +160,8 @@ const VuiModal = {
         });
       }
       else {
-        this.$emit("ok");
         this.close();
+        this.$emit("ok");
       }
     },
     handleBeforeEnter() {
@@ -181,7 +183,11 @@ const VuiModal = {
     },
     handleAfterLeave() {
       this.state.closed = true;
-      this.scrollbarEffect && this.scrollbarEffect.remove();
+
+      if (this.scrollbarEffect) {
+        this.scrollbarEffect.remove();
+      }
+
       this.$emit("afterClose");
     }
   },
@@ -245,9 +251,23 @@ const VuiModal = {
     let children = [];
 
     if (props.backdrop) {
+      let backdropProps = {
+        class: classes.elBackdrop,
+        style: [
+          styles.elBackdrop,
+          is.string(props.backdropStyle) ? styleToObject(props.backdropStyle) : props.backdropStyle
+        ]
+      };
+
+      if (props.clickBackdropToClose) {
+        backdropProps.on = {
+          click: handleBackdropClick
+        };
+      }
+
       children.push(
         <transition appear name={props.animations[0]}>
-          <div ref="backdrop" v-show={state.visible} class={classes.elBackdrop} style={styles.elBackdrop} onClick={handleBackdropClick}></div>
+          <div ref="backdrop" v-show={state.visible} {...backdropProps}></div>
         </transition>
       );
     }

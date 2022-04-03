@@ -4,15 +4,14 @@ import range from "../../../utils/range";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const widthProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
-const skeletonParagraphProps = {
-  classNamePrefix: PropTypes.string,
-  rows: PropTypes.number,
-  width: PropTypes.oneOfType([widthProp, PropTypes.arrayOf(widthProp)])
-};
-
 const VuiSkeletonParagraph = {
   name: "vui-skeleton-paragraph",
-  props: skeletonParagraphProps,
+  props: {
+    classNamePrefix: PropTypes.string,
+    animated: PropTypes.bool.def(false),
+    rows: PropTypes.number,
+    width: PropTypes.oneOfType([widthProp, PropTypes.arrayOf(widthProp)])
+  },
   methods: {
     getWidthProperty(index) {
       const { $props: props } = this;
@@ -31,10 +30,13 @@ const VuiSkeletonParagraph = {
   render() {
     const { $props: props } = this;
 
-    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "paragraph");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-paragraph");
     let classes = {};
 
-    classes.el = `${classNamePrefix}`;
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-animated`]: props.animated
+    };
 
     const rows = range(0, props.rows).map((row, index) => {
       const width = this.getWidthProperty(index);

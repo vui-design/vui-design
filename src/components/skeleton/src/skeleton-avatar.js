@@ -8,18 +8,20 @@ const VuiSkeletonAvatar = {
   name: "vui-skeleton-avatar",
   props: {
     classNamePrefix: PropTypes.string,
+    animated: PropTypes.bool.def(false),
     shape: PropTypes.oneOf(shapes).def("circle"),
-    size: PropTypes.oneOfType([PropTypes.oneOf(sizes), PropTypes.number]).def("large")
+    size: PropTypes.oneOfType([PropTypes.oneOf(sizes), PropTypes.number]).def("medium")
   },
   render() {
     const { $props: props } = this;
     const isPresetSize =  sizes.indexOf(props.size) > -1;
 
-    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "avatar");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-avatar");
     let classes = {};
 
     classes.el = {
       [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-animated`]: props.animated,
       [`${classNamePrefix}-${props.shape}`]: props.shape,
       [`${classNamePrefix}-${props.size}`]: props.size && isPresetSize
     };
@@ -29,8 +31,7 @@ const VuiSkeletonAvatar = {
     if (props.size && !isPresetSize) {
       styles.el = {
         width: `${props.size}px`,
-        height: `${props.size}px`,
-        lineHeight: `${props.size}px`
+        height: `${props.size}px`
       };
     }
 

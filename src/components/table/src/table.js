@@ -561,12 +561,14 @@ const VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is.json(props.affixHeader)) {
-            props.affixHeader = {};
+          let affixHeader = props.affixHeader;
+
+          if (!is.json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = (
-            <VuiAffix offsetTop={props.affixHeader.offsetTop} offsetBottom={props.affixHeader.offsetBottom} getScrollContainer={props.affixHeader.getScrollContainer}>
+            <VuiAffix offsetTop={affixHeader.offsetTop} offsetBottom={affixHeader.offsetBottom} getScrollContainer={affixHeader.getScrollContainer}>
               {header}
             </VuiAffix>
           );
@@ -673,12 +675,14 @@ const VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is.json(props.affixHeader)) {
-            props.affixHeader = {};
+          let affixHeader = props.affixHeader;
+
+          if (!is.json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = (
-            <VuiAffix offsetTop={props.affixHeader.offsetTop} offsetBottom={props.affixHeader.offsetBottom} getScrollContainer={props.affixHeader.getScrollContainer}>
+            <VuiAffix offsetTop={affixHeader.offsetTop} offsetBottom={affixHeader.offsetBottom} getScrollContainer={affixHeader.getScrollContainer}>
               {header}
             </VuiAffix>
           );
@@ -793,12 +797,14 @@ const VuiTable = {
         );
 
         if (props.affixHeader) {
-          if (!is.json(props.affixHeader)) {
-            props.affixHeader = {};
+          let affixHeader = props.affixHeader;
+
+          if (!is.json(affixHeader)) {
+            affixHeader = {};
           }
 
           header = (
-            <VuiAffix offsetTop={props.affixHeader.offsetTop} offsetBottom={props.affixHeader.offsetBottom} getScrollContainer={props.affixHeader.getScrollContainer}>
+            <VuiAffix offsetTop={affixHeader.offsetTop} offsetBottom={affixHeader.offsetBottom} getScrollContainer={affixHeader.getScrollContainer}>
               {header}
             </VuiAffix>
           );

@@ -15,7 +15,7 @@ const VuiMessage = {
   },
   model: {
     prop: "visible",
-    event: "change"
+    event: "input"
   },
   props: {
     classNamePrefix: PropTypes.string,
@@ -25,15 +25,16 @@ const VuiMessage = {
     background: PropTypes.bool.def(false),
     closable: PropTypes.bool.def(false),
     closeText: PropTypes.string,
-    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(20),
+    top: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(24),
     visible: PropTypes.bool.def(false),
     animation: PropTypes.string.def("vui-message-fade"),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
   },
   data() {
     const { $props: props } = this;
     const state = {
-      visible: props.visible
+      visible: props.visible,
+      zIndex: Popup.nextZIndex()
     };
 
     return {
@@ -47,25 +48,40 @@ const VuiMessage = {
       }
 
       this.state.visible = value;
+
+      if (!value) {
+        return;
+      }
+
+      this.state.zIndex = Popup.nextZIndex();
     }
   },
   methods: {
+    toggle(visible) {
+      this.state.visible = visible;
+      this.$emit("input", visible);
+      this.$emit("change", visible);
+    },
     open() {
-      this.state.visible = true;
-      this.$emit("change", this.state.visible);
+      this.toggle(true);
     },
     close() {
-      this.state.visible = false;
-      this.$emit("change", this.state.visible);
+      this.toggle(false);
     },
-    handleBtnCloseClick() {
+    handleClose() {
       this.close();
+    },
+    handleBeforeEnter() {
+      this.$emit("beforeOpen");
     },
     handleEnter() {
       this.$emit("open");
     },
     handleAfterEnter() {
       this.$emit("afterOpen");
+    },
+    handleBeforeLeave() {
+      this.$emit("beforeClose");
     },
     handleLeave() {
       this.$emit("close");
@@ -76,7 +92,7 @@ const VuiMessage = {
   },
   render(h) {
     const { $slots: slots, $props: props, state } = this;
-    const { handleBtnCloseClick, handleEnter, handleAfterEnter, handleLeave, handleAfterLeave } = this;
+    const { handleClose, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
 
     // icon
     let icon;
@@ -134,7 +150,7 @@ const VuiMessage = {
 
     styles.el = {
       top: is.string(props.top) ? props.top : (props.top + "px"),
-      zIndex: state.visible ? Popup.nextZIndex() : Popup.zIndex
+      zIndex: state.zIndex
     };
 
     // render
@@ -152,18 +168,20 @@ const VuiMessage = {
 
     if (props.closable) {
       children.push(
-        <div class={classes.elBtnClose} onClick={handleBtnCloseClick}>{btnClose}</div>
+        <div class={classes.elBtnClose} onClick={handleClose}>{btnClose}</div>
       );
     }
 
     return (
       <transition
+        appear
         name={props.animation}
+        onBeforeEnter={handleBeforeEnter}
         onEnter={handleEnter}
         onAfterEnter={handleAfterEnter}
+        onBeforeLeave={handleBeforeLeave}
         onLeave={handleLeave}
         onAfterLeave={handleAfterLeave}
-        appear
       >
         <div v-portal={props.getPopupContainer} v-show={state.visible} class={classes.el} style={styles.el}>
           {children}

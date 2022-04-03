@@ -1,116 +1,248 @@
 @vui-progress: ~"@{vui}-progress";
 
+.@{vui-progress} {
+  // line
+  &-line {
+    position:relative;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    box-sizing:border-box;
+    white-space:nowrap;
+  }
 
-@keyframes vuiProgressActive {
-	0% { background-position:0 0; }
-	100% { background-position:40px 0; }
+  &-line &-main {
+    flex:1;
+    display:block;
+    box-sizing:border-box;
+
+    &-track {
+      width:100%;
+      background-color:transparent;
+      overflow:hidden;
+    }
+    &-thumb {
+      position:relative;
+      width:0%;
+      background-color:transparent;
+      transition:all @transition-duration @transition-timing-function;
+    }
+  }
+
+  &-line &-info {
+    display:block;
+    width:36px;
+    margin-left:@margin-xs;
+    line-height:1;
+  }
+
+  &-line&-small {
+    font-size:@progress-line-font-size-sm;
+  }
+  &-line&-medium {
+    font-size:@progress-line-font-size-md;
+  }
+  &-line&-large {
+    font-size:@progress-line-font-size-lg;
+  }
+
+  &-line&-status-normal {
+    color:@progress-normal-font-color;
+  }
+  &-line&-status-normal &-main-track {
+    background-color:@progress-normal-track-color;
+  }
+  &-line&-status-normal &-main-thumb {
+    background-color:@progress-normal-color;
+  }
+
+  &-line&-status-active {
+    color:@progress-active-font-color;
+  }
+  &-line&-status-active &-main-track {
+    background-color:@progress-active-track-color;
+  }
+  &-line&-status-active &-main-thumb {
+    background-color:@progress-active-color;
+    background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent 100%);
+    background-size:40px 40px;
+    animation:vuiProgressActive 2s linear infinite;
+  }
+
+  &-line&-status-exception {
+    color:@progress-exception-font-color;
+  }
+  &-line&-status-exception &-main-track {
+    background-color:@progress-exception-track-color;
+  }
+  &-line&-status-exception &-main-thumb {
+    background-color:@progress-exception-color;
+  }
+
+  &-line&-status-success {
+    color:@progress-success-font-color;
+  }
+  &-line&-status-success &-main-track {
+    background-color:@progress-success-track-color;
+  }
+  &-line&-status-success &-main-thumb {
+    background-color:@progress-success-color;
+  }
+
+  // circle
+  &-circle {
+    position:relative;
+    display:block;
+    box-sizing:border-box;
+  }
+
+  &-circle &-main {
+    display:block;
+    width:100%;
+    height:100%;
+
+    &-track {
+      fill:none;
+      fill-opacity:0;
+      stroke:transparent;
+    }
+    &-thumb {
+      fill:none;
+      fill-opacity:0;
+      stroke:transparent;
+      transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s;
+    }
+  }
+
+  &-circle &-info {
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    width:100%;
+    text-align:center;
+    line-height:1;
+    transform:translateY(-50%);
+  }
+
+  &-circle&-small {
+    font-size:@progress-circle-font-size-sm;
+  }
+  &-circle&-medium {
+    font-size:@progress-circle-font-size-md;
+  }
+  &-circle&-large {
+    font-size:@progress-circle-font-size-lg;
+  }
+
+  &-circle&-status-normal {
+    color:@progress-normal-font-color;
+  }
+  &-circle&-status-normal &-main-track {
+    stroke:@progress-normal-track-color;
+  }
+  &-circle&-status-normal &-main-thumb {
+    stroke:@progress-normal-color;
+  }
+
+  &-circle&-status-exception {
+    color:@progress-exception-font-color;
+  }
+  &-circle&-status-exception &-main-track {
+    stroke:@progress-exception-track-color;
+  }
+  &-circle&-status-exception &-main-thumb {
+    stroke:@progress-exception-color;
+  }
+
+  &-circle&-status-success {
+    color:@progress-success-font-color;
+  }
+  &-circle&-status-success &-main-track {
+    stroke:@progress-success-track-color;
+  }
+  &-circle&-status-success &-main-thumb {
+    stroke:@progress-success-color;
+  }
+
+  // dashboard
+  &-dashboard {
+    position:relative;
+    display:block;
+    box-sizing:border-box;
+  }
+
+  &-dashboard &-main {
+    display:block;
+    width:100%;
+    height:100%;
+
+    &-track {
+      fill:none;
+      fill-opacity:0;
+      stroke:transparent;
+    }
+    &-thumb {
+      fill:none;
+      fill-opacity:0;
+      stroke:transparent;
+      transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s;
+    }
+  }
+
+  &-dashboard &-info {
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    width:100%;
+    text-align:center;
+    line-height:1;
+    transform:translateY(-50%);
+  }
+
+  &-dashboard&-small {
+    font-size:@progress-dashboard-font-size-sm;
+  }
+  &-dashboard&-medium {
+    font-size:@progress-dashboard-font-size-md;
+  }
+  &-dashboard&-large {
+    font-size:@progress-dashboard-font-size-lg;
+  }
+
+  &-dashboard&-status-normal {
+    color:@progress-normal-font-color;
+  }
+  &-dashboard&-status-normal &-main-track {
+    stroke:@progress-normal-track-color;
+  }
+  &-dashboard&-status-normal &-main-thumb {
+    stroke:@progress-normal-color;
+  }
+
+  &-dashboard&-status-exception {
+    color:@progress-exception-font-color;
+  }
+  &-dashboard&-status-exception &-main-track {
+    stroke:@progress-exception-track-color;
+  }
+  &-dashboard&-status-exception &-main-thumb {
+    stroke:@progress-exception-color;
+  }
+
+  &-dashboard&-status-success {
+    color:@progress-success-font-color;
+  }
+  &-dashboard&-status-success &-main-track {
+    stroke:@progress-success-track-color;
+  }
+  &-dashboard&-status-success &-main-thumb {
+    stroke:@progress-success-color;
+  }
 }
 
-
-// line
-.vui-progress-line { position:relative; display:block; font-size:0; line-height:1; white-space:nowrap; }
-.vui-progress-line .vui-progress-main { display:inline-block; box-sizing:border-box; width:100%; vertical-align:middle; }
-.vui-progress-line .vui-progress-main-track { width:100%; border-radius:100px; background-color:transparent; overflow:hidden; }
-.vui-progress-line .vui-progress-main-thumb { position:relative; width:0%; border-radius:100px; background-color:transparent; transition:all 0.2s; }
-.vui-progress-line .vui-progress-info { display:inline-block; margin-left:-40px; vertical-align:middle; line-height:1; color:#676a6c; font-size:14px; }
-
-.vui-progress-line.vui-progress-small .vui-progress-main {  }
-.vui-progress-line.vui-progress-small .vui-progress-main-track { height:6px; }
-.vui-progress-line.vui-progress-small .vui-progress-main-thumb { height:6px; }
-.vui-progress-line.vui-progress-small .vui-progress-info { font-size:12px; }
-.vui-progress-line.vui-progress-medium .vui-progress-main {  }
-.vui-progress-line.vui-progress-medium .vui-progress-main-track { height:8px; }
-.vui-progress-line.vui-progress-medium .vui-progress-main-thumb { height:8px; }
-.vui-progress-line.vui-progress-medium .vui-progress-info { font-size:14px; }
-.vui-progress-line.vui-progress-large .vui-progress-main {  }
-.vui-progress-line.vui-progress-large .vui-progress-main-track { height:10px; }
-.vui-progress-line.vui-progress-large .vui-progress-main-thumb { height:10px; }
-.vui-progress-line.vui-progress-large .vui-progress-info { font-size:16px; }
-
-.vui-progress-line.vui-progress-status-normal .vui-progress-main {  }
-.vui-progress-line.vui-progress-status-normal .vui-progress-main-track { background-color:#f5f5f5; }
-.vui-progress-line.vui-progress-status-normal .vui-progress-main-thumb { background-color:#2d8cf0; }
-.vui-progress-line.vui-progress-status-normal .vui-progress-info { color:#595959; }
-.vui-progress-line.vui-progress-status-active .vui-progress-main {  }
-.vui-progress-line.vui-progress-status-active .vui-progress-main-track { background-color:#f5f5f5; }
-.vui-progress-line.vui-progress-status-active .vui-progress-main-thumb { background-color:#2d8cf0; background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent 100%); background-size:40px 40px; animation:vuiProgressActive 2s linear infinite; }
-.vui-progress-line.vui-progress-status-active .vui-progress-info { color:#595959; }
-.vui-progress-line.vui-progress-status-exception .vui-progress-main {  }
-.vui-progress-line.vui-progress-status-exception .vui-progress-main-track { background-color:#f5f5f5; }
-.vui-progress-line.vui-progress-status-exception .vui-progress-main-thumb { background-color:#ff4d4f; }
-.vui-progress-line.vui-progress-status-exception .vui-progress-info { color:#ff4d4f; }
-.vui-progress-line.vui-progress-status-success .vui-progress-main {  }
-.vui-progress-line.vui-progress-status-success .vui-progress-main-track { background-color:#f5f5f5; }
-.vui-progress-line.vui-progress-status-success .vui-progress-main-thumb { background-color:#5cb85c; }
-.vui-progress-line.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
-
-.vui-progress-line.vui-progress-with-info .vui-progress-main { padding-right:50px; }
-
-
-// circle
-.vui-progress-circle { position:relative; display:inline-block; vertical-align:middle; font-size:0; }
-.vui-progress-circle .vui-progress-main { display:block; width:100%; height:100%; }
-.vui-progress-circle .vui-progress-main-track { fill:none; fill-opacity:0; stroke:transparent; }
-.vui-progress-circle .vui-progress-main-thumb { fill:none; fill-opacity:0; stroke:transparent; transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s; }
-.vui-progress-circle .vui-progress-info { position:absolute; top:50%; left:0; right:0; width:100%; text-align:center; line-height:1; transform:translateY(-50%); }
-
-.vui-progress-circle.vui-progress-small .vui-progress-main {  }
-.vui-progress-circle.vui-progress-small .vui-progress-main-track {  }
-.vui-progress-circle.vui-progress-small .vui-progress-main-thumb {  }
-.vui-progress-circle.vui-progress-small .vui-progress-info { font-size:16px; }
-.vui-progress-circle.vui-progress-medium .vui-progress-main {  }
-.vui-progress-circle.vui-progress-medium .vui-progress-main-track {  }
-.vui-progress-circle.vui-progress-medium .vui-progress-main-thumb {  }
-.vui-progress-circle.vui-progress-medium .vui-progress-info { font-size:20px; }
-.vui-progress-circle.vui-progress-large .vui-progress-main {  }
-.vui-progress-circle.vui-progress-large .vui-progress-main-track {  }
-.vui-progress-circle.vui-progress-large .vui-progress-main-thumb {  }
-.vui-progress-circle.vui-progress-large .vui-progress-info { font-size:24px; }
-
-.vui-progress-circle.vui-progress-status-normal .vui-progress-main {  }
-.vui-progress-circle.vui-progress-status-normal .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-circle.vui-progress-status-normal .vui-progress-main-thumb { stroke:#2d8cf0; }
-.vui-progress-circle.vui-progress-status-normal .vui-progress-info { color:#595959; }
-.vui-progress-circle.vui-progress-status-exception .vui-progress-main {  }
-.vui-progress-circle.vui-progress-status-exception .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-circle.vui-progress-status-exception .vui-progress-main-thumb { stroke:#ff4d4f; }
-.vui-progress-circle.vui-progress-status-exception .vui-progress-info { color:#ff4d4f; }
-.vui-progress-circle.vui-progress-status-success .vui-progress-main {  }
-.vui-progress-circle.vui-progress-status-success .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-circle.vui-progress-status-success .vui-progress-main-thumb { stroke:#5cb85c; }
-.vui-progress-circle.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
-
-
-// dashboard
-.vui-progress-dashboard { position:relative; display:inline-block; vertical-align:middle; font-size:0; }
-.vui-progress-dashboard .vui-progress-main { display:block; width:100%; height:100%; }
-.vui-progress-dashboard .vui-progress-main-track { fill:none; fill-opacity:0; stroke:transparent; }
-.vui-progress-dashboard .vui-progress-main-thumb { fill:none; fill-opacity:0; stroke:transparent; transition:stroke 0.2s ease 0s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s; }
-.vui-progress-dashboard .vui-progress-info { position:absolute; top:50%; left:0; right:0; width:100%; text-align:center; line-height:1; transform:translateY(-50%); }
-
-.vui-progress-dashboard.vui-progress-small .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-small .vui-progress-main-track {  }
-.vui-progress-dashboard.vui-progress-small .vui-progress-main-thumb {  }
-.vui-progress-dashboard.vui-progress-small .vui-progress-info { font-size:16px; }
-.vui-progress-dashboard.vui-progress-medium .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-medium .vui-progress-main-track {  }
-.vui-progress-dashboard.vui-progress-medium .vui-progress-main-thumb {  }
-.vui-progress-dashboard.vui-progress-medium .vui-progress-info { font-size:20px; }
-.vui-progress-dashboard.vui-progress-large .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-large .vui-progress-main-track {  }
-.vui-progress-dashboard.vui-progress-large .vui-progress-main-thumb {  }
-.vui-progress-dashboard.vui-progress-large .vui-progress-info { font-size:24px; }
-
-.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-dashboard.vui-progress-status-normal .vui-progress-main-thumb { stroke:#2d8cf0; }
-.vui-progress-dashboard.vui-progress-status-normal .vui-progress-info { color:#595959; }
-.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-dashboard.vui-progress-status-exception .vui-progress-main-thumb { stroke:#ff4d4f; }
-.vui-progress-dashboard.vui-progress-status-exception .vui-progress-info { color:#ff4d4f; }
-.vui-progress-dashboard.vui-progress-status-success .vui-progress-main {  }
-.vui-progress-dashboard.vui-progress-status-success .vui-progress-main-track { stroke:#f5f5f5; }
-.vui-progress-dashboard.vui-progress-status-success .vui-progress-main-thumb { stroke:#5cb85c; }
-.vui-progress-dashboard.vui-progress-status-success .vui-progress-info { color:#5cb85c; }
-
+@keyframes vuiProgressActive {
+  0% { background-position:0 0; }
+  100% { background-position:40px 0; }
+}

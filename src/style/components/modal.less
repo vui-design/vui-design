@@ -20,6 +20,8 @@
     bottom:0;
     left:0;
     right:0;
+    width:100%;
+    height:100%;
     overflow:auto;
 
     &-centered {
@@ -57,26 +59,26 @@
   }
 
   &-title {
-    padding-right:@font-size-sm + 20px;
-    color:@font-primary-color;
-    font-size:@font-size-lg;
+    padding-right:@modal-btn-close-size + @padding-lg;
+    color:@modal-title-font-color;
+    font-size:@modal-title-font-size;
     text-align:left;
-    line-height:@line-height;
+    line-height:@modal-title-line-height;
 
     .writeBreak;
   }
 
   &-body {
     padding:@modal-body-padding;
-    color:@font-color;
-    font-size:@font-size;
+    color:@modal-body-font-color;
+    font-size:@modal-body-font-size;
     text-align:left;
-    line-height:@line-height;
+    line-height:@modal-body-line-height;
 
     .writeBreak;
   }
   &-with-notice &-body {
-    padding:@modal-body-padding + 10px;
+    padding:@modal-body-padding + 12px @modal-body-padding + 12px @modal-body-padding + 4px @modal-body-padding + 12px;
   }
 
   &-footer {
@@ -89,7 +91,7 @@
   }
   &-with-notice &-footer {
     border-top:none;
-    padding:@modal-footer-padding + 10px;
+    padding:@modal-footer-padding + 12px;
     padding-top:0;
   }
 
@@ -100,31 +102,32 @@
     z-index:2000;
     cursor:pointer;
     padding:@modal-header-padding;
-    color:@font-secondary-color;
-    font-size:@font-size-sm;
+    color:@modal-btn-close-color;
+    font-size:@modal-btn-close-size;
     text-align:center;
     line-height:1;
     transition:color @transition-duration @transition-timing-function;
 
-    i {
+    .@{vui}-icon {
       display:block;
+      transform:scale(0.85);
     }
 
     &:hover {
-      color:@font-color;
+      color:@modal-btn-close-hover-color;
     }
   }
   &-with-header &-btn-close {
-    line-height:floor(@font-size-lg * @line-height);
+    line-height:floor(@modal-title-font-size * @modal-title-line-height);
 
-    i {
+    .@{vui}-icon {
       display:inline-block;
     }
   }
 
   &-notice {
     position:relative;
-    padding-left:floor(@font-size-lg * @line-height) + 10px;
+    padding-left:floor(@font-size-lg * @line-height) + 8px;
     color:@font-color;
     font-size:@font-size;
     line-height:@line-height;
@@ -136,7 +139,7 @@
       font-size:floor(@font-size-lg * @line-height);
       line-height:1;
 
-      i {
+      .@{vui}-icon {
         display:block;
       }
     }
@@ -169,8 +172,8 @@
   @media (max-width: @screen-sm-max) {
     & {
       width:auto !important;
-      margin-left:10px;
-      margin-right:10px;
+      margin-left:16px;
+      margin-right:16px;
     }
   }
 

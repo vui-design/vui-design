@@ -2,6 +2,7 @@
 
 .@{vui-alert} {
 	position:relative;
+	display:block;
 	box-sizing:border-box;
 	border:@alert-border;
 	border-radius:@alert-border-radius;
@@ -11,22 +12,28 @@
 
 	&-icon {
 		position:absolute;
+		display:block;
+		box-sizing:border-box;
 		line-height:1;
 
-		i {
+		.@{vui}-icon {
 			display:block;
 		}
 	}
 
 	&-message {
+		display:block;
+		box-sizing:border-box;
 		text-align:left;
 		.writeBreak;
 	}
 
 	&-description {
-		margin-top:8px;
-		color:@font-color;
-		font-size:@font-size;
+		display:block;
+		box-sizing:border-box;
+		margin-top:@alert-description-margin-top;
+		color:@alert-description-font-color;
+		font-size:@alert-description-font-size;
 		text-align:left;
 		.writeBreak;
 	}
@@ -34,16 +41,20 @@
 	&-btn-close {
 		position:absolute;
 		cursor:pointer;
-		color:@font-secondary-color;
+		display:block;
+		box-sizing:border-box;
+		color:@alert-btn-close-font-color;
+		font-size:@alert-btn-close-font-size;
 		line-height:1;
 		transition:all @transition-duration @transition-timing-function;
 
-		i {
+		.@{vui}-icon {
 			display:block;
+			transform:scale(0.85);
 		}
 
 		&:hover {
-			color:@font-color;
+			color:@alert-btn-close-hover-font-color;
 		}
 	}
 
@@ -54,7 +65,6 @@
 	&-info &-icon {
 		color:@alert-info-icon-color;
 	}
-
 	&-warning {
 		border-color:@alert-warning-border-color;
 		background-color:@alert-warning-background-color;
@@ -62,7 +72,6 @@
 	&-warning &-icon {
 		color:@alert-warning-icon-color;
 	}
-
 	&-success {
 		border-color:@alert-success-border-color;
 		background-color:@alert-success-background-color;
@@ -70,7 +79,6 @@
 	&-success &-icon {
 		color:@alert-success-icon-color;
 	}
-
 	&-error {
 		border-color:@alert-error-border-color;
 		background-color:@alert-error-background-color;
@@ -82,59 +90,47 @@
 	& {
 		padding:@alert-padding-vertical @alert-padding-horizontal;
 	}
-
 	&&-with-icon {
 		padding-left:@alert-with-icon-padding-left;
 	}
-
 	&&-closable {
 		padding-right:@alert-closable-padding-right;
 	}
-
 	& &-icon {
 		top:@alert-icon-top;
 		left:@alert-icon-left;
 		font-size:@alert-icon-font-size;
 	}
-
 	& &-message {
-		color:@alert-message-color;
+		color:@alert-message-font-color;
 		font-size:@alert-message-font-size;
 	}
-
 	& &-btn-close {
 		top:@alert-btn-close-top;
 		right:@alert-btn-close-right;
-		font-size:@alert-btn-close-font-size;
 	}
 
 	&-with-description {
 		padding:@alert-with-description-padding-vertical @alert-with-description-padding-horizontal;
 	}
-
 	&-with-description&-with-icon {
 		padding-left:@alert-with-description-with-icon-padding-left;
 	}
-
 	&-with-description&-closable {
 		padding-right:@alert-with-description-closable-padding-right;
 	}
-
 	&-with-description &-icon {
 		top:@alert-with-description-icon-top;
 		left:@alert-with-description-icon-left;
 		font-size:@alert-with-description-icon-font-size;
 	}
-
 	&-with-description &-message {
-		color:@alert-with-description-message-color;
+		color:@alert-with-description-message-font-color;
 		font-size:@alert-with-description-message-font-size;
 	}
-
 	&-with-description &-btn-close {
 		top:@alert-with-description-btn-close-top;
 		right:@alert-with-description-btn-close-right;
-		font-size:@alert-with-description-btn-close-font-size;
 	}
 
 	&-banner {

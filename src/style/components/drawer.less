@@ -31,7 +31,6 @@
     flex-direction:column;
     background-color:@drawer-background-color;
     box-shadow:@drawer-box-shadow;
-    margin:0 auto;
     transition:all @transition-duration @transition-timing-function;
   }
 
@@ -41,11 +40,11 @@
   }
 
   &-title {
-    padding-right:@font-size-sm + 20px;
-    color:@font-primary-color;
-    font-size:@font-size-lg;
+    padding-right:@drawer-btn-close-size + @padding-lg;
+    color:@drawer-title-font-color;
+    font-size:@drawer-title-font-size;
     text-align:left;
-    line-height:@line-height;
+    line-height:@drawer-title-line-height;
 
     .writeBreak;
   }
@@ -55,10 +54,10 @@
     height:0;
     padding:@drawer-body-padding;
     overflow:auto;
-    color:@font-color;
-    font-size:@font-size;
+    color:@drawer-body-font-color;
+    font-size:@drawer-body-font-size;
     text-align:left;
-    line-height:@line-height;
+    line-height:@drawer-body-line-height;
 
     .writeBreak;
   }
@@ -69,27 +68,37 @@
     text-align:right;
   }
   &-footer button + button {
-    margin-left:10px;
+    margin-left:@margin-md;
   }
 
   &-btn-close {
     position:absolute;
     top:0;
     right:0;
+    z-index:2000;
     cursor:pointer;
     padding:@drawer-header-padding;
-    color:@font-secondary-color;
-    font-size:@font-size-sm;
+    color:@drawer-btn-close-color;
+    font-size:@drawer-btn-close-size;
     text-align:center;
     line-height:1;
     transition:color @transition-duration @transition-timing-function;
 
+    .@{vui}-icon {
+      display:block;
+      transform:scale(0.85);
+    }
+
     &:hover {
-      color:@font-color;
+      color:@drawer-btn-close-hover-color;
     }
   }
   &-with-header &-btn-close {
-    line-height:floor(@font-size-lg * @line-height);
+    line-height:floor(@drawer-title-font-size * @drawer-title-line-height);
+
+    .@{vui}-icon {
+      display:inline-block;
+    }
   }
 
   &-top, &-bottom {

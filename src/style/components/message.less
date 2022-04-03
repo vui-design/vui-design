@@ -2,8 +2,9 @@
 
 .@{vui-message} {
   position:fixed;
-  top:20px;
+  top:24px;
   left:50%;
+  display:block;
   box-sizing:border-box;
   border-radius:@message-border-radius;
   background-color:@message-background-color;
@@ -59,38 +60,38 @@
     background-color:@message-info-background-color;
   }
   &-info &-icon {
-    color:@message-icon-info-color;
+    color:@message-info-icon-color;
   }
   &-warning&-with-background {
     background-color:@message-warning-background-color;
   }
   &-warning &-icon {
-    color:@message-icon-warning-color;
+    color:@message-warning-icon-color;
   }
   &-success&-with-background {
     background-color:@message-success-background-color;
   }
   &-success &-icon {
-    color:@message-icon-success-color;
+    color:@message-success-icon-color;
   }
   &-error&-with-background {
     background-color:@message-error-background-color;
   }
   &-error &-icon {
-    color:@message-icon-error-color;
+    color:@message-error-icon-color;
   }
   &-loading&-with-background {
     background-color:@message-loading-background-color;
   }
   &-loading &-icon {
-    color:@message-icon-loading-color;
+    color:@message-loading-icon-color;
   }
 
   &&-with-icon {
-    padding-left:@message-padding-horizontal + @message-icon-size + 8px;
+    padding-left:@message-padding-horizontal + @message-icon-size + @padding-xs;
   }
   &&-closable {
-    padding-right:@message-padding-horizontal + @message-btn-close-font-size + 8px;
+    padding-right:@message-padding-horizontal + @message-btn-close-font-size + @padding-xs;
   }
 
   &-fade-enter-active {

@@ -106,6 +106,12 @@ import Popconfirm from "./components/popconfirm";
 import Progress from "./components/progress";
 import Result from "./components/result";
 import Skeleton from "./components/skeleton";
+import SkeletonAvatar from "./components/skeleton-avatar";
+import SkeletonTitle from "./components/skeleton-title";
+import SkeletonParagraph from "./components/skeleton-paragraph";
+import SkeletonInput from "./components/skeleton-input";
+import SkeletonButton from "./components/skeleton-button";
+import SkeletonImage from "./components/skeleton-image";
 import Spin from "./components/spin";
 // Other
 import Anchor from "./components/anchor";
@@ -223,6 +229,12 @@ const components = [
   Progress,
   Result,
   Skeleton,
+  SkeletonAvatar,
+  SkeletonTitle,
+  SkeletonParagraph,
+  SkeletonInput,
+  SkeletonButton,
+  SkeletonImage,
   Spin,
   // Other
   Anchor,
@@ -367,6 +379,12 @@ export {
   Progress,
   Result,
   Skeleton,
+  SkeletonAvatar,
+  SkeletonTitle,
+  SkeletonParagraph,
+  SkeletonInput,
+  SkeletonButton,
+  SkeletonImage,
   Spin,
   // Other
   Anchor,
@@ -380,7 +398,7 @@ export {
 };
 
 export default {
-  version: "1.9.9",
+  version: "1.10.0",
   install,
   // Locale
   locale: locale.use,
@@ -488,6 +506,12 @@ export default {
   Progress,
   Result,
   Skeleton,
+  SkeletonAvatar,
+  SkeletonTitle,
+  SkeletonParagraph,
+  SkeletonInput,
+  SkeletonButton,
+  SkeletonImage,
   Spin,
   // Other
   Anchor,

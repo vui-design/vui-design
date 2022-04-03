@@ -6,15 +6,19 @@ const VuiSkeletonTitle = {
   name: "vui-skeleton-title",
   props: {
     classNamePrefix: PropTypes.string,
+    animated: PropTypes.bool.def(false),
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   },
   render() {
     const { $props: props } = this;
 
-    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "title");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-title");
     let classes = {};
 
-    classes.el = `${classNamePrefix}`;
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-animated`]: props.animated
+    };
 
     let styles = {};
 

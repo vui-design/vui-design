@@ -1,322 +1,247 @@
 import VuiIcon from "../../icon";
+import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
+import clamp from "../../../utils/clamp";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+
+const defaults = {
+  width: {
+    small: 80,
+    medium: 120,
+    large: 160
+  },
+  strokeWidth: {
+    small: 6,
+    medium: 8,
+    large: 10
+  }
+};
 
 const VuiProgress = {
-	name: "vui-progress",
+  name: "vui-progress",
+  components: {
+    VuiIcon
+  },
+  props: {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["line", "circle", "dashboard"]).def("line"),
+    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+    percentage: PropTypes.number.def(0),
+    status: PropTypes.oneOf(["normal", "active", "exception", "success"]).def("normal"),
+    trackColor: PropTypes.string,
+    strokeColor: PropTypes.string,
+    strokeWidth: PropTypes.number,
+    strokeLinecap: PropTypes.oneOf(["round", "square"]).def("round"),
+    width: PropTypes.number,
+    gapDegree: PropTypes.number.def(75),
+    formatter: PropTypes.func,
+    showInfo: PropTypes.bool.def(true)
+  },
+  render(h) {
+    const { $slots: slots, $props: props } = this;
 
-	components: {
-		VuiIcon
-	},
+    // percentage
+    const percentage = clamp(props.percentage, 0, 100);
 
-	props: {
-		// 样式类名前缀
-		classNamePrefix: {
-			type: String,
-			default: "vui-progress"
-		},
-		// 进度条类型 line/circle/dashboard
-		type: {
-			type: String,
-			default: "line",
-			validator: value => ["line", "circle", "dashboard"].indexOf(value) > -1
-		},
-		// 进度条尺寸 small/medium/large
-		size: {
-			type: String,
-			default: "medium",
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		// 进度条进度 0-100
-		percentage: {
-			type: Number,
-			default: 0,
-			validator: value => value >= 0 && value <= 100
-		},
-		// 进度条状态 normal/active/exception/success
-		status: {
-			type: String,
-			default: "normal",
-			validator: value => ["normal", "active", "exception", "success"].indexOf(value) > -1
-		},
-		// 进度条颜色，会覆盖 status 状态下的默认颜色
-		color: {
-			type: String,
-			default: undefined
-		},
-		// 轨道颜色
-		trackColor: {
-			type: String,
-			default: undefined
-		},
-		// 进度条内容的模板函数
-		format: {
-			type: Function,
-			default: undefined
-		},
-		// 画布尺寸，单位 px
-		canvas: {
-			type: Number,
-			default: undefined
-		},
-		// 线条尺寸，单位 px
-		stroke: {
-			type: Number,
-			default: undefined
-		},
-		// 线条边缘形状 round/square
-		linecap: {
-			type: String,
-			default: "round",
-			validator: value => ["round", "square"].indexOf(value) > -1
-		},
-		// 是否显示进度数值或状态图标
-		showInfo: {
-			type: Boolean,
-			default: true
-		}
-	},
+    // status
+    let status = props.status;
 
-	render(h) {
-		let { classNamePrefix, type, size, percentage, status, color, trackColor, format, canvas, stroke, linecap, showInfo } = this;
+    if (percentage === 100 && status === "normal") {
+      status = "success";
+    }
 
-		// status
-		if (percentage === 100 && status === "normal") {
-			status = "success";
-		}
+    // width
+    let width = props.width;
 
-		// canvas
-		if (type !== "line" && !canvas) {
-			let defaultCanvases = {
-				small: 80,
-				medium: 120,
-				large: 160
-			};
+    if (props.type !== "line" && !width) {
+      width = defaults.width[props.size];
+    }
 
-			canvas = defaultCanvases[size];
-		}
+    // strokeWidth
+    let strokeWidth = props.strokeWidth;
 
-		// stroke
-		if (!stroke) {
-			let defaultStrokes = {
-				small: 6,
-				medium: 8,
-				large: 10
-			};
+    if (!strokeWidth) {
+      strokeWidth = defaults.strokeWidth[props.size];
+    }
 
-			stroke = defaultStrokes[size];
-		}
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "progress");
+    let classes = {};
 
-		// classes
-		let classes = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${type}`]: type,
-			[`${classNamePrefix}-${size}`]: size,
-			[`${classNamePrefix}-status-${status}`]: status,
-			[`${classNamePrefix}-with-info`]: showInfo
-		};
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${props.type}`]: props.type,
+      [`${classNamePrefix}-with-info`]: props.showInfo,
+      [`${classNamePrefix}-${props.size}`]: props.size,
+      [`${classNamePrefix}-status-${status}`]: status
+    };
 
-		// render
-		if (type === "line") {
-			let lineStrokeWidth = stroke;
-			let lineStrokeColor = color;
-			let lineStrokeLinecap = linecap;
+    // style
+    let styles = {};
 
-			let lineTrackStyle = {
-				height: `${lineStrokeWidth}px`,
-				borderRadius: `${lineStrokeLinecap === "round" ? lineStrokeWidth : 0}px`,
-				backgroundColor: trackColor
-			};
-			let lineThumbStyle = {
-				width: `${percentage}%`,
-				height: `${lineStrokeWidth}px`,
-				borderRadius: `${lineStrokeLinecap === "round" ? lineStrokeWidth : 0}px`,
-				backgroundColor: lineStrokeColor
-			};
+    // render
+    if (props.type === "line") {
+      classes.elMain = `${classNamePrefix}-main`;
+      classes.elMainTrach = `${classNamePrefix}-main-track`;
+      classes.elMainThumb = `${classNamePrefix}-main-thumb`;
 
-			let children = [];
+      styles.elMainTrack = {
+        height: `${strokeWidth}px`,
+        borderRadius: `${props.strokeLinecap === "round" ? strokeWidth : 0}px`,
+        backgroundColor: props.trackColor
+      };
+      styles.elMainThumb = {
+        width: `${percentage}%`,
+        height: `${strokeWidth}px`,
+        borderRadius: `${props.strokeLinecap === "round" ? strokeWidth : 0}px`,
+        backgroundColor: props.strokeColor
+      };
 
-			children.push(
-				<div class={`${classNamePrefix}-main`}>
-					<div class={`${classNamePrefix}-main-track`} style={lineTrackStyle}>
-						<div class={`${classNamePrefix}-main-thumb`} style={lineThumbStyle}></div>
-					</div>
-				</div>
-			);
+      let children = [];
 
-			if (showInfo) {
-				let lineInfo;
-				let lineInfoStyles = {
-					color: status !== "normal" && lineStrokeColor ? lineStrokeColor : undefined
-				};
+      children.push(
+        <div class={classes.elMain}>
+          <div class={classes.elMainTrach} style={styles.elMainTrack}>
+            <div class={classes.elMainThumb} style={styles.elMainThumb}></div>
+          </div>
+        </div>
+      );
 
-				if (format) {
-					lineInfo = format(percentage);
-				}
-				else if (status === "exception") {
-					lineInfo = (
-						<VuiIcon type="crossmark-circle-filled" />
-					);
-				}
-				else if (status === "success") {
-					lineInfo = (
-						<VuiIcon type="checkmark-circle-filled" />
-					);
-				}
-				else {
-					lineInfo = `${percentage}%`;
-				}
+      if (props.showInfo) {
+        let info;
 
-				children.push(
-					<div class={`${classNamePrefix}-info`} style={lineInfoStyles}>
-						{lineInfo}
-					</div>
-				);
-			}
+        if (props.formatter) {
+          info = props.formatter(percentage);
+        }
+        else if (status === "exception") {
+          info = (
+            <VuiIcon type="crossmark-circle-filled" />
+          );
+        }
+        else if (status === "success") {
+          info = (
+            <VuiIcon type="checkmark-circle-filled" />
+          );
+        }
+        else {
+          info = `${percentage}%`;
+        }
 
-			return (
-				<div class={classes}>
-					{children}
-				</div>
-			);
-		}
-		else if (type === "circle") {
-			let circleStrokeWidth = Number((stroke / canvas * 100).toFixed(2));
-			let circleStrokeColor = color;
-			let circleStrokeLinecap = linecap;
-			let radius = 50 - circleStrokeWidth / 2;
-			let perimeter = 2 * Math.PI * radius;
-			let directive = `M 50,50 m 0,-${radius} a ${radius},${radius} 0 1 1 0,${radius * 2} a ${radius},${radius} 0 1 1 0,-${radius * 2}`;
+        classes.elInfo = `${classNamePrefix}-info`;
+        styles.elInfo = {
+          color: status !== "normal" && props.strokeColor ? props.strokeColor : undefined
+        };
 
-			let circleTrackStyle = {
-				strokeWidth: `${circleStrokeWidth}px`,
-				strokeLinecap: circleStrokeLinecap,
-				strokeDasharray: `${perimeter}px, ${perimeter}px`,
-				strokeDashoffset: `0px`,
-				stroke: trackColor
-			};
-			let circleThumbStyle = {
-				stroke: circleStrokeColor,
-				strokeWidth: `${percentage === 0 ? 0 : circleStrokeWidth}px`,
-				strokeLinecap: circleStrokeLinecap,
-				strokeDasharray: `${percentage / 100 * perimeter}px, ${perimeter}px`,
-				strokeDashoffset: `0px`,
-				transition: `stroke 0.2s ease 0s, stroke-width 0s ease ${percentage === 0 ? 0.2 : 0}s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s`
-			};
+        children.push(
+          <div class={classes.elInfo} style={styles.elInfo}>
+            {info}
+          </div>
+        );
+      }
 
-			let children = [];
+      return (
+        <div class={classes.el}>
+          {children}
+        </div>
+      );
+    }
+    else if (props.type === "circle" || props.type === "dashboard") {
+      strokeWidth = Number((strokeWidth / width * 100).toFixed(2));
 
-			children.push(
-				<svg viewBox={`0 0 100 100`} class={`${classNamePrefix}-main`}>
-					<path class={`${classNamePrefix}-main-track`} d={directive} style={circleTrackStyle}></path>
-					<path class={`${classNamePrefix}-main-thumb`} d={directive} style={circleThumbStyle}></path>
-				</svg>
-			);
+      const radius = 50 - strokeWidth / 2;
+      const perimeter = 2 * Math.PI * radius;
+      let directive;
 
-			if (showInfo) {
-				let circleInfo;
-				let circleInfoStyles = {
-					color: status !== "normal" && circleStrokeColor ? circleStrokeColor : undefined
-				};
+      if (props.type === "circle") {
+        directive = `M 50,50 m 0,-${radius} a ${radius},${radius} 0 1 1 0,${radius * 2} a ${radius},${radius} 0 1 1 0,-${radius * 2}`;
+      }
+      else if (props.type === "dashboard") {
+        directive = `M 50,50 m 0,${radius} a ${radius},${radius} 0 1 1 0,-${radius * 2} a ${radius},${radius} 0 1 1 0,${radius * 2}`;
+      }
 
-				if (format) {
-					circleInfo = format(percentage);
-				}
-				else if (status === "exception") {
-					circleInfo = (
-						<VuiIcon type="crossmark" />
-					);
-				}
-				else if (status === "success") {
-					circleInfo = (
-						<VuiIcon type="checkmark" />
-					);
-				}
-				else {
-					circleInfo = `${percentage}%`;
-				}
+      classes.elMain = `${classNamePrefix}-main`;
+      classes.elMainTrach = `${classNamePrefix}-main-track`;
+      classes.elMainThumb = `${classNamePrefix}-main-thumb`;
 
-				children.push(
-					<div class={`${classNamePrefix}-info`} style={circleInfoStyles}>
-						{circleInfo}
-					</div>
-				);
-			}
+      styles.el = {
+        width: `${width}px`,
+        height: `${width}px`
+      };
+      styles.elMainTrack = {
+        strokeWidth: `${strokeWidth}px`,
+        strokeLinecap: props.strokeLinecap,
+        stroke: props.trackColor
+      };
+      styles.elMainThumb = {
+        stroke: props.strokeColor,
+        strokeWidth: `${percentage === 0 ? 0 : strokeWidth}px`,
+        strokeLinecap: props.strokeLinecap,
+        transition: `stroke 0.2s ease 0s, stroke-width 0s ease ${percentage === 0 ? 0.2 : 0}s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s`
+      };
 
-			return (
-				<div class={classes} style={{width: `${canvas}px`, height: `${canvas}px`}}>
-					{children}
-				</div>
-			);
-		}
-		else if (type === "dashboard") {
-			let dashboardStrokeWidth = Number((stroke / canvas * 100).toFixed(2));
-			let dashboardStrokeColor = color;
-			let dashboardStrokeLinecap = linecap;
-			let radius = 50 - dashboardStrokeWidth / 2;
-			let perimeter = 2 * Math.PI * radius;
-			let directive = `M 50,50 m 0,${radius} a ${radius},${radius} 0 1 1 0,-${radius * 2} a ${radius},${radius} 0 1 1 0,${radius * 2}`;
+      if (props.type === "circle") {
+        styles.elMainTrack.strokeDasharray = `${perimeter}px, ${perimeter}px`;
+        styles.elMainTrack.strokeDashoffset = `0px`;
+        styles.elMainThumb.strokeDasharray = `${percentage / 100 * perimeter}px, ${perimeter}px`;
+        styles.elMainThumb.strokeDashoffset = `0px`;
+      }
+      else if (props.type === "dashboard") {
+        const gapDegree = clamp(props.gapDegree, 0, 295);
 
-			let dashboardTrackStyle = {
-				strokeWidth: `${dashboardStrokeWidth}px`,
-				strokeLinecap: dashboardStrokeLinecap,
-				strokeDasharray: `${perimeter - 75}px, ${perimeter}px`,
-				strokeDashoffset: `-${75 / 2}px`
-			};
-			let dashboardThumbStyle = {
-				stroke: dashboardStrokeColor,
-				strokeWidth: `${percentage === 0 ? 0 : dashboardStrokeWidth}px`,
-				strokeLinecap: dashboardStrokeLinecap,
-				strokeDasharray: `${percentage / 100 * (perimeter - 75)}px, ${perimeter}px`,
-				strokeDashoffset: `-${75 / 2}px`,
-				transition: `stroke 0.2s ease 0s, stroke-width 0s ease ${percentage === 0 ? 0.2 : 0}s, stroke-dasharray 0.2s ease 0s, stroke-dashoffset 0.2s ease 0s`
-			};
+        styles.elMainTrack.strokeDasharray = `${perimeter - gapDegree}px, ${perimeter}px`;
+        styles.elMainTrack.strokeDashoffset = `-${gapDegree / 2}px`;
+        styles.elMainThumb.strokeDasharray = `${percentage / 100 * (perimeter - gapDegree)}px, ${perimeter}px`;
+        styles.elMainThumb.strokeDashoffset = `-${gapDegree / 2}px`;
+      }
 
-			let children = [];
+      let children = [];
 
-			children.push(
-				<svg viewBox={`0 0 100 100`} class={`${classNamePrefix}-main`}>
-					<path class={`${classNamePrefix}-main-track`} d={directive} style={dashboardTrackStyle}></path>
-					<path class={`${classNamePrefix}-main-thumb`} d={directive} style={dashboardThumbStyle}></path>
-				</svg>
-			);
+      children.push(
+        <svg viewBox="0 0 100 100" class={classes.elMain}>
+          <path d={directive} class={classes.elMainTrach} style={styles.elMainTrack}></path>
+          <path d={directive} class={classes.elMainThumb} style={styles.elMainThumb}></path>
+        </svg>
+      );
 
-			if (showInfo) {
-				let dashboardInfo;
-				let dashboardInfoStyles = {
-					color: status !== "normal" && dashboardStrokeColor ? dashboardStrokeColor : undefined
-				};
+      if (props.showInfo) {
+        let info;
 
-				if (format) {
-					dashboardInfo = format(percentage);
-				}
-				else if (status === "exception") {
-					dashboardInfo = (
-						<VuiIcon type="crossmark" />
-					);
-				}
-				else if (status === "success") {
-					dashboardInfo = (
-						<VuiIcon type="checkmark" />
-					);
-				}
-				else {
-					dashboardInfo = `${percentage}%`;
-				}
+        if (props.formatter) {
+          info = props.formatter(percentage);
+        }
+        else if (status === "exception") {
+          info = (
+            <VuiIcon type="crossmark" />
+          );
+        }
+        else if (status === "success") {
+          info = (
+            <VuiIcon type="checkmark" />
+          );
+        }
+        else {
+          info = `${percentage}%`;
+        }
 
-				children.push(
-					<div class={`${classNamePrefix}-info`} style={dashboardInfoStyles}>
-						{dashboardInfo}
-					</div>
-				);
-			}
+        classes.elInfo = `${classNamePrefix}-info`;
+        styles.elInfo = {
+          color: status !== "normal" && props.strokeColor ? props.strokeColor : undefined
+        };
 
-			return (
-				<div class={classes} style={{width: `${canvas}px`, height: `${canvas}px`}}>
-					{children}
-				</div>
-			);
-		}
-	}
+        children.push(
+          <div class={classes.elInfo} style={styles.elInfo}>
+            {info}
+          </div>
+        );
+      }
+
+      return (
+        <div class={classes.el} style={styles.el}>
+          {children}
+        </div>
+      );
+    }
+  }
 };
 
 export default VuiProgress;

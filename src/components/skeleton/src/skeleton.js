@@ -85,23 +85,17 @@ const VuiSkeleton = {
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton");
     let classes = {};
 
-    classes.el = {
-      [`${classNamePrefix}`]: true,
-      [`${classNamePrefix}-animated`]: props.animated
-    };
+    classes.el = `${classNamePrefix}`;
     classes.elHeader = `${classNamePrefix}-header`;
     classes.elBody = `${classNamePrefix}-body`;
-    classes.elAvatar = {
-      [`${classNamePrefix}`]: true,
-      [`${classNamePrefix}-animated`]: props.animated
-    };
 
     let children = [];
 
     if (props.avatar) {
       const mergedAvatarProps = {
         props: {
-          classNamePrefix: classNamePrefix,
+          classNamePrefix: props.classNamePrefix,
+          animated: props.animated,
           ...getAvatarBasicProps(props),
           ...getComponentProps(props.avatar)
         }
@@ -120,7 +114,8 @@ const VuiSkeleton = {
       if (props.title) {
         const mergedTitleProps = {
           props: {
-            classNamePrefix: classNamePrefix,
+            classNamePrefix: props.classNamePrefix,
+            animated: props.animated,
             ...getTitleBasicProps(props),
             ...getComponentProps(props.title)
           }
@@ -136,7 +131,8 @@ const VuiSkeleton = {
       if (props.paragraph) {
         const mergedParagraphProps = {
           props: {
-            classNamePrefix: classNamePrefix,
+            classNamePrefix: props.classNamePrefix,
+            animated: props.animated,
             ...getParagraphBasicProps(props),
             ...getComponentProps(props.paragraph)
           }
