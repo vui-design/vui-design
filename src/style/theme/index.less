@@ -263,9 +263,9 @@
 @link-danger-active-font-color: shade(@error-color, 10%);
 @link-danger-disabled-font-color: @font-disabled-color;
 
-@link-font-size-sm: 12px;
-@link-font-size-md: 14px;
-@link-font-size-lg: 16px;
+@link-font-size-sm: @font-size-sm;
+@link-font-size-md: @font-size;
+@link-font-size-lg: @font-size-lg;
 
 // 布局组件 --------------------------------------------------------------------------------
 
@@ -946,61 +946,46 @@
 @badge-dot-shadow: 0 0 0 1px #fff;
 @badge-count-size: 20px;
 @badge-count-shadow: 0 0 0 1px #fff;
+@badge-count-padding: 0 @padding-xs;
 @badge-count-font-size: @font-size-sm;
 
 @badge-default-color: @default-color;
-@badge-default-font-color: #595959;
+@badge-default-font-color: @font-color;
 @badge-primary-color: @primary-color;
-@badge-primary-font-color: #fff;
+@badge-primary-font-color: @font-reverse-color;
 @badge-info-color: @info-color;
-@badge-info-font-color: #fff;
+@badge-info-font-color: @font-reverse-color;
 @badge-warning-color: @warning-color;
-@badge-warning-font-color: #fff;
+@badge-warning-font-color: @font-reverse-color;
 @badge-success-color: @success-color;
-@badge-success-font-color: #fff;
+@badge-success-font-color: @font-reverse-color;
 @badge-error-color: @error-color;
-@badge-error-font-color: #fff;
+@badge-error-font-color: @font-reverse-color;
 
 @badge-status-dot-size: 6px;
 @badge-status-dot-shadow: 0 0 0 1px #fff;
+@badge-status-text-margin-left: @margin-xs;
+@badge-status-text-font-color: @font-color;
 @badge-status-text-font-size: @font-size;
 
 @badge-status-default-color: @default-color;
-@badge-status-default-font-color: #595959;
 @badge-status-processing-color: @primary-color;
-@badge-status-processing-font-color: #595959;
 @badge-status-warning-color: @warning-color;
-@badge-status-warning-font-color: #595959;
 @badge-status-success-color: @success-color;
-@badge-status-success-font-color: #595959;
 @badge-status-error-color: @error-color;
-@badge-status-error-font-color: #595959;
 @badge-status-blue-color: #1890ff;
-@badge-status-blue-font-color: #595959;
 @badge-status-cyan-color: #13c2c2;
-@badge-status-cyan-font-color: #595959;
 @badge-status-geekblue-color: #2f54eb;
-@badge-status-geekblue-font-color: #595959;
 @badge-status-gold-color: #faad14;
-@badge-status-gold-font-color: #595959;
 @badge-status-green-color: #52c41a;
-@badge-status-green-font-color: #595959;
 @badge-status-lime-color: #a0d911;
-@badge-status-lime-font-color: #595959;
 @badge-status-magenta-color: #eb2f96;
-@badge-status-magenta-font-color: #595959;
 @badge-status-orange-color: #fa8c16;
-@badge-status-orange-font-color: #595959;
 @badge-status-pink-color: #eb2f96;
-@badge-status-pink-font-color: #595959;
 @badge-status-purple-color: #722ed1;
-@badge-status-purple-font-color: #595959;
 @badge-status-red-color: #f5222d;
-@badge-status-red-font-color: #595959;
 @badge-status-volcano-color: #fa541c;
-@badge-status-volcano-font-color: #595959;
 @badge-status-yellow-color: #fadb14;
-@badge-status-yellow-font-color: #595959;
 
 // Card
 @card-border-color: #f0f0f0;
@@ -1095,18 +1080,25 @@
 
 // Countdown
 @countdown-line-height: @line-height;
+
 @countdown-header-margin-bottom: @margin-sm;
+
 @countdown-body-color: @font-primary-color;
 @countdown-body-font-size: @font-size + 10px;
 @countdown-body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 @countdown-footer-margin-top: @margin-sm;
+
 @countdown-title-color: @font-secondary-color;
 @countdown-title-font-size: @font-size;
+
 @countdown-extra-margin-left: @margin-xs;
 @countdown-extra-color: @font-secondary-color;
 @countdown-extra-font-size: @font-size;
+
 @countdown-prefix-margin-right: @margin-xss;
 @countdown-prefix-font-size: @font-size + 10px;
+
 @countdown-suffix-margin-left: @margin-xss;
 @countdown-suffix-font-size: @font-size + 2px;
 
@@ -1164,20 +1156,62 @@
 @popover-arrow-size: 8px;
 @popover-gutter: @popover-arrow-size + 2px;
 
+// Ribbon
+@ribbon-top: @margin-md;
+@ribbon-offset: 8px;
+@ribbon-height: 24px;
+@ribbon-border-radius: @border-radius;
+@ribbon-padding: 0 @padding-xs;
+@ribbon-font-size: @font-size;
+
+@ribbon-default-color: @default-color;
+@ribbon-default-font-color: @font-color;
+@ribbon-primary-color: @primary-color;
+@ribbon-primary-font-color: @font-reverse-color;
+@ribbon-info-color: @info-color;
+@ribbon-info-font-color: @font-reverse-color;
+@ribbon-warning-color: @warning-color;
+@ribbon-warning-font-color: @font-reverse-color;
+@ribbon-success-color: @success-color;
+@ribbon-success-font-color: @font-reverse-color;
+@ribbon-error-color: @error-color;
+@ribbon-error-font-color: @font-reverse-color;
+
+@ribbon-color-blue-color: #1890ff;
+@ribbon-color-cyan-color: #13c2c2;
+@ribbon-color-geekblue-color: #2f54eb;
+@ribbon-color-gold-color: #faad14;
+@ribbon-color-green-color: #52c41a;
+@ribbon-color-lime-color: #a0d911;
+@ribbon-color-magenta-color: #eb2f96;
+@ribbon-color-orange-color: #fa8c16;
+@ribbon-color-pink-color: #eb2f96;
+@ribbon-color-purple-color: #722ed1;
+@ribbon-color-red-color: #f5222d;
+@ribbon-color-volcano-color: #fa541c;
+@ribbon-color-yellow-color: #fadb14;
+
 // Statistic
 @statistic-line-height: @line-height;
+
 @statistic-header-margin-bottom: @margin-sm;
+
 @statistic-body-color: @font-primary-color;
 @statistic-body-font-size: @font-size + 10px;
 @statistic-body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 @statistic-footer-margin-top: @margin-sm;
+
 @statistic-title-color: @font-secondary-color;
 @statistic-title-font-size: @font-size;
+
 @statistic-extra-margin-left: @margin-xs;
 @statistic-extra-color: @font-secondary-color;
 @statistic-extra-font-size: @font-size;
+
 @statistic-prefix-margin-right: @margin-xss;
 @statistic-prefix-font-size: @font-size + 10px;
+
 @statistic-suffix-margin-left: @margin-xss;
 @statistic-suffix-font-size: @font-size + 2px;
 
@@ -1245,7 +1279,7 @@
 @table-expansion-active-color: shade(@primary-color, 10%);
 
 // Tag
-@tag-border-width: 1px;
+@tag-border-width: @border-width;
 @tag-border-radius: @border-radius;
 
 @tag-size-sm: 20px;
@@ -1256,28 +1290,28 @@
 @tag-padding-md: 6px;
 @tag-padding-lg: 8px;
 
-@tag-font-size-sm: 12px;
-@tag-font-size-md: 12px;
-@tag-font-size-lg: 14px;
+@tag-font-size-sm: @font-size-sm;
+@tag-font-size-md: @font-size-sm;
+@tag-font-size-lg: @font-size;
 
-@tag-default-border-color: #e0e0e0;
+@tag-default-border-color: @border-color;
 @tag-default-background-color: #fafafa;
-@tag-default-font-color: #595959;
-@tag-primary-border-color: #2d8cf0;
-@tag-primary-background-color: #2d8cf0;
-@tag-primary-font-color: #fff;
-@tag-info-border-color: #5bc0de;
-@tag-info-background-color: #5bc0de;
-@tag-info-font-color: #fff;
-@tag-warning-border-color: #faad14;
-@tag-warning-background-color: #faad14;
-@tag-warning-font-color: #fff;
-@tag-success-border-color: #52c41a;
-@tag-success-background-color: #52c41a;
-@tag-success-font-color: #fff;
-@tag-error-border-color: #ff4d4f;
-@tag-error-background-color: #ff4d4f;
-@tag-error-font-color: #fff;
+@tag-default-font-color: @font-color;
+@tag-primary-border-color: @primary-color;
+@tag-primary-background-color: @primary-color;
+@tag-primary-font-color: @font-reverse-color;
+@tag-info-border-color: @info-color;
+@tag-info-background-color: @info-color;
+@tag-info-font-color: @font-reverse-color;
+@tag-warning-border-color: @warning-color;
+@tag-warning-background-color: @warning-color;
+@tag-warning-font-color: @font-reverse-color;
+@tag-success-border-color: @success-color;
+@tag-success-background-color: @success-color;
+@tag-success-font-color: @font-reverse-color;
+@tag-error-border-color: @error-color;
+@tag-error-background-color: @error-color;
+@tag-error-font-color: @font-reverse-color;
 @tag-blue-border-color: #97cdff;
 @tag-blue-background-color: #f3f9ff;
 @tag-blue-font-color: #1890ff;
@@ -1318,44 +1352,68 @@
 @tag-yellow-background-color: #fefdf3;
 @tag-yellow-font-color: #fadb14;
 
+// Timeline
+@timeline-font-color: @font-color;
+@timeline-font-size: @font-size;
+@timeline-line-height: @line-height;
+
+@timeline-item-padding-bottom: @padding-xl;
+
+@timeline-item-tail-size: 2px;
+@timeline-item-tail-color: @border-color;
+
+@timeline-item-header-size: 10px;
+@timeline-item-header-border-width: 2px;
+@timeline-item-header-background-color: @component-background-color;
+
+@timeline-item-header-gray-color: @border-color;
+@timeline-item-header-blue-color: @primary-color;
+@timeline-item-header-yellow-color: @warning-color;
+@timeline-item-header-green-color: @success-color;
+@timeline-item-header-red-color: @error-color;
+
+@timeline-item-body-padding: @padding-xl;
+
 // Tooltip
 @tooltip-border-radius: @border-radius;
-@tooltip-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+@tooltip-box-shadow: @box-shadow;
 @tooltip-padding: 10px 12px;
 @tooltip-font-size: @font-size;
 @tooltip-line-height: @line-height;
+
 @tooltip-arrow-size: 8px;
 @tooltip-gutter: @tooltip-arrow-size + 2px;
-@tooltip-light-background-color: #fff;
-@tooltip-light-font-color: #595959;
-@tooltip-dark-background-color: #1a2035;
-@tooltip-dark-font-color: #fff;
+
+@tooltip-dark-background-color: @component-dark-background-color;
+@tooltip-dark-font-color: @font-reverse-color;
+@tooltip-light-background-color: @component-background-color;
+@tooltip-light-font-color: @font-color;
 @tooltip-blue-background-color: #1890ff;
-@tooltip-blue-font-color: #fff;
+@tooltip-blue-font-color: @font-reverse-color;
 @tooltip-cyan-background-color: #13c2c2;
-@tooltip-cyan-font-color: #fff;
+@tooltip-cyan-font-color: @font-reverse-color;
 @tooltip-geekblue-background-color: #2f54eb;
-@tooltip-geekblue-font-color: #fff;
+@tooltip-geekblue-font-color: @font-reverse-color;
 @tooltip-gold-background-color: #faad14;
-@tooltip-gold-font-color: #fff;
+@tooltip-gold-font-color: @font-reverse-color;
 @tooltip-green-background-color: #52c41a;
-@tooltip-green-font-color: #fff;
+@tooltip-green-font-color: @font-reverse-color;
 @tooltip-lime-background-color: #a0d911;
-@tooltip-lime-font-color: #fff;
+@tooltip-lime-font-color: @font-reverse-color;
 @tooltip-magenta-background-color: #eb2f96;
-@tooltip-magenta-font-color: #fff;
+@tooltip-magenta-font-color: @font-reverse-color;
 @tooltip-orange-background-color: #fa8c16;
-@tooltip-orange-font-color: #fff;
+@tooltip-orange-font-color: @font-reverse-color;
 @tooltip-pink-background-color: #eb2f96;
-@tooltip-pink-font-color: #fff;
+@tooltip-pink-font-color: @font-reverse-color;
 @tooltip-purple-background-color: #722ed1;
-@tooltip-purple-font-color: #fff;
+@tooltip-purple-font-color: @font-reverse-color;
 @tooltip-red-background-color: #f5222d;
-@tooltip-red-font-color: #fff;
+@tooltip-red-font-color: @font-reverse-color;
 @tooltip-volcano-background-color: #fa541c;
-@tooltip-volcano-font-color: #fff;
+@tooltip-volcano-font-color: @font-reverse-color;
 @tooltip-yellow-background-color: #fadb14;
-@tooltip-yellow-font-color: #fff;
+@tooltip-yellow-font-color: @font-reverse-color;
 
 // 反馈组件 --------------------------------------------------------------------------------
 

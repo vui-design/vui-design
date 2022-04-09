@@ -1,0 +1,189 @@
+@vui-ribbon: ~"@{vui}-ribbon";
+
+.@{vui-ribbon} {
+  position:absolute;
+  top:@ribbon-top;
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  box-sizing:border-box;
+  height:@ribbon-height;
+  border-radius:@ribbon-border-radius;
+  padding:@ribbon-padding;
+  font-size:@ribbon-font-size;
+  line-height:1;
+
+  &-wrapper {
+    position:relative;
+  }
+
+  &-text {
+    white-space:nowrap;
+  }
+
+  &-corner {
+    position:absolute;
+    top:100%;
+    display:block;
+    box-sizing:border-box;
+    width:0;
+    height:0;
+    border-width:@ribbon-offset / 2;
+    border-style:solid;
+    transform-origin:top;
+    transform:scaleY(0.75);
+    filter:brightness(0.65);
+  }
+
+  &-placement-start {
+    left:-@ribbon-offset;
+    border-bottom-left-radius:0;
+  }
+  &-placement-start &-corner {
+    left:0;
+    border-color:currentColor currentColor transparent transparent;
+  }
+  &-placement-end {
+    right:-@ribbon-offset;
+    border-bottom-right-radius:0;
+  }
+  &-placement-end &-corner {
+    right:0;
+    border-color:currentColor transparent transparent currentColor;
+  }
+
+  &-default {
+    background-color:@ribbon-default-color;
+    color:@ribbon-default-font-color;
+  }
+  &-default &-corner {
+    color:@ribbon-default-color;
+  }
+  &-primary {
+    background-color:@ribbon-primary-color;
+    color:@ribbon-primary-font-color;
+  }
+  &-primary &-corner {
+    color:@ribbon-primary-color;
+  }
+  &-info {
+    background-color:@ribbon-info-color;
+    color:@ribbon-info-font-color;
+  }
+  &-info &-corner {
+    color:@ribbon-info-color;
+  }
+  &-warning {
+    background-color:@ribbon-warning-color;
+    color:@ribbon-warning-font-color;
+  }
+  &-warning &-corner {
+    color:@ribbon-warning-color;
+  }
+  &-success {
+    background-color:@ribbon-success-color;
+    color:@ribbon-success-font-color;
+  }
+  &-success &-corner {
+    color:@ribbon-success-color;
+  }
+  &-error {
+    background-color:@ribbon-error-color;
+    color:@ribbon-error-font-color;
+  }
+  &-error &-corner {
+    color:@ribbon-error-color;
+  }
+
+  &-color-blue {
+    background-color:@ribbon-color-blue-color;
+    color:@font-reverse-color;
+  }
+  &-color-blue &-corner {
+    color:@ribbon-color-blue-color;
+  }
+  &-color-cyan {
+    background-color:@ribbon-color-cyan-color;
+    color:@font-reverse-color;
+  }
+  &-color-cyan &-corner {
+    color:@ribbon-color-cyan-color;
+  }
+  &-color-geekblue {
+    background-color:@ribbon-color-geekblue-color;
+    color:@font-reverse-color;
+  }
+  &-color-geekblue &-corner {
+    color:@ribbon-color-geekblue-color;
+  }
+  &-color-gold {
+    background-color:@ribbon-color-gold-color;
+    color:@font-reverse-color;
+  }
+  &-color-gold &-corner {
+    color:@ribbon-color-gold-color;
+  }
+  &-color-green {
+    background-color:@ribbon-color-green-color;
+    color:@font-reverse-color;
+  }
+  &-color-green &-corner {
+    color:@ribbon-color-green-color;
+  }
+  &-color-lime {
+    background-color:@ribbon-color-lime-color;
+    color:@font-reverse-color;
+  }
+  &-color-lime &-corner {
+    color:@ribbon-color-lime-color;
+  }
+  &-color-magenta {
+    background-color:@ribbon-color-magenta-color;
+    color:@font-reverse-color;
+  }
+  &-color-magenta &-corner {
+    color:@ribbon-color-magenta-color;
+  }
+  &-color-orange {
+    background-color:@ribbon-color-orange-color;
+    color:@font-reverse-color;
+  }
+  &-color-orange &-corner {
+    color:@ribbon-color-orange-color;
+  }
+  &-color-pink {
+    background-color:@ribbon-color-pink-color;
+    color:@font-reverse-color;
+  }
+  &-color-pink &-corner {
+    color:@ribbon-color-pink-color;
+  }
+  &-color-purple {
+    background-color:@ribbon-color-purple-color;
+    color:@font-reverse-color;
+  }
+  &-color-purple &-corner {
+    color:@ribbon-color-purple-color;
+  }
+  &-color-red {
+    background-color:@ribbon-color-red-color;
+    color:@font-reverse-color;
+  }
+  &-color-red &-corner {
+    color:@ribbon-color-red-color;
+  }
+  &-color-volcano {
+    background-color:@ribbon-color-volcano-color;
+    color:@font-reverse-color;
+  }
+  &-color-volcano &-corner {
+    color:@ribbon-color-volcano-color;
+  }
+  &-color-yellow {
+    background-color:@ribbon-color-yellow-color;
+    color:@font-reverse-color;
+  }
+  &-color-yellow &-corner {
+    color:@ribbon-color-yellow-color;
+  }
+}

@@ -88,17 +88,17 @@ const VuiSelectDropdown = {
         this.popup.target.style.minWidth = "";
       }
     },
-    handleBeforeOpen() {
+    handleBeforeEnter() {
       this.$nextTick(() => this.register());
       this.$emit("beforeOpen");
     },
-    handleAfterOpen() {
+    handleAfterEnter() {
       this.$emit("afterOpen");
     },
-    handleBeforeClose() {
+    handleBeforeLeave() {
       this.$emit("beforeClose");
     },
-    handleAfterClose() {
+    handleAfterLeave() {
       this.$nextTick(() => this.unregister());
       this.$emit("afterClose");
     },
@@ -111,7 +111,7 @@ const VuiSelectDropdown = {
   },
   render(h) {
     const { $slots: slots, $props: props } = this;
-    const { handleBeforeOpen, handleAfterOpen, handleBeforeClose, handleAfterClose, handleResize, handleMousedown } = this;
+    const { handleBeforeEnter, handleAfterEnter, handleBeforeLeave, handleAfterLeave, handleResize, handleMousedown } = this;
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown");
@@ -123,7 +123,7 @@ const VuiSelectDropdown = {
     return (
       <VuiLazyRender render={props.visible}>
         <VuiResizeObserver onResize={handleResize}>
-          <transition appear name={props.animation} onBeforeEnter={handleBeforeOpen} onAfterEnter={handleAfterOpen} onBeforeLeave={handleBeforeClose} onAfterLeave={handleAfterClose}>
+          <transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterEnter={handleAfterEnter} onBeforeLeave={handleBeforeLeave} onAfterLeave={handleAfterLeave}>
             <div v-portal={props.getPopupContainer} v-show={props.visible} class={classes.el} onMousedown={handleMousedown}>
               {slots.default}
             </div>

@@ -1,34 +1,30 @@
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+
 const VuiTimeline = {
-	name: "vui-timeline",
+  name: "vui-timeline",
+  props: {
+    classNamePrefix: PropTypes.string,
+    mode: PropTypes.oneOf(["left", "alternate", "right"]).def("left"),
+    pending: PropTypes.bool.def(false)
+  },
+  render() {
+    const { $slots: slots, $props: props } = this;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-timeline"
-		},
-		mode: {
-			type: String,
-			default: "left",
-			validator: value => ["left", "alternate", "right"].indexOf(value) > -1
-		},
-		pending: {
-			type: Boolean,
-			default: false
-		}
-	},
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "timeline");
+    let classes = {};
 
-	render() {
-		let { $slots, classNamePrefix, mode, pending } = this;
-		let classes = {
-			[`${classNamePrefix}`]: true,
-			[`${classNamePrefix}-${mode}`]: true,
-			[`${classNamePrefix}-pending`]: pending
-		};
+    classes.el = {
+      [`${classNamePrefix}`]: true,
+      [`${classNamePrefix}-${props.mode}`]: true,
+      [`${classNamePrefix}-pending`]: props.pending
+    };
 
-		return (
-			<ul class={classes}>{$slots.default}</ul>
-		);
-	}
+    return (
+      <ul class={classes.el}>{slots.default}</ul>
+    );
+  }
 };
 
 export default VuiTimeline;

@@ -1,194 +1,194 @@
 @vui-tag: ~"@{vui}-tag";
 
 .@{vui-tag} {
-	cursor:default;
-	display:inline-flex;
-	align-items:center;
-	box-sizing:border-box;
-	border:@tag-border-width solid transparent;
-	border-radius:@tag-border-radius;
-	vertical-align:middle;
-	white-space:nowrap;
-	line-height:1;
-	opacity:1;
-	transition:all @transition-duration @transition-timing-function;
+  cursor:default;
+  display:inline-flex;
+  align-items:center;
+  box-sizing:border-box;
+  border:@tag-border-width solid transparent;
+  border-radius:@tag-border-radius;
+  vertical-align:middle;
+  white-space:nowrap;
+  line-height:1;
+  opacity:1;
+  transition:all @transition-duration @transition-timing-function;
 
-	&:hover {
-		opacity:0.85;
-	}
+  &:hover {
+    opacity:0.85;
+  }
 
-	label {
-		cursor:inherit;
-		display:inline-block;
-		box-sizing:border-box;
-	}
+  label {
+    cursor:inherit;
+    display:inline-block;
+    box-sizing:border-box;
+  }
 
-	&-icon {
-		display:inline-block;
-		box-sizing:border-box;
-		transition:all @transition-duration @transition-timing-function;
+  &-icon {
+    display:inline-block;
+    box-sizing:border-box;
+    transition:all @transition-duration @transition-timing-function;
 
-		i {
-			display:block;
-		}
-	}
+    .@{vui}-icon {
+      display:block;
+    }
+  }
 
-	&-btn-close {
-		cursor:pointer;
-		display:inline-block;
-		box-sizing:border-box;
-		opacity:0.85;
-		transform:scale(0.85);
-		transition:all @transition-duration @transition-timing-function;
+  &-btn-close {
+    cursor:pointer;
+    display:inline-block;
+    box-sizing:border-box;
+    opacity:0.85;
+    transform:scale(0.85);
+    transition:all @transition-duration @transition-timing-function;
 
-		&:hover {
-			opacity:1;
-		}
+    &:hover {
+      opacity:1;
+    }
 
-		i {
-			display:block;
-		}
-	}
+    .@{vui}-icon {
+      display:block;
+    }
+  }
 
-	&-small {
-		height:@tag-size-sm;
-		padding:0 @tag-padding-sm;
-		font-size:@tag-font-size-sm;
-	}
-	&-small &-icon {
-		margin-right:@tag-padding-sm;
-	}
-	&-small &-btn-close {
-		margin-left:@tag-padding-sm;
-	}
+  &-small {
+    height:@tag-size-sm;
+    padding:0 @tag-padding-sm;
+    font-size:@tag-font-size-sm;
+  }
+  &-small &-icon {
+    margin-right:@tag-padding-sm;
+  }
+  &-small &-btn-close {
+    margin-left:@tag-padding-sm;
+  }
 
-	&-medium {
-		height:@tag-size-md;
-		padding:0 @tag-padding-md;
-		font-size:@tag-font-size-md;
-	}
-	&-medium &-icon {
-		margin-right:@tag-padding-md;
-	}
-	&-medium &-btn-close {
-		margin-left:@tag-padding-md;
-	}
+  &-medium {
+    height:@tag-size-md;
+    padding:0 @tag-padding-md;
+    font-size:@tag-font-size-md;
+  }
+  &-medium &-icon {
+    margin-right:@tag-padding-md;
+  }
+  &-medium &-btn-close {
+    margin-left:@tag-padding-md;
+  }
 
-	&-large {
-		height:@tag-size-lg;
-		padding:0 @tag-padding-lg;
-		font-size:@tag-font-size-lg;
-	}
-	&-large &-icon {
-		margin-right:@tag-padding-lg;
-	}
-	&-large &-btn-close {
-		margin-left:@tag-padding-lg;
-	}
+  &-large {
+    height:@tag-size-lg;
+    padding:0 @tag-padding-lg;
+    font-size:@tag-font-size-lg;
+  }
+  &-large &-icon {
+    margin-right:@tag-padding-lg;
+  }
+  &-large &-btn-close {
+    margin-left:@tag-padding-lg;
+  }
 
-	&-default {
-		border-color:@tag-default-border-color;
-		background-color:@tag-default-background-color;
-		color:@tag-default-font-color;
-	}
-	&-primary {
-		border-color:@tag-primary-border-color;
-		background-color:@tag-primary-background-color;
-		color:@tag-primary-font-color;
-	}
-	&-info {
-		border-color:@tag-info-border-color;
-		background-color:@tag-info-background-color;
-		color:@tag-info-font-color;
-	}
-	&-warning {
-		border-color:@tag-warning-border-color;
-		background-color:@tag-warning-background-color;
-		color:@tag-warning-font-color;
-	}
-	&-success {
-		border-color:@tag-success-border-color;
-		background-color:@tag-success-background-color;
-		color:@tag-success-font-color;
-	}
-	&-error {
-		border-color:@tag-error-border-color;
-		background-color:@tag-error-background-color;
-		color:@tag-error-font-color;
-	}
-	&-blue {
-		border-color:@tag-blue-border-color;
-		background-color:@tag-blue-background-color;
-		color:@tag-blue-font-color;
-	}
-	&-cyan {
-		border-color:@tag-cyan-border-color;
-		background-color:@tag-cyan-background-color;
-		color:@tag-cyan-font-color;
-	}
-	&-geekblue {
-		border-color:@tag-geekblue-border-color;
-		background-color:@tag-geekblue-background-color;
-		color:@tag-geekblue-font-color;
-	}
-	&-gold {
-		border-color:@tag-gold-border-color;
-		background-color:@tag-gold-background-color;
-		color:@tag-gold-font-color;
-	}
-	&-green {
-		border-color:@tag-green-border-color;
-		background-color:@tag-green-background-color;
-		color:@tag-green-font-color;
-	}
-	&-lime {
-		border-color:@tag-lime-border-color;
-		background-color:@tag-lime-background-color;
-		color:@tag-lime-font-color;
-	}
-	&-magenta {
-		border-color:@tag-magenta-border-color;
-		background-color:@tag-magenta-background-color;
-		color:@tag-magenta-font-color;
-	}
-	&-orange {
-		border-color:@tag-orange-border-color;
-		background-color:@tag-orange-background-color;
-		color:@tag-orange-font-color;
-	}
-	&-pink {
-		border-color:@tag-pink-border-color;
-		background-color:@tag-pink-background-color;
-		color:@tag-pink-font-color;
-	}
-	&-purple {
-		border-color:@tag-purple-border-color;
-		background-color:@tag-purple-background-color;
-		color:@tag-purple-font-color;
-	}
-	&-red {
-		border-color:@tag-red-border-color;
-		background-color:@tag-red-background-color;
-		color:@tag-red-font-color;
-	}
-	&-volcano {
-		border-color:@tag-volcano-border-color;
-		background-color:@tag-volcano-background-color;
-		color:@tag-volcano-font-color;
-	}
-	&-yellow {
-		border-color:@tag-yellow-border-color;
-		background-color:@tag-yellow-background-color;
-		color:@tag-yellow-font-color;
-	}
+  &-default {
+    border-color:@tag-default-border-color;
+    background-color:@tag-default-background-color;
+    color:@tag-default-font-color;
+  }
+  &-primary {
+    border-color:@tag-primary-border-color;
+    background-color:@tag-primary-background-color;
+    color:@tag-primary-font-color;
+  }
+  &-info {
+    border-color:@tag-info-border-color;
+    background-color:@tag-info-background-color;
+    color:@tag-info-font-color;
+  }
+  &-warning {
+    border-color:@tag-warning-border-color;
+    background-color:@tag-warning-background-color;
+    color:@tag-warning-font-color;
+  }
+  &-success {
+    border-color:@tag-success-border-color;
+    background-color:@tag-success-background-color;
+    color:@tag-success-font-color;
+  }
+  &-error {
+    border-color:@tag-error-border-color;
+    background-color:@tag-error-background-color;
+    color:@tag-error-font-color;
+  }
+  &-blue {
+    border-color:@tag-blue-border-color;
+    background-color:@tag-blue-background-color;
+    color:@tag-blue-font-color;
+  }
+  &-cyan {
+    border-color:@tag-cyan-border-color;
+    background-color:@tag-cyan-background-color;
+    color:@tag-cyan-font-color;
+  }
+  &-geekblue {
+    border-color:@tag-geekblue-border-color;
+    background-color:@tag-geekblue-background-color;
+    color:@tag-geekblue-font-color;
+  }
+  &-gold {
+    border-color:@tag-gold-border-color;
+    background-color:@tag-gold-background-color;
+    color:@tag-gold-font-color;
+  }
+  &-green {
+    border-color:@tag-green-border-color;
+    background-color:@tag-green-background-color;
+    color:@tag-green-font-color;
+  }
+  &-lime {
+    border-color:@tag-lime-border-color;
+    background-color:@tag-lime-background-color;
+    color:@tag-lime-font-color;
+  }
+  &-magenta {
+    border-color:@tag-magenta-border-color;
+    background-color:@tag-magenta-background-color;
+    color:@tag-magenta-font-color;
+  }
+  &-orange {
+    border-color:@tag-orange-border-color;
+    background-color:@tag-orange-background-color;
+    color:@tag-orange-font-color;
+  }
+  &-pink {
+    border-color:@tag-pink-border-color;
+    background-color:@tag-pink-background-color;
+    color:@tag-pink-font-color;
+  }
+  &-purple {
+    border-color:@tag-purple-border-color;
+    background-color:@tag-purple-background-color;
+    color:@tag-purple-font-color;
+  }
+  &-red {
+    border-color:@tag-red-border-color;
+    background-color:@tag-red-background-color;
+    color:@tag-red-font-color;
+  }
+  &-volcano {
+    border-color:@tag-volcano-border-color;
+    background-color:@tag-volcano-background-color;
+    color:@tag-volcano-font-color;
+  }
+  &-yellow {
+    border-color:@tag-yellow-border-color;
+    background-color:@tag-yellow-background-color;
+    color:@tag-yellow-font-color;
+  }
 
-	&-unchecked {
-		cursor:pointer;
-		border-color:transparent;
-		background-color:transparent;
-		color:@tag-default-font-color;
-	}
-	&-checked {
-		cursor:pointer;
-	}
+  &-unchecked {
+    cursor:pointer;
+    border-color:transparent;
+    background-color:transparent;
+    color:@tag-default-font-color;
+  }
+  &-checked {
+    cursor:pointer;
+  }
 }

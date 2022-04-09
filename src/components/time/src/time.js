@@ -153,7 +153,7 @@ const VuiTime = {
     const { $props: props, state } = this;
 
     // class
-    let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "time");
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "time");
     let classes = {};
 
     classes.el = `${classNamePrefix}`;

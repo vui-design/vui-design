@@ -1,6 +1,7 @@
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import guid from "../../../utils/guid";
+import getStyle from "../../../utils/getStyle";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiWatermark = {
@@ -10,7 +11,7 @@ const VuiWatermark = {
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     color: PropTypes.string.def("rgba(0, 0, 0, 0.15)"),
     fontSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def("14px"),
-    fontFamily: PropTypes.string.def("Microsoft Yahei"),
+    fontFamily: PropTypes.string,
     width: PropTypes.number.def(320),
     height: PropTypes.number.def(120),
     rotate: PropTypes.number.def(-20),
@@ -37,8 +38,13 @@ const VuiWatermark = {
         canvas.height = props.height;
 
         const ctx = canvas.getContext("2d");
+        let fontFamily = props.fontFamily;
 
-        ctx.font = "normal " + (is.string(props.fontSize) ? props.fontSize : (props.fontSize + "px")) + " " + props.fontFamily;
+        if (!fontFamily) {
+          fontFamily = getStyle(document.body, "fontFamily");
+        }
+
+        ctx.font = "normal " + (is.string(props.fontSize) ? props.fontSize : (props.fontSize + "px")) + " " + fontFamily;
         ctx.fillStyle = props.color;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";

@@ -1,72 +1,53 @@
+import PropTypes from "../../../utils/prop-types";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+
+const colors = ["gray", "blue", "yellow", "green", "red"];
+
 const VuiTimelineItem = {
-	name: "vui-timeline-item",
+  name: "vui-timeline-item",
+  props: {
+    classNamePrefix: PropTypes.string,
+    color: PropTypes.string.def("blue")
+  },
+  render() {
+    const { $slots: slots, $props: props } = this;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-timeline-item"
-		},
-		color: {
-			type: String,
-			default: "blue"
-		}
-	},
+    // color
+    const withPresetColor = props.color && colors.indexOf(props.color) > -1;
+    const withCustomColor = props.color && colors.indexOf(props.color) === -1;
 
-	data() {
-		return {
-			colors: ["gray", "blue", "yellow", "green", "red"]
-		};
-	},
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "timeline-item");
+    let classes = {};
 
-	computed: {
-		withPresetColor() {
-			return this.color && this.colors.indexOf(this.color) > -1;
-		},
-		withCustomColor() {
-			return this.color && this.colors.indexOf(this.color) === -1;
-		}
-	},
+    classes.el = `${classNamePrefix}`;
+    classes.tail = `${classNamePrefix}-tail`;
+    classes.header = {
+      [`${classNamePrefix}-header`]: true,
+      [`${classNamePrefix}-header-custom`]: slots.dot,
+      [`${classNamePrefix}-header-${props.color}`]: withPresetColor
+    };
+    classes.body = `${classNamePrefix}-body`;
 
-	render() {
-		let { $slots, classNamePrefix, color, withPresetColor, withCustomColor } = this;
+    // style
+    let styles = {};
 
-		// classes
-		let classes = {};
+    if (withCustomColor) {
+      styles.header = {
+        borderColor: props.color,
+        color: props.color
+      };
+    }
 
-		classes.root = {
-			[`${classNamePrefix}`]: true
-		};
-		classes.tail = {
-			[`${classNamePrefix}-tail`]: true
-		};
-		classes.header = {
-			[`${classNamePrefix}-header`]: true,
-			[`${classNamePrefix}-header-custom`]: $slots.dot,
-			[`${classNamePrefix}-header-${color}`]: withPresetColor
-		};
-		classes.body = {
-			[`${classNamePrefix}-body`]: true
-		};
-
-		// styles
-		let styles = {};
-
-		if (withCustomColor) {
-			styles.header = {
-				borderColor: color,
-				color
-			};
-		}
-
-		// render
-		return (
-			<li class={classes.root}>
-				<div class={classes.tail}></div>
-				<div class={classes.header} style={styles.header}>{$slots.dot}</div>
-				<div class={classes.body}>{$slots.default}</div>
-			</li>
-		);
-	}
+    // render
+    return (
+      <li class={classes.el}>
+        <div class={classes.tail}></div>
+        <div class={classes.header} style={styles.header}>{slots.dot}</div>
+        <div class={classes.body}>{slots.default}</div>
+      </li>
+    );
+  }
 };
 
 export default VuiTimelineItem;

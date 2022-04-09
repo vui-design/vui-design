@@ -87,6 +87,7 @@ import ListItemMeta from "./components/list-item-meta";
 import Popover from "./components/popover";
 import Qrcode from "./components/qrcode";
 import Ratio from "./components/ratio";
+import Ribbon from "./components/ribbon";
 import Statistic from "./components/statistic";
 import Table from "./components/table";
 import Tag from "./components/tag";
@@ -210,6 +211,7 @@ const components = [
   Popover,
   Qrcode,
   Ratio,
+  Ribbon,
   Statistic,
   Table,
   Tag,
@@ -360,6 +362,7 @@ export {
   Popover,
   Qrcode,
   Ratio,
+  Ribbon,
   Statistic,
   Table,
   Tag,
@@ -398,7 +401,7 @@ export {
 };
 
 export default {
-  version: "1.10.0",
+  version: "1.10.1",
   install,
   // Locale
   locale: locale.use,
@@ -487,6 +490,7 @@ export default {
   Popover,
   Qrcode,
   Ratio,
+  Ribbon,
   Statistic,
   Table,
   Tag,

@@ -13426,331 +13426,354 @@ function getElementByEvent(event) {
 
 
 
+
 var tooltip_colors = ["dark", "light", "blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
 var VuiTooltip = {
-	name: "vui-tooltip",
-	components: {
-		VuiLazyRender: components_lazy_render
-	},
-	directives: {
-		Portal: directives_portal,
-		Outclick: outclick
-	},
-	model: {
-		prop: "visible",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
-		visible: prop_types["a" /* default */].bool.def(false),
-		color: prop_types["a" /* default */].string.def("dark"),
-		content: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
-		animation: prop_types["a" /* default */].string.def("vui-tooltip-popup-scale"),
-		getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-			return document.body;
-		}),
-		beforeOpen: prop_types["a" /* default */].func,
-		beforeClose: prop_types["a" /* default */].func
-	},
-	data: function data() {
-		var props = this.$props;
+  name: "vui-tooltip",
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
+  },
+  directives: {
+    Portal: directives_portal,
+    Outclick: outclick
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
+    visible: prop_types["a" /* default */].bool.def(false),
+    color: prop_types["a" /* default */].string.def("dark"),
+    content: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]).def("top"),
+    animation: prop_types["a" /* default */].string.def("vui-tooltip-popup-scale"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    }),
+    beforeOpen: prop_types["a" /* default */].func,
+    beforeClose: prop_types["a" /* default */].func
+  },
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      visible: props.trigger === "always" ? true : props.visible
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    visible: function visible(value) {
+      var props = this.$props;
 
 
-		return {
-			state: {
-				visible: props.trigger === "always" ? true : props.visible
-			}
-		};
-	},
+      this.state.visible = props.trigger === "always" ? true : value;
+    }
+  },
+  methods: {
+    toggle: function toggle(visible) {
+      var _this = this;
 
-	watch: {
-		visible: function visible(value) {
-			var props = this.$props;
+      var props = this.$props;
 
+      var callback = function callback() {
+        _this.state.visible = visible;
+        _this.$emit("input", visible);
+        _this.$emit("change", visible);
+      };
+      var beforeCallback = visible ? props.beforeOpen : props.beforeClose;
+      var hook = true;
 
-			this.state.visible = props.trigger === "always" ? true : value;
-		}
-	},
-	methods: {
-		toggle: function toggle(visible) {
-			var _this = this;
+      if (is["a" /* default */].function(beforeCallback)) {
+        hook = beforeCallback();
+      }
 
-			var props = this.$props;
+      if (is["a" /* default */].promise(hook)) {
+        hook.then(function () {
+          return callback();
+        }).catch(function (error) {});
+      } else if (is["a" /* default */].boolean(hook) && hook === false) {
+        return;
+      } else {
+        callback();
+      }
+    },
+    register: function register() {
+      if (is["a" /* default */].server || this.popup) {
+        return;
+      }
 
-			var callback = function callback() {
-				_this.state.visible = visible;
-				_this.$emit("input", visible);
-				_this.$emit("change", visible);
-			};
-			var beforeCallback = visible ? props.beforeOpen : props.beforeClose;
-			var hook = true;
+      var references = this.$refs,
+          props = this.$props;
 
-			if (is["a" /* default */].function(beforeCallback)) {
-				hook = beforeCallback();
-			}
+      var reference = references.trigger;
+      var target = references.popup;
+      var settings = {
+        placement: props.placement
+      };
 
-			if (is["a" /* default */].promise(hook)) {
-				hook.then(function () {
-					return callback();
-				}).catch(function (error) {});
-			} else if (is["a" /* default */].boolean(hook) && hook === false) {
-				return;
-			} else {
-				callback();
-			}
-		},
-		register: function register() {
-			if (is["a" /* default */].server || this.popup) {
-				return;
-			}
+      if (!reference || !target || !settings.placement) {
+        return;
+      }
 
-			var references = this.$refs,
-			    props = this.$props;
+      this.popup = new popup(reference, target, settings);
+      this.popup.target.style.zIndex = popup.nextZIndex();
+    },
+    reregister: function reregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
 
-			var reference = references.trigger;
-			var target = references.popup;
-			var settings = {
-				placement: props.placement
-			};
+      this.popup.update();
+    },
+    unregister: function unregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
 
-			if (!reference || !target || !settings.placement) {
-				return;
-			}
+      this.popup.destroy();
+      this.popup = null;
+    },
+    handleMouseenter: function handleMouseenter(e) {
+      var _this2 = this;
 
-			this.popup = new popup(reference, target, settings);
-			this.popup.target.style.zIndex = popup.nextZIndex();
-		},
-		reregister: function reregister() {
-			if (is["a" /* default */].server || !this.popup) {
-				return;
-			}
-
-			this.popup.update();
-		},
-		unregister: function unregister() {
-			if (is["a" /* default */].server || !this.popup) {
-				return;
-			}
-
-			this.popup.destroy();
-			this.popup = null;
-		},
-		handleMouseenter: function handleMouseenter(e) {
-			var _this2 = this;
-
-			var props = this.$props;
+      var props = this.$props;
 
 
-			if (props.trigger === "hover") {
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(function () {
-					return _this2.toggle(true);
-				}, 100);
-			}
-		},
-		handleMouseleave: function handleMouseleave(e) {
-			var _this3 = this;
+      if (props.trigger === "hover") {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(function () {
+          return _this2.toggle(true);
+        }, 100);
+      }
+    },
+    handleMouseleave: function handleMouseleave(e) {
+      var _this3 = this;
 
-			var props = this.$props;
-
-
-			if (props.trigger === "hover") {
-				clearTimeout(this.timeout);
-				this.timeout = setTimeout(function () {
-					return _this3.toggle(false);
-				}, 100);
-			}
-		},
-		handleFocusin: function handleFocusin(e) {
-			var props = this.$props;
+      var props = this.$props;
 
 
-			if (props.trigger === "focus") {
-				this.toggle(true);
-			}
-		},
-		handleFocusout: function handleFocusout(e) {
-			var props = this.$props;
+      if (props.trigger === "hover") {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(function () {
+          return _this3.toggle(false);
+        }, 100);
+      }
+    },
+    handleFocusin: function handleFocusin(e) {
+      var props = this.$props;
 
 
-			if (props.trigger === "focus") {
-				this.toggle(false);
-			}
-		},
-		handleClick: function handleClick(e) {
-			var props = this.$props,
-			    state = this.state;
+      if (props.trigger === "focus") {
+        this.toggle(true);
+      }
+    },
+    handleFocusout: function handleFocusout(e) {
+      var props = this.$props;
 
 
-			if (props.trigger === "click") {
-				this.toggle(!state.visible);
-			}
-		},
-		handleOutClick: function handleOutClick(e) {
-			var props = this.$props;
+      if (props.trigger === "focus") {
+        this.toggle(false);
+      }
+    },
+    handleClick: function handleClick(e) {
+      var props = this.$props,
+          state = this.state;
 
 
-			if (props.trigger === "click") {
-				var references = this.$refs;
+      if (props.trigger === "click") {
+        this.toggle(!state.visible);
+      }
+    },
+    handleOutClick: function handleOutClick(e) {
+      var props = this.$props;
 
-				var element = getElementByEvent(e);
 
-				if (!element || !references.popup || references.popup === element || references.popup.contains(element)) {
-					return;
-				}
+      if (props.trigger === "click") {
+        var references = this.$refs;
 
-				this.toggle(false);
-			}
-		},
-		handleBeforeEnter: function handleBeforeEnter() {
-			var _this4 = this;
+        var element = getElementByEvent(e);
 
-			this.$nextTick(function () {
-				return _this4.register();
-			});
-			this.$emit("beforeOpen");
-		},
-		handleEnter: function handleEnter() {
-			this.$emit("open");
-		},
-		handleAfterEnter: function handleAfterEnter() {
-			this.$emit("afterOpen");
-		},
-		handleBeforeLeave: function handleBeforeLeave() {
-			this.$emit("beforeClose");
-		},
-		handleLeave: function handleLeave() {
-			this.$emit("close");
-		},
-		handleAfterLeave: function handleAfterLeave() {
-			var _this5 = this;
+        if (!element || !references.popup || references.popup === element || references.popup.contains(element)) {
+          return;
+        }
 
-			this.$nextTick(function () {
-				return _this5.unregister();
-			});
-			this.$emit("afterClose");
-		}
-	},
-	render: function render() {
-		var _classes$elPopup;
+        this.toggle(false);
+      }
+    },
+    handleBeforeEnter: function handleBeforeEnter() {
+      var _this4 = this;
 
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var handleMouseenter = this.handleMouseenter,
-		    handleMouseleave = this.handleMouseleave,
-		    handleFocusin = this.handleFocusin,
-		    handleFocusout = this.handleFocusout,
-		    handleClick = this.handleClick,
-		    handleOutClick = this.handleOutClick,
-		    handleBeforeEnter = this.handleBeforeEnter,
-		    handleEnter = this.handleEnter,
-		    handleAfterEnter = this.handleAfterEnter,
-		    handleBeforeLeave = this.handleBeforeLeave,
-		    handleLeave = this.handleLeave,
-		    handleAfterLeave = this.handleAfterLeave;
+      this.$nextTick(function () {
+        return _this4.register();
+      });
+      this.$emit("beforeOpen");
+    },
+    handleEnter: function handleEnter() {
+      this.$emit("open");
+    },
+    handleAfterEnter: function handleAfterEnter() {
+      this.$emit("afterOpen");
+    },
+    handleBeforeLeave: function handleBeforeLeave() {
+      this.$emit("beforeClose");
+    },
+    handleLeave: function handleLeave() {
+      this.$emit("close");
+    },
+    handleAfterLeave: function handleAfterLeave() {
+      var _this5 = this;
 
-		// color
+      this.$nextTick(function () {
+        return _this5.unregister();
+      });
+      this.$emit("afterClose");
+    },
+    handleResize: function handleResize() {
+      var _this6 = this;
 
-		var withPresetColor = props.color && tooltip_colors.indexOf(props.color) > -1;
-		var withCustomColor = props.color && tooltip_colors.indexOf(props.color) === -1;
+      this.$nextTick(function () {
+        return _this6.reregister();
+      });
+    }
+  },
+  render: function render() {
+    var _classes$elPopup;
 
-		// maxWidth
-		var maxWidth = void 0;
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleMouseenter = this.handleMouseenter,
+        handleMouseleave = this.handleMouseleave,
+        handleFocusin = this.handleFocusin,
+        handleFocusout = this.handleFocusout,
+        handleClick = this.handleClick,
+        handleOutClick = this.handleOutClick,
+        handleBeforeEnter = this.handleBeforeEnter,
+        handleEnter = this.handleEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
+        handleLeave = this.handleLeave,
+        handleAfterLeave = this.handleAfterLeave,
+        handleResize = this.handleResize;
 
-		if (props.maxWidth) {
-			maxWidth = is["a" /* default */].string(props.maxWidth) ? props.maxWidth : props.maxWidth + "px";
-		}
+    // color
 
-		// content
-		var content = slots.content || props.content;
+    var withPresetColor = props.color && tooltip_colors.indexOf(props.color) > -1;
+    var withCustomColor = props.color && tooltip_colors.indexOf(props.color) === -1;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tooltip");
-		var classes = {};
+    // maxWidth
+    var maxWidth = void 0;
 
-		classes.el = "" + classNamePrefix;
-		classes.elTrigger = classNamePrefix + "-trigger";
-		classes.elPopup = (_classes$elPopup = {}, defineProperty_default()(_classes$elPopup, classNamePrefix + "-popup", true), defineProperty_default()(_classes$elPopup, classNamePrefix + "-popup-" + props.color, withPresetColor), _classes$elPopup);
-		classes.elPopupBody = classNamePrefix + "-popup-body";
-		classes.elPopupArrow = classNamePrefix + "-popup-arrow";
+    if (props.maxWidth) {
+      maxWidth = is["a" /* default */].string(props.maxWidth) ? props.maxWidth : props.maxWidth + "px";
+    }
 
-		// style
-		var styles = {};
+    // content
+    var content = slots.content || props.content;
 
-		styles.elPopup = {
-			maxWidth: maxWidth,
-			backgroundColor: withCustomColor && props.color
-		};
-		styles.elPopupBody = {
-			color: withCustomColor && "#fff"
-		};
-		styles.elPopupArrow = {
-			backgroundColor: withCustomColor && props.color
-		};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tooltip");
+    var classes = {};
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[h(
-				"div",
-				{ ref: "trigger", "class": classes.elTrigger, on: {
-						"mouseenter": handleMouseenter,
-						"mouseleave": handleMouseleave,
-						"focusin": handleFocusin,
-						"focusout": handleFocusout,
-						"click": handleClick
-					},
-					directives: [{
-						name: "outclick",
-						value: handleOutClick
-					}]
-				},
-				[slots.default]
-			), h(
-				components_lazy_render,
-				{
-					attrs: { render: state.visible }
-				},
-				[h(
-					"transition",
-					{
-						attrs: { appear: true, name: props.animation },
-						on: {
-							"beforeEnter": handleBeforeEnter,
-							"afterLeave": handleAfterLeave
-						}
-					},
-					[h(
-						"div",
-						{ ref: "popup", directives: [{
-								name: "portal",
-								value: props.getPopupContainer
-							}, {
-								name: "show",
-								value: state.visible
-							}],
-							"class": classes.elPopup, style: styles.elPopup, on: {
-								"mouseenter": handleMouseenter,
-								"mouseleave": handleMouseleave
-							}
-						},
-						[h(
-							"div",
-							{ "class": classes.elPopupBody, style: styles.elPopupBody },
-							[content]
-						), h("div", { "class": classes.elPopupArrow, style: styles.elPopupArrow })]
-					)]
-				)]
-			)]
-		);
-	}
+    classes.el = "" + classNamePrefix;
+    classes.elTrigger = classNamePrefix + "-trigger";
+    classes.elPopup = (_classes$elPopup = {}, defineProperty_default()(_classes$elPopup, classNamePrefix + "-popup", true), defineProperty_default()(_classes$elPopup, classNamePrefix + "-popup-" + props.color, withPresetColor), _classes$elPopup);
+    classes.elPopupBody = classNamePrefix + "-popup-body";
+    classes.elPopupArrow = classNamePrefix + "-popup-arrow";
+
+    // style
+    var styles = {};
+
+    styles.elPopup = {
+      maxWidth: maxWidth,
+      backgroundColor: withCustomColor && props.color
+    };
+    styles.elPopupBody = {
+      color: withCustomColor ? "#fff" : undefined
+    };
+    styles.elPopupArrow = {
+      backgroundColor: withCustomColor && props.color
+    };
+
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [h(
+        "div",
+        { ref: "trigger", "class": classes.elTrigger, on: {
+            "mouseenter": handleMouseenter,
+            "mouseleave": handleMouseleave,
+            "focusin": handleFocusin,
+            "focusout": handleFocusout,
+            "click": handleClick
+          },
+          directives: [{
+            name: "outclick",
+            value: handleOutClick
+          }]
+        },
+        [slots.default]
+      ), h(
+        components_lazy_render,
+        {
+          attrs: { render: state.visible }
+        },
+        [h(
+          components_resize_observer,
+          {
+            on: {
+              "resize": handleResize
+            }
+          },
+          [h(
+            "transition",
+            {
+              attrs: { appear: true, name: props.animation },
+              on: {
+                "beforeEnter": handleBeforeEnter,
+                "enter": handleEnter,
+                "afterEnter": handleAfterEnter,
+                "beforeLeave": handleBeforeLeave,
+                "leave": handleLeave,
+                "afterLeave": handleAfterLeave
+              }
+            },
+            [h(
+              "div",
+              { ref: "popup", directives: [{
+                  name: "portal",
+                  value: props.getPopupContainer
+                }, {
+                  name: "show",
+                  value: state.visible
+                }],
+                "class": classes.elPopup, style: styles.elPopup, on: {
+                  "mouseenter": handleMouseenter,
+                  "mouseleave": handleMouseleave
+                }
+              },
+              [h(
+                "div",
+                { "class": classes.elPopupBody, style: styles.elPopupBody },
+                [content]
+              ), h("div", { "class": classes.elPopupArrow, style: styles.elPopupArrow })]
+            )]
+          )]
+        )]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var src_tooltip = (VuiTooltip);
@@ -13758,7 +13781,7 @@ var VuiTooltip = {
 
 
 src_tooltip.install = function (Vue) {
-	Vue.component(src_tooltip.name, src_tooltip);
+  Vue.component(src_tooltip.name, src_tooltip);
 };
 
 /* harmony default export */ var components_tooltip = (src_tooltip);
@@ -15574,7 +15597,7 @@ var VuiSelectDropdown = {
         this.popup.target.style.minWidth = "";
       }
     },
-    handleBeforeOpen: function handleBeforeOpen() {
+    handleBeforeEnter: function handleBeforeEnter() {
       var _this = this;
 
       this.$nextTick(function () {
@@ -15582,13 +15605,13 @@ var VuiSelectDropdown = {
       });
       this.$emit("beforeOpen");
     },
-    handleAfterOpen: function handleAfterOpen() {
+    handleAfterEnter: function handleAfterEnter() {
       this.$emit("afterOpen");
     },
-    handleBeforeClose: function handleBeforeClose() {
+    handleBeforeLeave: function handleBeforeLeave() {
       this.$emit("beforeClose");
     },
-    handleAfterClose: function handleAfterClose() {
+    handleAfterLeave: function handleAfterLeave() {
       var _this2 = this;
 
       this.$nextTick(function () {
@@ -15610,10 +15633,10 @@ var VuiSelectDropdown = {
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
-    var handleBeforeOpen = this.handleBeforeOpen,
-        handleAfterOpen = this.handleAfterOpen,
-        handleBeforeClose = this.handleBeforeClose,
-        handleAfterClose = this.handleAfterClose,
+    var handleBeforeEnter = this.handleBeforeEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
+        handleAfterLeave = this.handleAfterLeave,
         handleResize = this.handleResize,
         handleMousedown = this.handleMousedown;
 
@@ -15642,10 +15665,10 @@ var VuiSelectDropdown = {
           {
             attrs: { appear: true, name: props.animation },
             on: {
-              "beforeEnter": handleBeforeOpen,
-              "afterEnter": handleAfterOpen,
-              "beforeLeave": handleBeforeClose,
-              "afterLeave": handleAfterClose
+              "beforeEnter": handleBeforeEnter,
+              "afterEnter": handleAfterEnter,
+              "beforeLeave": handleBeforeLeave,
+              "afterLeave": handleAfterLeave
             }
           },
           [h(
@@ -28006,125 +28029,125 @@ var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 var badge_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
 var VuiBadge = {
-	name: "vui-badge",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("error"),
-		status: prop_types["a" /* default */].oneOf(["default", "processing", "warning", "success", "error"]),
-		color: prop_types["a" /* default */].string,
-		count: prop_types["a" /* default */].number,
-		overflowCount: prop_types["a" /* default */].number.def(99),
-		text: prop_types["a" /* default */].string,
-		dot: prop_types["a" /* default */].bool.def(false),
-		offset: prop_types["a" /* default */].array
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props;
+  name: "vui-badge",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("error"),
+    status: prop_types["a" /* default */].oneOf(["default", "processing", "warning", "success", "error"]),
+    color: prop_types["a" /* default */].string,
+    count: prop_types["a" /* default */].number,
+    overflowCount: prop_types["a" /* default */].number.def(99),
+    text: prop_types["a" /* default */].string,
+    dot: prop_types["a" /* default */].bool.def(false),
+    offset: prop_types["a" /* default */].array
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
 
-		var withPresetColor = props.color && badge_colors.indexOf(props.color) > -1;
-		var withCustomColor = props.color && badge_colors.indexOf(props.color) === -1;
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "badge");
+    var withPresetColor = props.color && badge_colors.indexOf(props.color) > -1;
+    var withCustomColor = props.color && badge_colors.indexOf(props.color) === -1;
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "badge");
 
-		if (props.status || props.color) {
-			var _classes$el;
+    if (props.status || props.color) {
+      var _classes$el;
 
-			// class
-			var classes = {};
+      // class
+      var classes = {};
 
-			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-status", true), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.status, props.status), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.color, withPresetColor), _classes$el);
-			classes.elDot = classNamePrefix + "-status-dot";
-			classes.elText = classNamePrefix + "-status-text";
+      classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-status", true), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.status, props.status), defineProperty_default()(_classes$el, classNamePrefix + "-status-" + props.color, withPresetColor), _classes$el);
+      classes.elDot = classNamePrefix + "-status-dot";
+      classes.elText = classNamePrefix + "-status-text";
 
-			// style
-			var styles = {};
+      // style
+      var styles = {};
 
-			if (withCustomColor) {
-				styles.elDot = {
-					borderColor: props.color,
-					backgroundColor: props.color
-				};
-			}
+      if (withCustomColor) {
+        styles.elDot = {
+          borderColor: props.color,
+          backgroundColor: props.color
+        };
+      }
 
-			// render
-			var children = [];
+      // render
+      var children = [];
 
-			children.push(h("i", { "class": classes.elDot, style: styles.elDot }));
+      children.push(h("i", { "class": classes.elDot, style: styles.elDot }));
 
-			if (props.text) {
-				children.push(h(
-					"div",
-					{ "class": classes.elText },
-					[props.text]
-				));
-			}
+      if (props.text) {
+        children.push(h(
+          "div",
+          { "class": classes.elText },
+          [props.text]
+        ));
+      }
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[children]
-			);
-		} else {
-			var _classes$el2;
+      return h(
+        "div",
+        { "class": classes.el },
+        [children]
+      );
+    } else {
+      var _classes$el2;
 
-			var alone = slots.default === undefined;
+      var alone = slots.default === undefined;
 
-			// class
-			var _classes = {};
+      // class
+      var _classes = {};
 
-			_classes.el = (_classes$el2 = {}, defineProperty_default()(_classes$el2, "" + classNamePrefix, true), defineProperty_default()(_classes$el2, classNamePrefix + "-alone", alone), defineProperty_default()(_classes$el2, classNamePrefix + "-" + props.type, props.type), _classes$el2);
-			_classes.elDot = classNamePrefix + "-dot";
-			_classes.elCount = classNamePrefix + "-count";
+      _classes.el = (_classes$el2 = {}, defineProperty_default()(_classes$el2, "" + classNamePrefix, true), defineProperty_default()(_classes$el2, classNamePrefix + "-alone", alone), defineProperty_default()(_classes$el2, classNamePrefix + "-" + props.type, props.type), _classes$el2);
+      _classes.elDot = classNamePrefix + "-dot";
+      _classes.elCount = classNamePrefix + "-count";
 
-			// offset
-			var offset = {};
+      // offset
+      var offset = {};
 
-			if (!alone && props.offset && props.offset.length === 2) {
-				var _props$offset = slicedToArray_default()(props.offset, 2),
-				    x = _props$offset[0],
-				    y = _props$offset[1];
+      if (!alone && props.offset && props.offset.length === 2) {
+        var _props$offset = slicedToArray_default()(props.offset, 2),
+            x = _props$offset[0],
+            y = _props$offset[1];
 
-				offset.top = -y + "px";
-				offset.right = -x + "px";
-			}
+        offset.top = -y + "px";
+        offset.right = -x + "px";
+      }
 
-			// render
-			var _children = [];
+      // render
+      var _children = [];
 
-			if (!alone) {
-				_children.push(slots.default);
-			}
+      if (!alone) {
+        _children.push(slots.default);
+      }
 
-			if (props.dot) {
-				if (props.count || props.text) {
-					_children.push(h("sup", { "class": _classes.elDot, style: offset }));
-				}
-			} else {
-				if (props.count) {
-					var count = props.count > props.overflowCount ? props.overflowCount + "+" : props.count;
+      if (props.dot) {
+        if (props.count || props.text) {
+          _children.push(h("sup", { "class": _classes.elDot, style: offset }));
+        }
+      } else {
+        if (props.count) {
+          var count = props.count > props.overflowCount ? props.overflowCount + "+" : props.count;
 
-					_children.push(h(
-						"sup",
-						{ "class": _classes.elCount, style: offset },
-						[count]
-					));
-				} else if (props.text) {
-					_children.push(h(
-						"sup",
-						{ "class": _classes.elCount, style: offset },
-						[props.text]
-					));
-				}
-			}
+          _children.push(h(
+            "sup",
+            { "class": _classes.elCount, style: offset },
+            [count]
+          ));
+        } else if (props.text) {
+          _children.push(h(
+            "sup",
+            { "class": _classes.elCount, style: offset },
+            [props.text]
+          ));
+        }
+      }
 
-			return h(
-				"div",
-				{ "class": _classes.el },
-				[_children]
-			);
-		}
-	}
+      return h(
+        "div",
+        { "class": _classes.el },
+        [_children]
+      );
+    }
+  }
 };
 
 /* harmony default export */ var badge = (VuiBadge);
@@ -28132,7 +28155,7 @@ var VuiBadge = {
 
 
 badge.install = function (Vue) {
-	Vue.component(badge.name, badge);
+  Vue.component(badge.name, badge);
 };
 
 /* harmony default export */ var components_badge = (badge);
@@ -31601,74 +31624,74 @@ collapse.install = function (Vue) {
 var units = [["Y", 1000 * 60 * 60 * 24 * 365], ["M", 1000 * 60 * 60 * 24 * 30], ["D", 1000 * 60 * 60 * 24], ["H", 1000 * 60 * 60], ["m", 1000 * 60], ["s", 1000], ["S", 1]];
 
 var utils_now = function now() {
-	return new Date().getTime();
+  return new Date().getTime();
 };
 
 var parser = function parser(value) {
-	if (typeof value === "string") {
-		value = value.replace(/-/g, "/");
-	}
+  if (typeof value === "string") {
+    value = value.replace(/-/g, "/");
+  }
 
-	var date = new Date(value);
-	var timestamp = date.getTime();
+  var date = new Date(value);
+  var timestamp = date.getTime();
 
-	if (isNaN(timestamp)) {
-		return 0;
-	}
+  if (isNaN(timestamp)) {
+    return 0;
+  }
 
-	return timestamp;
+  return timestamp;
 };
 
 var utils_formatter = function formatter(current, target) {
-	var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "HH:mm:ss";
+  var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "HH:mm:ss";
 
-	return utils_formatTimestamp(Math.max(target - current, 0), format);
+  return utils_formatTimestamp(Math.max(target - current, 0), format);
 };
 
 var utils_formatTimestamp = function formatTimestamp(duration, format) {
-	var left = duration;
+  var left = duration;
 
-	var regex = /\[[^\]]*\]/g;
-	var keepList = (format.match(regex) || []).map(function (string) {
-		return string.slice(1, -1);
-	});
-	var template = format.replace(regex, "[]");
+  var regex = /\[[^\]]*\]/g;
+  var keepList = (format.match(regex) || []).map(function (string) {
+    return string.slice(1, -1);
+  });
+  var template = format.replace(regex, "[]");
 
-	var replaced = units.reduce(function (current, _ref) {
-		var _ref2 = slicedToArray_default()(_ref, 2),
-		    name = _ref2[0],
-		    unit = _ref2[1];
+  var replaced = units.reduce(function (current, _ref) {
+    var _ref2 = slicedToArray_default()(_ref, 2),
+        name = _ref2[0],
+        unit = _ref2[1];
 
-		if (current.indexOf(name) !== -1) {
-			var value = Math.floor(left / unit);
+    if (current.indexOf(name) !== -1) {
+      var value = Math.floor(left / unit);
 
-			left -= value * unit;
+      left -= value * unit;
 
-			return current.replace(new RegExp(name + "+", "g"), function (match) {
-				var length = match.length;
+      return current.replace(new RegExp(name + "+", "g"), function (match) {
+        var length = match.length;
 
-				return padStart(value.toString(), length, "0");
-			});
-		}
+        return padStart(value.toString(), length, "0");
+      });
+    }
 
-		return current;
-	}, template);
+    return current;
+  }, template);
 
-	var index = 0;
+  var index = 0;
 
-	return replaced.replace(regex, function () {
-		var match = keepList[index];
+  return replaced.replace(regex, function () {
+    var match = keepList[index];
 
-		index += 1;
+    index += 1;
 
-		return match;
-	});
+    return match;
+  });
 };
 
 /* harmony default export */ var countdown_src_utils = ({
-	now: utils_now,
-	parser: parser,
-	formatter: utils_formatter
+  now: utils_now,
+  parser: parser,
+  formatter: utils_formatter
 });
 // CONCATENATED MODULE: ./src/components/countdown/src/countdown.js
 
@@ -31677,171 +31700,171 @@ var utils_formatTimestamp = function formatTimestamp(duration, format) {
 
 
 var VuiCountdown = {
-	name: "vui-countdown",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].string,
-		extra: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].object]),
-		prefix: prop_types["a" /* default */].string,
-		suffix: prop_types["a" /* default */].string,
-		formatter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]).def("HH:mm:ss"),
-		milliseconds: prop_types["a" /* default */].number.def(1000 / 30),
-		headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
-	},
-	data: function data() {
-		var state = {
-			value: undefined
-		};
+  name: "vui-countdown",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    extra: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].object]),
+    prefix: prop_types["a" /* default */].string,
+    suffix: prop_types["a" /* default */].string,
+    formatter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]).def("HH:mm:ss"),
+    milliseconds: prop_types["a" /* default */].number.def(1000 / 30),
+    headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
+  },
+  data: function data() {
+    var state = {
+      value: undefined
+    };
 
-		return {
-			state: state
-		};
-	},
+    return {
+      state: state
+    };
+  },
 
-	methods: {
-		start: function start() {
-			var _this = this;
+  methods: {
+    start: function start() {
+      var _this = this;
 
-			var props = this.$props;
-
-
-			if (props.milliseconds <= 0) {
-				return;
-			}
-
-			window.clearInterval(this.countdown);
-			this.countdown = window.setInterval(function () {
-				var current = countdown_src_utils.now();
-				var target = countdown_src_utils.parser(props.value);
-				var value = void 0;
-
-				if (is["a" /* default */].function(props.formatter)) {
-					value = props.formatter(current, target);
-				} else {
-					value = countdown_src_utils.formatter(current, target, props.formatter);
-				}
-
-				_this.state.value = value;
-
-				if (current > target) {
-					_this.stop();
-				}
-			}, props.milliseconds);
-		},
-		stop: function stop() {
-			var props = this.$props;
+      var props = this.$props;
 
 
-			if (!this.countdown) {
-				return;
-			}
+      if (props.milliseconds <= 0) {
+        return;
+      }
 
-			window.clearInterval(this.countdown);
-			this.countdown = undefined;
+      window.clearInterval(this.countdown);
+      this.countdown = window.setInterval(function () {
+        var current = countdown_src_utils.now();
+        var target = countdown_src_utils.parser(props.value);
+        var value = void 0;
 
-			var current = countdown_src_utils.now();
-			var target = countdown_src_utils.parser(props.value);
+        if (is["a" /* default */].function(props.formatter)) {
+          value = props.formatter(current, target);
+        } else {
+          value = countdown_src_utils.formatter(current, target, props.formatter);
+        }
 
-			if (target < current) {
-				this.$emit("finish");
-			}
-		}
-	},
-	mounted: function mounted() {
-		this.start();
-	},
-	updated: function updated() {
-		this.start();
-	},
-	beforeDestroy: function beforeDestroy() {
-		this.stop();
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
+        _this.state.value = value;
 
-		// class
+        if (current > target) {
+          _this.stop();
+        }
+      }, props.milliseconds);
+    },
+    stop: function stop() {
+      var props = this.$props;
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "countdown");
-		var classes = {};
 
-		classes.el = "" + classNamePrefix;
-		classes.elHeader = classNamePrefix + "-header";
-		classes.elBody = classNamePrefix + "-body";
-		classes.elFooter = classNamePrefix + "-footer";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elExtra = classNamePrefix + "-extra";
-		classes.elPrefix = classNamePrefix + "-prefix";
-		classes.elSuffix = classNamePrefix + "-suffix";
-		classes.elValue = classNamePrefix + "-value";
+      if (!this.countdown) {
+        return;
+      }
 
-		// title
-		var title = slots.title || props.title;
+      window.clearInterval(this.countdown);
+      this.countdown = undefined;
 
-		// extra
-		var extra = slots.extra || props.extra;
+      var current = countdown_src_utils.now();
+      var target = countdown_src_utils.parser(props.value);
 
-		// prefix
-		var prefix = slots.prefix || props.prefix;
+      if (target < current) {
+        this.$emit("finish");
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.start();
+  },
+  updated: function updated() {
+    this.start();
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.stop();
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
 
-		// suffix
-		var suffix = slots.suffix || props.suffix;
+    // class
 
-		// render
-		var children = [];
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "countdown");
+    var classes = {};
 
-		if (title || extra) {
-			children.push(h(
-				"div",
-				{ "class": classes.elHeader, style: props.headerStyle },
-				[title && h(
-					"div",
-					{ "class": classes.elTitle },
-					[title]
-				), extra && h(
-					"div",
-					{ "class": classes.elExtra },
-					[extra]
-				)]
-			));
-		}
+    classes.el = "" + classNamePrefix;
+    classes.elHeader = classNamePrefix + "-header";
+    classes.elBody = classNamePrefix + "-body";
+    classes.elFooter = classNamePrefix + "-footer";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elExtra = classNamePrefix + "-extra";
+    classes.elPrefix = classNamePrefix + "-prefix";
+    classes.elSuffix = classNamePrefix + "-suffix";
+    classes.elValue = classNamePrefix + "-value";
 
-		children.push(h(
-			"div",
-			{ "class": classes.elBody, style: props.bodyStyle },
-			[prefix && h(
-				"div",
-				{ "class": classes.elPrefix },
-				[prefix]
-			), h(
-				"div",
-				{ "class": classes.elValue },
-				[state.value]
-			), suffix && h(
-				"div",
-				{ "class": classes.elSuffix },
-				[suffix]
-			)]
-		));
+    // title
+    var title = slots.title || props.title;
 
-		if (slots.footer) {
-			children.push(h(
-				"div",
-				{ "class": classes.elFooter, style: props.footerStyle },
-				[slots.footer]
-			));
-		}
+    // extra
+    var extra = slots.extra || props.extra;
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    // prefix
+    var prefix = slots.prefix || props.prefix;
+
+    // suffix
+    var suffix = slots.suffix || props.suffix;
+
+    // render
+    var children = [];
+
+    if (title || extra) {
+      children.push(h(
+        "div",
+        { "class": classes.elHeader, style: props.headerStyle },
+        [title && h(
+          "div",
+          { "class": classes.elTitle },
+          [title]
+        ), extra && h(
+          "div",
+          { "class": classes.elExtra },
+          [extra]
+        )]
+      ));
+    }
+
+    children.push(h(
+      "div",
+      { "class": classes.elBody, style: props.bodyStyle },
+      [prefix && h(
+        "div",
+        { "class": classes.elPrefix },
+        [prefix]
+      ), h(
+        "div",
+        { "class": classes.elValue },
+        [state.value]
+      ), suffix && h(
+        "div",
+        { "class": classes.elSuffix },
+        [suffix]
+      )]
+    ));
+
+    if (slots.footer) {
+      children.push(h(
+        "div",
+        { "class": classes.elFooter, style: props.footerStyle },
+        [slots.footer]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var countdown = (VuiCountdown);
@@ -31849,7 +31872,7 @@ var VuiCountdown = {
 
 
 countdown.install = function (Vue) {
-	Vue.component(countdown.name, countdown);
+  Vue.component(countdown.name, countdown);
 };
 
 /* harmony default export */ var components_countdown = (countdown);
@@ -33266,10 +33289,12 @@ list_item_meta.install = function (Vue) {
 
 
 
+
 var VuiPopover = {
   name: "vui-popover",
   components: {
-    VuiLazyRender: components_lazy_render
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
   },
   directives: {
     Portal: directives_portal,
@@ -33473,6 +33498,13 @@ var VuiPopover = {
         return _this5.unregister();
       });
       this.$emit("afterClose");
+    },
+    handleResize: function handleResize() {
+      var _this6 = this;
+
+      this.$nextTick(function () {
+        return _this6.reregister();
+      });
     }
   },
   render: function render() {
@@ -33491,7 +33523,8 @@ var VuiPopover = {
         handleAfterEnter = this.handleAfterEnter,
         handleBeforeLeave = this.handleBeforeLeave,
         handleLeave = this.handleLeave,
-        handleAfterLeave = this.handleAfterLeave;
+        handleAfterLeave = this.handleAfterLeave,
+        handleResize = this.handleResize;
 
     // title
 
@@ -33549,41 +33582,49 @@ var VuiPopover = {
           attrs: { render: state.visible }
         },
         [h(
-          "transition",
+          components_resize_observer,
           {
-            attrs: { appear: true, name: props.animation },
             on: {
-              "beforeEnter": handleBeforeEnter,
-              "enter": handleEnter,
-              "afterEnter": handleAfterEnter,
-              "beforeLeave": handleBeforeLeave,
-              "leave": handleLeave,
-              "afterLeave": handleAfterLeave
+              "resize": handleResize
             }
           },
           [h(
-            "div",
-            { ref: "popup", directives: [{
-                name: "portal",
-                value: props.getPopupContainer
-              }, {
-                name: "show",
-                value: state.visible
-              }],
-              "class": classes.elPopup, style: styles.elPopup, on: {
-                "mouseenter": handleMouseenter,
-                "mouseleave": handleMouseleave
+            "transition",
+            {
+              attrs: { appear: true, name: props.animation },
+              on: {
+                "beforeEnter": handleBeforeEnter,
+                "enter": handleEnter,
+                "afterEnter": handleAfterEnter,
+                "beforeLeave": handleBeforeLeave,
+                "leave": handleLeave,
+                "afterLeave": handleAfterLeave
               }
             },
-            [title ? h(
+            [h(
               "div",
-              { "class": classes.elPopupHeader },
-              [title]
-            ) : null, h(
-              "div",
-              { "class": classes.elPopupBody },
-              [content]
-            ), h("div", { "class": classes.elPopupArrow })]
+              { ref: "popup", directives: [{
+                  name: "portal",
+                  value: props.getPopupContainer
+                }, {
+                  name: "show",
+                  value: state.visible
+                }],
+                "class": classes.elPopup, style: styles.elPopup, on: {
+                  "mouseenter": handleMouseenter,
+                  "mouseleave": handleMouseleave
+                }
+              },
+              [title ? h(
+                "div",
+                { "class": classes.elPopupHeader },
+                [title]
+              ) : null, h(
+                "div",
+                { "class": classes.elPopupBody },
+                [content]
+              ), h("div", { "class": classes.elPopupArrow })]
+            )]
           )]
         )]
       )]
@@ -33860,6 +33901,81 @@ src_ratio.install = function (Vue) {
 };
 
 /* harmony default export */ var components_ratio = (src_ratio);
+// CONCATENATED MODULE: ./src/components/ribbon/src/ribbon.js
+
+
+
+
+var ribbon_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
+
+var VuiRibbon = {
+  name: "vui-ribbon",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    placement: prop_types["a" /* default */].oneOf(["start", "end"]).def("end"),
+    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("primary"),
+    color: prop_types["a" /* default */].string,
+    text: prop_types["a" /* default */].string
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
+
+    // color
+
+    var withPresetColor = props.color && ribbon_colors.indexOf(props.color) > -1;
+    var withCustomColor = props.color && ribbon_colors.indexOf(props.color) === -1;
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ribbon");
+    var classes = {};
+
+    classes.elWrapper = classNamePrefix + "-wrapper";
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-placement-" + props.placement, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, props.type && !withPresetColor && !withCustomColor), defineProperty_default()(_classes$el, classNamePrefix + "-color-" + props.color, withPresetColor), _classes$el);
+    classes.elText = classNamePrefix + "-text";
+    classes.elCorner = classNamePrefix + "-corner";
+
+    // style
+    var styles = {};
+
+    if (withCustomColor) {
+      styles.el = {
+        backgroundColor: props.color,
+        color: "#fff"
+      };
+      styles.elCorner = {
+        color: props.color
+      };
+    }
+
+    return h(
+      "div",
+      { "class": classes.elWrapper },
+      [slots.default, h(
+        "div",
+        { "class": classes.el, style: styles.el },
+        [h(
+          "div",
+          { "class": classes.elText },
+          [slots.text || props.text]
+        ), h("div", { "class": classes.elCorner, style: styles.elCorner })]
+      )]
+    );
+  }
+};
+
+/* harmony default export */ var ribbon = (VuiRibbon);
+// CONCATENATED MODULE: ./src/components/ribbon/index.js
+
+
+ribbon.install = function (Vue) {
+  Vue.component(ribbon.name, ribbon);
+};
+
+/* harmony default export */ var components_ribbon = (ribbon);
 // CONCATENATED MODULE: ./src/components/statistic/src/statistic.js
 
 
@@ -33867,147 +33983,147 @@ src_ratio.install = function (Vue) {
 
 
 var VuiStatistic = {
-	name: "vui-statistic",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].string,
-		extra: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		precision: prop_types["a" /* default */].number,
-		prefix: prop_types["a" /* default */].string,
-		suffix: prop_types["a" /* default */].string,
-		formatter: prop_types["a" /* default */].func,
-		decimalSeparator: prop_types["a" /* default */].string.def("."),
-		groupSeparator: prop_types["a" /* default */].string.def(","),
-		headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+  name: "vui-statistic",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    extra: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    precision: prop_types["a" /* default */].number,
+    prefix: prop_types["a" /* default */].string,
+    suffix: prop_types["a" /* default */].string,
+    formatter: prop_types["a" /* default */].func,
+    decimalSeparator: prop_types["a" /* default */].string.def("."),
+    groupSeparator: prop_types["a" /* default */].string.def(","),
+    headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
-		// class
+    // class
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "statistic");
-		var classes = {};
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "statistic");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
-		classes.elHeader = classNamePrefix + "-header";
-		classes.elBody = classNamePrefix + "-body";
-		classes.elFooter = classNamePrefix + "-footer";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elExtra = classNamePrefix + "-extra";
-		classes.elPrefix = classNamePrefix + "-prefix";
-		classes.elSuffix = classNamePrefix + "-suffix";
-		classes.elValue = classNamePrefix + "-value";
+    classes.el = "" + classNamePrefix;
+    classes.elHeader = classNamePrefix + "-header";
+    classes.elBody = classNamePrefix + "-body";
+    classes.elFooter = classNamePrefix + "-footer";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elExtra = classNamePrefix + "-extra";
+    classes.elPrefix = classNamePrefix + "-prefix";
+    classes.elSuffix = classNamePrefix + "-suffix";
+    classes.elValue = classNamePrefix + "-value";
 
-		// title
-		var title = slots.title || props.title;
+    // title
+    var title = slots.title || props.title;
 
-		// extra
-		var extra = slots.extra || props.extra;
+    // extra
+    var extra = slots.extra || props.extra;
 
-		// prefix
-		var prefix = slots.prefix || props.prefix;
+    // prefix
+    var prefix = slots.prefix || props.prefix;
 
-		// suffix
-		var suffix = slots.suffix || props.suffix;
+    // suffix
+    var suffix = slots.suffix || props.suffix;
 
-		// value
-		var value = void 0;
+    // value
+    var value = void 0;
 
-		if (is["a" /* default */].function(props.formatter)) {
-			value = props.formatter(h, props.value);
-		} else {
-			value = String(props.value);
+    if (is["a" /* default */].function(props.formatter)) {
+      value = props.formatter(h, props.value);
+    } else {
+      value = String(props.value);
 
-			var matched = value.match(/^(-?)(\d*)(\.(\d+))?$/);
+      var matched = value.match(/^(-?)(\d*)(\.(\d+))?$/);
 
-			if (matched) {
-				value = [];
+      if (matched) {
+        value = [];
 
-				var negative = matched[1];
-				var int = matched[2] || "0";
-				var decimal = matched[4] || "";
+        var negative = matched[1];
+        var int = matched[2] || "0";
+        var decimal = matched[4] || "";
 
-				int = int.replace(/\B(?=(\d{3})+(?!\d))/g, props.groupSeparator);
+        int = int.replace(/\B(?=(\d{3})+(?!\d))/g, props.groupSeparator);
 
-				if (is["a" /* default */].number(props.precision)) {
-					decimal = padEnd(decimal, props.precision, "0").slice(0, props.precision);
-				}
+        if (is["a" /* default */].number(props.precision)) {
+          decimal = padEnd(decimal, props.precision, "0").slice(0, props.precision);
+        }
 
-				if (decimal) {
-					decimal = props.decimalSeparator + decimal;
-				}
+        if (decimal) {
+          decimal = props.decimalSeparator + decimal;
+        }
 
-				value.push(h(
-					"big",
-					{ key: "int" },
-					[negative + int]
-				));
+        value.push(h(
+          "big",
+          { key: "int" },
+          [negative + int]
+        ));
 
-				if (decimal) {
-					value.push(h(
-						"small",
-						{ key: "decimal" },
-						[decimal]
-					));
-				}
-			}
-		}
+        if (decimal) {
+          value.push(h(
+            "small",
+            { key: "decimal" },
+            [decimal]
+          ));
+        }
+      }
+    }
 
-		// render
-		var children = [];
+    // render
+    var children = [];
 
-		if (title || extra) {
-			children.push(h(
-				"div",
-				{ "class": classes.elHeader, style: props.headerStyle },
-				[title && h(
-					"div",
-					{ "class": classes.elTitle },
-					[title]
-				), extra && h(
-					"div",
-					{ "class": classes.elExtra },
-					[extra]
-				)]
-			));
-		}
+    if (title || extra) {
+      children.push(h(
+        "div",
+        { "class": classes.elHeader, style: props.headerStyle },
+        [title && h(
+          "div",
+          { "class": classes.elTitle },
+          [title]
+        ), extra && h(
+          "div",
+          { "class": classes.elExtra },
+          [extra]
+        )]
+      ));
+    }
 
-		children.push(h(
-			"div",
-			{ "class": classes.elBody, style: props.bodyStyle },
-			[prefix && h(
-				"div",
-				{ "class": classes.elPrefix },
-				[prefix]
-			), h(
-				"div",
-				{ "class": classes.elValue },
-				[value]
-			), suffix && h(
-				"div",
-				{ "class": classes.elSuffix },
-				[suffix]
-			)]
-		));
+    children.push(h(
+      "div",
+      { "class": classes.elBody, style: props.bodyStyle },
+      [prefix && h(
+        "div",
+        { "class": classes.elPrefix },
+        [prefix]
+      ), h(
+        "div",
+        { "class": classes.elValue },
+        [value]
+      ), suffix && h(
+        "div",
+        { "class": classes.elSuffix },
+        [suffix]
+      )]
+    ));
 
-		if (slots.footer) {
-			children.push(h(
-				"div",
-				{ "class": classes.elFooter, style: props.footerStyle },
-				[slots.footer]
-			));
-		}
+    if (slots.footer) {
+      children.push(h(
+        "div",
+        { "class": classes.elFooter, style: props.footerStyle },
+        [slots.footer]
+      ));
+    }
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var src_statistic = (VuiStatistic);
@@ -34015,7 +34131,7 @@ var VuiStatistic = {
 
 
 src_statistic.install = function (Vue) {
-	Vue.component(src_statistic.name, src_statistic);
+  Vue.component(src_statistic.name, src_statistic);
 };
 
 /* harmony default export */ var components_statistic = (src_statistic);
@@ -37228,44 +37344,36 @@ time.install = function (Vue) {
 /* harmony default export */ var components_time = (time);
 // CONCATENATED MODULE: ./src/components/timeline/src/timeline.js
 
+
+
+
 var VuiTimeline = {
-	name: "vui-timeline",
+  name: "vui-timeline",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    mode: prop_types["a" /* default */].oneOf(["left", "alternate", "right"]).def("left"),
+    pending: prop_types["a" /* default */].bool.def(false)
+  },
+  render: function render() {
+    var _classes$el;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-timeline"
-		},
-		mode: {
-			type: String,
-			default: "left",
-			validator: function validator(value) {
-				return ["left", "alternate", "right"].indexOf(value) > -1;
-			}
-		},
-		pending: {
-			type: Boolean,
-			default: false
-		}
-	},
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
 
-	render: function render() {
-		var _classes;
+    // class
 
-		var h = arguments[0];
-		var $slots = this.$slots,
-		    classNamePrefix = this.classNamePrefix,
-		    mode = this.mode,
-		    pending = this.pending;
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "timeline");
+    var classes = {};
 
-		var classes = (_classes = {}, defineProperty_default()(_classes, "" + classNamePrefix, true), defineProperty_default()(_classes, classNamePrefix + "-" + mode, true), defineProperty_default()(_classes, classNamePrefix + "-pending", pending), _classes);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.mode, true), defineProperty_default()(_classes$el, classNamePrefix + "-pending", props.pending), _classes$el);
 
-		return h(
-			"ul",
-			{ "class": classes },
-			[$slots.default]
-		);
-	}
+    return h(
+      "ul",
+      { "class": classes.el },
+      [slots.default]
+    );
+  }
 };
 
 /* harmony default export */ var timeline = (VuiTimeline);
@@ -37273,86 +37381,69 @@ var VuiTimeline = {
 
 
 timeline.install = function (Vue) {
-	Vue.component(timeline.name, timeline);
+  Vue.component(timeline.name, timeline);
 };
 
 /* harmony default export */ var components_timeline = (timeline);
 // CONCATENATED MODULE: ./src/components/timeline/src/timeline-item.js
 
+
+
+
+var timeline_item_colors = ["gray", "blue", "yellow", "green", "red"];
+
 var VuiTimelineItem = {
-	name: "vui-timeline-item",
+  name: "vui-timeline-item",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    color: prop_types["a" /* default */].string.def("blue")
+  },
+  render: function render() {
+    var _classes$header;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-timeline-item"
-		},
-		color: {
-			type: String,
-			default: "blue"
-		}
-	},
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
 
-	data: function data() {
-		return {
-			colors: ["gray", "blue", "yellow", "green", "red"]
-		};
-	},
+    // color
 
+    var withPresetColor = props.color && timeline_item_colors.indexOf(props.color) > -1;
+    var withCustomColor = props.color && timeline_item_colors.indexOf(props.color) === -1;
 
-	computed: {
-		withPresetColor: function withPresetColor() {
-			return this.color && this.colors.indexOf(this.color) > -1;
-		},
-		withCustomColor: function withCustomColor() {
-			return this.color && this.colors.indexOf(this.color) === -1;
-		}
-	},
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "timeline-item");
+    var classes = {};
 
-	render: function render() {
-		var _classes$header;
+    classes.el = "" + classNamePrefix;
+    classes.tail = classNamePrefix + "-tail";
+    classes.header = (_classes$header = {}, defineProperty_default()(_classes$header, classNamePrefix + "-header", true), defineProperty_default()(_classes$header, classNamePrefix + "-header-custom", slots.dot), defineProperty_default()(_classes$header, classNamePrefix + "-header-" + props.color, withPresetColor), _classes$header);
+    classes.body = classNamePrefix + "-body";
 
-		var h = arguments[0];
-		var $slots = this.$slots,
-		    classNamePrefix = this.classNamePrefix,
-		    color = this.color,
-		    withPresetColor = this.withPresetColor,
-		    withCustomColor = this.withCustomColor;
+    // style
+    var styles = {};
 
-		// classes
+    if (withCustomColor) {
+      styles.header = {
+        borderColor: props.color,
+        color: props.color
+      };
+    }
 
-		var classes = {};
-
-		classes.root = defineProperty_default()({}, "" + classNamePrefix, true);
-		classes.tail = defineProperty_default()({}, classNamePrefix + "-tail", true);
-		classes.header = (_classes$header = {}, defineProperty_default()(_classes$header, classNamePrefix + "-header", true), defineProperty_default()(_classes$header, classNamePrefix + "-header-custom", $slots.dot), defineProperty_default()(_classes$header, classNamePrefix + "-header-" + color, withPresetColor), _classes$header);
-		classes.body = defineProperty_default()({}, classNamePrefix + "-body", true);
-
-		// styles
-		var styles = {};
-
-		if (withCustomColor) {
-			styles.header = {
-				borderColor: color,
-				color: color
-			};
-		}
-
-		// render
-		return h(
-			"li",
-			{ "class": classes.root },
-			[h("div", { "class": classes.tail }), h(
-				"div",
-				{ "class": classes.header, style: styles.header },
-				[$slots.dot]
-			), h(
-				"div",
-				{ "class": classes.body },
-				[$slots.default]
-			)]
-		);
-	}
+    // render
+    return h(
+      "li",
+      { "class": classes.el },
+      [h("div", { "class": classes.tail }), h(
+        "div",
+        { "class": classes.header, style: styles.header },
+        [slots.dot]
+      ), h(
+        "div",
+        { "class": classes.body },
+        [slots.default]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var timeline_item = (VuiTimelineItem);
@@ -37360,7 +37451,7 @@ var VuiTimelineItem = {
 
 
 timeline_item.install = function (Vue) {
-	Vue.component(timeline_item.name, timeline_item);
+  Vue.component(timeline_item.name, timeline_item);
 };
 
 /* harmony default export */ var components_timeline_item = (timeline_item);
@@ -37922,6 +38013,7 @@ tree.install = function (Vue) {
 
 
 
+
 var VuiWatermark = {
   name: "vui-watermark",
   props: {
@@ -37929,7 +38021,7 @@ var VuiWatermark = {
     text: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     color: prop_types["a" /* default */].string.def("rgba(0, 0, 0, 0.15)"),
     fontSize: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def("14px"),
-    fontFamily: prop_types["a" /* default */].string.def("Microsoft Yahei"),
+    fontFamily: prop_types["a" /* default */].string,
     width: prop_types["a" /* default */].number.def(320),
     height: prop_types["a" /* default */].number.def(120),
     rotate: prop_types["a" /* default */].number.def(-20),
@@ -37961,8 +38053,13 @@ var VuiWatermark = {
       canvas.height = props.height;
 
       var ctx = canvas.getContext("2d");
+      var fontFamily = props.fontFamily;
 
-      ctx.font = "normal " + (is["a" /* default */].string(props.fontSize) ? props.fontSize : props.fontSize + "px") + " " + props.fontFamily;
+      if (!fontFamily) {
+        fontFamily = getStyle_getStyle(document.body, "fontFamily");
+      }
+
+      ctx.font = "normal " + (is["a" /* default */].string(props.fontSize) ? props.fontSize : props.fontSize + "px") + " " + fontFamily;
       ctx.fillStyle = props.color;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -42748,10 +42845,10 @@ src_fullscreen.install = function (Vue) {
 
 /* harmony default export */ var components_fullscreen = (src_fullscreen);
 // CONCATENATED MODULE: ./src/utils/queue.js
-var queue_pending = [];
+var pending = [];
 
 var queue_next = function next() {
-  var fn = queue_pending.shift();
+  var fn = pending.shift();
 
   if (fn) {
     fn(next);
@@ -42759,9 +42856,9 @@ var queue_next = function next() {
 };
 
 function queue(fn) {
-  queue_pending.push(fn);
+  pending.push(fn);
 
-  if (queue_pending.length == 1) {
+  if (pending.length == 1) {
     queue_next();
   }
 };
@@ -43032,6 +43129,7 @@ VuiLoading.remove = function () {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Popover", function() { return components_popover; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Qrcode", function() { return components_qrcode; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Ratio", function() { return components_ratio; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Ribbon", function() { return components_ribbon; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Statistic", function() { return components_statistic; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Table", function() { return components_table; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Tag", function() { return components_tag; });
@@ -43163,6 +43261,7 @@ if (typeof console !== "undefined" && console.warn && typeof window !== "undefin
 
 
 
+
 // Feedback
 
 
@@ -43202,7 +43301,7 @@ components_affix, components_breadcrumb, components_breadcrumb_item, components_
 // Data Entry
 components_cascader, components_checkbox, components_checkbox_group, components_datepicker, components_form, components_form_group, components_form_item, components_input, components_input_group, components_input_number, components_mutex_group, components_radio, components_radio_group, components_rate, components_select, components_option, components_option_group, components_slider, components_switch, components_textarea, components_timeroutine, components_transfer, components_cascade_transfer, components_upload,
 // Data Display
-components_avatar_group, components_avatar, components_badge, components_card, components_card_grid, components_card_meta, components_cell, components_cell_group, components_collapse, components_countdown, components_panel, components_descriptions, components_description, components_empty, components_image, components_list, components_list_item, components_list_item_meta, components_popover, components_qrcode, components_ratio, components_statistic, components_table, components_tag, components_time, components_timeline, components_timeline_item, components_tooltip, components_tree, components_watermark,
+components_avatar_group, components_avatar, components_badge, components_card, components_card_grid, components_card_meta, components_cell, components_cell_group, components_collapse, components_countdown, components_panel, components_descriptions, components_description, components_empty, components_image, components_list, components_list_item, components_list_item_meta, components_popover, components_qrcode, components_ratio, components_ribbon, components_statistic, components_table, components_tag, components_time, components_timeline, components_timeline_item, components_tooltip, components_tree, components_watermark,
 // Feedback
 components_alert, components_drawer, components_message, components_modal, components_notice, components_popconfirm, components_progress, components_result, components_skeleton, components_skeleton_avatar, components_skeleton_title, components_skeleton_paragraph, components_skeleton_input, components_skeleton_button, components_skeleton_image, components_spin,
 // Other
@@ -43242,7 +43341,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.0",
+  version: "1.10.1",
   install: src_install,
   // Locale
   locale: src_locale.use,
@@ -43331,6 +43430,7 @@ if (typeof window !== "undefined" && window.Vue) {
   Popover: components_popover,
   Qrcode: components_qrcode,
   Ratio: components_ratio,
+  Ribbon: components_ribbon,
   Statistic: components_statistic,
   Table: components_table,
   Tag: components_tag,
