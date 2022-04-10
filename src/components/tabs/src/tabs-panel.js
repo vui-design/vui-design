@@ -29,19 +29,16 @@ const VuiTabsPanel = {
       [`${classNamePrefix}-active`]: active,
       [`${classNamePrefix}-disabled`]: props.data.disabled
     };
-    classes.elContent = `${classNamePrefix}-content`;
 
     // render
     let content = props.data.children;
-    
+
     if (!active && props.destroyOnHide) {
       content = null;
     }
 
     return (
-      <div class={classes.el}>
-        <div class={classes.elContent}>{content}</div>
-      </div>
+      <div class={classes.el}>{content}</div>
     );
   }
 };

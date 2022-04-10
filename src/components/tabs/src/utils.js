@@ -2,15 +2,15 @@ import is from "../../../utils/is";
 
 /**
 * 从 children 中解析获取面板列表
-* @param {Object} tabs 父组件
+* @param {Object} parent 父组件
 * @param {Array} children 子组件
 * @param {String} tagName 组件名称
 */
-export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-panel") => {
-  let tabpanels = [];
+export const getTabsFromChildren = (parent, children, tagName = "vui-tab-panel") => {
+  let tabs = [];
 
   if (!children) {
-    return tabpanels;
+    return tabs;
   }
 
   children.forEach(node => {
@@ -29,7 +29,7 @@ export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-pane
     if (tag === tagName && is.json(props)) {
       let tabpanel = {
         ...props,
-        index: tabpanels.length
+        index: tabs.length
       };
 
       // 设置 panel 的唯一 key 值
@@ -42,14 +42,14 @@ export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-pane
         tabpanel.key = tabpanel.index;
       }
 
-      // 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 tabs 的 closable 或 editable 属性
+      // 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 VuiTabs 的 closable 属性
       const closable = props.closable;
 
       if (closable === false) {
         tabpanel.closable = false;
       }
       else {
-        tabpanel.closable = tabs.closable || tabs.editable;
+        tabpanel.closable = parent.closable;
       }
 
       // 设置 panel 的禁用属性
@@ -95,6 +95,7 @@ export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-pane
                 }
               }
             }
+            // title
             else if (slot === "title") {
               if (element.data.attrs) {
                 delete element.data.attrs.slot;
@@ -129,16 +130,16 @@ export const getTabpanelsFromChildren = (tabs, children, tagName = "vui-tab-pane
         });
       }
 
-      tabpanels.push(tabpanel);
+      tabs.push(tabpanel);
     }
   });
 
-  return tabpanels;
+  return tabs;
 };
 
 /**
 * 默认导出指定接口
 */
 export default {
-  getTabpanelsFromChildren
+  getTabsFromChildren
 };

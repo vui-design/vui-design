@@ -20,7 +20,6 @@ const VuiTabsWrapper = {
     extra: PropTypes.any,
     addable: PropTypes.bool.def(false),
     closable: PropTypes.bool.def(false),
-    editable: PropTypes.bool.def(false),
     destroyOnHide: PropTypes.bool.def(false),
     headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
@@ -28,14 +27,14 @@ const VuiTabsWrapper = {
   render() {
     const { $slots: slots, $listeners: listeners, $props: props } = this;
 
-    const tabpanels = utils.getTabpanelsFromChildren(props, slots.default);
+    const tabs = utils.getTabsFromChildren(props, slots.default);
     let activeKey = props.activeKey;
 
     if (!is.effective(activeKey)) {
-      const tabpanel = tabpanels.find(tabpanel => !tabpanel.disabled);
+      const tab = tabs.find(tab => !tab.disabled);
 
-      if (tabpanel) {
-        activeKey = tabpanel.key;
+      if (tab) {
+        activeKey = tab.key;
       }
     }
 
@@ -43,7 +42,7 @@ const VuiTabsWrapper = {
       props: {
         ...props,
         activeKey,
-        tabpanels,
+        tabs,
         extra: slots.extra || props.extra
       },
       on: {

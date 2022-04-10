@@ -25,7 +25,7 @@ const VuiTabsTab = {
         return;
       }
 
-      this.$emit("click", props.data);
+      this.$emit("click", props.data.key);
     },
     handleClose(e) {
       const { $props: props } = this;
@@ -34,8 +34,8 @@ const VuiTabsTab = {
         return;
       }
 
-      this.$emit("close", props.data);
       e.stopPropagation();
+      this.$emit("close", props.data.key);
     }
   },
   render() {
@@ -52,7 +52,6 @@ const VuiTabsTab = {
       [`${classNamePrefix}-active`]: props.data.key === vuiTabsState.activeKey,
       [`${classNamePrefix}-disabled`]: props.data.disabled
     };
-    classes.elContent = `${classNamePrefix}-content`;
     classes.elIcon = `${classNamePrefix}-icon`;
     classes.elTitle = `${classNamePrefix}-title`;
     classes.elBtnClose = `${classNamePrefix}-btn-close`;
@@ -87,10 +86,8 @@ const VuiTabsTab = {
 
     return (
       <div class={classes.el} onClick={handleClick}>
-        <div class={classes.elContent}>
-          {icon}
-          <div class={classes.elTitle}>{props.data.title}</div>
-        </div>
+        {icon}
+        <div class={classes.elTitle}>{props.data.title}</div>
         {btnClose}
       </div>
     );

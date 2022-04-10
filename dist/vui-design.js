@@ -19204,7 +19204,7 @@ var VuiTabsTab = {
         return;
       }
 
-      this.$emit("click", props.data);
+      this.$emit("click", props.data.key);
     },
     handleClose: function handleClose(e) {
       var props = this.$props;
@@ -19214,8 +19214,8 @@ var VuiTabsTab = {
         return;
       }
 
-      this.$emit("close", props.data);
       e.stopPropagation();
+      this.$emit("close", props.data.key);
     }
   },
   render: function render() {
@@ -19234,7 +19234,6 @@ var VuiTabsTab = {
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-active", props.data.key === vuiTabsState.activeKey), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.data.disabled), _classes$el);
-    classes.elContent = classNamePrefix + "-content";
     classes.elIcon = classNamePrefix + "-icon";
     classes.elTitle = classNamePrefix + "-title";
     classes.elBtnClose = classNamePrefix + "-btn-close";
@@ -19279,14 +19278,10 @@ var VuiTabsTab = {
           "click": handleClick
         }
       },
-      [h(
+      [icon, h(
         "div",
-        { "class": classes.elContent },
-        [icon, h(
-          "div",
-          { "class": classes.elTitle },
-          [props.data.title]
-        )]
+        { "class": classes.elTitle },
+        [props.data.title]
       ), btnClose]
     );
   }
@@ -19327,7 +19322,6 @@ var VuiTabsPanel = {
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-active", active), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.data.disabled), _classes$el);
-    classes.elContent = classNamePrefix + "-content";
 
     // render
     var content = props.data.children;
@@ -19339,17 +19333,15 @@ var VuiTabsPanel = {
     return h(
       "div",
       { "class": classes.el },
-      [h(
-        "div",
-        { "class": classes.elContent },
-        [content]
-      )]
+      [content]
     );
   }
 };
 
 /* harmony default export */ var tabs_panel = (VuiTabsPanel);
 // CONCATENATED MODULE: ./src/components/tabs/src/tabs.js
+
+
 
 
 
@@ -19366,19 +19358,20 @@ var VuiTabs = {
   },
 
   components: {
+    VuiResizeObserver: components_resize_observer,
     VuiTabsTab: tabs_tab,
-    VuiTabsPanel: tabs_panel
+    VuiTabsPanel: tabs_panel,
+    VuiIcon: components_icon
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["line", "card"]).def("line"),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     activeKey: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    tabpanels: prop_types["a" /* default */].array.def([]),
+    tabs: prop_types["a" /* default */].array.def([]),
     extra: prop_types["a" /* default */].any,
     addable: prop_types["a" /* default */].bool.def(false),
     closable: prop_types["a" /* default */].bool.def(false),
-    editable: prop_types["a" /* default */].bool.def(false),
     destroyOnHide: prop_types["a" /* default */].bool.def(false),
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
@@ -19387,7 +19380,10 @@ var VuiTabs = {
     var props = this.$props;
 
     var state = {
-      activeKey: props.activeKey
+      activeKey: undefined,
+      scrollable: false,
+      scrollWidth: 0,
+      ping: "left"
     };
 
     return {
@@ -19395,41 +19391,280 @@ var VuiTabs = {
     };
   },
 
+  computed: {
+    maybeScroll: function maybeScroll() {
+      return {
+        activeKey: this.state.activeKey,
+        scrollable: this.state.scrollable
+      };
+    }
+  },
   watch: {
-    activeKey: function activeKey(value) {
-      this.state.activeKey = value;
+    activeKey: {
+      immediate: true,
+      deep: true,
+      handler: function handler(value) {
+        this.state.activeKey = value;
+      }
+    },
+    maybeScroll: {
+      immediate: true,
+      deep: true,
+      handler: function handler(value) {
+        var _this = this;
+
+        if (!value.scrollable) {
+          return;
+        }
+
+        this.$nextTick(function () {
+          return _this.scrollToActiveTab();
+        });
+      }
     }
   },
   methods: {
-    handleChange: function handleChange(tabpanel) {
-      if (tabpanel.disabled) {
+    getNavigationTab: function getNavigationTab(tabs, activeKey, direction) {
+      var index = tabs.findIndex(function (tab) {
+        return tab.key === activeKey;
+      });
+
+      index = (index + direction + tabs.length) % tabs.length;
+
+      var tab = tabs[index];
+
+      if (tab.disabled) {
+        return this.getNavigationTab(tabs, tab.key, direction);
+      } else {
+        return tab;
+      }
+    },
+    getHiddenParent: function getHiddenParent() {
+      var parentNode = this.$el.parentNode;
+
+      while (parentNode && parentNode !== document.body) {
+        if (parentNode.style && parentNode.style.display === "none") {
+          return parentNode;
+        }
+
+        parentNode = parentNode.parentNode;
+      }
+
+      return null;
+    },
+    getScrollWidth: function getScrollWidth() {
+      return this.state.scrollWidth;
+    },
+    setScrollWidth: function setScrollWidth(value) {
+      var scrollerWidth = this.$refs.scroller.offsetWidth;
+      var scrollerContentWidth = this.$refs.scrollerContent.offsetWidth;
+      var ping = "";
+
+      if (value === 0) {
+        ping = "left";
+      } else if (scrollerContentWidth - value <= scrollerWidth) {
+        ping = "right";
+      }
+
+      this.state.scrollWidth = value;
+      this.state.ping = ping;
+    },
+    scrollToActiveTab: function scrollToActiveTab() {
+      if (!this.state.scrollable) {
         return;
       }
 
-      this.state.activeKey = tabpanel.key;
-      this.$emit("input", this.state.activeKey);
-      this.$emit("change", this.state.activeKey);
+      var props = this.$props;
+
+      var scroller = this.$refs.scroller;
+      var scrollerContent = this.$refs.scrollerContent;
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "tabs");
+      var activeTab = scrollerContent.querySelector("." + classNamePrefix + "-tab-active");
+
+      if (!activeTab) {
+        return;
+      }
+
+      var scrollerBounding = scroller.getBoundingClientRect();
+      var scrollerContentBounding = scrollerContent.getBoundingClientRect();
+      var activeTabBounding = activeTab.getBoundingClientRect();
+      var scrollWidth = this.getScrollWidth();
+      var value = scrollWidth;
+
+      if (scrollerContentBounding.right < scrollerBounding.right) {
+        value = scrollerContent.offsetWidth - scrollerBounding.width;
+      }
+
+      if (activeTabBounding.left < scrollerBounding.left) {
+        value = scrollWidth - (scrollerBounding.left - activeTabBounding.left);
+      } else if (activeTabBounding.right > scrollerBounding.right) {
+        value = scrollWidth + activeTabBounding.right - scrollerBounding.right;
+      }
+
+      if (scrollWidth !== value) {
+        this.setScrollWidth(Math.max(value, 0));
+      }
     },
-    handleAdd: function handleAdd(e) {
+    handleResize: function handleResize() {
+      var scrollerWidth = this.$refs.scroller.offsetWidth;
+      var scrollerContentWidth = this.$refs.scrollerContent.offsetWidth;
+      var scrollWidth = this.getScrollWidth();
+
+      if (scrollerWidth < scrollerContentWidth) {
+        this.state.scrollable = true;
+
+        if (scrollerContentWidth - scrollWidth < scrollerWidth) {
+          this.setScrollWidth(scrollerContentWidth - scrollerWidth);
+        }
+      } else {
+        this.state.scrollable = false;
+
+        if (scrollWidth > 0) {
+          this.setScrollWidth(0);
+        }
+      }
+    },
+    handleScroll: function handleScroll(e) {
+      if (!this.state.scrollable) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      var type = e.type;
+      var delta = 0;
+
+      if (type === "DOMMouseScroll" || type === "mousewheel") {
+        delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40;
+      }
+
+      if (delta > 0) {
+        this.handleScrollPrev();
+      } else {
+        this.handleScrollNext();
+      }
+    },
+    handleScrollPrev: function handleScrollPrev() {
+      var scrollerWidth = this.$refs.scroller.offsetWidth;
+      var scrollWidth = this.getScrollWidth();
+
+      if (!scrollWidth) {
+        return;
+      }
+
+      var value = scrollWidth > scrollerWidth ? scrollWidth - scrollerWidth : 0;
+
+      this.setScrollWidth(value);
+    },
+    handleScrollNext: function handleScrollNext() {
+      var scrollerWidth = this.$refs.scroller.offsetWidth;
+      var scrollerContentWidth = this.$refs.scrollerContent.offsetWidth;
+      var scrollWidth = this.getScrollWidth();
+
+      if (scrollerContentWidth - scrollWidth <= scrollerWidth) {
+        return;
+      }
+
+      var value = scrollerContentWidth - scrollWidth > scrollerWidth * 2 ? scrollWidth + scrollerWidth : scrollerContentWidth - scrollerWidth;
+
+      this.setScrollWidth(value);
+    },
+    handleAdd: function handleAdd() {
       this.$emit("add");
     },
-    handleClose: function handleClose(tabpanel) {
-      if (tabpanel.disabled) {
+    handleClose: function handleClose(key) {
+      var props = this.$props,
+          state = this.state;
+
+
+      if (state.activeKey === key) {
+        var tabIndex = props.tabs.findIndex(function (tab) {
+          return tab.key === state.activeKey;
+        });
+
+        if (tabIndex > 0) {
+          tabIndex = tabIndex - 1;
+        } else {
+          tabIndex = tabIndex + 1;
+        }
+
+        var tab = props.tabs[tabIndex];
+
+        this.handleChange(tab ? tab.key : undefined);
+      }
+
+      this.$emit("close", key);
+    },
+    handleNavigation: function handleNavigation(e) {
+      if (e.keyCode !== 37 && e.keyCode !== 39) {
         return;
       }
 
-      this.$emit("close", tabpanel.key);
+      var props = this.$props,
+          state = this.state;
+
+
+      if (props.tabs.length < 2) {
+        return;
+      }
+
+      var tab = this.getNavigationTab(props.tabs, state.activeKey, e.keyCode === 39 ? 1 : -1);
+
+      this.handleChange(tab.key);
+    },
+    handleChange: function handleChange(key) {
+      this.state.activeKey = key;
+      this.$emit("input", key);
+      this.$emit("change", key);
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    var hiddenParent = this.getHiddenParent();
+
+    if (hiddenParent) {
+      var callback = function callback() {
+        if (hiddenParent.style.display !== "none") {
+          _this2.$nextTick(function () {
+            return setTimeout(function () {
+              return _this2.scrollToActiveTab();
+            }, 0);
+          });
+          _this2.parentObserver.disconnect();
+        }
+      };
+      var config = {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        attributeFilter: ["style"]
+      };
+
+      this.parentObserver = new MutationObserver(callback);
+      this.parentObserver.observe(hiddenParent, config);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    if (this.parentObserver) {
+      this.parentObserver.disconnect();
     }
   },
   render: function render() {
-    var _classes$el;
+    var _classes$el, _classes$elScroller, _classes$elBtnPrev, _classes$elBtnNext, _classes$elBtnAdd;
 
     var h = arguments[0];
     var props = this.$props,
         state = this.state;
-    var handleChange = this.handleChange,
+    var handleResize = this.handleResize,
+        handleScroll = this.handleScroll,
+        handleScrollPrev = this.handleScrollPrev,
+        handleScrollNext = this.handleScrollNext,
         handleAdd = this.handleAdd,
-        handleClose = this.handleClose;
+        handleClose = this.handleClose,
+        handleNavigation = this.handleNavigation,
+        handleChange = this.handleChange;
 
     // size
 
@@ -19448,72 +19683,124 @@ var VuiTabs = {
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.type, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), _classes$el);
     classes.elHeader = classNamePrefix + "-header";
     classes.elHeaderContent = classNamePrefix + "-header-content";
-    classes.elExtra = classNamePrefix + "-extra";
-    classes.elBtnAdd = classNamePrefix + "-btn-add";
+    classes.elHeaderExtra = classNamePrefix + "-header-extra";
     classes.elBody = classNamePrefix + "-body";
     classes.elBodyContent = classNamePrefix + "-body-content";
+    classes.elScroller = (_classes$elScroller = {}, defineProperty_default()(_classes$elScroller, classNamePrefix + "-scroller", true), defineProperty_default()(_classes$elScroller, classNamePrefix + "-scroller-scrollable", state.scrollable), defineProperty_default()(_classes$elScroller, classNamePrefix + "-scroller-ping-" + state.ping, state.scrollable && state.ping), _classes$elScroller);
+    classes.elScrollerContent = classNamePrefix + "-scroller-content";
+    classes.elBtnPrev = (_classes$elBtnPrev = {}, defineProperty_default()(_classes$elBtnPrev, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnPrev, classNamePrefix + "-btn-prev", true), _classes$elBtnPrev);
+    classes.elBtnNext = (_classes$elBtnNext = {}, defineProperty_default()(_classes$elBtnNext, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnNext, classNamePrefix + "-btn-next", true), _classes$elBtnNext);
+    classes.elBtnAdd = (_classes$elBtnAdd = {}, defineProperty_default()(_classes$elBtnAdd, classNamePrefix + "-btn", true), defineProperty_default()(_classes$elBtnAdd, classNamePrefix + "-btn-add", true), _classes$elBtnAdd);
 
-    // extra
-    var extra = void 0;
+    // style
+    var styles = {};
 
-    if (props.extra) {
-      extra = h(
-        "div",
-        { "class": classes.elExtra },
-        [props.extra]
-      );
-    } else if (props.addable || props.editable) {
-      extra = h(
-        "div",
-        { "class": classes.elExtra },
-        [h("a", {
-          attrs: { href: "javascript:;" },
-          "class": classes.elBtnAdd, on: {
-            "click": handleAdd
-          }
-        })]
-      );
-    }
+    styles.elScrollerContent = {
+      transform: "translateX(-" + state.scrollWidth + "px)"
+    };
 
     // render
     return h(
       "div",
       { "class": classes.el },
       [h(
-        "div",
-        { "class": classes.elHeader, style: props.headerStyle },
+        components_resize_observer,
+        {
+          on: {
+            "resize": handleResize
+          }
+        },
         [h(
           "div",
-          { "class": classes.elHeaderContent },
-          [props.tabpanels.map(function (tabpanel) {
-            return h(tabs_tab, {
-              attrs: {
-                classNamePrefix: classNamePrefix,
-
-                data: tabpanel
+          { key: "header", "class": classes.elHeader, style: props.headerStyle },
+          [h(
+            "div",
+            { key: "headerContent", "class": classes.elHeaderContent },
+            [state.scrollable ? h(
+              "div",
+              { key: "btn-prev", "class": classes.elBtnPrev, on: {
+                  "click": handleScrollPrev
+                }
               },
-              key: tabpanel.key, on: {
-                "click": handleChange,
-                "close": handleClose
-              }
-            });
-          })]
-        ), extra]
+              [h(components_icon, {
+                attrs: { type: "chevron-left" }
+              })]
+            ) : null, h(
+              "div",
+              { key: "scroller", ref: "scroller", "class": classes.elScroller, on: {
+                  "dOMMouseScroll": handleScroll,
+                  "mousewheel": handleScroll
+                }
+              },
+              [h(
+                components_resize_observer,
+                {
+                  on: {
+                    "resize": handleResize
+                  }
+                },
+                [h(
+                  "div",
+                  { key: "scrollerContent", ref: "scrollerContent", attrs: { tabIndex: "0" },
+                    "class": classes.elScrollerContent, style: styles.elScrollerContent, on: {
+                      "keydown": handleNavigation
+                    }
+                  },
+                  [props.tabs.map(function (tab) {
+                    return h(tabs_tab, {
+                      attrs: {
+                        classNamePrefix: classNamePrefix,
+
+                        data: tab
+                      },
+                      key: tab.key, on: {
+                        "click": handleChange,
+                        "close": handleClose
+                      }
+                    });
+                  })]
+                )]
+              )]
+            ), state.scrollable ? h(
+              "div",
+              { key: "btn-next", "class": classes.elBtnNext, on: {
+                  "click": handleScrollNext
+                }
+              },
+              [h(components_icon, {
+                attrs: { type: "chevron-right" }
+              })]
+            ) : null, props.addable ? h(
+              "div",
+              { key: "btn-add", "class": classes.elBtnAdd, on: {
+                  "click": handleAdd
+                }
+              },
+              [h(components_icon, {
+                attrs: { type: "plus" }
+              })]
+            ) : null]
+          ), props.extra ? h(
+            "div",
+            { "class": classes.elHeaderExtra },
+            [props.extra]
+          ) : null]
+        )]
       ), h(
         "div",
-        { "class": classes.elBody, style: props.bodyStyle },
+        { key: "body", "class": classes.elBody, style: props.bodyStyle },
         [h(
           "div",
-          { "class": classes.elBodyContent },
-          [props.tabpanels.map(function (tabpanel) {
+          { key: "bodyContent", "class": classes.elBodyContent },
+          [props.tabs.map(function (tab) {
             return h(tabs_panel, {
               attrs: {
                 classNamePrefix: classNamePrefix,
 
-                data: tabpanel,
+                data: tab,
                 destroyOnHide: props.destroyOnHide
               },
-              key: tabpanel.key });
+              key: tab.key });
           })]
         )]
       )]
@@ -19528,17 +19815,17 @@ var VuiTabs = {
 
 /**
 * 从 children 中解析获取面板列表
-* @param {Object} tabs 父组件
+* @param {Object} parent 父组件
 * @param {Array} children 子组件
 * @param {String} tagName 组件名称
 */
-var utils_getTabpanelsFromChildren = function getTabpanelsFromChildren(tabs, children) {
+var utils_getTabsFromChildren = function getTabsFromChildren(parent, children) {
   var tagName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "vui-tab-panel";
 
-  var tabpanels = [];
+  var tabs = [];
 
   if (!children) {
-    return tabpanels;
+    return tabs;
   }
 
   children.forEach(function (node) {
@@ -19559,7 +19846,7 @@ var utils_getTabpanelsFromChildren = function getTabpanelsFromChildren(tabs, chi
 
     if (tag === tagName && is["a" /* default */].json(props)) {
       var tabpanel = extends_default()({}, props, {
-        index: tabpanels.length
+        index: tabs.length
       });
 
       // 设置 panel 的唯一 key 值
@@ -19571,13 +19858,13 @@ var utils_getTabpanelsFromChildren = function getTabpanelsFromChildren(tabs, chi
         tabpanel.key = tabpanel.index;
       }
 
-      // 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 tabs 的 closable 或 editable 属性
+      // 设置 panel 的关闭属性，只有显示的定义为 false，才禁止关闭，默认继承于 VuiTabs 的 closable 属性
       var closable = props.closable;
 
       if (closable === false) {
         tabpanel.closable = false;
       } else {
-        tabpanel.closable = tabs.closable || tabs.editable;
+        tabpanel.closable = parent.closable;
       }
 
       // 设置 panel 的禁用属性
@@ -19618,25 +19905,27 @@ var utils_getTabpanelsFromChildren = function getTabpanelsFromChildren(tabs, chi
                   tabpanel.icon = [element];
                 }
               }
-            } else if (slot === "title") {
-              if (element.data.attrs) {
-                delete element.data.attrs.slot;
-              }
-
-              if (element.tag === "template") {
-                if (is["a" /* default */].array(tabpanel.title)) {
-                  tabpanel.title.push.apply(tabpanel.icon, element.children);
-                } else {
-                  tabpanel.title = element.children;
-                }
-              } else {
-                if (is["a" /* default */].array(tabpanel.title)) {
-                  tabpanel.title.push(element);
-                } else {
-                  tabpanel.title = [element];
-                }
-              }
             }
+            // title
+            else if (slot === "title") {
+                if (element.data.attrs) {
+                  delete element.data.attrs.slot;
+                }
+
+                if (element.tag === "template") {
+                  if (is["a" /* default */].array(tabpanel.title)) {
+                    tabpanel.title.push.apply(tabpanel.icon, element.children);
+                  } else {
+                    tabpanel.title = element.children;
+                  }
+                } else {
+                  if (is["a" /* default */].array(tabpanel.title)) {
+                    tabpanel.title.push(element);
+                  } else {
+                    tabpanel.title = [element];
+                  }
+                }
+              }
           } else {
             if (is["a" /* default */].array(tabpanel.children)) {
               tabpanel.children.push(element);
@@ -19647,18 +19936,18 @@ var utils_getTabpanelsFromChildren = function getTabpanelsFromChildren(tabs, chi
         });
       }
 
-      tabpanels.push(tabpanel);
+      tabs.push(tabpanel);
     }
   });
 
-  return tabpanels;
+  return tabs;
 };
 
 /**
 * 默认导出指定接口
 */
 /* harmony default export */ var tabs_src_utils = ({
-  getTabpanelsFromChildren: utils_getTabpanelsFromChildren
+  getTabsFromChildren: utils_getTabsFromChildren
 });
 // CONCATENATED MODULE: ./src/components/tabs/index.js
 
@@ -19684,7 +19973,6 @@ var VuiTabsWrapper = {
     extra: prop_types["a" /* default */].any,
     addable: prop_types["a" /* default */].bool.def(false),
     closable: prop_types["a" /* default */].bool.def(false),
-    editable: prop_types["a" /* default */].bool.def(false),
     destroyOnHide: prop_types["a" /* default */].bool.def(false),
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
@@ -19696,23 +19984,23 @@ var VuiTabsWrapper = {
         props = this.$props;
 
 
-    var tabpanels = tabs_src_utils.getTabpanelsFromChildren(props, slots.default);
+    var tabs = tabs_src_utils.getTabsFromChildren(props, slots.default);
     var activeKey = props.activeKey;
 
     if (!is["a" /* default */].effective(activeKey)) {
-      var tabpanel = tabpanels.find(function (tabpanel) {
-        return !tabpanel.disabled;
+      var tab = tabs.find(function (tab) {
+        return !tab.disabled;
       });
 
-      if (tabpanel) {
-        activeKey = tabpanel.key;
+      if (tab) {
+        activeKey = tab.key;
       }
     }
 
     var attributes = {
       props: extends_default()({}, props, {
         activeKey: activeKey,
-        tabpanels: tabpanels,
+        tabs: tabs,
         extra: slots.extra || props.extra
       }),
       on: extends_default()({}, listeners)
@@ -43341,7 +43629,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.1",
+  version: "1.10.2",
   install: src_install,
   // Locale
   locale: src_locale.use,
