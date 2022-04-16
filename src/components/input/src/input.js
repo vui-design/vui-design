@@ -182,7 +182,14 @@ const VuiInput = {
       this.focus();
       this.$emit("clear", e);
       this.$emit("input", value);
-      this.$emit("change", e);
+      // 这里不能使用 this.$emit("change", e); 抛出 change 事件，因为执行清空时的事件源为图标，而非 input 输入框
+      // 使用如下方式手动触发一次 input 输入框的 change 事件
+      this.$nextTick(() => {
+        const event = document.createEvent("HTMLEvents");
+
+        event.initEvent("change", true, true);
+        this.$refs.input.dispatchEvent(event);
+      });
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", value);

@@ -18074,6 +18074,8 @@ var VuiInput = {
       this.$emit("change", e);
     },
     handleClear: function handleClear(e) {
+      var _this = this;
+
       var props = this.$props;
 
 
@@ -18087,7 +18089,14 @@ var VuiInput = {
       this.focus();
       this.$emit("clear", e);
       this.$emit("input", value);
-      this.$emit("change", e);
+      // 这里不能使用 this.$emit("change", e); 抛出 change 事件，因为执行清空时的事件源为图标，而非 input 输入框
+      // 使用如下方式手动触发一次 input 输入框的 change 事件
+      this.$nextTick(function () {
+        var event = document.createEvent("HTMLEvents");
+
+        event.initEvent("change", true, true);
+        _this.$refs.input.dispatchEvent(event);
+      });
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", value);
@@ -18098,14 +18107,14 @@ var VuiInput = {
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     var props = this.$props;
 
 
     if (props.autofocus) {
       this.timeout = setTimeout(function () {
-        return _this.focus();
+        return _this2.focus();
       }, 0);
     }
   },
@@ -19030,11 +19039,14 @@ var VuiSteps = {
 
 
 /**
-* 从 children 中解析获取 steps 步骤列表
-* @param {Array} props 组件属性
-* @param {Boolean} children 子组件
+* 从 children 中解析获取步骤列表
+* @param {Object} parent 父组件
+* @param {Array} children 子组件
+* @param {String} tagName 组件名称
 */
-var utils_getStepsFromChildren = function getStepsFromChildren(props, children) {
+var utils_getStepsFromChildren = function getStepsFromChildren(parent, children) {
+  var tagName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "vui-step";
+
   var steps = [];
 
   if (!is["a" /* default */].array(children)) {
@@ -19048,51 +19060,100 @@ var utils_getStepsFromChildren = function getStepsFromChildren(props, children) 
 
     var component = node.componentOptions;
 
-    if (component && component.tag === "vui-step" && component.propsData) {
-      var step = extends_default()({}, component.propsData, {
+    if (!component || !component.Ctor) {
+      return;
+    }
+
+    var tag = component.tag,
+        props = component.propsData,
+        elements = component.children;
+
+
+    if (tag === tagName && is["a" /* default */].json(props)) {
+      var step = extends_default()({}, props, {
         index: steps.length
       });
 
+      // 设置 step 的 status 属性
       if (!step.status) {
-        if (step.index < props.step) {
+        if (step.index < parent.step) {
           step.status = "finish";
-        } else if (step.index === props.step) {
-          step.status = props.status;
-        } else if (step.index > props.step) {
+        } else if (step.index === parent.step) {
+          step.status = parent.status;
+        } else if (step.index > parent.step) {
           step.status = "wait";
         }
       }
 
-      if (component.children) {
-        component.children.forEach(function (element) {
+      if (elements) {
+        elements.forEach(function (element) {
           if (!element) {
             return;
           }
 
-          var data = element.data;
+          if (element.data && element.data.slot) {
+            var slot = element.data.slot;
 
-          if (!data) {
-            return;
-          }
+            // icon
+            if (slot === "icon") {
+              if (element.data.attrs) {
+                delete element.data.attrs.slot;
+              }
 
-          if (data.slot === "icon") {
-            if (is["a" /* default */].array(step.icon)) {
-              step.icon.push(element);
-            } else {
-              step.icon = [element];
+              if (element.tag === "template") {
+                if (is["a" /* default */].array(step.icon)) {
+                  step.icon.push.apply(step.icon, element.children);
+                } else {
+                  step.icon = element.children;
+                }
+              } else {
+                if (is["a" /* default */].array(step.icon)) {
+                  step.icon.push(element);
+                } else {
+                  step.icon = [element];
+                }
+              }
             }
-          } else if (data.slot === "title") {
-            if (is["a" /* default */].array(step.title)) {
-              step.title.push(element);
-            } else {
-              step.title = [element];
-            }
-          } else if (data.slot === "description") {
-            if (is["a" /* default */].array(step.description)) {
-              step.description.push(element);
-            } else {
-              step.description = [element];
-            }
+            // title
+            else if (slot === "title") {
+                if (element.data.attrs) {
+                  delete element.data.attrs.slot;
+                }
+
+                if (element.tag === "template") {
+                  if (is["a" /* default */].array(step.title)) {
+                    step.title.push.apply(step.icon, element.children);
+                  } else {
+                    step.title = element.children;
+                  }
+                } else {
+                  if (is["a" /* default */].array(step.title)) {
+                    step.title.push(element);
+                  } else {
+                    step.title = [element];
+                  }
+                }
+              }
+              // description
+              else if (slot === "description") {
+                  if (element.data.attrs) {
+                    delete element.data.attrs.slot;
+                  }
+
+                  if (element.tag === "template") {
+                    if (is["a" /* default */].array(step.description)) {
+                      step.description.push.apply(step.icon, element.children);
+                    } else {
+                      step.description = element.children;
+                    }
+                  } else {
+                    if (is["a" /* default */].array(step.description)) {
+                      step.description.push(element);
+                    } else {
+                      step.description = [element];
+                    }
+                  }
+                }
           }
         });
       }
@@ -26455,6 +26516,8 @@ var VuiTextarea = {
       this.$emit("change", e);
     },
     handleClear: function handleClear(e) {
+      var _this2 = this;
+
       var props = this.$props;
 
 
@@ -26469,7 +26532,14 @@ var VuiTextarea = {
       this.focus();
       this.$emit("clear", e);
       this.$emit("input", value);
-      this.$emit("change", e);
+      // 这里不能使用 this.$emit("change", e); 抛出 change 事件，因为执行清空时的事件源为图标，而非 textarea 文本域
+      // 使用如下方式手动触发一次 textarea 文本域的 change 事件
+      this.$nextTick(function () {
+        var event = document.createEvent("HTMLEvents");
+
+        event.initEvent("change", true, true);
+        _this2.$refs.textarea.dispatchEvent(event);
+      });
 
       if (props.validator) {
         this.dispatch("vui-form-item", "change", value);
@@ -43629,7 +43699,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.2",
+  version: "1.10.3",
   install: src_install,
   // Locale
   locale: src_locale.use,
