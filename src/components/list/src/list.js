@@ -1,72 +1,40 @@
 import VuiRow from "../../row";
 import VuiCol from "../../col";
+import PropTypes from "../../../utils/prop-types";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+
+const gridType = {
+  gutter: PropTypes.number,
+  column: PropTypes.oneOf([1, 2, 3, 4, 6, 8, 12, 24])
+};
 
 const VuiList = {
 	name: "vui-list",
-
 	provide() {
 		return {
 			vuiList: this
 		};
 	},
-
 	components: {
 		VuiRow,
 		VuiCol
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		header: {
-			type: String,
-			default: undefined
-		},
-		footer: {
-			type: String,
-			default: undefined
-		},
-		layout: {
-			type: String,
-			default: "horizontal",
-			validator: value => ["horizontal", "vertical"].indexOf(value) > -1
-		},
-		size: {
-			type: String,
-			default: "medium",
-			validator: value => ["small", "medium", "large"].indexOf(value) > -1
-		},
-		bordered: {
-			type: Boolean,
-			default: false
-		},
-		split: {
-			type: Boolean,
-			default: true
-		},
-		grid: {
-			type: Object,
-			default: undefined,
-			validator: value => {
-				if ("columns" in value) {
-					return [1, 2, 3, 4, 6, 8, 12, 24].indexOf(value.columns) > -1;
-				}
-			}
-		},
-		data: {
-			type: Array,
-			default: undefined
-		}
+		classNamePrefix: PropTypes.string,
+		header: PropTypes.string,
+		footer: PropTypes.string,
+		layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
+		size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+		bordered: PropTypes.bool.def(false),
+		split: PropTypes.bool.def(true),
+		grid: PropTypes.shape(gridType),
+		data: PropTypes.array
 	},
-
 	render(h) {
-		let { $slots: slots, $scopedSlots: scopedSlots, $props: props } = this;
+		const { $slots: slots, $scopedSlots: scopedSlots, $props: props } = this;
 
-		// classes
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
+		// class
+		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
 		let classes = {};
 
 		classes.el = {
@@ -93,21 +61,23 @@ const VuiList = {
 			);
 		}
 
-		if (props.grid && props.data && props.data.length) {
-			let gutter = props.grid.gutter || 16;
-			let columns = props.grid.columns || 4;
+		if (props.grid && props.data && props.data.length > 0) {
+			const gutter = props.grid.gutter || 16;
+			const column = props.grid.column || 4;
+			const span = Math.round(24 / column);
 			let cols = [];
-			let span = Math.round(24 / columns);
 
 			props.data.forEach((item, index) => {
-				let scopedSlot = scopedSlots.item;
-				let content = scopedSlot && scopedSlot(item, index);
-				let style = {
-					marginTop: index < columns ? `0px` : `${gutter}px`
+				const scopedSlot = scopedSlots.item;
+				const content = scopedSlot && scopedSlot(item, index);
+				const style = {
+					marginTop: index < column ? `0px` : `${gutter}px`
 				};
 
 				cols.push(
-					<VuiCol span={span} style={style}>{content}</VuiCol>
+					<VuiCol span={span} style={style}>
+						{content}
+					</VuiCol>
 				);
 			});
 

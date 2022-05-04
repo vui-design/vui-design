@@ -34,14 +34,9 @@ const VuiDropdownMenu = {
     // styles
     let styles = {};
 
-    if (is.string(props.width)) {
+    if (props.width) {
       styles.el = {
-        width: props.width
-      };
-    }
-    else if (is.number(props.width)) {
-      styles.el = {
-        width: props.width + "px"
+        width: is.string(props.width) ? props.width : `${props.width}px`
       };
     }
 

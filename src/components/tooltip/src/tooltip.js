@@ -88,7 +88,7 @@ const VuiTooltip = {
       const reference = references.trigger;
       const target = references.popup;
       const settings = {
-        placement:  props.placement
+        placement: props.placement
       };
 
       if (!reference || !target || !settings.placement) {

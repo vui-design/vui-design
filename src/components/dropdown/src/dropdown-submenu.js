@@ -1,10 +1,10 @@
 import VuiLazyRender from "../../lazy-render";
+import VuiResizeObserver from "../../resize-observer";
 import VuiIcon from "../../icon";
 import Portal from "../../../directives/portal";
 import Popup from "../../../libs/popup";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
-import guid from "../../../utils/guid";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiDropdownSubmenu = {
@@ -27,6 +27,7 @@ const VuiDropdownSubmenu = {
   },
   components: {
     VuiLazyRender,
+    VuiResizeObserver,
     VuiIcon
   },
   directives: {
@@ -34,14 +35,15 @@ const VuiDropdownSubmenu = {
   },
   props: {
     classNamePrefix: PropTypes.string,
-    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(() => guid()),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(() => guid()),
+    // TODO 将在后续版本中移除，请使用 value 属性替代
+    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     icon: PropTypes.string,
     title: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     disabled: PropTypes.bool.def(false),
     animation: PropTypes.string.def("vui-dropdown-submenu-body-scale"),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body)
+    getPopupContainer: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.element, PropTypes.func]).def(() => document.body)
   },
   data() {
     const state = {
@@ -85,7 +87,7 @@ const VuiDropdownSubmenu = {
         this.state.visible = false;
       };
 
-      if (eventType === "select") {
+      if (eventType === "click") {
         callback();
       }
       else {
@@ -102,43 +104,43 @@ const VuiDropdownSubmenu = {
       }
     },
     register() {
-      if (is.server) {
+      if (is.server || this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.update();
-      }
-      else {
-        const { $refs: references, $props: props } = this;
-        const reference = references.header;
-        const target = references.body;
-        const settings = {
-          placement: "right-start",
-          modifiers: {
-            offset: {
-              offset: [0, -4]
-            }
+      const { $refs: references, $props: props } = this;
+      const reference = references.header;
+      const target = references.body;
+      const settings = {
+        placement: "right-start",
+        modifiers: {
+          offset: {
+            offset: [0, -4]
           }
-        };
-
-        if (!reference || !target || !settings.placement) {
-          return;
         }
+      };
 
-        this.popup = new Popup(reference, target, settings);
-        this.popup.target.style.zIndex = Popup.nextZIndex();
+      if (!reference || !target || !settings.placement) {
+        return;
       }
+
+      this.popup = new Popup(reference, target, settings);
+      this.popup.target.style.zIndex = Popup.nextZIndex();
+    },
+    reregister() {
+      if (is.server || !this.popup) {
+        return;
+      }
+
+      this.popup.update();
     },
     unregister() {
-      if (is.server) {
+      if (is.server || !this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.destroy();
-        this.popup = null;
-      }
+      this.popup.destroy();
+      this.popup = null;
     },
     handleHeaderMouseenter(e) {
       this.open("hover", false);
@@ -158,11 +160,14 @@ const VuiDropdownSubmenu = {
     handleBodyAfterLeave(el) {
       this.$nextTick(() => this.unregister());
     },
+    handleResize() {
+      this.$nextTick(() => this.reregister());
+    }
   },
   render(h) {
     const { vuiDropdownMenu, $slots: slots, $props: props, state } = this;
     const { $props: vuiDropdownMenuProps } = vuiDropdownMenu;
-    const { handleHeaderMouseenter, handleHeaderMouseleave, handleBodyMouseenter, handleBodyMouseleave, handleBodyBeforeEnter, handleBodyAfterLeave } = this;
+    const { handleHeaderMouseenter, handleHeaderMouseleave, handleBodyMouseenter, handleBodyMouseleave, handleBodyBeforeEnter, handleBodyAfterLeave, handleResize } = this;
 
     // icon
     let icon;
@@ -202,6 +207,15 @@ const VuiDropdownSubmenu = {
       [`${menuClassNamePrefix}-${menuColor}`]: menuColor
     };
 
+    // style
+    let styles = {};
+
+    if (props.width) {
+      styles.elMenu = {
+        width: is.string(props.width) ? props.width : `${props.width}px`
+      };
+    }
+
     // render
     return (
       <div class={classes.el}>
@@ -211,19 +225,17 @@ const VuiDropdownSubmenu = {
               <div class={classes.elHeaderIcon}>{icon}</div>
             ) : null
           }
-          {
-            title ? (
-              <div class={classes.elHeaderTitle}>{title}</div>
-            ) : null
-          }
+          <div class={classes.elHeaderTitle}>{title}</div>
           <div class={classes.elHeaderArrow}></div>
         </div>
         <VuiLazyRender render={state.visible}>
-          <transition appear name={props.animation} onBeforeEnter={handleBodyBeforeEnter} onAfterLeave={handleBodyAfterLeave}>
-            <div ref="body" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elBody} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
-              <div class={classes.elMenu}>{slots.default}</div>
-            </div>
-          </transition>
+          <VuiResizeObserver onResize={handleResize}>
+            <transition appear name={props.animation} onBeforeEnter={handleBodyBeforeEnter} onAfterLeave={handleBodyAfterLeave}>
+              <div ref="body" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elBody} onMouseenter={handleBodyMouseenter} onMouseleave={handleBodyMouseleave}>
+                <div class={classes.elMenu} style={styles.elMenu}>{slots.default}</div>
+              </div>
+            </transition>
+          </VuiResizeObserver>
         </VuiLazyRender>
       </div>
     );

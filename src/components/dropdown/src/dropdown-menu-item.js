@@ -1,7 +1,6 @@
 import VuiIcon from "../../icon";
 import MixinLink from "../../../mixins/link";
 import PropTypes from "../../../utils/prop-types";
-import guid from "../../../utils/guid";
 import is from "../../../utils/is";
 import guardLinkEvent from "../../../utils/guardLinkEvent";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
@@ -27,8 +26,9 @@ const VuiDropdownMenuItem = {
   ],
   props: {
     classNamePrefix: PropTypes.string,
+    // TODO 将在后续版本中移除，请使用 value 属性替代
     name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(() => guid()),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     icon: PropTypes.string,
     title: PropTypes.string,
     danger: PropTypes.bool.def(false),
@@ -51,10 +51,10 @@ const VuiDropdownMenuItem = {
       vuiDropdownMenu.$emit("click", value);
 
       if (vuiDropdownSubmenu) {
-        vuiDropdownSubmenu.close("select", true);
+        vuiDropdownSubmenu.close("click", true);
       }
       else if (vuiDropdown) {
-        vuiDropdown.close("select");
+        vuiDropdown.close("click");
       }
 
       if (props.href) {
@@ -64,8 +64,9 @@ const VuiDropdownMenuItem = {
         try {
           const route = getNextRoute();
           const method = props.replace ? router.replace : router.push;
+          const fallback = error => {};
 
-          method.call(router, route.location).catch(error => undefined);
+          method.call(router, route.location).catch(fallback);
         }
         catch(error) {
           console.error(error);
@@ -120,9 +121,10 @@ const VuiDropdownMenuItem = {
     }
 
     if (props.href || props.to) {
+      const route = getNextRoute();
       const linkProps = {
         attrs: {
-          href: props.href || getNextRoute().href,
+          href: props.href || route.href,
           target: props.target
         },
         class: classes.el,

@@ -1,4 +1,5 @@
 import VuiLazyRender from "../../lazy-render";
+import VuiResizeObserver from "../../resize-observer";
 import Portal from "../../../directives/portal";
 import Outclick from "../../../directives/outclick";
 import Popup from "../../../libs/popup";
@@ -15,7 +16,8 @@ const VuiDropdown = {
     };
   },
   components: {
-    VuiLazyRender
+    VuiLazyRender,
+    VuiResizeObserver
   },
   directives: {
     Portal,
@@ -89,7 +91,7 @@ const VuiDropdown = {
         this.$emit("change", this.state.visible);
       };
 
-      if (eventType === "select") {
+      if (eventType === "click") {
         callback();
       }
       else {
@@ -97,45 +99,45 @@ const VuiDropdown = {
       }
     },
     register() {
-      if (is.server) {
+      if (is.server || this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.update();
+      const { $refs: references, $props: props } = this;
+      const reference = references.trigger;
+      const target = references.popup;
+      const settings = {
+        placement: props.placement
+      };
+
+      if (!reference || !target || !settings.placement) {
+        return;
       }
-      else {
-        const { $refs: references, $props: props } = this;
-        const reference = references.trigger;
-        const target = references.popup;
-        const settings = {
-          placement: props.placement
-        };
 
-        if (!reference || !target || !settings.placement) {
-          return;
-        }
+      let width = "";
 
-        let width = "";
-
-        if (!props.dropdownAutoWidth) {
-          width = getStyle(reference, "width");
-        }
-
-        this.popup = new Popup(reference, target, settings);
-        this.popup.target.style.zIndex = Popup.nextZIndex();
-        this.popup.target.style.width = width;
+      if (!props.dropdownAutoWidth) {
+        width = getStyle(reference, "width");
       }
+
+      this.popup = new Popup(reference, target, settings);
+      this.popup.target.style.zIndex = Popup.nextZIndex();
+      this.popup.target.style.width = width;
+    },
+    reregister() {
+      if (is.server || !this.popup) {
+        return;
+      }
+
+      this.popup.update();
     },
     unregister() {
-      if (is.server) {
+      if (is.server || !this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.destroy();
-        this.popup = null;
-      }
+      this.popup.destroy();
+      this.popup = null;
     },
     handleMouseenter(e) {
       const { $props: props } = this;
@@ -201,11 +203,14 @@ const VuiDropdown = {
     handleAfterLeave() {
       this.$nextTick(() => this.unregister());
       this.$emit("afterClose");
+    },
+    handleResize() {
+      this.$nextTick(() => this.reregister());
     }
   },
   render() {
     const { $slots: slots, $props: props, state } = this;
-    const { handleMouseenter, handleMouseleave, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave } = this;
+    const { handleMouseenter, handleMouseleave, handleClick, handleOutClick, handleBeforeEnter, handleEnter, handleAfterEnter, handleBeforeLeave, handleLeave, handleAfterLeave, handleResize } = this;
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "dropdown");
@@ -222,11 +227,13 @@ const VuiDropdown = {
           {slots.default}
         </div>
         <VuiLazyRender render={state.visible}>
-          <transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
-            <div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
-              {slots.menu}
-            </div>
-          </transition>
+          <VuiResizeObserver onResize={handleResize}>
+            <transition appear name={props.animation} onBeforeEnter={handleBeforeEnter} onAfterLeave={handleAfterLeave}>
+              <div ref="popup" v-portal={props.getPopupContainer} v-show={state.visible} class={classes.elPopup} onMouseenter={handleMouseenter} onMouseleave={handleMouseleave}>
+                {slots.menu}
+              </div>
+            </transition>
+          </VuiResizeObserver>
         </VuiLazyRender>
       </div>
     );

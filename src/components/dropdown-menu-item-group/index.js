@@ -1,4 +1,4 @@
-import VuiDropdownMenuItemGroup from "./src/dropdown-menu-item-group";
+import VuiDropdownMenuItemGroup from "../dropdown/src/dropdown-menu-item-group";
 
 VuiDropdownMenuItemGroup.install = function(Vue) {
   Vue.component(VuiDropdownMenuItemGroup.name, VuiDropdownMenuItemGroup);

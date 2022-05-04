@@ -1,203 +1,212 @@
 @vui-card: ~"@{vui}-card";
 
 @keyframes vuiCardLoading {
-	0% { background-position:100% 50%; }
-	100% { background-position:0 50%; }
+  0% { background-position:100% 50%; }
+  100% { background-position:0 50%; }
 }
 
 .@{vui-card} {
-	display:block;
-	box-sizing:border-box;
-	border-radius:@card-border-radius;
-	background-color:@card-background-color;
-	color:@card-font-color;
-	font-size:@card-font-size;
-	line-height:@card-line-height;
-	transition:all @transition-duration @transition-timing-function;
+  display:block;
+  box-sizing:border-box;
+  border-radius:@card-border-radius;
+  background-color:@card-background-color;
+  overflow:hidden;
+  color:@card-font-color;
+  font-size:@card-font-size;
+  line-height:@card-line-height;
+  transition:all @transition-duration @transition-timing-function;
 
-	&-bordered {
-		border:1px solid @card-border-color;
-	}
+  &-bordered {
+    border:@card-border-width solid @card-border-color;
+  }
 
-	&-shadow-hover {
-		&:hover {
-			box-shadow:@card-box-shadow;
-		}
-	}
-	&-shadow-always {
-		box-shadow:@card-box-shadow;
-	}
+  &-shadow-hover {
+    &:hover {
+      box-shadow:@card-box-shadow;
+    }
+  }
+  &-shadow-always {
+    box-shadow:@card-box-shadow;
+  }
 
-	&-header {
-		display:flex;
-		align-items:center;
-		box-sizing:border-box;
-		border-bottom:1px solid @card-border-color;
-		padding:@card-header-padding;
-		color:@card-header-font-color;
-		font-size:@card-header-font-size;
-	}
+  &-header {
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    box-sizing:border-box;
+    border-bottom:@card-border-width solid @card-border-color;
+    padding:@card-header-padding;
+    color:@card-header-font-color;
+    font-size:@card-header-font-size;
+    font-weight:@card-header-font-weight;
+    transition:all @transition-duration @transition-timing-function;
+  }
 
-	&-body {
-		display:block;
-		box-sizing:border-box;
-		padding:@card-body-padding;
+  &-body {
+    display:block;
+    box-sizing:border-box;
+    padding:@card-body-padding;
+    transition:all @transition-duration @transition-timing-function;
+    .clearfix;
+  }
 
-		.clearfix;
-	}
+  &-footer {
+    display:block;
+    box-sizing:border-box;
+    border-top:@card-border-width solid @card-border-color;
+    padding:@card-footer-padding;
+    transition:all @transition-duration @transition-timing-function;
+    .clearfix;
+  }
 
-	&-footer {
-		display:block;
-		box-sizing:border-box;
-		border-top:1px solid @card-border-color;
-		padding:@card-footer-padding;
+  &-icon {
+    display:block;
+    box-sizing:border-box;
+    margin-right:@card-icon-margin-right;
+    font-size:@card-header-font-size - 2px;
+    line-height:1;
 
-		.clearfix;
-	}
+    .@{vui}-icon {
+      display:block;
+    }
+  }
 
-	&-icon {
-		display:block;
-		box-sizing:border-box;
-		margin-right:@card-icon-margin-right;
-		line-height:1;
+  &-title {
+    flex:1;
+    display:block;
+    box-sizing:border-box;
+    width:0;
+    .writeEllipsis;
+  }
 
-		i {
-			display:block;
-		}
-	}
+  &-extra {
+    display:block;
+    box-sizing:border-box;
+    margin-left:@card-extra-margin-left;
+    color:@card-extra-font-color;
+    font-size:@card-extra-font-size;
+    font-weight:400;
+    line-height:1;
+    transition:all @transition-duration @transition-timing-function;
+  }
 
-	&-title {
-		flex:1;
-		display:block;
-		box-sizing:border-box;
-		width:0;
+  &-with-grid > &-body {
+    padding:0;
+    overflow:hidden;
+  }
+  &-with-grid > &-body > &-grid {
+    float:left;
+    display:block;
+    box-sizing:border-box;
+    width:25%;
+    box-shadow:1px 0 0 0 @card-border-color, 0 1px 0 0 @card-border-color;
+    padding:@card-body-padding;
+    transition:all @transition-duration @transition-timing-function;
+  }
 
-		.writeEllipsis;
-	}
+  &-cover {
+    display:block;
+    box-sizing:border-box;
+    overflow:hidden;
 
-	&-extra {
-		display:block;
-		box-sizing:border-box;
-		margin-left:@card-extra-margin-left;
-		color:@card-extra-font-color;
-		font-size:@card-extra-font-size;
-		line-height:1;
-	}
+    img {
+      display:block;
+      box-sizing:border-box;
+      width:100%;
+    }
+  }
+  &-bordered &-cover {
+    margin:-1px;
+  }
 
-	&-cover {
-		display:block;
-		box-sizing:border-box;
-		overflow:hidden;
+  &-meta {
+    display:flex;
+    align-items:flex-start;
+    box-sizing:border-box;
 
-		img {
-			display:block;
-			box-sizing:border-box;
-			width:100%;
-		}
-	}
+    &-avatar {
+      margin-right:@card-meta-avatar-margin-right;
+    }
 
-	&-loading {
-		&-row + &-row {
-			margin-top:@card-loading-block-gutter;
-		}
+    &-detail {
+      flex:1;
+      width:0;
+      overflow:hidden;
+    }
+    &-detail &-title {
+      color:@card-meta-title-font-color;
+      font-size:@card-meta-title-font-size;
 
-		&-block {
-			display:block;
-			box-sizing:border-box;
-			height:@card-loading-block-height;
-			border-radius:@card-loading-block-border-radius;
-			background-image:linear-gradient(90deg, @card-loading-block-from-color 25%, @card-loading-block-to-color 50%, @card-loading-block-from-color 75%);
-			background-size:400% 100%;
-			animation:vuiCardLoading 1s ease infinite;
-		}
-	}
+      .writeEllipsis;
+    }
+    &-detail &-description {
+      display:-webkit-box;
+      margin-top:@card-meta-description-margin-top;
+      overflow:hidden;
+      color:@card-meta-description-font-color;
+      font-size:@card-meta-description-font-size;
+      white-space:normal;
+      word-break:break-all;
+      word-wrap:break-word;
+      text-overflow:ellipsis;
+      -webkit-line-clamp:@card-meta-description-line-clamp;
+      -webkit-box-orient:vertical;
+    }
+  }
 
-	&-with-grid > &-body {
-		padding:0;
-		overflow:hidden;
-	}
-	&-with-grid > &-body > &-grid {
-		float:left;
-		display:block;
-		box-sizing:border-box;
-		width:25%;
-		box-shadow:1px 0 0 0 @card-border-color, 0 1px 0 0 @card-border-color;
-		padding:@card-grid-padding;
-		transition:all @transition-duration @transition-timing-function;
-	}
+  &-actions {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    border-top:1px solid @card-border-color;
+  }
 
-	&-meta {
-		display:flex;
-		align-items:flex-start;
-		box-sizing:border-box;
+  &-action {
+    flex:1;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    width:0;
+    padding:@card-action-padding;
+    overflow:hidden;
+    color:@card-action-color;
+    font-size:@card-action-font-size;
+    text-align:center;
+    transition:all @transition-duration @transition-timing-function;
 
-		&-avatar {
-			margin-right:@card-meta-avatar-margin-right;
-		}
+    &:hover {
+      color:@card-action-hover-color;
+    }
 
-		&-detail {
-			flex:1;
-			width:0;
-			overflow:hidden;
-		}
-		&-detail &-title {
-			color:@card-meta-title-font-color;
-			font-size:@card-meta-title-font-size;
+    &:active {
+      color:@card-action-active-color;
+    }
 
-			.writeEllipsis;
-		}
-		&-detail &-description {
-			display:-webkit-box;
-			margin-top:@card-meta-description-margin-top;
-			overflow:hidden;
-			color:@card-meta-description-font-color;
-			font-size:@card-meta-description-font-size;
-			white-space:normal;
-			word-break:break-all;
-			word-wrap:break-word;
-			text-overflow:ellipsis;
-			-webkit-line-clamp:@card-meta-description-line-clamp;
-			-webkit-box-orient:vertical;
-		}
-	}
+    &-divider {
+      display:block;
+      width:@card-action-divider-width;
+      height:@card-action-divider-height;
+      background-color:shade(@card-border-color, 10%);
+      background-image:linear-gradient(@card-border-color, shade(@card-border-color, 10%), @card-border-color);
+    }
+  }
 
-	&-actions {
-		display:flex;
-		justify-content:center;
-		align-items:center;
-		box-sizing:border-box;
-		border-top:1px solid @card-border-color;
-	}
+  &-loading {
+    &-row + &-row {
+      margin-top:@card-loading-block-gutter;
+    }
 
-	&-action {
-		flex:1;
-		cursor:pointer;
-		display:flex;
-		justify-content:center;
-		align-items:center;
-		box-sizing:border-box;
-		width:0;
-		padding:@card-action-padding;
-		overflow:hidden;
-		color:@card-action-color;
-		font-size:@card-action-font-size;
-		text-align:center;
-		transition:all @transition-duration @transition-timing-function;
-
-		&:hover {
-			color:@card-action-hover-color;
-		}
-
-		&:active {
-			color:@card-action-active-color;
-		}
-
-		&-divider {
-			display:block;
-			width:@card-action-divider-width;
-			height:@card-action-divider-height;
-			background-color:shade(@card-border-color, 10%);
-			background-image:linear-gradient(@card-border-color, shade(@card-border-color, 10%), @card-border-color);
-		}
-	}
+    &-block {
+      display:block;
+      box-sizing:border-box;
+      height:@card-loading-block-height;
+      border-radius:@card-loading-block-border-radius;
+      background-image:linear-gradient(90deg, @card-loading-block-from-color 25%, @card-loading-block-to-color 50%, @card-loading-block-from-color 75%);
+      background-size:400% 100%;
+      animation:vuiCardLoading 1s ease infinite;
+    }
+  }
 }

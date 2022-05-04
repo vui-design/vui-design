@@ -23,10 +23,11 @@ const VuiDropdownButton = {
   props: {
     classNamePrefix: PropTypes.string,
     type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "dashed", "text"]).def("default"),
+    size: PropTypes.oneOf(["small", "medium", "large"]),
     icon: PropTypes.string.def("more-x"),
+    visible: PropTypes.bool.def(false),
     disabled: PropTypes.bool.def(false),
     trigger: PropTypes.oneOf(["hover", "click"]).def("hover"),
-    visible: PropTypes.bool.def(false),
     placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-end"),
     dropdownAutoWidth: PropTypes.bool.def(true),
     animation: PropTypes.string.def("vui-dropdown-popup-scale"),
@@ -106,7 +107,7 @@ const VuiDropdownButton = {
     // render
     return (
       <div class={classes.el}>
-        <VuiButton type={props.type} disabled={props.disabled} onClick={handleClick}>{slots.default}</VuiButton>
+        <VuiButton type={props.type} size={props.size} disabled={props.disabled} onClick={handleClick}>{slots.default}</VuiButton>
         <VuiDropdown
           visible={state.visible}
           disabled={props.disabled}
@@ -124,7 +125,7 @@ const VuiDropdownButton = {
           onClose={handleClose}
           onAfterClose={handleAfterClose}
         >
-          <VuiButton type={props.type} disabled={props.disabled}>{icon}</VuiButton>
+          <VuiButton type={props.type} size={props.size} block disabled={props.disabled}>{icon}</VuiButton>
           <div slot="menu">{slots.menu}</div>
         </VuiDropdown>
       </div>

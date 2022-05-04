@@ -1,98 +1,93 @@
-import getClassNamePrefix from "../../../utils/getClassNamePrefix";
+import PropTypes from "../../../utils/prop-types";
 import getValidElements from "../../../utils/getValidElements";
+import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const VuiListItem = {
-	name: "vui-list-item",
+  name: "vui-list-item",
+  inject: {
+    vuiList: {
+      default: undefined
+    }
+  },
+  props: {
+    classNamePrefix: PropTypes.string
+  },
+  render(h) {
+    const { vuiList, $slots: slots, $props: props } = this;
+    const { $props: vuiListProps } = vuiList;
 
-	inject: {
-		vuiList: {
-			default: undefined
-		}
-	},
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item");
+    let classes = {};
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		}
-	},
+    classes.el = {
+      [`${classNamePrefix}`]: true
+    };
+    classes.elMain = `${classNamePrefix}-main`;
+    classes.elActions = `${classNamePrefix}-actions`;
+    classes.elAction = `${classNamePrefix}-action`;
+    classes.elActionDivider = `${classNamePrefix}-action-divider`;
+    classes.elExtra = `${classNamePrefix}-extra`;
 
-	render(h) {
-		let { vuiList, $slots: slots, $props: props } = this;
-		let { $props: vuiListProps } = vuiList;
+    // actions
+    let actions = [];
+    let elements = getValidElements(slots.actions);
 
-		// classes
-		let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item");
-		let classes = {};
+    elements.forEach((element, index) => {
+      if (index > 0) {
+        actions.push(
+          <i class={classes.elActionDivider} />
+        );
+      }
 
-		classes.el = {
-			[`${classNamePrefix}`]: true
-		};
-		classes.elMain = `${classNamePrefix}-main`;
-		classes.elActions = `${classNamePrefix}-actions`;
-		classes.elAction = `${classNamePrefix}-action`;
-		classes.elActionDivider = `${classNamePrefix}-action-divider`;
-		classes.elExtra = `${classNamePrefix}-extra`;
+      actions.push(
+        <div class={classes.elAction}>{element}</div>
+      );
+    });
 
-		// actions
-		let actions = [];
-		let elements = getValidElements(slots.actions);
+    // render
+    let children = [];
 
-		elements.forEach((element, index) => {
-			if (index > 0) {
-				actions.push(
-					<i class={classes.elActionDivider} />
-				);
-			}
+    if (vuiListProps.layout === "vertical") {
+      children.push(
+        <div class={classes.elMain}>
+          {slots.default}
+          {
+            actions.length > 0 && (
+              <div class={classes.elActions}>
+                {actions}
+              </div>
+            )
+          }
+        </div>
+      );
+    }
+    else {
+      children.push(slots.default);
 
-			actions.push(
-				<div class={classes.elAction}>{element}</div>
-			);
-		});
+      if (actions.length > 0) {
+        children.push(
+          <div class={classes.elActions}>
+            {actions}
+          </div>
+        );
+      }
+    }
 
-		// render
-		let children = [];
+    if (slots.extra) {
+      children.push(
+        <div class={classes.elExtra}>
+          {slots.extra}
+        </div>
+      );
+    }
 
-		if (vuiListProps.layout === "vertical") {
-			children.push(
-				<div class={classes.elMain}>
-					{slots.default}
-					{
-						actions.length > 0 && (
-							<div class={classes.elActions}>
-								{actions}
-							</div>
-						)
-					}
-				</div>
-			);
-		}
-		else {
-			children.push(slots.default);
-
-			if (actions.length > 0) {
-				children.push(
-					<div class={classes.elActions}>
-						{actions}
-					</div>
-				);
-			}
-		}
-
-		if (slots.extra) {
-			children.push(
-				<div class={classes.elExtra}>
-					{slots.extra}
-				</div>
-			);
-		}
-
-		return (
-			<div class={classes.el}>
-				{children}
-			</div>
-		);
-	}
+    return (
+      <div class={classes.el}>
+        {children}
+      </div>
+    );
+  }
 };
 
 export default VuiListItem;

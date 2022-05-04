@@ -11384,6 +11384,7 @@ function getStyle_getStyle(element, property) {
 
 
 
+
 var VuiDropdown = {
   name: "vui-dropdown",
   provide: function provide() {
@@ -11393,7 +11394,8 @@ var VuiDropdown = {
   },
 
   components: {
-    VuiLazyRender: components_lazy_render
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
   },
   directives: {
     Portal: directives_portal,
@@ -11475,53 +11477,54 @@ var VuiDropdown = {
         _this.$emit("change", _this.state.visible);
       };
 
-      if (eventType === "select") {
+      if (eventType === "click") {
         callback();
       } else {
         this.timeout = setTimeout(callback, 100);
       }
     },
     register: function register() {
-      if (is["a" /* default */].server) {
+      if (is["a" /* default */].server || this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.update();
-      } else {
-        var references = this.$refs,
-            props = this.$props;
+      var references = this.$refs,
+          props = this.$props;
 
-        var reference = references.trigger;
-        var target = references.popup;
-        var settings = {
-          placement: props.placement
-        };
+      var reference = references.trigger;
+      var target = references.popup;
+      var settings = {
+        placement: props.placement
+      };
 
-        if (!reference || !target || !settings.placement) {
-          return;
-        }
-
-        var width = "";
-
-        if (!props.dropdownAutoWidth) {
-          width = getStyle_getStyle(reference, "width");
-        }
-
-        this.popup = new popup(reference, target, settings);
-        this.popup.target.style.zIndex = popup.nextZIndex();
-        this.popup.target.style.width = width;
+      if (!reference || !target || !settings.placement) {
+        return;
       }
+
+      var width = "";
+
+      if (!props.dropdownAutoWidth) {
+        width = getStyle_getStyle(reference, "width");
+      }
+
+      this.popup = new popup(reference, target, settings);
+      this.popup.target.style.zIndex = popup.nextZIndex();
+      this.popup.target.style.width = width;
+    },
+    reregister: function reregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
+
+      this.popup.update();
     },
     unregister: function unregister() {
-      if (is["a" /* default */].server) {
+      if (is["a" /* default */].server || !this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.destroy();
-        this.popup = null;
-      }
+      this.popup.destroy();
+      this.popup = null;
     },
     handleMouseenter: function handleMouseenter(e) {
       var props = this.$props;
@@ -11599,6 +11602,13 @@ var VuiDropdown = {
         return _this3.unregister();
       });
       this.$emit("afterClose");
+    },
+    handleResize: function handleResize() {
+      var _this4 = this;
+
+      this.$nextTick(function () {
+        return _this4.reregister();
+      });
     }
   },
   render: function render() {
@@ -11615,7 +11625,8 @@ var VuiDropdown = {
         handleAfterEnter = this.handleAfterEnter,
         handleBeforeLeave = this.handleBeforeLeave,
         handleLeave = this.handleLeave,
-        handleAfterLeave = this.handleAfterLeave;
+        handleAfterLeave = this.handleAfterLeave,
+        handleResize = this.handleResize;
 
     // class
 
@@ -11649,29 +11660,37 @@ var VuiDropdown = {
           attrs: { render: state.visible }
         },
         [h(
-          "transition",
+          components_resize_observer,
           {
-            attrs: { appear: true, name: props.animation },
             on: {
-              "beforeEnter": handleBeforeEnter,
-              "afterLeave": handleAfterLeave
+              "resize": handleResize
             }
           },
           [h(
-            "div",
-            { ref: "popup", directives: [{
-                name: "portal",
-                value: props.getPopupContainer
-              }, {
-                name: "show",
-                value: state.visible
-              }],
-              "class": classes.elPopup, on: {
-                "mouseenter": handleMouseenter,
-                "mouseleave": handleMouseleave
+            "transition",
+            {
+              attrs: { appear: true, name: props.animation },
+              on: {
+                "beforeEnter": handleBeforeEnter,
+                "afterLeave": handleAfterLeave
               }
             },
-            [slots.menu]
+            [h(
+              "div",
+              { ref: "popup", directives: [{
+                  name: "portal",
+                  value: props.getPopupContainer
+                }, {
+                  name: "show",
+                  value: state.visible
+                }],
+                "class": classes.elPopup, on: {
+                  "mouseenter": handleMouseenter,
+                  "mouseleave": handleMouseleave
+                }
+              },
+              [slots.menu]
+            )]
           )]
         )]
       )]
@@ -11688,7 +11707,7 @@ dropdown.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown = (dropdown);
-// CONCATENATED MODULE: ./src/components/dropdown-button/src/dropdown-button.js
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-button.js
 
 
 
@@ -11715,10 +11734,11 @@ var VuiDropdownButton = {
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "dashed", "text"]).def("default"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     icon: prop_types["a" /* default */].string.def("more-x"),
+    visible: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
     trigger: prop_types["a" /* default */].oneOf(["hover", "click"]).def("hover"),
-    visible: prop_types["a" /* default */].bool.def(false),
     placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-end"),
     dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
     animation: prop_types["a" /* default */].string.def("vui-dropdown-popup-scale"),
@@ -11816,7 +11836,7 @@ var VuiDropdownButton = {
       [h(
         components_button,
         {
-          attrs: { type: props.type, disabled: props.disabled },
+          attrs: { type: props.type, size: props.size, disabled: props.disabled },
           on: {
             "click": handleClick
           }
@@ -11848,7 +11868,7 @@ var VuiDropdownButton = {
         [h(
           components_button,
           {
-            attrs: { type: props.type, disabled: props.disabled }
+            attrs: { type: props.type, size: props.size, block: true, disabled: props.disabled }
           },
           [icon]
         ), h(
@@ -11870,7 +11890,7 @@ dropdown_button.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown_button = (dropdown_button);
-// CONCATENATED MODULE: ./src/components/dropdown-menu/src/dropdown-menu.js
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu.js
 
 
 
@@ -11910,13 +11930,9 @@ var VuiDropdownMenu = {
     // styles
     var styles = {};
 
-    if (is["a" /* default */].string(props.width)) {
+    if (props.width) {
       styles.el = {
-        width: props.width
-      };
-    } else if (is["a" /* default */].number(props.width)) {
-      styles.el = {
-        width: props.width + "px"
+        width: is["a" /* default */].string(props.width) ? props.width : props.width + "px"
       };
     }
 
@@ -11938,7 +11954,7 @@ dropdown_menu.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown_menu = (dropdown_menu);
-// CONCATENATED MODULE: ./src/components/dropdown-submenu/src/dropdown-submenu.js
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-submenu.js
 
 
 
@@ -11970,6 +11986,7 @@ var VuiDropdownSubmenu = {
   },
   components: {
     VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer,
     VuiIcon: components_icon
   },
   directives: {
@@ -11977,18 +11994,15 @@ var VuiDropdownSubmenu = {
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
-    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(function () {
-      return guid();
-    }),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(function () {
-      return guid();
-    }),
+    // TODO 将在后续版本中移除，请使用 value 属性替代
+    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     icon: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     disabled: prop_types["a" /* default */].bool.def(false),
     animation: prop_types["a" /* default */].string.def("vui-dropdown-submenu-body-scale"),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
   },
@@ -12038,7 +12052,7 @@ var VuiDropdownSubmenu = {
         _this.state.visible = false;
       };
 
-      if (eventType === "select") {
+      if (eventType === "click") {
         callback();
       } else {
         this.timeout = setTimeout(callback, 100);
@@ -12053,44 +12067,45 @@ var VuiDropdownSubmenu = {
       }
     },
     register: function register() {
-      if (is["a" /* default */].server) {
+      if (is["a" /* default */].server || this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.update();
-      } else {
-        var references = this.$refs,
-            props = this.$props;
+      var references = this.$refs,
+          props = this.$props;
 
-        var reference = references.header;
-        var target = references.body;
-        var settings = {
-          placement: "right-start",
-          modifiers: {
-            offset: {
-              offset: [0, -4]
-            }
+      var reference = references.header;
+      var target = references.body;
+      var settings = {
+        placement: "right-start",
+        modifiers: {
+          offset: {
+            offset: [0, -4]
           }
-        };
-
-        if (!reference || !target || !settings.placement) {
-          return;
         }
+      };
 
-        this.popup = new popup(reference, target, settings);
-        this.popup.target.style.zIndex = popup.nextZIndex();
+      if (!reference || !target || !settings.placement) {
+        return;
       }
+
+      this.popup = new popup(reference, target, settings);
+      this.popup.target.style.zIndex = popup.nextZIndex();
+    },
+    reregister: function reregister() {
+      if (is["a" /* default */].server || !this.popup) {
+        return;
+      }
+
+      this.popup.update();
     },
     unregister: function unregister() {
-      if (is["a" /* default */].server) {
+      if (is["a" /* default */].server || !this.popup) {
         return;
       }
 
-      if (this.popup) {
-        this.popup.destroy();
-        this.popup = null;
-      }
+      this.popup.destroy();
+      this.popup = null;
     },
     handleHeaderMouseenter: function handleHeaderMouseenter(e) {
       this.open("hover", false);
@@ -12117,6 +12132,13 @@ var VuiDropdownSubmenu = {
       this.$nextTick(function () {
         return _this3.unregister();
       });
+    },
+    handleResize: function handleResize() {
+      var _this4 = this;
+
+      this.$nextTick(function () {
+        return _this4.reregister();
+      });
     }
   },
   render: function render(h) {
@@ -12132,7 +12154,8 @@ var VuiDropdownSubmenu = {
         handleBodyMouseenter = this.handleBodyMouseenter,
         handleBodyMouseleave = this.handleBodyMouseleave,
         handleBodyBeforeEnter = this.handleBodyBeforeEnter,
-        handleBodyAfterLeave = this.handleBodyAfterLeave;
+        handleBodyAfterLeave = this.handleBodyAfterLeave,
+        handleResize = this.handleResize;
 
     // icon
 
@@ -12165,6 +12188,15 @@ var VuiDropdownSubmenu = {
 
     classes.elMenu = (_classes$elMenu = {}, defineProperty_default()(_classes$elMenu, "" + menuClassNamePrefix, true), defineProperty_default()(_classes$elMenu, menuClassNamePrefix + "-" + menuColor, menuColor), _classes$elMenu);
 
+    // style
+    var styles = {};
+
+    if (props.width) {
+      styles.elMenu = {
+        width: is["a" /* default */].string(props.width) ? props.width : props.width + "px"
+      };
+    }
+
     // render
     return h(
       "div",
@@ -12180,43 +12212,51 @@ var VuiDropdownSubmenu = {
           "div",
           { "class": classes.elHeaderIcon },
           [icon]
-        ) : null, title ? h(
+        ) : null, h(
           "div",
           { "class": classes.elHeaderTitle },
           [title]
-        ) : null, h("div", { "class": classes.elHeaderArrow })]
+        ), h("div", { "class": classes.elHeaderArrow })]
       ), h(
         components_lazy_render,
         {
           attrs: { render: state.visible }
         },
         [h(
-          "transition",
+          components_resize_observer,
           {
-            attrs: { appear: true, name: props.animation },
             on: {
-              "beforeEnter": handleBodyBeforeEnter,
-              "afterLeave": handleBodyAfterLeave
+              "resize": handleResize
             }
           },
           [h(
-            "div",
-            { ref: "body", directives: [{
-                name: "portal",
-                value: props.getPopupContainer
-              }, {
-                name: "show",
-                value: state.visible
-              }],
-              "class": classes.elBody, on: {
-                "mouseenter": handleBodyMouseenter,
-                "mouseleave": handleBodyMouseleave
+            "transition",
+            {
+              attrs: { appear: true, name: props.animation },
+              on: {
+                "beforeEnter": handleBodyBeforeEnter,
+                "afterLeave": handleBodyAfterLeave
               }
             },
             [h(
               "div",
-              { "class": classes.elMenu },
-              [slots.default]
+              { ref: "body", directives: [{
+                  name: "portal",
+                  value: props.getPopupContainer
+                }, {
+                  name: "show",
+                  value: state.visible
+                }],
+                "class": classes.elBody, on: {
+                  "mouseenter": handleBodyMouseenter,
+                  "mouseleave": handleBodyMouseleave
+                }
+              },
+              [h(
+                "div",
+                { "class": classes.elMenu, style: styles.elMenu },
+                [slots.default]
+              )]
             )]
           )]
         )]
@@ -12234,8 +12274,7 @@ dropdown_submenu.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown_submenu = (dropdown_submenu);
-// CONCATENATED MODULE: ./src/components/dropdown-menu-item/src/dropdown-menu-item.js
-
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-item.js
 
 
 
@@ -12263,10 +12302,9 @@ var VuiDropdownMenuItem = {
   mixins: [mixins_link],
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
+    // TODO 将在后续版本中移除，请使用 value 属性替代
     name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(function () {
-      return guid();
-    }),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     icon: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     danger: prop_types["a" /* default */].bool.def(false),
@@ -12295,19 +12333,18 @@ var VuiDropdownMenuItem = {
       vuiDropdownMenu.$emit("click", value);
 
       if (vuiDropdownSubmenu) {
-        vuiDropdownSubmenu.close("select", true);
+        vuiDropdownSubmenu.close("click", true);
       } else if (vuiDropdown) {
-        vuiDropdown.close("select");
+        vuiDropdown.close("click");
       }
 
       if (props.href) {} else if (props.to && guardLinkEvent(e)) {
         try {
           var route = getNextRoute();
           var method = props.replace ? router.replace : router.push;
+          var fallback = function fallback(error) {};
 
-          method.call(router, route.location).catch(function (error) {
-            return undefined;
-          });
+          method.call(router, route.location).catch(fallback);
         } catch (error) {
           console.error(error);
         }
@@ -12365,9 +12402,10 @@ var VuiDropdownMenuItem = {
     }
 
     if (props.href || props.to) {
+      var route = getNextRoute();
       var linkProps = {
         attrs: {
-          href: props.href || getNextRoute().href,
+          href: props.href || route.href,
           target: props.target
         },
         class: classes.el,
@@ -12407,7 +12445,7 @@ dropdown_menu_item.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown_menu_item = (dropdown_menu_item);
-// CONCATENATED MODULE: ./src/components/dropdown-menu-item-group/src/dropdown-menu-item-group.js
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-item-group.js
 
 
 
@@ -12456,7 +12494,7 @@ dropdown_menu_item_group.install = function (Vue) {
 };
 
 /* harmony default export */ var components_dropdown_menu_item_group = (dropdown_menu_item_group);
-// CONCATENATED MODULE: ./src/components/dropdown-menu-divider/src/dropdown-menu-divider.js
+// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-divider.js
 
 
 
@@ -16118,94 +16156,94 @@ var VuiSelectSpin = {
 
 
 var VuiEmpty = {
-	name: "vui-empty",
-	mixins: [mixins_locale],
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		image: prop_types["a" /* default */].string,
-		description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].bool]).def(true)
-	},
-	render: function render() {
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    translate = this.t;
+  name: "vui-empty",
+  mixins: [mixins_locale],
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    image: prop_types["a" /* default */].string,
+    description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].bool]).def(true)
+  },
+  render: function render() {
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props,
+        translate = this.t;
 
-		// class
+    // class
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
-		var classes = {};
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
-		classes.elImage = classNamePrefix + "-image";
-		classes.elDescription = classNamePrefix + "-description";
-		classes.elContent = classNamePrefix + "-content";
+    classes.el = "" + classNamePrefix;
+    classes.elImage = classNamePrefix + "-image";
+    classes.elDescription = classNamePrefix + "-description";
+    classes.elContent = classNamePrefix + "-content";
 
-		// image
-		var image = void 0;
+    // image
+    var image = void 0;
 
-		if (slots.image) {
-			image = slots.image;
-		} else if (props.image) {
-			image = h("img", {
-				attrs: { alt: "empty", src: props.image }
-			});
-		} else {
-			image = h(
-				"svg",
-				{
-					attrs: { viewBox: "0 0 64 40", xmlns: "http://www.w3.org/2000/svg" }
-				},
-				[h("ellipse", {
-					attrs: { fill: "#f5f5f5", "fill-rule": "evenodd", "clip-rule": "evenodd", cx: "32", cy: "33", rx: "32", ry: "7" }
-				}), h("path", {
-					attrs: { stroke: "#d9d9d9", fill: "none", d: "M55,13.3L44.9,1.8c-0.5-0.8-1.2-1.3-1.9-1.3H21.1c-0.7,0-1.5,0.5-1.9,1.3L9,13.3v9.2h46V13.3z" }
-				}), h("path", {
-					attrs: { stroke: "#d9d9d9", fill: "#fafafa", d: "M41.6,16.4c0-1.6,1-2.9,2.2-2.9H55v18.1c0,2.1-1.3,3.9-3,3.9H12c-1.6,0-3-1.7-3-3.9V13.5h11.2c1.2,0,2.2,1.3,2.2,2.9v0c0,1.6,1,2.9,2.2,2.9h14.8C40.6,19.4,41.6,18,41.6,16.4L41.6,16.4z" }
-				})]
-			);
-		}
+    if (slots.image) {
+      image = slots.image;
+    } else if (props.image) {
+      image = h("img", {
+        attrs: { alt: "empty", src: props.image }
+      });
+    } else {
+      image = h(
+        "svg",
+        {
+          attrs: { viewBox: "0 0 64 40", xmlns: "http://www.w3.org/2000/svg" }
+        },
+        [h("ellipse", {
+          attrs: { fill: "#f5f5f5", "fill-rule": "evenodd", "clip-rule": "evenodd", cx: "32", cy: "33", rx: "32", ry: "7" }
+        }), h("path", {
+          attrs: { stroke: "#d9d9d9", fill: "none", d: "M55,13.3L44.9,1.8c-0.5-0.8-1.2-1.3-1.9-1.3H21.1c-0.7,0-1.5,0.5-1.9,1.3L9,13.3v9.2h46V13.3z" }
+        }), h("path", {
+          attrs: { stroke: "#d9d9d9", fill: "#fafafa", d: "M41.6,16.4c0-1.6,1-2.9,2.2-2.9H55v18.1c0,2.1-1.3,3.9-3,3.9H12c-1.6,0-3-1.7-3-3.9V13.5h11.2c1.2,0,2.2,1.3,2.2,2.9v0c0,1.6,1,2.9,2.2,2.9h14.8C40.6,19.4,41.6,18,41.6,16.4L41.6,16.4z" }
+        })]
+      );
+    }
 
-		// description
-		var description = void 0;
+    // description
+    var description = void 0;
 
-		if (slots.description) {
-			description = slots.description;
-		} else if (props.description) {
-			description = is["a" /* default */].boolean(props.description) ? translate("vui.empty.description") : props.description;
-		}
+    if (slots.description) {
+      description = slots.description;
+    } else if (props.description) {
+      description = is["a" /* default */].boolean(props.description) ? translate("vui.empty.description") : props.description;
+    }
 
-		// render
-		var children = [];
+    // render
+    var children = [];
 
-		children.push(h(
-			"div",
-			{ "class": classes.elImage },
-			[image]
-		));
+    children.push(h(
+      "div",
+      { "class": classes.elImage },
+      [image]
+    ));
 
-		if (description) {
-			children.push(h(
-				"div",
-				{ "class": classes.elDescription },
-				[description]
-			));
-		}
+    if (description) {
+      children.push(h(
+        "div",
+        { "class": classes.elDescription },
+        [description]
+      ));
+    }
 
-		if (slots.default) {
-			children.push(h(
-				"div",
-				{ "class": classes.elContent },
-				[slots.default]
-			));
-		}
+    if (slots.default) {
+      children.push(h(
+        "div",
+        { "class": classes.elContent },
+        [slots.default]
+      ));
+    }
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var src_empty = (VuiEmpty);
@@ -16213,7 +16251,7 @@ var VuiEmpty = {
 
 
 src_empty.install = function (Vue) {
-	Vue.component(src_empty.name, src_empty);
+  Vue.component(src_empty.name, src_empty);
 };
 
 /* harmony default export */ var components_empty = (src_empty);
@@ -31293,224 +31331,224 @@ avatar_group.install = function (Vue) {
 var gridCardLoadingBlocks = [[20], [8, 16], [4, 18], [12, 8], [8, 8, 8]];
 
 var VuiCard = {
-	name: "vui-card",
-	components: {
-		VuiIcon: components_icon,
-		VuiRow: components_row,
-		VuiCol: components_col
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		icon: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		extra: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		cover: prop_types["a" /* default */].string,
-		bordered: prop_types["a" /* default */].bool.def(true),
-		shadow: prop_types["a" /* default */].oneOf(["never", "hover", "always"]).def("never"),
-		headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-		loading: prop_types["a" /* default */].bool.def(false)
-	},
-	methods: {
-		withCardGrids: function withCardGrids() {
-			var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-			var tagName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "vui-card-grid";
+  name: "vui-card",
+  components: {
+    VuiIcon: components_icon,
+    VuiRow: components_row,
+    VuiCol: components_col
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    extra: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    cover: prop_types["a" /* default */].string,
+    bordered: prop_types["a" /* default */].bool.def(true),
+    shadow: prop_types["a" /* default */].oneOf(["never", "hover", "always"]).def("never"),
+    headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
+    loading: prop_types["a" /* default */].bool.def(false)
+  },
+  methods: {
+    withCardGrids: function withCardGrids() {
+      var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var tagName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "vui-card-grid";
 
-			var bool = false;
+      var bool = false;
 
-			children.forEach(function (element) {
-				if (!element) {
-					return;
-				}
+      children.forEach(function (element) {
+        if (!element) {
+          return;
+        }
 
-				var options = element.componentOptions;
+        var options = element.componentOptions;
 
-				if (!options) {
-					return;
-				}
+        if (!options) {
+          return;
+        }
 
-				if (options && options.tag === tagName) {
-					bool = true;
-				}
-			});
+        if (options && options.tag === tagName) {
+          bool = true;
+        }
+      });
 
-			return bool;
-		}
-	},
-	render: function render(h) {
-		var _classes$el;
+      return bool;
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
 
-		var slots = this.$slots,
-		    props = this.$props;
+    var slots = this.$slots,
+        props = this.$props;
 
-		var withCardGrids = this.withCardGrids(slots.default);
+    var withCardGrids = this.withCardGrids(slots.default);
 
-		// icon
-		var icon = void 0;
+    // icon
+    var icon = void 0;
 
-		if (slots.icon) {
-			icon = slots.icon;
-		} else if (props.icon) {
-			icon = h(components_icon, {
-				attrs: { type: props.icon }
-			});
-		}
+    if (slots.icon) {
+      icon = slots.icon;
+    } else if (props.icon) {
+      icon = h(components_icon, {
+        attrs: { type: props.icon }
+      });
+    }
 
-		// title
-		var title = slots.title || props.title;
+    // title
+    var title = slots.title || props.title;
 
-		// extra
-		var extra = slots.extra || props.extra;
+    // extra
+    var extra = slots.extra || props.extra;
 
-		// cover
-		var cover = void 0;
+    // cover
+    var cover = void 0;
 
-		if (slots.cover) {
-			cover = slots.cover;
-		} else if (props.cover) {
-			cover = h("img", {
-				attrs: { src: props.cover }
-			});
-		}
+    if (slots.cover) {
+      cover = slots.cover;
+    } else if (props.cover) {
+      cover = h("img", {
+        attrs: { src: props.cover }
+      });
+    }
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card");
+    var classes = {};
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-shadow-" + props.shadow, props.shadow), defineProperty_default()(_classes$el, classNamePrefix + "-with-grid", withCardGrids), _classes$el);
-		classes.elHeader = classNamePrefix + "-header";
-		classes.elIcon = classNamePrefix + "-icon";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elExtra = classNamePrefix + "-extra";
-		classes.elCover = classNamePrefix + "-cover";
-		classes.elBody = classNamePrefix + "-body";
-		classes.elLoading = classNamePrefix + "-loading";
-		classes.elLoadingRow = classNamePrefix + "-loading-row";
-		classes.elLoadingBlock = classNamePrefix + "-loading-block";
-		classes.elActions = classNamePrefix + "-actions";
-		classes.elAction = classNamePrefix + "-action";
-		classes.elActionDivider = classNamePrefix + "-action-divider";
-		classes.elFooter = classNamePrefix + "-footer";
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_classes$el, classNamePrefix + "-shadow-" + props.shadow, props.shadow), defineProperty_default()(_classes$el, classNamePrefix + "-with-grid", withCardGrids), _classes$el);
+    classes.elHeader = classNamePrefix + "-header";
+    classes.elIcon = classNamePrefix + "-icon";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elExtra = classNamePrefix + "-extra";
+    classes.elCover = classNamePrefix + "-cover";
+    classes.elBody = classNamePrefix + "-body";
+    classes.elLoading = classNamePrefix + "-loading";
+    classes.elLoadingRow = classNamePrefix + "-loading-row";
+    classes.elLoadingBlock = classNamePrefix + "-loading-block";
+    classes.elActions = classNamePrefix + "-actions";
+    classes.elAction = classNamePrefix + "-action";
+    classes.elActionDivider = classNamePrefix + "-action-divider";
+    classes.elFooter = classNamePrefix + "-footer";
 
-		// render
-		var children = [];
+    // render
+    var children = [];
 
-		if (icon || title || extra) {
-			var header = [];
+    if (icon || title || extra) {
+      var header = [];
 
-			if (icon) {
-				header.push(h(
-					"div",
-					{ "class": classes.elIcon },
-					[icon]
-				));
-			}
+      if (icon) {
+        header.push(h(
+          "div",
+          { "class": classes.elIcon },
+          [icon]
+        ));
+      }
 
-			if (title) {
-				header.push(h(
-					"div",
-					{ "class": classes.elTitle },
-					[title]
-				));
-			}
+      if (title) {
+        header.push(h(
+          "div",
+          { "class": classes.elTitle },
+          [title]
+        ));
+      }
 
-			if (extra) {
-				header.push(h(
-					"div",
-					{ "class": classes.elExtra },
-					[extra]
-				));
-			}
+      if (extra) {
+        header.push(h(
+          "div",
+          { "class": classes.elExtra },
+          [extra]
+        ));
+      }
 
-			children.push(h(
-				"div",
-				{ "class": classes.elHeader, style: props.headerStyle },
-				[header]
-			));
-		}
+      children.push(h(
+        "div",
+        { "class": classes.elHeader, style: props.headerStyle },
+        [header]
+      ));
+    }
 
-		if (cover) {
-			children.push(h(
-				"div",
-				{ "class": classes.elCover },
-				[cover]
-			));
-		}
+    if (cover) {
+      children.push(h(
+        "div",
+        { "class": classes.elCover },
+        [cover]
+      ));
+    }
 
-		var body = void 0;
+    var body = void 0;
 
-		if (!props.loading) {
-			body = slots.default;
-		} else if (slots.loading) {
-			body = slots.loading;
-		} else {
-			body = h(
-				"div",
-				{ "class": classes.elLoading },
-				[gridCardLoadingBlocks.map(function (row) {
-					return h(
-						components_row,
-						{
-							attrs: { gutter: 8 },
-							"class": classes.elLoadingRow },
-						[row.map(function (col) {
-							return h(
-								components_col,
-								{
-									attrs: { span: col }
-								},
-								[h("div", { "class": classes.elLoadingBlock })]
-							);
-						})]
-					);
-				})]
-			);
-		}
+    if (!props.loading) {
+      body = slots.default;
+    } else if (slots.loading) {
+      body = slots.loading;
+    } else {
+      body = h(
+        "div",
+        { "class": classes.elLoading },
+        [gridCardLoadingBlocks.map(function (row) {
+          return h(
+            components_row,
+            {
+              attrs: { gutter: 8 },
+              "class": classes.elLoadingRow },
+            [row.map(function (col) {
+              return h(
+                components_col,
+                {
+                  attrs: { span: col }
+                },
+                [h("div", { "class": classes.elLoadingBlock })]
+              );
+            })]
+          );
+        })]
+      );
+    }
 
-		children.push(h(
-			"div",
-			{ "class": classes.elBody, style: props.bodyStyle },
-			[body]
-		));
+    children.push(h(
+      "div",
+      { "class": classes.elBody, style: props.bodyStyle },
+      [body]
+    ));
 
-		if (slots.actions) {
-			var elements = getValidElements(slots.actions);
-			var actions = [];
+    if (slots.actions) {
+      var elements = getValidElements(slots.actions);
+      var actions = [];
 
-			elements.forEach(function (element, index) {
-				if (index > 0) {
-					actions.push(h("i", { "class": classes.elActionDivider }));
-				}
+      elements.forEach(function (element, index) {
+        if (index > 0) {
+          actions.push(h("i", { "class": classes.elActionDivider }));
+        }
 
-				actions.push(h(
-					"div",
-					{ "class": classes.elAction },
-					[element]
-				));
-			});
+        actions.push(h(
+          "div",
+          { "class": classes.elAction },
+          [element]
+        ));
+      });
 
-			children.push(h(
-				"div",
-				{ "class": classes.elActions },
-				[actions]
-			));
-		}
+      children.push(h(
+        "div",
+        { "class": classes.elActions },
+        [actions]
+      ));
+    }
 
-		if (slots.footer) {
-			children.push(h(
-				"div",
-				{ "class": classes.elFooter, style: props.footerStyle },
-				[slots.footer]
-			));
-		}
+    if (slots.footer) {
+      children.push(h(
+        "div",
+        { "class": classes.elFooter, style: props.footerStyle },
+        [slots.footer]
+      ));
+    }
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var card = (VuiCard);
@@ -31518,7 +31556,7 @@ var VuiCard = {
 
 
 card.install = function (Vue) {
-	Vue.component(card.name, card);
+  Vue.component(card.name, card);
 };
 
 /* harmony default export */ var components_card = (card);
@@ -31527,26 +31565,26 @@ card.install = function (Vue) {
 
 
 var VuiCardGrid = {
-	name: "vui-card-grid",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+  name: "vui-card-grid",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card-grid");
-		var classes = {};
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card-grid");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
+    classes.el = "" + classNamePrefix;
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[slots.default]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [slots.default]
+    );
+  }
 };
 
 /* harmony default export */ var card_grid = (VuiCardGrid);
@@ -31554,7 +31592,7 @@ var VuiCardGrid = {
 
 
 card_grid.install = function (Vue) {
-	Vue.component(card_grid.name, card_grid);
+  Vue.component(card_grid.name, card_grid);
 };
 
 /* harmony default export */ var components_card_grid = (card_grid);
@@ -31563,68 +31601,68 @@ card_grid.install = function (Vue) {
 
 
 var VuiCardMeta = {
-	name: "vui-card-meta",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		avatar: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+  name: "vui-card-meta",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    avatar: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
-		// avatar
+    // avatar
 
-		var avatar = void 0;
+    var avatar = void 0;
 
-		if (slots.avatar) {
-			avatar = slots.avatar;
-		} else if (props.avatar) {
-			avatar = h(VuiAvatar, {
-				attrs: { src: props.avatar }
-			});
-		}
+    if (slots.avatar) {
+      avatar = slots.avatar;
+    } else if (props.avatar) {
+      avatar = h(VuiAvatar, {
+        attrs: { src: props.avatar }
+      });
+    }
 
-		// title
-		var title = slots.title || props.title;
+    // title
+    var title = slots.title || props.title;
 
-		// description
-		var description = slots.description || props.description;
+    // description
+    var description = slots.description || props.description;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card-meta");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "card-meta");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
-		classes.elAvatar = classNamePrefix + "-avatar";
-		classes.elDetail = classNamePrefix + "-detail";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elDescription = classNamePrefix + "-description";
+    classes.el = "" + classNamePrefix;
+    classes.elAvatar = classNamePrefix + "-avatar";
+    classes.elDetail = classNamePrefix + "-detail";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elDescription = classNamePrefix + "-description";
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[avatar && h(
-				"div",
-				{ "class": classes.elAvatar },
-				[avatar]
-			), h(
-				"div",
-				{ "class": classes.elDetail },
-				[h(
-					"div",
-					{ "class": classes.elTitle },
-					[title]
-				), h(
-					"div",
-					{ "class": classes.elDescription },
-					[description]
-				)]
-			)]
-		);
-	}
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [avatar && h(
+        "div",
+        { "class": classes.elAvatar },
+        [avatar]
+      ), h(
+        "div",
+        { "class": classes.elDetail },
+        [h(
+          "div",
+          { "class": classes.elTitle },
+          [title]
+        ), h(
+          "div",
+          { "class": classes.elDescription },
+          [description]
+        )]
+      )]
+    );
+  }
 };
 
 /* harmony default export */ var card_meta = (VuiCardMeta);
@@ -31632,7 +31670,7 @@ var VuiCardMeta = {
 
 
 card_meta.install = function (Vue) {
-	Vue.component(card_meta.name, card_meta);
+  Vue.component(card_meta.name, card_meta);
 };
 
 /* harmony default export */ var components_card_meta = (card_meta);
@@ -33269,71 +33307,35 @@ src_image.install = function (Vue) {
 
 
 
+
+var gridType = {
+	gutter: prop_types["a" /* default */].number,
+	column: prop_types["a" /* default */].oneOf([1, 2, 3, 4, 6, 8, 12, 24])
+};
+
 var VuiList = {
 	name: "vui-list",
-
 	provide: function provide() {
 		return {
 			vuiList: this
 		};
 	},
 
-
 	components: {
 		VuiRow: components_row,
 		VuiCol: components_col
 	},
-
 	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		header: {
-			type: String,
-			default: undefined
-		},
-		footer: {
-			type: String,
-			default: undefined
-		},
-		layout: {
-			type: String,
-			default: "horizontal",
-			validator: function validator(value) {
-				return ["horizontal", "vertical"].indexOf(value) > -1;
-			}
-		},
-		size: {
-			type: String,
-			default: "medium",
-			validator: function validator(value) {
-				return ["small", "medium", "large"].indexOf(value) > -1;
-			}
-		},
-		bordered: {
-			type: Boolean,
-			default: false
-		},
-		split: {
-			type: Boolean,
-			default: true
-		},
-		grid: {
-			type: Object,
-			default: undefined,
-			validator: function validator(value) {
-				if ("columns" in value) {
-					return [1, 2, 3, 4, 6, 8, 12, 24].indexOf(value.columns) > -1;
-				}
-			}
-		},
-		data: {
-			type: Array,
-			default: undefined
-		}
+		classNamePrefix: prop_types["a" /* default */].string,
+		header: prop_types["a" /* default */].string,
+		footer: prop_types["a" /* default */].string,
+		layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+		size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+		bordered: prop_types["a" /* default */].bool.def(false),
+		split: prop_types["a" /* default */].bool.def(true),
+		grid: prop_types["a" /* default */].shape(gridType),
+		data: prop_types["a" /* default */].array
 	},
-
 	render: function render(h) {
 		var _classes$el;
 
@@ -33341,7 +33343,7 @@ var VuiList = {
 		    scopedSlots = this.$scopedSlots,
 		    props = this.$props;
 
-		// classes
+		// class
 
 		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
 		var classes = {};
@@ -33363,17 +33365,17 @@ var VuiList = {
 			));
 		}
 
-		if (props.grid && props.data && props.data.length) {
+		if (props.grid && props.data && props.data.length > 0) {
 			var gutter = props.grid.gutter || 16;
-			var columns = props.grid.columns || 4;
+			var column = props.grid.column || 4;
+			var span = Math.round(24 / column);
 			var cols = [];
-			var span = Math.round(24 / columns);
 
 			props.data.forEach(function (item, index) {
 				var scopedSlot = scopedSlots.item;
 				var content = scopedSlot && scopedSlot(item, index);
 				var style = {
-					marginTop: index < columns ? "0px" : gutter + "px"
+					marginTop: index < column ? "0px" : gutter + "px"
 				};
 
 				cols.push(h(
@@ -33429,7 +33431,7 @@ var VuiList = {
 
 
 src_list.install = function (Vue) {
-	Vue.component(src_list.name, src_list);
+  Vue.component(src_list.name, src_list);
 };
 
 /* harmony default export */ var components_list = (src_list);
@@ -33438,95 +33440,90 @@ src_list.install = function (Vue) {
 
 
 
+
 var VuiListItem = {
-	name: "vui-list-item",
+  name: "vui-list-item",
+  inject: {
+    vuiList: {
+      default: undefined
+    }
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string
+  },
+  render: function render(h) {
+    var vuiList = this.vuiList,
+        slots = this.$slots,
+        props = this.$props;
+    var vuiListProps = vuiList.$props;
 
-	inject: {
-		vuiList: {
-			default: undefined
-		}
-	},
+    // class
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		}
-	},
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item");
+    var classes = {};
 
-	render: function render(h) {
-		var vuiList = this.vuiList,
-		    slots = this.$slots,
-		    props = this.$props;
-		var vuiListProps = vuiList.$props;
+    classes.el = defineProperty_default()({}, "" + classNamePrefix, true);
+    classes.elMain = classNamePrefix + "-main";
+    classes.elActions = classNamePrefix + "-actions";
+    classes.elAction = classNamePrefix + "-action";
+    classes.elActionDivider = classNamePrefix + "-action-divider";
+    classes.elExtra = classNamePrefix + "-extra";
 
-		// classes
+    // actions
+    var actions = [];
+    var elements = getValidElements(slots.actions);
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item");
-		var classes = {};
+    elements.forEach(function (element, index) {
+      if (index > 0) {
+        actions.push(h("i", { "class": classes.elActionDivider }));
+      }
 
-		classes.el = defineProperty_default()({}, "" + classNamePrefix, true);
-		classes.elMain = classNamePrefix + "-main";
-		classes.elActions = classNamePrefix + "-actions";
-		classes.elAction = classNamePrefix + "-action";
-		classes.elActionDivider = classNamePrefix + "-action-divider";
-		classes.elExtra = classNamePrefix + "-extra";
+      actions.push(h(
+        "div",
+        { "class": classes.elAction },
+        [element]
+      ));
+    });
 
-		// actions
-		var actions = [];
-		var elements = getValidElements(slots.actions);
+    // render
+    var children = [];
 
-		elements.forEach(function (element, index) {
-			if (index > 0) {
-				actions.push(h("i", { "class": classes.elActionDivider }));
-			}
+    if (vuiListProps.layout === "vertical") {
+      children.push(h(
+        "div",
+        { "class": classes.elMain },
+        [slots.default, actions.length > 0 && h(
+          "div",
+          { "class": classes.elActions },
+          [actions]
+        )]
+      ));
+    } else {
+      children.push(slots.default);
 
-			actions.push(h(
-				"div",
-				{ "class": classes.elAction },
-				[element]
-			));
-		});
+      if (actions.length > 0) {
+        children.push(h(
+          "div",
+          { "class": classes.elActions },
+          [actions]
+        ));
+      }
+    }
 
-		// render
-		var children = [];
+    if (slots.extra) {
+      children.push(h(
+        "div",
+        { "class": classes.elExtra },
+        [slots.extra]
+      ));
+    }
 
-		if (vuiListProps.layout === "vertical") {
-			children.push(h(
-				"div",
-				{ "class": classes.elMain },
-				[slots.default, actions.length > 0 && h(
-					"div",
-					{ "class": classes.elActions },
-					[actions]
-				)]
-			));
-		} else {
-			children.push(slots.default);
-
-			if (actions.length > 0) {
-				children.push(h(
-					"div",
-					{ "class": classes.elActions },
-					[actions]
-				));
-			}
-		}
-
-		if (slots.extra) {
-			children.push(h(
-				"div",
-				{ "class": classes.elExtra },
-				[slots.extra]
-			));
-		}
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var list_item = (VuiListItem);
@@ -33534,7 +33531,7 @@ var VuiListItem = {
 
 
 list_item.install = function (Vue) {
-	Vue.component(list_item.name, list_item);
+  Vue.component(list_item.name, list_item);
 };
 
 /* harmony default export */ var components_list_item = (list_item);
@@ -33543,89 +33540,75 @@ list_item.install = function (Vue) {
 
 
 
+
 var VuiListItemMeta = {
-	name: "vui-list-item-meta",
+  name: "vui-list-item-meta",
+  components: {
+    VuiAvatar: components_avatar
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    avatar: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    description: prop_types["a" /* default */].string
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
-	components: {
-		VuiAvatar: components_avatar
-	},
+    // class
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: undefined
-		},
-		avatar: {
-			type: String,
-			default: undefined
-		},
-		title: {
-			type: String,
-			default: undefined
-		},
-		description: {
-			type: String,
-			default: undefined
-		}
-	},
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item-meta");
+    var classes = {};
 
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+    classes.el = defineProperty_default()({}, "" + classNamePrefix, true);
+    classes.elAvatar = classNamePrefix + "-avatar";
+    classes.elContent = classNamePrefix + "-content";
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elDescription = classNamePrefix + "-description";
 
-		// classes
+    // avatar
+    var avatar = void 0;
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list-item-meta");
-		var classes = {};
+    if (slots.avatar) {
+      avatar = slots.avatar;
+    } else if (props.avatar) {
+      avatar = h(components_avatar, {
+        attrs: { src: props.avatar }
+      });
+    }
 
-		classes.el = defineProperty_default()({}, "" + classNamePrefix, true);
-		classes.elAvatar = classNamePrefix + "-avatar";
-		classes.elContent = classNamePrefix + "-content";
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elDescription = classNamePrefix + "-description";
+    // render
+    var children = [];
 
-		// avatar
-		var avatar = void 0;
+    if (avatar) {
+      children.push(h(
+        "div",
+        { "class": classes.elAvatar },
+        [avatar]
+      ));
+    }
 
-		if (slots.avatar) {
-			avatar = slots.avatar;
-		} else if (props.avatar) {
-			avatar = h(components_avatar, {
-				attrs: { src: props.avatar }
-			});
-		}
+    children.push(h(
+      "div",
+      { "class": classes.elContent },
+      [h(
+        "div",
+        { "class": classes.elTitle },
+        [slots.title || props.title]
+      ), h(
+        "div",
+        { "class": classes.elDescription },
+        [slots.description || props.description]
+      )]
+    ));
 
-		// render
-		var children = [];
-
-		if (avatar) {
-			children.push(h(
-				"div",
-				{ "class": classes.elAvatar },
-				[avatar]
-			));
-		}
-
-		children.push(h(
-			"div",
-			{ "class": classes.elContent },
-			[h(
-				"div",
-				{ "class": classes.elTitle },
-				[slots.title || props.title]
-			), h(
-				"div",
-				{ "class": classes.elDescription },
-				[slots.description || props.description]
-			)]
-		));
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var list_item_meta = (VuiListItemMeta);
@@ -33633,7 +33616,7 @@ var VuiListItemMeta = {
 
 
 list_item_meta.install = function (Vue) {
-	Vue.component(list_item_meta.name, list_item_meta);
+  Vue.component(list_item_meta.name, list_item_meta);
 };
 
 /* harmony default export */ var components_list_item_meta = (list_item_meta);
@@ -43699,7 +43682,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.3",
+  version: "1.10.4",
   install: src_install,
   // Locale
   locale: src_locale.use,
