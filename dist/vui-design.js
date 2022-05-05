@@ -34270,6 +34270,9 @@ var VuiRibbon = {
     var withPresetColor = props.color && ribbon_colors.indexOf(props.color) > -1;
     var withCustomColor = props.color && ribbon_colors.indexOf(props.color) === -1;
 
+    // text
+    var text = slots.text || props.text;
+
     // class
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ribbon");
     var classes = {};
@@ -34292,18 +34295,27 @@ var VuiRibbon = {
       };
     }
 
-    return h(
-      "div",
-      { "class": classes.elWrapper },
-      [slots.default, h(
+    // render
+    var children = [];
+
+    children.push(slots.default);
+
+    if (text) {
+      children.push(h(
         "div",
         { "class": classes.el, style: styles.el },
         [h(
           "div",
           { "class": classes.elText },
-          [slots.text || props.text]
+          [text]
         ), h("div", { "class": classes.elCorner, style: styles.elCorner })]
-      )]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.elWrapper },
+      [children]
     );
   }
 };
@@ -43682,7 +43694,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.4",
+  version: "1.10.5",
   install: src_install,
   // Locale
   locale: src_locale.use,

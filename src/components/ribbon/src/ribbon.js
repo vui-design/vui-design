@@ -19,6 +19,9 @@ const VuiRibbon = {
     const withPresetColor = props.color && colors.indexOf(props.color) > -1;
     const withCustomColor = props.color && colors.indexOf(props.color) === -1;
 
+    // text
+    const text = slots.text || props.text;
+
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "ribbon");
     let classes = {};
@@ -46,13 +49,23 @@ const VuiRibbon = {
       };
     }
 
-    return (
-      <div class={classes.elWrapper}>
-        {slots.default}
+    // render
+    let children = [];
+
+    children.push(slots.default);
+
+    if (text) {
+      children.push(
         <div class={classes.el} style={styles.el}>
-          <div class={classes.elText}>{slots.text || props.text}</div>
+          <div class={classes.elText}>{text}</div>
           <div class={classes.elCorner} style={styles.elCorner}></div>
         </div>
+      );
+    }
+
+    return (
+      <div class={classes.elWrapper}>
+        {children}
       </div>
     );
   }
