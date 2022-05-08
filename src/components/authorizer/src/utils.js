@@ -1,7 +1,7 @@
 import Vue from "vue";
 import is from "../../../utils/is";
 
-export const authorizer = (value, authorize) => {
+export const authorizer = (authorize, value, attrs) => {
   const vui = Vue.prototype.$vui;
   const callback = authorize || vui.authorize;
 
@@ -9,7 +9,7 @@ export const authorizer = (value, authorize) => {
     return true;
   }
 
-  return callback(value);
+  return callback(value, attrs);
 };
 
 export default {

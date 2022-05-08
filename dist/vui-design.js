@@ -42672,7 +42672,7 @@ anchor_link.install = function (Vue) {
 
 
 
-var utils_authorizer = function authorizer(value, authorize) {
+var utils_authorizer = function authorizer(authorize, value, attrs) {
   var vui = external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a.prototype.$vui;
   var callback = authorize || vui.authorize;
 
@@ -42680,7 +42680,7 @@ var utils_authorizer = function authorizer(value, authorize) {
     return true;
   }
 
-  return callback(value);
+  return callback(value, attrs);
 };
 
 /* harmony default export */ var authorizer_src_utils = ({
@@ -42694,16 +42694,17 @@ var VuiAuthorizer = {
   name: "vui-authorizer",
   functional: true,
   props: {
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].array]),
-    authorize: prop_types["a" /* default */].func
+    authorize: prop_types["a" /* default */].func,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].array])
   },
   render: function render(h, context) {
     var props = context.props,
         scopedSlots = context.scopedSlots;
+    var attrs = context.data.attrs;
 
-    var isAllowed = authorizer_src_utils.authorizer(props.value, props.authorize);
-    var key = isAllowed ? "default" : "replacement";
-    var scopedSlot = scopedSlots[key];
+    var isAllowed = authorizer_src_utils.authorizer(props.authorize, props.value, attrs);
+    var scopedSlotKey = isAllowed ? "default" : "replacement";
+    var scopedSlot = scopedSlots[scopedSlotKey];
 
     return scopedSlot ? scopedSlot() : null;
   }
@@ -43694,7 +43695,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.5",
+  version: "1.10.6",
   install: src_install,
   // Locale
   locale: src_locale.use,

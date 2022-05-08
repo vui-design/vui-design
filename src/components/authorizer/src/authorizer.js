@@ -5,14 +5,15 @@ const VuiAuthorizer = {
   name: "vui-authorizer",
   functional: true,
   props: {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    authorize: PropTypes.func
+    authorize: PropTypes.func,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
   },
   render(h, context) {
     const { props, scopedSlots } = context;
-    const isAllowed = utils.authorizer(props.value, props.authorize);
-    const key = isAllowed ? "default" : "replacement";
-    const scopedSlot = scopedSlots[key];
+    const { attrs } = context.data;
+    const isAllowed = utils.authorizer(props.authorize, props.value, attrs);
+    const scopedSlotKey = isAllowed ? "default" : "replacement";
+    const scopedSlot = scopedSlots[scopedSlotKey];
 
     return scopedSlot ? scopedSlot() : null;
   }
