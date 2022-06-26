@@ -91,6 +91,7 @@ export default {
       notFound: "No Data"
     },
     cascadeTransfer: {
+      search: "Please enter search content",
       notFound: "No Data",
       clear: "Clear"
     },

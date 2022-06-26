@@ -2,137 +2,52 @@ import is from "../../../utils/is";
 import clone from "../../../utils/clone";
 import flatten from "../../../utils/flatten";
 
+/**
+* 默认配置
+*/
+const defaults = {
+  filter: (keyword, option, property) => {
+    if (!keyword) {
+      return true;
+    }
+
+    const string = String(keyword);
+    const value = option[property];
+
+    return new RegExp(string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i").test(value);
+  }
+};
+
+/**
+* 将 options 选项转为一维 map 结构
+* @param {Array} value
+* @param {Array} options 选项列表
+* @param {String} valueKey 选项值对应的键名
+* @param {String} childrenKey 选项子选项对应的键名
+*/
 const mapper = (options, parent, valueKey, childrenKey, map) => {
-	options.forEach(option => {
-		const value = option[valueKey];
-		const children = option[childrenKey];
+  options.forEach(option => {
+    const value = option[valueKey];
+    const children = option[childrenKey];
 
-		map[value] = {
-			option: option,
-			parent: parent,
-			children: children
-		};
+    map[value] = {
+      option: option,
+      parent: parent,
+      children: children
+    };
 
-		if (children && children.length > 0) {
-			mapper(children, option, valueKey, childrenKey, map);
-		}
-	});
+    if (children && children.length > 0) {
+      mapper(children, option, valueKey, childrenKey, map);
+    }
+  });
 };
 
-/**
-* 根据 value 值获取 selectedKeys
-* @param {Array} value
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-* @param {String} showCheckedStrategy 定义选中项回填的方式
-*/
-export const mapValueToSelectedKeys = (value, options, valueKey, childrenKey, showCheckedStrategy) => {
-	const map = getMap(options, valueKey, childrenKey);
-	let selectedKeys = [];
-
-	if (showCheckedStrategy === "parent") {
-		value.forEach(key => {
-			const target = map[key];
-
-			if (!target) {
-				return;
-			}
-
-			selectedKeys.push(target.option[valueKey]);
-
-			if (target.children && target.children.length > 0) {
-				const children = flatten(target.children, childrenKey, true);
-
-				children.forEach(child => {
-					if (selectedKeys.indexOf(child[valueKey]) === -1) {
-						selectedKeys.push(child[valueKey]);
-					}
-				});
-			}
-		});
-	}
-	else if (showCheckedStrategy === "children") {
-		value.forEach(key => {
-			const target = map[key];
-
-			if (!target) {
-				return;
-			}
-
-			selectedKeys.push(target.option[valueKey]);
-
-			if (target.parent && target.parent.children.every(child => value.indexOf(child[valueKey]) > -1)) {
-				selectedKeys.push(target.parent[valueKey]);
-			}
-		});
-	}
-
-	return selectedKeys;
-};
-
-/**
-* 根据 selectedKeys 获取 value 值
-* @param {Array} selectedKeys
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-* @param {String} showCheckedStrategy 定义选中项回填的方式
-*/
-export const mapSelectedKeysToValue = (selectedKeys, options, valueKey, childrenKey, showCheckedStrategy) => {
-	const map = getMap(options, valueKey, childrenKey);
-
-	let value = [];
-
-	if (showCheckedStrategy === "parent") {
-		selectedKeys.forEach(selectedKey => {
-			const target = map[selectedKey];
-
-			if (!target) {
-				return;
-			}
-
-			if (!target.parent) {
-				value.push(selectedKey);
-			}
-			else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-				value.push(selectedKey);
-			}
-		});
-	}
-	else if (showCheckedStrategy === "children") {
-		selectedKeys.forEach(selectedKey => {
-			const target = map[selectedKey];
-
-			if (!target) {
-				return;
-			}
-
-			if (!target.children) {
-				value.push(selectedKey);
-			}
-			else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-				value.push(selectedKey);
-			}
-		});
-	}
-
-	return value;
-};
-
-/**
-* 根据 value 值获取 selectedKeys
-* @param {Array} value
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-*/
 export const getMap = (options, valueKey, childrenKey) => {
-	let map = {};
+  let map = {};
 
-	mapper(options, undefined, valueKey, childrenKey, map);
+  mapper(options, undefined, valueKey, childrenKey, map);
 
-	return map;
+  return map;
 };
 
 /**
@@ -144,40 +59,158 @@ export const getMap = (options, valueKey, childrenKey) => {
 * @param {String} childrenKey 选项子选项对应的键名
 */
 export const getParent = (option, parent, options, valueKey, childrenKey) => {
-	let target;
+  let target;
 
-	for (let i = 0, length = options.length; i < length; i++) {
-		if (options[i][valueKey] === option[valueKey]) {
-			target = parent;
-		}
-		else if (options[i][childrenKey]) {
-			target = getParent(option, options[i], options[i][childrenKey], valueKey, childrenKey);
-		}
+  for (let i = 0, length = options.length; i < length; i++) {
+    if (options[i][valueKey] === option[valueKey]) {
+      target = parent;
+    }
+    else if (options[i][childrenKey]) {
+      target = getParent(option, options[i], options[i][childrenKey], valueKey, childrenKey);
+    }
 
-		if (target) {
-			break;
-		}
-	}
+    if (target) {
+      break;
+    }
+  }
 
-	return target;
+  return target;
 };
 
 /**
-* 根据选中值和选项列表判断是否处于全选、半选或未选状态
+* 根据 value 值获取 selectedKeys
+* @param {Array} value
+* @param {Object} props 属性
+*/
+const upward = (option, props, selectedKeys) => {
+  const parent = getParent(option, undefined, props.options, props.valueKey, props.childrenKey);
+
+  if (!parent) {
+    return;
+  }
+
+  const siblings = parent[props.childrenKey];
+  const isEveryChecked = siblings.every(sibling => selectedKeys.indexOf(sibling[props.valueKey]) > -1);
+
+  if (!isEveryChecked) {
+    return;
+  }
+
+  const value = parent[props.valueKey];
+  const index = selectedKeys.indexOf(value);
+
+  if (index === -1) {
+    selectedKeys.push(value);
+    upward(parent, props, selectedKeys);
+  }
+};
+
+const downward = (option, props, selectedKeys) => {
+  const children = option[props.childrenKey];
+
+  if (!children || children.length === 0) {
+    return;
+  }
+
+  children.forEach(child => {
+    const value = child[props.valueKey];
+    const index = selectedKeys.indexOf(value);
+
+    if (index === -1) {
+      selectedKeys.push(value);
+    }
+
+    downward(child, props, selectedKeys);
+  });
+};
+
+export const getSelectedKeysByValue = (value, props) => {
+  const options = flatten(props.options, props.childrenKey, true);
+  let selectedKeys = [];
+
+  value.forEach(key => {
+    const option = options.find(option => option[props.valueKey] === key);
+
+    if (!option) {
+      return;
+    }
+
+    const index = selectedKeys.indexOf(key);
+
+    if (index === -1) {
+      selectedKeys.push(key);
+    }
+
+    upward(option, props, selectedKeys);
+    downward(option, props, selectedKeys);
+  });
+
+  return selectedKeys;
+};
+
+/**
+* 根据 selectedKeys 获取 value 值
+* @param {Array} selectedKeys
+* @param {Array} options 选项列表
+* @param {String} valueKey 选项值对应的键名
+* @param {String} childrenKey 选项子选项对应的键名
+* @param {String} checkedStrategy 定义选中项回填的方式
+*/
+export const getValueBySelectedKeys = (selectedKeys, options, valueKey, childrenKey, checkedStrategy) => {
+  const map = getMap(options, valueKey, childrenKey);
+  let value = [];
+
+  if (checkedStrategy === "all") {
+    value = selectedKeys;
+  }
+  else if (checkedStrategy === "parent") {
+    selectedKeys.forEach(selectedKey => {
+      const target = map[selectedKey];
+
+      if (!target) {
+        return;
+      }
+
+      if (!target.parent) {
+        value.push(selectedKey);
+      }
+      else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+        value.push(selectedKey);
+      }
+    });
+  }
+  else if (checkedStrategy === "children") {
+    selectedKeys.forEach(selectedKey => {
+      const target = map[selectedKey];
+
+      if (!target) {
+        return;
+      }
+
+      if (!target.children) {
+        value.push(selectedKey);
+      }
+      else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+        value.push(selectedKey);
+      }
+    });
+  }
+
+  return value;
+};
+
+/**
+* 根据选中值和选项列表判断是否处于全选状态
 * @param {Array} selectedKeys 选中值
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 */
 export const getCheckedStatus = (selectedKeys, options, valueKey) => {
-	if (selectedKeys.length === 0) {
-		return "none";
-	}
+  if (selectedKeys.length === 0) {
+    return false;
+  }
 
-	if (options.every(option => selectedKeys.indexOf(option[valueKey]) > -1)) {
-		return "all";
-	}
-
-	return "part";
+  return options.every(option => selectedKeys.indexOf(option[valueKey]) > -1);
 };
 
 /**
@@ -188,18 +221,39 @@ export const getCheckedStatus = (selectedKeys, options, valueKey) => {
 * @param {String} childrenKey 选项子选项对应的键名
 */
 export const getIndeterminateStatus = (selectedKeys, children, valueKey, childrenKey) => {
-	if (!children || children.length === 0) {
-		return false;
-	}
+  if (!children || children.length === 0) {
+    return false;
+  }
 
-	const options = flatten(children, childrenKey, true);
-	const optionKeys = options.map(option => option[valueKey]);
-	const selectedOptionKeys = optionKeys.filter(optionKey => selectedKeys.indexOf(optionKey) > -1);
+  const options = flatten(children, childrenKey, true);
+  const optionKeys = options.map(option => option[valueKey]);
+  const selectedOptionKeys = optionKeys.filter(optionKey => selectedKeys.indexOf(optionKey) > -1);
+  const length = optionKeys.length;
+  const selectedLength = selectedOptionKeys.length;
 
-	const length = optionKeys.length;
-	const selectedLength = selectedOptionKeys.length;
+  return length > 0 && selectedLength > 0 && selectedLength < length;
+};
 
-	return length > 0 && selectedLength > 0 && selectedLength < length;
+/**
+* 根据 keyword 关键字筛选 options 选项列表
+* @param {Array} options 选项列表
+* @param {String} keyword 关键字
+* @param {Function} filter 筛选函数
+* @param {String} property 查询属性
+*/
+export const getFilteredOptions = (options, keyword, filter, property) => {
+  const predicate = is.function(filter) ? filter : defaults.filter;
+  let array = [];
+
+  options.forEach(option => {
+    if (!predicate(keyword, option, property)) {
+      return;
+    }
+
+    array.push(option);
+  });
+
+  return array;
 };
 
 /**
@@ -210,32 +264,33 @@ export const getIndeterminateStatus = (selectedKeys, children, valueKey, childre
 * @param {String} childrenKey 选项子选项对应的键名
 */
 export const getSelectedOptions = (value, options, valueKey, childrenKey) => {
-	let result = [];
+  let result = [];
 
-	if (value.length === 0) {
-		return result;
-	}
+  if (value.length === 0) {
+    return result;
+  }
 
-	options = flatten(options, childrenKey, true);
+  options = flatten(options, childrenKey, true);
 
-	value.forEach(element => {
-		const option = options.find(option => option[valueKey] === element);
+  value.forEach(element => {
+    const option = options.find(option => option[valueKey] === element);
 
-		if (option) {
-			result.push(option);
-		}
-	});
+    if (option) {
+      result.push(option);
+    }
+  });
 
-	return result;
+  return result;
 };
 
 // 默认导出指定接口
 export default {
-	mapValueToSelectedKeys,
-	mapSelectedKeysToValue,
-	getMap,
-	getParent,
-	getCheckedStatus,
-	getIndeterminateStatus,
-	getSelectedOptions,
+  getMap,
+  getParent,
+  getSelectedKeysByValue,
+  getValueBySelectedKeys,
+  getCheckedStatus,
+  getIndeterminateStatus,
+  getFilteredOptions,
+  getSelectedOptions
 };

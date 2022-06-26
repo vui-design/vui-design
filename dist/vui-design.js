@@ -9782,8 +9782,8 @@ lazy_render.install = function (Vue) {
 
 /* harmony default export */ var components_lazy_render = (lazy_render);
 // EXTERNAL MODULE: ./node_modules/babel-runtime/core-js/map.js
-var core_js_map = __webpack_require__(127);
-var map_default = /*#__PURE__*/__webpack_require__.n(core_js_map);
+var map = __webpack_require__(127);
+var map_default = /*#__PURE__*/__webpack_require__.n(map);
 
 // CONCATENATED MODULE: ./src/utils/getContainer.js
 
@@ -15035,6 +15035,7 @@ var nargs = /(%|)\{([0-9a-zA-Z_]+)\}/g;
       notFound: "暂无数据"
     },
     cascadeTransfer: {
+      search: "请输入搜索内容",
       notFound: "暂无数据",
       clear: "清空"
     },
@@ -28387,28 +28388,28 @@ transfer.install = function (Vue) {
 
 
 var VuiCascadeTransferSourceList = {
-	name: "vui-cascade-transfer-source-list",
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+  name: "vui-cascade-transfer-source-list",
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string
+  },
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
-		// class
+    // class
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-list");
-		var classes = {};
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-list");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
+    classes.el = "" + classNamePrefix;
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[slots.default]
-		);
-	}
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [slots.default]
+    );
+  }
 };
 
 /* harmony default export */ var cascade_transfer_source_list = (VuiCascadeTransferSourceList);
@@ -28562,38 +28563,38 @@ badge.install = function (Vue) {
 
 
 var VuiCascadeTransferEmpty = {
-	name: "vui-cascade-transfer-empty",
-	components: {
-		VuiEmpty: components_empty
-	},
-	mixins: [mixins_locale],
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		description: prop_types["a" /* default */].string
-	},
-	render: function render() {
-		var h = arguments[0];
-		var props = this.$props;
+  name: "vui-cascade-transfer-empty",
+  components: {
+    VuiEmpty: components_empty
+  },
+  mixins: [mixins_locale],
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    description: prop_types["a" /* default */].string
+  },
+  render: function render() {
+    var h = arguments[0];
+    var props = this.$props;
 
-		// description
+    // description
 
-		var description = props.description ? props.description : this.t("vui.cascadeTransfer.notFound");
+    var description = props.description ? props.description : this.t("vui.cascadeTransfer.notFound");
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
-		var classes = {};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "empty");
+    var classes = {};
 
-		classes.el = "" + classNamePrefix;
+    classes.el = "" + classNamePrefix;
 
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[h(components_empty, {
-				attrs: { description: description }
-			})]
-		);
-	}
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [h(components_empty, {
+        attrs: { description: description }
+      })]
+    );
+  }
 };
 
 /* harmony default export */ var cascade_transfer_empty = (VuiCascadeTransferEmpty);
@@ -28645,135 +28646,52 @@ function flatten_flatten(list) {
 
 
 
+/**
+* 默认配置
+*/
+var cascade_transfer_src_utils_defaults = {
+  filter: function filter(keyword, option, property) {
+    if (!keyword) {
+      return true;
+    }
+
+    var string = String(keyword);
+    var value = option[property];
+
+    return new RegExp(string.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i").test(value);
+  }
+};
+
+/**
+* 将 options 选项转为一维 map 结构
+* @param {Array} value
+* @param {Array} options 选项列表
+* @param {String} valueKey 选项值对应的键名
+* @param {String} childrenKey 选项子选项对应的键名
+*/
 var utils_mapper = function mapper(options, parent, valueKey, childrenKey, map) {
-	options.forEach(function (option) {
-		var value = option[valueKey];
-		var children = option[childrenKey];
+  options.forEach(function (option) {
+    var value = option[valueKey];
+    var children = option[childrenKey];
 
-		map[value] = {
-			option: option,
-			parent: parent,
-			children: children
-		};
+    map[value] = {
+      option: option,
+      parent: parent,
+      children: children
+    };
 
-		if (children && children.length > 0) {
-			mapper(children, option, valueKey, childrenKey, map);
-		}
-	});
+    if (children && children.length > 0) {
+      mapper(children, option, valueKey, childrenKey, map);
+    }
+  });
 };
 
-/**
-* 根据 value 值获取 selectedKeys
-* @param {Array} value
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-* @param {String} showCheckedStrategy 定义选中项回填的方式
-*/
-var utils_mapValueToSelectedKeys = function mapValueToSelectedKeys(value, options, valueKey, childrenKey, showCheckedStrategy) {
-	var map = getMap(options, valueKey, childrenKey);
-	var selectedKeys = [];
-
-	if (showCheckedStrategy === "parent") {
-		value.forEach(function (key) {
-			var target = map[key];
-
-			if (!target) {
-				return;
-			}
-
-			selectedKeys.push(target.option[valueKey]);
-
-			if (target.children && target.children.length > 0) {
-				var children = flatten_flatten(target.children, childrenKey, true);
-
-				children.forEach(function (child) {
-					if (selectedKeys.indexOf(child[valueKey]) === -1) {
-						selectedKeys.push(child[valueKey]);
-					}
-				});
-			}
-		});
-	} else if (showCheckedStrategy === "children") {
-		value.forEach(function (key) {
-			var target = map[key];
-
-			if (!target) {
-				return;
-			}
-
-			selectedKeys.push(target.option[valueKey]);
-
-			if (target.parent && target.parent.children.every(function (child) {
-				return value.indexOf(child[valueKey]) > -1;
-			})) {
-				selectedKeys.push(target.parent[valueKey]);
-			}
-		});
-	}
-
-	return selectedKeys;
-};
-
-/**
-* 根据 selectedKeys 获取 value 值
-* @param {Array} selectedKeys
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-* @param {String} showCheckedStrategy 定义选中项回填的方式
-*/
-var mapSelectedKeysToValue = function mapSelectedKeysToValue(selectedKeys, options, valueKey, childrenKey, showCheckedStrategy) {
-	var map = getMap(options, valueKey, childrenKey);
-
-	var value = [];
-
-	if (showCheckedStrategy === "parent") {
-		selectedKeys.forEach(function (selectedKey) {
-			var target = map[selectedKey];
-
-			if (!target) {
-				return;
-			}
-
-			if (!target.parent) {
-				value.push(selectedKey);
-			} else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-				value.push(selectedKey);
-			}
-		});
-	} else if (showCheckedStrategy === "children") {
-		selectedKeys.forEach(function (selectedKey) {
-			var target = map[selectedKey];
-
-			if (!target) {
-				return;
-			}
-
-			if (!target.children) {
-				value.push(selectedKey);
-			} else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
-				value.push(selectedKey);
-			}
-		});
-	}
-
-	return value;
-};
-
-/**
-* 根据 value 值获取 selectedKeys
-* @param {Array} value
-* @param {Array} options 选项列表
-* @param {String} valueKey 选项值对应的键名
-* @param {String} childrenKey 选项子选项对应的键名
-*/
 var getMap = function getMap(options, valueKey, childrenKey) {
-	var map = {};
+  var map = {};
 
-	utils_mapper(options, undefined, valueKey, childrenKey, map);
+  utils_mapper(options, undefined, valueKey, childrenKey, map);
 
-	return map;
+  return map;
 };
 
 /**
@@ -28785,41 +28703,159 @@ var getMap = function getMap(options, valueKey, childrenKey) {
 * @param {String} childrenKey 选项子选项对应的键名
 */
 var getParent = function getParent(option, parent, options, valueKey, childrenKey) {
-	var target = void 0;
+  var target = void 0;
 
-	for (var i = 0, length = options.length; i < length; i++) {
-		if (options[i][valueKey] === option[valueKey]) {
-			target = parent;
-		} else if (options[i][childrenKey]) {
-			target = getParent(option, options[i], options[i][childrenKey], valueKey, childrenKey);
-		}
+  for (var i = 0, length = options.length; i < length; i++) {
+    if (options[i][valueKey] === option[valueKey]) {
+      target = parent;
+    } else if (options[i][childrenKey]) {
+      target = getParent(option, options[i], options[i][childrenKey], valueKey, childrenKey);
+    }
 
-		if (target) {
-			break;
-		}
-	}
+    if (target) {
+      break;
+    }
+  }
 
-	return target;
+  return target;
 };
 
 /**
-* 根据选中值和选项列表判断是否处于全选、半选或未选状态
+* 根据 value 值获取 selectedKeys
+* @param {Array} value
+* @param {Object} props 属性
+*/
+var utils_upward = function upward(option, props, selectedKeys) {
+  var parent = getParent(option, undefined, props.options, props.valueKey, props.childrenKey);
+
+  if (!parent) {
+    return;
+  }
+
+  var siblings = parent[props.childrenKey];
+  var isEveryChecked = siblings.every(function (sibling) {
+    return selectedKeys.indexOf(sibling[props.valueKey]) > -1;
+  });
+
+  if (!isEveryChecked) {
+    return;
+  }
+
+  var value = parent[props.valueKey];
+  var index = selectedKeys.indexOf(value);
+
+  if (index === -1) {
+    selectedKeys.push(value);
+    upward(parent, props, selectedKeys);
+  }
+};
+
+var downward = function downward(option, props, selectedKeys) {
+  var children = option[props.childrenKey];
+
+  if (!children || children.length === 0) {
+    return;
+  }
+
+  children.forEach(function (child) {
+    var value = child[props.valueKey];
+    var index = selectedKeys.indexOf(value);
+
+    if (index === -1) {
+      selectedKeys.push(value);
+    }
+
+    downward(child, props, selectedKeys);
+  });
+};
+
+var utils_getSelectedKeysByValue = function getSelectedKeysByValue(value, props) {
+  var options = flatten_flatten(props.options, props.childrenKey, true);
+  var selectedKeys = [];
+
+  value.forEach(function (key) {
+    var option = options.find(function (option) {
+      return option[props.valueKey] === key;
+    });
+
+    if (!option) {
+      return;
+    }
+
+    var index = selectedKeys.indexOf(key);
+
+    if (index === -1) {
+      selectedKeys.push(key);
+    }
+
+    utils_upward(option, props, selectedKeys);
+    downward(option, props, selectedKeys);
+  });
+
+  return selectedKeys;
+};
+
+/**
+* 根据 selectedKeys 获取 value 值
+* @param {Array} selectedKeys
+* @param {Array} options 选项列表
+* @param {String} valueKey 选项值对应的键名
+* @param {String} childrenKey 选项子选项对应的键名
+* @param {String} checkedStrategy 定义选中项回填的方式
+*/
+var getValueBySelectedKeys = function getValueBySelectedKeys(selectedKeys, options, valueKey, childrenKey, checkedStrategy) {
+  var map = getMap(options, valueKey, childrenKey);
+  var value = [];
+
+  if (checkedStrategy === "all") {
+    value = selectedKeys;
+  } else if (checkedStrategy === "parent") {
+    selectedKeys.forEach(function (selectedKey) {
+      var target = map[selectedKey];
+
+      if (!target) {
+        return;
+      }
+
+      if (!target.parent) {
+        value.push(selectedKey);
+      } else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+        value.push(selectedKey);
+      }
+    });
+  } else if (checkedStrategy === "children") {
+    selectedKeys.forEach(function (selectedKey) {
+      var target = map[selectedKey];
+
+      if (!target) {
+        return;
+      }
+
+      if (!target.children) {
+        value.push(selectedKey);
+      } else if (target.parent && selectedKeys.indexOf(target.parent[valueKey]) === -1) {
+        value.push(selectedKey);
+      }
+    });
+  }
+
+  return value;
+};
+
+/**
+* 根据选中值和选项列表判断是否处于全选状态
 * @param {Array} selectedKeys 选中值
 * @param {Array} options 选项列表
 * @param {String} valueKey 选项值对应的键名
 */
 var getCheckedStatus = function getCheckedStatus(selectedKeys, options, valueKey) {
-	if (selectedKeys.length === 0) {
-		return "none";
-	}
+  if (selectedKeys.length === 0) {
+    return false;
+  }
 
-	if (options.every(function (option) {
-		return selectedKeys.indexOf(option[valueKey]) > -1;
-	})) {
-		return "all";
-	}
-
-	return "part";
+  return options.every(function (option) {
+    return selectedKeys.indexOf(option[valueKey]) > -1;
+  });
 };
 
 /**
@@ -28830,22 +28866,43 @@ var getCheckedStatus = function getCheckedStatus(selectedKeys, options, valueKey
 * @param {String} childrenKey 选项子选项对应的键名
 */
 var utils_getIndeterminateStatus = function getIndeterminateStatus(selectedKeys, children, valueKey, childrenKey) {
-	if (!children || children.length === 0) {
-		return false;
-	}
+  if (!children || children.length === 0) {
+    return false;
+  }
 
-	var options = flatten_flatten(children, childrenKey, true);
-	var optionKeys = options.map(function (option) {
-		return option[valueKey];
-	});
-	var selectedOptionKeys = optionKeys.filter(function (optionKey) {
-		return selectedKeys.indexOf(optionKey) > -1;
-	});
+  var options = flatten_flatten(children, childrenKey, true);
+  var optionKeys = options.map(function (option) {
+    return option[valueKey];
+  });
+  var selectedOptionKeys = optionKeys.filter(function (optionKey) {
+    return selectedKeys.indexOf(optionKey) > -1;
+  });
+  var length = optionKeys.length;
+  var selectedLength = selectedOptionKeys.length;
 
-	var length = optionKeys.length;
-	var selectedLength = selectedOptionKeys.length;
+  return length > 0 && selectedLength > 0 && selectedLength < length;
+};
 
-	return length > 0 && selectedLength > 0 && selectedLength < length;
+/**
+* 根据 keyword 关键字筛选 options 选项列表
+* @param {Array} options 选项列表
+* @param {String} keyword 关键字
+* @param {Function} filter 筛选函数
+* @param {String} property 查询属性
+*/
+var cascade_transfer_src_utils_getFilteredOptions = function getFilteredOptions(options, keyword, filter, property) {
+  var predicate = is["a" /* default */].function(filter) ? filter : cascade_transfer_src_utils_defaults.filter;
+  var array = [];
+
+  options.forEach(function (option) {
+    if (!predicate(keyword, option, property)) {
+      return;
+    }
+
+    array.push(option);
+  });
+
+  return array;
 };
 
 /**
@@ -28856,36 +28913,37 @@ var utils_getIndeterminateStatus = function getIndeterminateStatus(selectedKeys,
 * @param {String} childrenKey 选项子选项对应的键名
 */
 var src_utils_getSelectedOptions = function getSelectedOptions(value, options, valueKey, childrenKey) {
-	var result = [];
+  var result = [];
 
-	if (value.length === 0) {
-		return result;
-	}
+  if (value.length === 0) {
+    return result;
+  }
 
-	options = flatten_flatten(options, childrenKey, true);
+  options = flatten_flatten(options, childrenKey, true);
 
-	value.forEach(function (element) {
-		var option = options.find(function (option) {
-			return option[valueKey] === element;
-		});
+  value.forEach(function (element) {
+    var option = options.find(function (option) {
+      return option[valueKey] === element;
+    });
 
-		if (option) {
-			result.push(option);
-		}
-	});
+    if (option) {
+      result.push(option);
+    }
+  });
 
-	return result;
+  return result;
 };
 
 // 默认导出指定接口
 /* harmony default export */ var cascade_transfer_src_utils = ({
-	mapValueToSelectedKeys: utils_mapValueToSelectedKeys,
-	mapSelectedKeysToValue: mapSelectedKeysToValue,
-	getMap: getMap,
-	getParent: getParent,
-	getCheckedStatus: getCheckedStatus,
-	getIndeterminateStatus: utils_getIndeterminateStatus,
-	getSelectedOptions: src_utils_getSelectedOptions
+  getMap: getMap,
+  getParent: getParent,
+  getSelectedKeysByValue: utils_getSelectedKeysByValue,
+  getValueBySelectedKeys: getValueBySelectedKeys,
+  getCheckedStatus: getCheckedStatus,
+  getIndeterminateStatus: utils_getIndeterminateStatus,
+  getFilteredOptions: cascade_transfer_src_utils_getFilteredOptions,
+  getSelectedOptions: src_utils_getSelectedOptions
 });
 // CONCATENATED MODULE: ./src/components/cascade-transfer/src/cascade-transfer-source.js
 
@@ -28899,349 +28957,415 @@ var src_utils_getSelectedOptions = function getSelectedOptions(value, options, v
 
 
 
+
+
+
 var VuiCascadeTransferSource = {
-	name: "vui-cascade-transfer-source",
-	components: {
-		VuiCheckbox: components_checkbox,
-		VuiIcon: components_icon,
-		VuiBadge: components_badge,
-		VuiCascadeTransferEmpty: cascade_transfer_empty
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		level: prop_types["a" /* default */].number.def(1),
-		parent: prop_types["a" /* default */].object,
-		selectedKeys: prop_types["a" /* default */].array.def([]),
-		options: prop_types["a" /* default */].array.def([]),
-		valueKey: prop_types["a" /* default */].string.def("value"),
-		childrenKey: prop_types["a" /* default */].string.def("children"),
-		title: prop_types["a" /* default */].func.def(function (props) {
-			return "";
-		}),
-		formatter: prop_types["a" /* default */].func.def(function (option) {
-			return option.label;
-		}),
-		body: prop_types["a" /* default */].func,
-		locale: prop_types["a" /* default */].object,
-		showSelectAll: prop_types["a" /* default */].bool.def(true),
-		showChildrenCount: prop_types["a" /* default */].bool.def(false),
-		disabled: prop_types["a" /* default */].bool.def(false)
-	},
-	data: function data() {
-		var state = {
-			expandedKey: undefined
-		};
+  name: "vui-cascade-transfer-source",
+  components: {
+    VuiCheckbox: components_checkbox,
+    VuiInput: components_input,
+    VuiIcon: components_icon,
+    VuiBadge: components_badge,
+    VuiCascadeTransferEmpty: cascade_transfer_empty
+  },
+  mixins: [mixins_locale],
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    level: prop_types["a" /* default */].number.def(1),
+    parent: prop_types["a" /* default */].object,
+    selectedKeys: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    valueKey: prop_types["a" /* default */].string.def("value"),
+    childrenKey: prop_types["a" /* default */].string.def("children"),
+    title: prop_types["a" /* default */].func.def(function (props) {
+      return "";
+    }),
+    formatter: prop_types["a" /* default */].func.def(function (option) {
+      return option.label;
+    }),
+    showSelectAll: prop_types["a" /* default */].bool.def(true),
+    showChildrenCount: prop_types["a" /* default */].bool.def(false),
+    searchable: prop_types["a" /* default */].bool.def(false),
+    filterOptionProp: prop_types["a" /* default */].string.def("label"),
+    filter: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false),
+    locale: prop_types["a" /* default */].object
+  },
+  data: function data() {
+    var state = {
+      keyword: "",
+      expandedKey: undefined
+    };
 
-		return {
-			state: state
-		};
-	},
+    return {
+      state: state
+    };
+  },
 
-	methods: {
-		getHeader: function getHeader(props) {
-			var h = this.$createElement;
+  methods: {
+    getHeader: function getHeader(props) {
+      var h = this.$createElement;
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-header");
-			var classes = {};
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-header");
+      var classes = {};
 
-			classes.el = "" + classNamePrefix;
-			classes.elCheckbox = classNamePrefix + "-checkbox";
-			classes.elTitle = classNamePrefix + "-title";
+      classes.el = "" + classNamePrefix;
+      classes.elCheckbox = classNamePrefix + "-checkbox";
+      classes.elTitle = classNamePrefix + "-title";
 
-			// title
-			var title = props.title({
-				type: props.type,
-				level: props.level,
-				parent: props.parent
-			});
+      // title
+      var title = props.title({
+        type: props.type,
+        level: props.level,
+        parent: props.parent
+      });
 
-			// onSelectAll
-			var onSelectAll = function onSelectAll(checked) {
-				props.onSelectAll(checked, props.parent, props.level - 1);
-			};
+      // render
+      var content = [];
 
-			// render
-			var content = [];
+      if (props.showSelectAll) {
+        var indeterminate = cascade_transfer_src_utils.getIndeterminateStatus(props.selectedKeys, props.options, props.valueKey, props.childrenKey);
+        var checked = cascade_transfer_src_utils.getCheckedStatus(props.selectedKeys, props.options, props.valueKey);
+        var disabled = props.disabled;
+        var onChange = function onChange(checked) {
+          if (props.parent) {
+            checked ? props.onSelect(props.parent) : props.onDeselect(props.parent);
+          } else {
+            var options = flatten_flatten(props.options, props.childrenKey, true);
 
-			if (props.showSelectAll) {
-				var checkedStatus = cascade_transfer_src_utils.getCheckedStatus(props.selectedKeys, props.options, props.valueKey);
-				var indeterminate = cascade_transfer_src_utils.getIndeterminateStatus(props.selectedKeys, props.options, props.valueKey, props.childrenKey);
-				var checked = checkedStatus === "all";
-				var disabled = props.disabled;
+            if (checked) {
+              props.onSelectAll(options.map(function (option) {
+                return option[props.valueKey];
+              }));
+            } else {
+              props.onSelectAll([]);
+            }
+          }
+        };
 
-				content.push(h(
-					"div",
-					{ "class": classes.elCheckbox },
-					[h(components_checkbox, {
-						attrs: { checked: checked, indeterminate: indeterminate, disabled: disabled, validator: false },
-						on: {
-							"change": onSelectAll
-						}
-					})]
-				));
-			}
+        content.push(h(
+          "div",
+          { "class": classes.elCheckbox },
+          [h(components_checkbox, {
+            attrs: { checked: checked, indeterminate: indeterminate, disabled: disabled, validator: false },
+            on: {
+              "change": onChange
+            }
+          })]
+        ));
+      }
 
-			content.push(h(
-				"div",
-				{ "class": classes.elTitle },
-				[title]
-			));
+      content.push(h(
+        "div",
+        { "class": classes.elTitle },
+        [title]
+      ));
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[content]
-			);
-		},
-		getBody: function getBody(scopedSlot, props) {
-			var h = this.$createElement;
+      return h(
+        "div",
+        { "class": classes.el },
+        [content]
+      );
+    },
+    getSearch: function getSearch(props) {
+      var h = this.$createElement;
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-body");
-			var classes = {};
+      if (!props.searchable) {
+        return;
+      }
 
-			classes.el = "" + classNamePrefix;
+      // placeholder
+      var placeholder = void 0;
 
-			// render
-			var content = void 0;
+      if (props.locale && props.locale.search) {
+        placeholder = props.locale.search;
+      } else {
+        placeholder = this.t("vui.cascadeTransfer.search");
+      }
 
-			if (scopedSlot) {
-				content = scopedSlot;
-			} else if (props.options.length) {
-				content = this.getMenu(props);
-			} else {
-				content = h(cascade_transfer_empty, {
-					attrs: {
-						classNamePrefix: props.classNamePrefix,
-						description: props.locale ? props.locale.notFound : undefined
-					}
-				});
-			}
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-search");
+      var classes = {};
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[content]
-			);
-		},
-		getMenu: function getMenu(props) {
-			var _this = this;
+      classes.el = "" + classNamePrefix;
 
-			var h = this.$createElement;
+      // render
+      return h(
+        "div",
+        { "class": classes.el },
+        [h(components_input, {
+          attrs: { suffix: "search", value: props.keyword, placeholder: placeholder, clearable: true, validator: false },
+          on: {
+            "input": props.onSearch
+          }
+        })]
+      );
+    },
+    getBody: function getBody(props) {
+      var h = this.$createElement;
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
-			var classes = {};
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source-body");
+      var classes = {};
 
-			classes.el = "" + classNamePrefix;
+      classes.el = "" + classNamePrefix;
 
-			// render
-			return h(
-				"div",
-				{ "class": classes.el },
-				[props.options.map(function (option) {
-					var value = option[props.valueKey];
-					var children = option[props.childrenKey];
+      // render
+      var content = void 0;
 
-					var expanded = props.expandedKey === value;
-					var indeterminate = cascade_transfer_src_utils.getIndeterminateStatus(props.selectedKeys, children, props.valueKey, props.childrenKey);
-					var checked = props.selectedKeys.indexOf(value) > -1;
+      if (props.options.length) {
+        content = this.getMenu(props);
+      } else {
+        content = h(cascade_transfer_empty, {
+          attrs: {
+            classNamePrefix: props.classNamePrefix,
+            description: props.locale ? props.locale.notFound : undefined
+          }
+        });
+      }
 
-					var attributes = {
-						classNamePrefix: classNamePrefix,
-						type: props.type,
-						level: props.level,
-						parent: props.parent,
-						option: option,
-						valueKey: props.valueKey,
-						childrenKey: props.childrenKey,
-						formatter: props.formatter,
-						expanded: expanded,
-						indeterminate: indeterminate,
-						checked: checked,
-						disabled: props.disabled,
-						showChildrenCount: props.showChildrenCount,
-						onClick: props.onClick,
-						onSelect: props.onSelect
-					};
+      return h(
+        "div",
+        { "class": classes.el },
+        [content]
+      );
+    },
+    getMenu: function getMenu(props) {
+      var _this = this;
 
-					return _this.getMenuItem(attributes);
-				})]
-			);
-		},
-		getMenuItem: function getMenuItem(props) {
-			var _classes$el;
+      var h = this.$createElement;
 
-			var h = this.$createElement;
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
+      var classes = {};
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
-			var classes = {};
+      classes.el = "" + classNamePrefix;
 
-			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-expanded", props.expanded), defineProperty_default()(_classes$el, classNamePrefix + "-indeterminate", props.indeterminate), defineProperty_default()(_classes$el, classNamePrefix + "-checked", props.checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-			classes.elCheckbox = classNamePrefix + "-checkbox";
-			classes.elLabel = classNamePrefix + "-label";
-			classes.elCount = classNamePrefix + "-count";
-			classes.elArrow = classNamePrefix + "-arrow";
+      // render
+      return h(
+        "div",
+        { "class": classes.el },
+        [props.options.map(function (option) {
+          var attributes = {
+            classNamePrefix: classNamePrefix,
+            type: props.type,
+            level: props.level,
+            parent: props.parent,
+            option: option,
+            valueKey: props.valueKey,
+            childrenKey: props.childrenKey,
+            formatter: props.formatter,
+            expanded: props.expandedKey === option[props.valueKey],
+            indeterminate: cascade_transfer_src_utils.getIndeterminateStatus(props.selectedKeys, option[props.childrenKey], props.valueKey, props.childrenKey),
+            checked: props.selectedKeys.indexOf(option[props.valueKey]) > -1,
+            disabled: props.disabled,
+            showChildrenCount: props.showChildrenCount,
+            onClick: props.onClick,
+            onSelect: props.onSelect,
+            onDeselect: props.onDeselect
+          };
 
-			// content
-			var content = void 0;
+          return _this.getMenuItem(attributes);
+        })]
+      );
+    },
+    getMenuItem: function getMenuItem(props) {
+      var _classes$el;
 
-			if (is["a" /* default */].function(props.formatter)) {
-				var attributes = {
-					type: props.type,
-					level: props.level,
-					parent: props.parent,
-					option: props.option
-				};
+      var h = this.$createElement;
 
-				content = props.formatter(attributes);
-			} else {
-				content = props.option[props.valueKey];
-			}
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
+      var classes = {};
 
-			// onStopPropagation
-			var onStopPropagation = function onStopPropagation(e) {
-				return e.stopPropagation();
-			};
+      classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-expanded", props.expanded), defineProperty_default()(_classes$el, classNamePrefix + "-indeterminate", props.indeterminate), defineProperty_default()(_classes$el, classNamePrefix + "-checked", props.checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+      classes.elCheckbox = classNamePrefix + "-checkbox";
+      classes.elLabel = classNamePrefix + "-label";
+      classes.elCount = classNamePrefix + "-count";
+      classes.elArrow = classNamePrefix + "-arrow";
 
-			// onClick
-			var onClick = function onClick(e) {
-				props.onClick(props.option, props.level);
-			};
+      // content
+      var content = void 0;
 
-			// onSelect
-			var onSelect = function onSelect(checked) {
-				props.onSelect(checked, props.option);
-			};
+      if (is["a" /* default */].function(props.formatter)) {
+        var attributes = {
+          type: props.type,
+          level: props.level,
+          parent: props.parent,
+          option: props.option
+        };
 
-			// render
-			var children = [];
+        content = props.formatter(attributes);
+      } else {
+        content = props.option[props.valueKey];
+      }
 
-			children.push(h(
-				"div",
-				{ "class": classes.elCheckbox, on: {
-						"click": onStopPropagation
-					}
-				},
-				[h(components_checkbox, {
-					attrs: { indeterminate: props.indeterminate, checked: props.checked, disabled: props.disabled },
-					on: {
-						"change": onSelect
-					}
-				})]
-			));
+      // onStopPropagation
+      var onStopPropagation = function onStopPropagation(e) {
+        return e.stopPropagation();
+      };
 
-			children.push(h(
-				"div",
-				{ "class": classes.elLabel },
-				[content]
-			));
+      // onClick
+      var onClick = function onClick(e) {
+        props.onClick(props.option, props.level);
+      };
 
-			if (props.option[props.childrenKey] && props.option[props.childrenKey].length > 0) {
-				if (props.showChildrenCount) {
-					children.push(h(
-						"div",
-						{ "class": classes.elCount },
-						[h(components_badge, {
-							attrs: { type: "default", count: props.option[props.childrenKey].length }
-						})]
-					));
-				}
+      // onChange
+      var onChange = function onChange(checked) {
+        checked ? props.onSelect(props.option) : props.onDeselect(props.option);
+      };
 
-				children.push(h(
-					"div",
-					{ "class": classes.elArrow },
-					[h(components_icon, {
-						attrs: { type: "chevron-right" }
-					})]
-				));
-			}
+      // render
+      var children = [];
 
-			return h(
-				"div",
-				{ "class": classes.el, on: {
-						"click": onClick
-					}
-				},
-				[children]
-			);
-		},
-		handleClick: function handleClick(option, level) {
-			var props = this.$props;
+      children.push(h(
+        "div",
+        { "class": classes.elCheckbox, on: {
+            "click": onStopPropagation
+          }
+        },
+        [h(components_checkbox, {
+          attrs: { indeterminate: props.indeterminate, checked: props.checked, disabled: props.disabled },
+          on: {
+            "change": onChange
+          }
+        })]
+      ));
 
+      children.push(h(
+        "div",
+        { "class": classes.elLabel },
+        [content]
+      ));
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.option[props.childrenKey] && props.option[props.childrenKey].length > 0) {
+        if (props.showChildrenCount) {
+          children.push(h(
+            "div",
+            { "class": classes.elCount },
+            [h(components_badge, {
+              attrs: { type: "default", count: props.option[props.childrenKey].length }
+            })]
+          ));
+        }
 
-			this.state.expandedKey = option[props.valueKey];
-			this.$emit("click", option, level);
-		},
-		handleSelectAll: function handleSelectAll(checked, option, level) {
-			var props = this.$props;
+        children.push(h(
+          "div",
+          { "class": classes.elArrow },
+          [h(components_icon, {
+            attrs: { type: "chevron-right" }
+          })]
+        ));
+      }
 
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.$emit("selectAll", checked, option, level);
-		},
-		handleSelect: function handleSelect(checked, option) {
-			var props = this.$props;
+      return h(
+        "div",
+        { "class": classes.el, on: {
+            "click": onClick
+          }
+        },
+        [children]
+      );
+    },
+    handleSearch: function handleSearch(value) {
+      this.state.keyword = value;
+    },
+    handleClick: function handleClick(option, level) {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      this.state.expandedKey = option[props.valueKey];
+      this.$emit("click", option, level);
+    },
+    handleSelectAll: function handleSelectAll(selectedKeys) {
+      var props = this.$props;
 
-			this.$emit("select", checked, option);
-		}
-	},
-	render: function render(h) {
-		var props = this.$props,
-		    state = this.state;
-		var handleClick = this.handleClick,
-		    handleSelectAll = this.handleSelectAll,
-		    handleSelect = this.handleSelect;
 
-		// class
+      if (props.disabled) {
+        return;
+      }
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source");
-		var classes = {};
+      this.$emit("selectAll", selectedKeys);
+    },
+    handleSelect: function handleSelect(option) {
+      var props = this.$props;
 
-		classes.el = "" + classNamePrefix;
 
-		// render
-		var attributes = {
-			type: "source",
-			classNamePrefix: props.classNamePrefix,
-			level: props.level,
-			parent: props.parent,
-			expandedKey: state.expandedKey,
-			selectedKeys: props.selectedKeys,
-			options: props.options,
-			valueKey: props.valueKey,
-			childrenKey: props.childrenKey,
-			title: props.title,
-			formatter: props.formatter,
-			locale: props.locale,
-			showSelectAll: props.showSelectAll,
-			disabled: props.disabled,
-			showChildrenCount: props.showChildrenCount,
-			onClick: handleClick,
-			onSelectAll: handleSelectAll,
-			onSelect: handleSelect
-		};
+      if (props.disabled) {
+        return;
+      }
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[this.getHeader(attributes), this.getBody(is["a" /* default */].function(props.body) ? props.body(attributes) : undefined, attributes)]
-		);
-	}
+      this.$emit("select", option);
+    },
+    handleDeselect: function handleDeselect(option) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.$emit("deselect", option);
+    }
+  },
+  render: function render(h) {
+    var props = this.$props,
+        state = this.state;
+    var handleSearch = this.handleSearch,
+        handleClick = this.handleClick,
+        handleSelectAll = this.handleSelectAll,
+        handleSelect = this.handleSelect,
+        handleDeselect = this.handleDeselect;
+
+    // options
+
+    var options = props.options;
+
+    if (props.searchable && state.keyword) {
+      options = cascade_transfer_src_utils.getFilteredOptions(options, state.keyword, props.filter, props.filterOptionProp);
+    }
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "source");
+    var classes = {};
+
+    classes.el = "" + classNamePrefix;
+
+    // render
+    var attributes = {
+      type: "source",
+      classNamePrefix: props.classNamePrefix,
+      level: props.level,
+      parent: props.parent,
+      expandedKey: state.expandedKey,
+      selectedKeys: props.selectedKeys,
+      options: options,
+      valueKey: props.valueKey,
+      childrenKey: props.childrenKey,
+      title: props.title,
+      formatter: props.formatter,
+      showSelectAll: props.showSelectAll,
+      showChildrenCount: props.showChildrenCount,
+      searchable: props.searchable,
+      filterOptionProp: props.filterOptionProp,
+      filter: props.filter,
+      disabled: props.disabled,
+      locale: props.locale,
+      onSearch: handleSearch,
+      onClick: handleClick,
+      onSelectAll: handleSelectAll,
+      onSelect: handleSelect,
+      onDeselect: handleDeselect
+    };
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [this.getHeader(attributes), this.getSearch(attributes), this.getBody(attributes)]
+    );
+  }
 };
 
 /* harmony default export */ var cascade_transfer_source = (VuiCascadeTransferSource);
@@ -29256,271 +29380,334 @@ var VuiCascadeTransferSource = {
 
 
 
+
 var VuiCascadeTransferTarget = {
-	name: "vui-cascade-transfer-target",
-	components: {
-		VuiIcon: components_icon,
-		VuiCascadeTransferEmpty: cascade_transfer_empty
-	},
-	mixins: [mixins_locale],
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].func.def(function (props) {
-			return "";
-		}),
-		value: prop_types["a" /* default */].array.def([]),
-		options: prop_types["a" /* default */].array.def([]),
-		valueKey: prop_types["a" /* default */].string.def("value"),
-		childrenKey: prop_types["a" /* default */].string.def("children"),
-		formatter: prop_types["a" /* default */].func.def(function (option) {
-			return option.label;
-		}),
-		body: prop_types["a" /* default */].func,
-		showClear: prop_types["a" /* default */].bool.def(true),
-		disabled: prop_types["a" /* default */].bool.def(false),
-		locale: prop_types["a" /* default */].object
-	},
-	methods: {
-		getHeader: function getHeader(props) {
-			var h = this.$createElement;
+  name: "vui-cascade-transfer-target",
+  components: {
+    VuiInput: components_input,
+    VuiIcon: components_icon,
+    VuiCascadeTransferEmpty: cascade_transfer_empty
+  },
+  mixins: [mixins_locale],
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].func.def(function (props) {
+      return "";
+    }),
+    value: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    valueKey: prop_types["a" /* default */].string.def("value"),
+    childrenKey: prop_types["a" /* default */].string.def("children"),
+    formatter: prop_types["a" /* default */].func.def(function (option) {
+      return option.label;
+    }),
+    showClear: prop_types["a" /* default */].bool.def(true),
+    searchable: prop_types["a" /* default */].bool.def(false),
+    filterOptionProp: prop_types["a" /* default */].string.def("label"),
+    filter: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false),
+    locale: prop_types["a" /* default */].object
+  },
+  data: function data() {
+    var state = {
+      keyword: ""
+    };
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-header");
-			var classes = {};
+    return {
+      state: state
+    };
+  },
 
-			classes.el = "" + classNamePrefix;
-			classes.elTitle = classNamePrefix + "-title";
-			classes.elExtra = classNamePrefix + "-extra";
+  methods: {
+    getHeader: function getHeader(props) {
+      var h = this.$createElement;
 
-			// title
-			var title = props.title({
-				type: props.type
-			});
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-header");
+      var classes = {};
 
-			// render
-			var content = [];
+      classes.el = "" + classNamePrefix;
+      classes.elTitle = classNamePrefix + "-title";
+      classes.elExtra = classNamePrefix + "-extra";
 
-			content.push(h(
-				"div",
-				{ "class": classes.elTitle },
-				[title]
-			));
+      // title
+      var title = props.title({
+        type: props.type
+      });
 
-			if (!props.disabled && props.showClear) {
-				var btnClearText = void 0;
+      // render
+      var content = [];
 
-				if (props.locale && props.locale.clear) {
-					btnClearText = props.locale.clear;
-				} else {
-					btnClearText = this.t("vui.cascadeTransfer.clear");
-				}
+      content.push(h(
+        "div",
+        { "class": classes.elTitle },
+        [title]
+      ));
 
-				content.push(h(
-					"div",
-					{ "class": classes.elExtra },
-					[h(
-						"a",
-						{
-							attrs: { href: "javascript:;" },
-							on: {
-								"click": props.onClear
-							}
-						},
-						[btnClearText]
-					)]
-				));
-			}
+      if (!props.disabled && props.showClear) {
+        var btnClearText = void 0;
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[content]
-			);
-		},
-		getBody: function getBody(scopedSlot, props) {
-			var h = this.$createElement;
+        if (props.locale && props.locale.clear) {
+          btnClearText = props.locale.clear;
+        } else {
+          btnClearText = this.t("vui.cascadeTransfer.clear");
+        }
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-body");
-			var classes = {};
+        content.push(h(
+          "div",
+          { "class": classes.elExtra },
+          [h(
+            "a",
+            {
+              attrs: { href: "javascript:;" },
+              on: {
+                "click": props.onClear
+              }
+            },
+            [btnClearText]
+          )]
+        ));
+      }
 
-			classes.el = "" + classNamePrefix;
+      return h(
+        "div",
+        { "class": classes.el },
+        [content]
+      );
+    },
+    getSearch: function getSearch(props) {
+      var h = this.$createElement;
 
-			// render
-			var content = void 0;
+      if (!props.searchable) {
+        return;
+      }
 
-			if (scopedSlot) {
-				content = scopedSlot;
-			} else if (props.value.length) {
-				content = this.getChoice(props);
-			} else {
-				content = h(cascade_transfer_empty, {
-					attrs: {
-						classNamePrefix: props.classNamePrefix,
-						description: props.locale ? props.locale.notFound : undefined
-					}
-				});
-			}
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-search");
+      var classes = {};
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[content]
-			);
-		},
-		getChoice: function getChoice(props) {
-			var _this = this;
+      classes.el = "" + classNamePrefix;
 
-			var h = this.$createElement;
+      // placeholder
+      var placeholder = void 0;
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choice");
-			var classes = {};
+      if (props.locale && props.locale.search) {
+        placeholder = props.locale.search;
+      } else {
+        placeholder = this.t("vui.cascadeTransfer.search");
+      }
 
-			classes.el = "" + classNamePrefix;
+      // render
+      return h(
+        "div",
+        { "class": classes.el },
+        [h(components_input, {
+          attrs: { suffix: "search", value: props.keyword, placeholder: placeholder, clearable: true, validator: false },
+          on: {
+            "input": props.onSearch
+          }
+        })]
+      );
+    },
+    getBody: function getBody(props) {
+      var h = this.$createElement;
 
-			// options
-			var options = cascade_transfer_src_utils.getSelectedOptions(props.value, props.options, props.valueKey, props.childrenKey);
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-body");
+      var classes = {};
 
-			// render
-			return h(
-				"div",
-				{ "class": classes.el },
-				[options.map(function (option) {
-					var value = option[props.valueKey];
-					var children = option[props.childrenKey];
+      classes.el = "" + classNamePrefix;
 
-					var attributes = {
-						classNamePrefix: classNamePrefix,
-						type: props.type,
-						valueKey: props.valueKey,
-						childrenKey: props.childrenKey,
-						option: option,
-						formatter: props.formatter,
-						disabled: props.disabled,
-						onDeselect: props.onDeselect
-					};
+      // notFoundText
+      var notFoundText = void 0;
 
-					return _this.getChoiceItem(attributes);
-				})]
-			);
-		},
-		getChoiceItem: function getChoiceItem(props) {
-			var _classes$el;
+      if (props.locale && props.locale.notFound) {
+        notFoundText = props.locale.notFound;
+      }
 
-			var h = this.$createElement;
+      // render
+      var content = void 0;
 
-			// class
-			var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
-			var classes = {};
+      if (props.value.length) {
+        content = this.getChoice(props);
+      } else {
+        content = h(cascade_transfer_empty, {
+          attrs: {
+            classNamePrefix: props.classNamePrefix,
+            description: notFoundText
+          }
+        });
+      }
 
-			classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-			classes.elLabel = classNamePrefix + "-label";
-			classes.elBtnDeselect = classNamePrefix + "-btn-deselect";
+      return h(
+        "div",
+        { "class": classes.el },
+        [content]
+      );
+    },
+    getChoice: function getChoice(props) {
+      var _this = this;
 
-			// content
-			var content = void 0;
+      var h = this.$createElement;
 
-			if (is["a" /* default */].function(props.formatter)) {
-				var attributes = {
-					type: props.type,
-					option: props.option
-				};
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choice");
+      var classes = {};
 
-				content = props.formatter(attributes);
-			} else {
-				content = props.option[props.valueKey];
-			}
+      classes.el = "" + classNamePrefix;
 
-			// onDeselect
-			var onDeselect = function onDeselect(e) {
-				props.onDeselect(props.option);
-			};
+      // render
+      return h(
+        "div",
+        { "class": classes.el },
+        [props.options.map(function (option) {
+          var attributes = {
+            classNamePrefix: classNamePrefix,
+            type: props.type,
+            valueKey: props.valueKey,
+            childrenKey: props.childrenKey,
+            option: option,
+            formatter: props.formatter,
+            disabled: props.disabled,
+            onDeselect: props.onDeselect
+          };
 
-			// render
-			var children = [];
+          return _this.getChoiceItem(attributes);
+        })]
+      );
+    },
+    getChoiceItem: function getChoiceItem(props) {
+      var _classes$el;
 
-			children.push(h(
-				"div",
-				{ "class": classes.elLabel },
-				[content]
-			));
+      var h = this.$createElement;
 
-			if (!props.disabled) {
-				children.push(h(
-					"div",
-					{ "class": classes.elBtnDeselect, on: {
-							"click": onDeselect
-						}
-					},
-					[h(components_icon, {
-						attrs: { type: "crossmark" }
-					})]
-				));
-			}
+      // class
+      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
+      var classes = {};
 
-			return h(
-				"div",
-				{ "class": classes.el },
-				[children]
-			);
-		},
-		handleClear: function handleClear() {
-			var props = this.$props;
+      classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+      classes.elLabel = classNamePrefix + "-label";
+      classes.elBtnDeselect = classNamePrefix + "-btn-deselect";
+
+      // content
+      var content = void 0;
+
+      if (is["a" /* default */].function(props.formatter)) {
+        var attributes = {
+          type: props.type,
+          option: props.option
+        };
+
+        content = props.formatter(attributes);
+      } else {
+        content = props.option[props.valueKey];
+      }
+
+      // onDeselect
+      var onDeselect = function onDeselect(e) {
+        props.onDeselect(props.option);
+      };
+
+      // render
+      var children = [];
+
+      children.push(h(
+        "div",
+        { "class": classes.elLabel },
+        [content]
+      ));
+
+      if (!props.disabled) {
+        children.push(h(
+          "div",
+          { "class": classes.elBtnDeselect, on: {
+              "click": onDeselect
+            }
+          },
+          [h(components_icon, {
+            attrs: { type: "crossmark" }
+          })]
+        ));
+      }
+
+      return h(
+        "div",
+        { "class": classes.el },
+        [children]
+      );
+    },
+    handleSearch: function handleSearch(value) {
+      this.state.keyword = value;
+    },
+    handleDeselect: function handleDeselect(option) {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			this.$emit("clear");
-		},
-		handleDeselect: function handleDeselect(option) {
-			var props = this.$props;
+      this.$emit("deselect", option);
+    },
+    handleClear: function handleClear() {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			this.$emit("deselect", option);
-		}
-	},
-	render: function render(h) {
-		var props = this.$props;
-		var handleDeselect = this.handleDeselect,
-		    handleClear = this.handleClear;
+      this.$emit("clear");
+    }
+  },
+  render: function render(h) {
+    var props = this.$props,
+        state = this.state;
+    var handleSearch = this.handleSearch,
+        handleDeselect = this.handleDeselect,
+        handleClear = this.handleClear;
 
-		// class
+    // options
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target");
-		var classes = {};
+    var options = cascade_transfer_src_utils.getSelectedOptions(props.value, props.options, props.valueKey, props.childrenKey);
 
-		classes.el = "" + classNamePrefix;
+    if (props.searchable && state.keyword) {
+      options = cascade_transfer_src_utils.getFilteredOptions(options, state.keyword, props.filter, props.filterOptionProp);
+    }
 
-		// render
-		var attributes = {
-			type: "target",
-			classNamePrefix: props.classNamePrefix,
-			title: props.title,
-			value: props.value,
-			options: props.options,
-			valueKey: props.valueKey,
-			childrenKey: props.childrenKey,
-			formatter: props.formatter,
-			showClear: props.showClear,
-			disabled: props.disabled,
-			locale: props.locale,
-			onDeselect: handleDeselect,
-			onClear: handleClear
-		};
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target");
+    var classes = {};
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[this.getHeader(attributes), this.getBody(is["a" /* default */].function(props.body) ? props.body(attributes) : undefined, attributes)]
-		);
-	}
+    classes.el = "" + classNamePrefix;
+
+    // render
+    var attributes = {
+      type: "target",
+      classNamePrefix: props.classNamePrefix,
+      title: props.title,
+      value: props.value,
+      options: options,
+      valueKey: props.valueKey,
+      childrenKey: props.childrenKey,
+      formatter: props.formatter,
+      showClear: props.showClear,
+      searchable: props.searchable,
+      filterOptionProp: props.filterOptionProp,
+      filter: props.filter,
+      disabled: props.disabled,
+      locale: props.locale,
+      onSearch: handleSearch,
+      onDeselect: handleDeselect,
+      onClear: handleClear
+    };
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [this.getHeader(attributes), this.getSearch(attributes), this.getBody(attributes)]
+    );
+  }
 };
 
 /* harmony default export */ var cascade_transfer_target = (VuiCascadeTransferTarget);
@@ -29537,360 +29724,347 @@ var VuiCascadeTransferTarget = {
 
 
 var VuiCascadeTransfer = {
-	name: "vui-cascade-transfer",
-	inject: {
-		vuiForm: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiCascadeTransferSourceList: cascade_transfer_source_list,
-		VuiCascadeTransferSource: cascade_transfer_source,
-		VuiCascadeTransferTarget: cascade_transfer_target
-	},
-	mixins: [emitter],
-	model: {
-		prop: "value",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].array.def([]),
-		options: prop_types["a" /* default */].array.def([]),
-		valueKey: prop_types["a" /* default */].string.def("value"),
-		childrenKey: prop_types["a" /* default */].string.def("children"),
-		title: prop_types["a" /* default */].func.def(function (props) {
-			return "";
-		}),
-		formatter: prop_types["a" /* default */].func.def(function (option) {
-			return option.label;
-		}),
-		locale: prop_types["a" /* default */].object,
-		showTargetPanel: prop_types["a" /* default */].bool.def(true),
-		showSelectAll: prop_types["a" /* default */].bool.def(true),
-		showClear: prop_types["a" /* default */].bool.def(true),
-		showChildrenCount: prop_types["a" /* default */].bool.def(false),
-		showCheckedStrategy: prop_types["a" /* default */].string.def("parent"),
-		disabled: prop_types["a" /* default */].bool.def(false),
-		validator: prop_types["a" /* default */].bool.def(true)
-	},
-	data: function data() {
-		var props = this.$props;
+  name: "vui-cascade-transfer",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiCascadeTransferSourceList: cascade_transfer_source_list,
+    VuiCascadeTransferSource: cascade_transfer_source,
+    VuiCascadeTransferTarget: cascade_transfer_target
+  },
+  mixins: [emitter],
+  model: {
+    prop: "value",
+    event: "input"
+  },
+  props: {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    valueKey: prop_types["a" /* default */].string.def("value"),
+    childrenKey: prop_types["a" /* default */].string.def("children"),
+    title: prop_types["a" /* default */].func.def(function (props) {
+      return "";
+    }),
+    formatter: prop_types["a" /* default */].func.def(function (option) {
+      return option.label;
+    }),
+    checkedStrategy: prop_types["a" /* default */].oneOf(["all", "parent", "children"]).def("all"),
+    showTargetPanel: prop_types["a" /* default */].bool.def(true),
+    showSelectAll: prop_types["a" /* default */].bool.def(true),
+    showClear: prop_types["a" /* default */].bool.def(true),
+    showChildrenCount: prop_types["a" /* default */].bool.def(false),
+    searchable: prop_types["a" /* default */].bool.def(false),
+    filterOptionProp: prop_types["a" /* default */].string.def("label"),
+    filter: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true),
+    locale: prop_types["a" /* default */].object
+  },
+  data: function data() {
+    var props = this.$props;
 
-		var sourceList = [];
-		var source = {
-			parent: undefined,
-			options: props.options
-		};
+    var selectedKeys = cascade_transfer_src_utils.getSelectedKeysByValue(props.value, props);
+    var sourceList = [{
+      parent: undefined,
+      options: props.options
+    }];
 
-		return {
-			state: {
-				selectedKeys: cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy),
-				value: Object(utils_clone["a" /* default */])(props.value),
-				sourceList: sourceList.concat(source)
-			}
-		};
-	},
+    return {
+      state: {
+        selectedKeys: selectedKeys,
+        value: Object(utils_clone["a" /* default */])(props.value),
+        sourceList: sourceList
+      }
+    };
+  },
 
-	watch: {
-		value: function value(_value) {
-			var props = this.$props;
+  watch: {
+    value: function value(_value) {
+      var props = this.$props;
 
+      var selectedKeys = cascade_transfer_src_utils.getSelectedKeysByValue(_value, props);
 
-			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(_value, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
-			this.state.value = Object(utils_clone["a" /* default */])(_value);
-		},
-		options: function options(value) {
-			var props = this.$props;
+      this.state.selectedKeys = selectedKeys;
+      this.state.value = Object(utils_clone["a" /* default */])(_value);
+    },
+    options: function options(value) {
+      var props = this.$props;
 
-			var sourceList = [];
-			var source = {
-				parent: undefined,
-				options: value
-			};
+      var selectedKeys = cascade_transfer_src_utils.getSelectedKeysByValue(props.value, props);
+      var sourceList = [{
+        parent: undefined,
+        options: value
+      }];
 
-			this.state.selectedKeys = cascade_transfer_src_utils.mapValueToSelectedKeys(props.value, value, props.valueKey, props.childrenKey, props.showCheckedStrategy);
-			this.state.value = Object(utils_clone["a" /* default */])(props.value);
-			this.state.sourceList = sourceList.concat(source);
-		}
-	},
-	methods: {
-		upward: function upward(checked, option, selectedKeys) {
-			var props = this.$props;
+      this.state.selectedKeys = selectedKeys;
+      this.state.value = Object(utils_clone["a" /* default */])(props.value);
+      this.state.sourceList = sourceList.concat(source);
+    }
+  },
+  methods: {
+    upward: function upward(checked, option, selectedKeys) {
+      var props = this.$props;
 
-			var parent = cascade_transfer_src_utils.getParent(option, undefined, props.options, props.valueKey, props.childrenKey);
+      var parent = cascade_transfer_src_utils.getParent(option, undefined, props.options, props.valueKey, props.childrenKey);
 
-			if (!parent) {
-				return;
-			}
+      if (!parent) {
+        return;
+      }
 
-			if (checked) {
-				var siblings = parent[props.childrenKey];
-				var isEveryChecked = siblings.every(function (sibling) {
-					return selectedKeys.indexOf(sibling[props.valueKey]) > -1;
-				});
+      if (checked) {
+        var siblings = parent[props.childrenKey];
+        var isEveryChecked = siblings.every(function (sibling) {
+          return selectedKeys.indexOf(sibling[props.valueKey]) > -1;
+        });
 
-				if (!isEveryChecked) {
-					return;
-				}
+        if (!isEveryChecked) {
+          return;
+        }
 
-				var value = parent[props.valueKey];
-				var index = selectedKeys.indexOf(value);
+        var value = parent[props.valueKey];
+        var index = selectedKeys.indexOf(value);
 
-				if (index === -1) {
-					selectedKeys.push(value);
-					this.upward(checked, parent, selectedKeys);
-				}
-			} else {
-				var _value2 = parent[props.valueKey];
-				var _index = selectedKeys.indexOf(_value2);
+        if (index === -1) {
+          selectedKeys.push(value);
+          this.upward(checked, parent, selectedKeys);
+        }
+      } else {
+        var _value2 = parent[props.valueKey];
+        var _index = selectedKeys.indexOf(_value2);
 
-				if (_index > -1) {
-					selectedKeys.splice(_index, 1);
-					this.upward(checked, parent, selectedKeys);
-				}
-			}
-		},
-		downward: function downward(checked, option, selectedKeys) {
-			var _this = this;
+        if (_index > -1) {
+          selectedKeys.splice(_index, 1);
+          this.upward(checked, parent, selectedKeys);
+        }
+      }
+    },
+    downward: function downward(checked, option, selectedKeys) {
+      var _this = this;
 
-			var props = this.$props;
+      var props = this.$props;
 
-			var children = option[props.childrenKey];
+      var children = option[props.childrenKey];
 
-			if (!children || children.length === 0) {
-				return;
-			}
+      if (!children || children.length === 0) {
+        return;
+      }
 
-			children.forEach(function (child) {
-				var value = child[props.valueKey];
-				var index = selectedKeys.indexOf(value);
+      children.forEach(function (child) {
+        var value = child[props.valueKey];
+        var index = selectedKeys.indexOf(value);
 
-				if (checked) {
-					if (index === -1) {
-						selectedKeys.push(value);
-					}
-				} else {
-					if (index > -1) {
-						selectedKeys.splice(index, 1);
-					}
-				}
+        if (checked) {
+          if (index === -1) {
+            selectedKeys.push(value);
+          }
+        } else {
+          if (index > -1) {
+            selectedKeys.splice(index, 1);
+          }
+        }
 
-				_this.downward(checked, child, selectedKeys);
-			});
-		},
-		handleClick: function handleClick(option, level) {
-			var props = this.$props;
+        _this.downward(checked, child, selectedKeys);
+      });
+    },
+    handleClick: function handleClick(option, level) {
+      var props = this.$props;
 
+      var children = option[props.childrenKey];
 
-			if (props.disabled) {
-				return;
-			}
+      if (children && children.length > 0) {
+        var sourceList = this.state.sourceList.slice(0, level);
+        var _source = {
+          parent: option,
+          options: children
+        };
 
-			var children = option[props.childrenKey];
+        this.state.sourceList = sourceList.concat(_source);
+      } else {
+        this.state.sourceList = this.state.sourceList.slice(0, level);
+      }
 
-			if (children && children.length > 0) {
-				var sourceList = this.state.sourceList.slice(0, level);
-				var source = {
-					parent: option,
-					options: children
-				};
-
-				this.state.sourceList = sourceList.concat(source);
-			} else {
-				this.state.sourceList = this.state.sourceList.slice(0, level);
-			}
-
-			this.$emit("click", option);
-		},
-		handleSelectAll: function handleSelectAll(checked, option, level) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			if (level > 0) {
-				this.handleSelect(checked, option);
-				return;
-			}
-
-			var selectedKeys = Object(utils_clone["a" /* default */])(this.state.selectedKeys);
-			var options = flatten_flatten(props.options, props.childrenKey, true);
-
-			if (checked) {
-				var unSelectedKeys = options.map(function (target) {
-					return target[props.valueKey];
-				}).filter(function (targetKey) {
-					return selectedKeys.indexOf(targetKey) === -1;
-				});
-
-				selectedKeys = selectedKeys.concat(unSelectedKeys);
-			} else {
-				selectedKeys = [];
-			}
-
-			this.state.selectedKeys = selectedKeys;
-			this.handleChange();
-		},
-		handleSelect: function handleSelect(checked, option) {
-			var props = this.$props;
+      this.$emit("click", option);
+    },
+    handleSelectAll: function handleSelectAll(selectedKeys) {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			var selectedKeys = Object(utils_clone["a" /* default */])(this.state.selectedKeys);
-			var value = option[props.valueKey];
-			var index = selectedKeys.indexOf(value);
-
-			if (checked) {
-				if (index === -1) {
-					selectedKeys.push(value);
-				}
-			} else {
-				if (index > -1) {
-					selectedKeys.splice(index, 1);
-				}
-			}
-
-			this.upward(checked, option, selectedKeys);
-			this.downward(checked, option, selectedKeys);
-
-			this.state.selectedKeys = selectedKeys;
-			this.handleChange();
-		},
-		handleDeselect: function handleDeselect(option) {
-			var props = this.$props;
+      this.state.selectedKeys = selectedKeys;
+      this.handleChange();
+    },
+    handleSelect: function handleSelect(option) {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			this.handleSelect(false, option);
-		},
-		handleClear: function handleClear() {
-			var props = this.$props;
+      var selectedKeys = Object(utils_clone["a" /* default */])(this.state.selectedKeys);
+      var value = option[props.valueKey];
+      var index = selectedKeys.indexOf(value);
+
+      if (index === -1) {
+        selectedKeys.push(value);
+      }
+
+      this.upward(true, option, selectedKeys);
+      this.downward(true, option, selectedKeys);
+
+      this.state.selectedKeys = selectedKeys;
+      this.handleChange();
+    },
+    handleDeselect: function handleDeselect(option) {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			this.state.selectedKeys = [];
-			this.handleChange();
-		},
-		handleChange: function handleChange() {
-			var props = this.$props;
+      var selectedKeys = Object(utils_clone["a" /* default */])(this.state.selectedKeys);
+      var value = option[props.valueKey];
+      var index = selectedKeys.indexOf(value);
+
+      if (index > -1) {
+        selectedKeys.splice(index, 1);
+      }
+
+      this.upward(false, option, selectedKeys);
+      this.downward(false, option, selectedKeys);
+
+      this.state.selectedKeys = selectedKeys;
+      this.handleChange();
+    },
+    handleClear: function handleClear() {
+      var props = this.$props;
 
 
-			if (props.disabled) {
-				return;
-			}
+      if (props.disabled) {
+        return;
+      }
 
-			var value = cascade_transfer_src_utils.mapSelectedKeysToValue(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey, props.showCheckedStrategy);
+      this.state.selectedKeys = [];
+      this.handleChange();
+    },
+    handleChange: function handleChange() {
+      var props = this.$props;
 
-			this.state.value = value;
-			this.$emit("input", value);
-			this.$emit("change", value);
 
-			if (props.validator) {
-				this.dispatch("vui-form-item", "change", value);
-			}
-		}
-	},
-	render: function render() {
-		var _classes$el;
+      if (props.disabled) {
+        return;
+      }
 
-		var h = arguments[0];
-		var scopedSlots = this.$scopedSlots,
-		    props = this.$props,
-		    state = this.state;
-		var handleClick = this.handleClick,
-		    handleSelectAll = this.handleSelectAll,
-		    handleSelect = this.handleSelect,
-		    handleDeselect = this.handleDeselect,
-		    handleClear = this.handleClear;
+      var value = cascade_transfer_src_utils.getValueBySelectedKeys(this.state.selectedKeys, props.options, props.valueKey, props.childrenKey, props.checkedStrategy);
 
-		// formatter
+      this.state.value = value;
+      this.$emit("input", value);
+      this.$emit("change", value);
 
-		var formatter = scopedSlots.formatter || props.formatter;
+      if (props.validator) {
+        this.dispatch("vui-form-item", "change", value);
+      }
+    }
+  },
+  render: function render() {
+    var _classes$el;
 
-		// body
-		var body = scopedSlots.body;
+    var h = arguments[0];
+    var scopedSlots = this.$scopedSlots,
+        props = this.$props,
+        state = this.state;
+    var handleClick = this.handleClick,
+        handleSelectAll = this.handleSelectAll,
+        handleSelect = this.handleSelect,
+        handleDeselect = this.handleDeselect,
+        handleClear = this.handleClear;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascade-transfer");
-		var classes = {};
+    // formatter
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+    var formatter = scopedSlots.formatter || props.formatter;
 
-		// render
-		var children = [];
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cascade-transfer");
+    var classes = {};
 
-		children.push(h(
-			cascade_transfer_source_list,
-			{
-				attrs: { classNamePrefix: classNamePrefix }
-			},
-			[state.sourceList.map(function (source, index) {
-				return h(cascade_transfer_source, {
-					key: index,
-					attrs: { classNamePrefix: classNamePrefix,
-						level: index + 1,
-						parent: source.parent,
-						selectedKeys: state.selectedKeys,
-						options: source.options,
-						valueKey: props.valueKey,
-						childrenKey: props.childrenKey,
-						title: props.title,
-						formatter: props.formatter,
-						body: props.body,
-						locale: props.locale,
-						showSelectAll: props.showSelectAll,
-						disabled: props.disabled,
-						showChildrenCount: props.showChildrenCount
-					},
-					on: {
-						"click": handleClick,
-						"selectAll": handleSelectAll,
-						"select": handleSelect
-					}
-				});
-			})]
-		));
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
 
-		if (props.showTargetPanel) {
-			children.push(h(cascade_transfer_target, {
-				attrs: {
-					classNamePrefix: classNamePrefix,
-					title: props.title,
-					value: state.value,
-					options: props.options,
-					valueKey: props.valueKey,
-					childrenKey: props.childrenKey,
-					formatter: formatter,
-					body: body,
-					showClear: props.showClear,
-					disabled: props.disabled,
-					locale: props.locale
-				},
-				on: {
-					"deselect": handleDeselect,
-					"clear": handleClear
-				}
-			}));
-		}
+    // render
+    var children = [];
 
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+    children.push(h(
+      cascade_transfer_source_list,
+      {
+        attrs: { classNamePrefix: classNamePrefix }
+      },
+      [state.sourceList.map(function (source, index) {
+        return h(cascade_transfer_source, {
+          key: index,
+          attrs: { classNamePrefix: classNamePrefix,
+            level: index + 1,
+            parent: source.parent,
+            selectedKeys: state.selectedKeys,
+            options: source.options,
+            valueKey: props.valueKey,
+            childrenKey: props.childrenKey,
+            title: props.title,
+            formatter: formatter,
+            showSelectAll: props.showSelectAll,
+            showChildrenCount: props.showChildrenCount,
+            searchable: props.searchable,
+            filterOptionProp: props.filterOptionProp,
+            filter: props.filter,
+            disabled: props.disabled,
+            locale: props.locale
+          },
+          on: {
+            "click": handleClick,
+            "selectAll": handleSelectAll,
+            "select": handleSelect,
+            "deselect": handleDeselect
+          }
+        });
+      })]
+    ));
+
+    if (props.showTargetPanel) {
+      children.push(h(cascade_transfer_target, {
+        attrs: {
+          classNamePrefix: classNamePrefix,
+          value: state.value,
+          options: props.options,
+          valueKey: props.valueKey,
+          childrenKey: props.childrenKey,
+          title: props.title,
+          formatter: formatter,
+          showClear: props.showClear,
+          searchable: props.searchable,
+          filterOptionProp: props.filterOptionProp,
+          filter: props.filter,
+          disabled: props.disabled,
+          locale: props.locale
+        },
+        on: {
+          "deselect": handleDeselect,
+          "clear": handleClear
+        }
+      }));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
 };
 
 /* harmony default export */ var cascade_transfer = (VuiCascadeTransfer);
@@ -29898,7 +30072,7 @@ var VuiCascadeTransfer = {
 
 
 cascade_transfer.install = function (Vue) {
-	Vue.component(cascade_transfer.name, cascade_transfer);
+  Vue.component(cascade_transfer.name, cascade_transfer);
 };
 
 /* harmony default export */ var components_cascade_transfer = (cascade_transfer);
@@ -43695,7 +43869,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.6",
+  version: "1.10.7",
   install: src_install,
   // Locale
   locale: src_locale.use,

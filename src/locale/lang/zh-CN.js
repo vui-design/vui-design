@@ -91,6 +91,7 @@ export default {
       notFound: "暂无数据"
     },
     cascadeTransfer: {
+      search: "请输入搜索内容",
       notFound: "暂无数据",
       clear: "清空"
     },

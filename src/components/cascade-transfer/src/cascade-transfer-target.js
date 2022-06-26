@@ -1,3 +1,4 @@
+import VuiInput from "../../input";
 import VuiIcon from "../../icon";
 import VuiCascadeTransferEmpty from "./cascade-transfer-empty";
 import Locale from "../../../mixins/locale";
@@ -8,250 +9,303 @@ import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const VuiCascadeTransferTarget = {
-	name: "vui-cascade-transfer-target",
-	components: {
-		VuiIcon,
-		VuiCascadeTransferEmpty
-	},
-	mixins: [
-		Locale
-	],
-	props: {
-		classNamePrefix: PropTypes.string,
-		title: PropTypes.func.def(props => ""),
-		value: PropTypes.array.def([]),
-		options: PropTypes.array.def([]),
-		valueKey: PropTypes.string.def("value"),
-		childrenKey: PropTypes.string.def("children"),
-		formatter: PropTypes.func.def(option => option.label),
-		body: PropTypes.func,
-		showClear: PropTypes.bool.def(true),
-		disabled: PropTypes.bool.def(false),
-		locale: PropTypes.object
-	},
-	methods: {
-		getHeader(props) {
-			// class
-			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-header");
-			let classes = {};
+  name: "vui-cascade-transfer-target",
+  components: {
+    VuiInput,
+    VuiIcon,
+    VuiCascadeTransferEmpty
+  },
+  mixins: [
+    Locale
+  ],
+  props: {
+    classNamePrefix: PropTypes.string,
+    title: PropTypes.func.def(props => ""),
+    value: PropTypes.array.def([]),
+    options: PropTypes.array.def([]),
+    valueKey: PropTypes.string.def("value"),
+    childrenKey: PropTypes.string.def("children"),
+    formatter: PropTypes.func.def(option => option.label),
+    showClear: PropTypes.bool.def(true),
+    searchable: PropTypes.bool.def(false),
+    filterOptionProp: PropTypes.string.def("label"),
+    filter: PropTypes.func,
+    disabled: PropTypes.bool.def(false),
+    locale: PropTypes.object
+  },
+  data() {
+    const state = {
+      keyword: ""
+    };
 
-			classes.el = `${classNamePrefix}`;
-			classes.elTitle = `${classNamePrefix}-title`;
-			classes.elExtra = `${classNamePrefix}-extra`;
+    return {
+      state
+    };
+  },
+  methods: {
+    getHeader(props) {
+      // class
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-header");
+      let classes = {};
 
-			// title
-			const title = props.title({
-				type: props.type
-			});
+      classes.el = `${classNamePrefix}`;
+      classes.elTitle = `${classNamePrefix}-title`;
+      classes.elExtra = `${classNamePrefix}-extra`;
 
-			// render
-			let content = [];
+      // title
+      const title = props.title({
+        type: props.type
+      });
 
-			content.push(
-				<div class={classes.elTitle}>
-					{title}
-				</div>
-			);
+      // render
+      let content = [];
 
-			if (!props.disabled && props.showClear) {
-				let btnClearText;
+      content.push(
+        <div class={classes.elTitle}>
+          {title}
+        </div>
+      );
 
-				if (props.locale && props.locale.clear) {
-					btnClearText = props.locale.clear;
-				}
-				else {
-					btnClearText = this.t("vui.cascadeTransfer.clear");
-				}
+      if (!props.disabled && props.showClear) {
+        let btnClearText;
 
-				content.push(
-					<div class={classes.elExtra}>
-						<a href="javascript:;" onClick={props.onClear}>
-							{btnClearText}
-						</a>
-					</div>
-				);
-			}
+        if (props.locale && props.locale.clear) {
+          btnClearText = props.locale.clear;
+        }
+        else {
+          btnClearText = this.t("vui.cascadeTransfer.clear");
+        }
 
-			return (
-				<div class={classes.el}>
-					{content}
-				</div>
-			);
-		},
-		getBody(scopedSlot, props) {
-			// class
-			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-body");
-			let classes = {};
+        content.push(
+          <div class={classes.elExtra}>
+            <a href="javascript:;" onClick={props.onClear}>
+              {btnClearText}
+            </a>
+          </div>
+        );
+      }
 
-			classes.el = `${classNamePrefix}`;
+      return (
+        <div class={classes.el}>
+          {content}
+        </div>
+      );
+    },
+    getSearch(props) {
+      if (!props.searchable) {
+        return;
+      }
 
-			// render
-			let content;
+      // class
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-search");
+      let classes = {};
 
-			if (scopedSlot) {
-				content = scopedSlot;
-			}
-			else if (props.value.length) {
-				content = this.getChoice(props);
-			}
-			else {
-				content = (
-					<VuiCascadeTransferEmpty
-						classNamePrefix={props.classNamePrefix}
-						description={props.locale ? props.locale.notFound : undefined}
-					/>
-				);
-			}
+      classes.el = `${classNamePrefix}`;
 
-			return (
-				<div class={classes.el}>
-					{content}
-				</div>
-			);
-		},
-		getChoice(props) {
-			// class
-			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choice");
-			let classes = {};
+      // placeholder
+      let placeholder;
 
-			classes.el = `${classNamePrefix}`;
+      if (props.locale && props.locale.search) {
+        placeholder = props.locale.search;
+      }
+      else {
+        placeholder = this.t("vui.cascadeTransfer.search");
+      }
 
-			// options
-			const options = utils.getSelectedOptions(props.value, props.options, props.valueKey, props.childrenKey);
+      // render
+      return (
+        <div class={classes.el}>
+          <VuiInput suffix="search" value={props.keyword} placeholder={placeholder} clearable validator={false} onInput={props.onSearch} />
+        </div>
+      );
+    },
+    getBody(props) {
+      // class
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target-body");
+      let classes = {};
 
-			// render
-			return (
-				<div class={classes.el}>
-					{
-						options.map(option => {
-							const value = option[props.valueKey];
-							const children = option[props.childrenKey];
+      classes.el = `${classNamePrefix}`;
 
-							const attributes = {
-								classNamePrefix: classNamePrefix,
-								type: props.type,
-								valueKey: props.valueKey,
-								childrenKey: props.childrenKey,
-								option: option,
-								formatter: props.formatter,
-								disabled: props.disabled,
-								onDeselect: props.onDeselect
-							};
+      // notFoundText
+      let notFoundText;
 
-							return this.getChoiceItem(attributes);
-						})
-					}
-				</div>
-			);
-		},
-		getChoiceItem(props) {
-			// class
-			const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
-			let classes = {};
+      if (props.locale && props.locale.notFound) {
+        notFoundText = props.locale.notFound;
+      }
 
-			classes.el = {
-				[`${classNamePrefix}`]: true,
-				[`${classNamePrefix}-disabled`]: props.disabled
-			};
-			classes.elLabel = `${classNamePrefix}-label`;
-			classes.elBtnDeselect = `${classNamePrefix}-btn-deselect`;
+      // render
+      let content;
 
-			// content
-			let content;
+      if (props.value.length) {
+        content = this.getChoice(props);
+      }
+      else {
+        content = (
+          <VuiCascadeTransferEmpty
+            classNamePrefix={props.classNamePrefix}
+            description={notFoundText}
+          />
+        );
+      }
 
-			if (is.function(props.formatter)) {
-				const attributes = {
-					type: props.type,
-					option: props.option
-				};
+      return (
+        <div class={classes.el}>
+          {content}
+        </div>
+      );
+    },
+    getChoice(props) {
+      // class
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choice");
+      let classes = {};
 
-				content = props.formatter(attributes);
-			}
-			else {
-				content = props.option[props.valueKey];
-			}
+      classes.el = `${classNamePrefix}`;
 
-			// onDeselect
-			const onDeselect = e => {
-				props.onDeselect(props.option);
-			};
+      // render
+      return (
+        <div class={classes.el}>
+          {
+            props.options.map(option => {
+              const attributes = {
+                classNamePrefix: classNamePrefix,
+                type: props.type,
+                valueKey: props.valueKey,
+                childrenKey: props.childrenKey,
+                option: option,
+                formatter: props.formatter,
+                disabled: props.disabled,
+                onDeselect: props.onDeselect
+              };
 
-			// render
-			let children = [];
+              return this.getChoiceItem(attributes);
+            })
+          }
+        </div>
+      );
+    },
+    getChoiceItem(props) {
+      // class
+      const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "item");
+      let classes = {};
 
-			children.push(
-				<div class={classes.elLabel}>
-					{content}
-				</div>
-			);
+      classes.el = {
+        [`${classNamePrefix}`]: true,
+        [`${classNamePrefix}-disabled`]: props.disabled
+      };
+      classes.elLabel = `${classNamePrefix}-label`;
+      classes.elBtnDeselect = `${classNamePrefix}-btn-deselect`;
 
-			if (!props.disabled) {
-				children.push(
-					<div class={classes.elBtnDeselect} onClick={onDeselect}>
-						<VuiIcon type="crossmark" />
-					</div>
-				);
-			}
+      // content
+      let content;
 
-			return (
-				<div class={classes.el}>
-					{children}
-				</div>
-			);
-		},
-		handleClear() {
-			const { $props: props } = this;
+      if (is.function(props.formatter)) {
+        const attributes = {
+          type: props.type,
+          option: props.option
+        };
 
-			if (props.disabled) {
-				return;
-			}
+        content = props.formatter(attributes);
+      }
+      else {
+        content = props.option[props.valueKey];
+      }
 
-			this.$emit("clear");
-		},
-		handleDeselect(option) {
-			const { $props: props } = this;
+      // onDeselect
+      const onDeselect = e => {
+        props.onDeselect(props.option);
+      };
 
-			if (props.disabled) {
-				return;
-			}
+      // render
+      let children = [];
 
-			this.$emit("deselect", option);
-		}
-	},
-	render(h) {
-		const { $props: props } = this;
-		const { handleDeselect, handleClear } = this;
+      children.push(
+        <div class={classes.elLabel}>
+          {content}
+        </div>
+      );
 
-		// class
-		const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target");
-		let classes = {};
+      if (!props.disabled) {
+        children.push(
+          <div class={classes.elBtnDeselect} onClick={onDeselect}>
+            <VuiIcon type="crossmark" />
+          </div>
+        );
+      }
 
-		classes.el = `${classNamePrefix}`;
+      return (
+        <div class={classes.el}>
+          {children}
+        </div>
+      );
+    },
+    handleSearch(value) {
+      this.state.keyword = value;
+    },
+    handleDeselect(option) {
+      const { $props: props } = this;
 
-		// render
-		const attributes = {
-			type: "target",
-			classNamePrefix: props.classNamePrefix,
-			title: props.title,
-			value: props.value,
-			options: props.options,
-			valueKey: props.valueKey,
-			childrenKey: props.childrenKey,
-			formatter: props.formatter,
-			showClear: props.showClear,
-			disabled: props.disabled,
-			locale: props.locale,
-			onDeselect: handleDeselect,
-			onClear: handleClear
-		};
+      if (props.disabled) {
+        return;
+      }
 
-		return (
-			<div class={classes.el}>
-				{this.getHeader(attributes)}
-				{this.getBody(is.function(props.body) ? props.body(attributes) : undefined, attributes)}
-			</div>
-		);
-	}
+      this.$emit("deselect", option);
+    },
+    handleClear() {
+      const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.$emit("clear");
+    }
+  },
+  render(h) {
+    const { $props: props, state } = this;
+    const { handleSearch, handleDeselect, handleClear } = this;
+
+    // options
+    let options = utils.getSelectedOptions(props.value, props.options, props.valueKey, props.childrenKey);
+
+    if (props.searchable && state.keyword) {
+      options = utils.getFilteredOptions(options, state.keyword, props.filter, props.filterOptionProp);
+    }
+
+    // class
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "target");
+    let classes = {};
+
+    classes.el = `${classNamePrefix}`;
+
+    // render
+    const attributes = {
+      type: "target",
+      classNamePrefix: props.classNamePrefix,
+      title: props.title,
+      value: props.value,
+      options: options,
+      valueKey: props.valueKey,
+      childrenKey: props.childrenKey,
+      formatter: props.formatter,
+      showClear: props.showClear,
+      searchable: props.searchable,
+      filterOptionProp: props.filterOptionProp,
+      filter: props.filter,
+      disabled: props.disabled,
+      locale: props.locale,
+      onSearch: handleSearch,
+      onDeselect: handleDeselect,
+      onClear: handleClear
+    };
+
+    return (
+      <div class={classes.el}>
+        {this.getHeader(attributes)}
+        {this.getSearch(attributes)}
+        {this.getBody(attributes)}
+      </div>
+    );
+  }
 };
 
 export default VuiCascadeTransferTarget;

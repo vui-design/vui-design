@@ -1,260 +1,273 @@
 @vui-cascade-transfer: ~"@{vui}-cascade-transfer";
 
 .@{vui-cascade-transfer} {
-	display:flex;
-	justify-content:flex-start;
-	align-items:center;
-	box-sizing:border-box;
-	color:@cascade-transfer-font-color;
-	font-size:@cascade-transfer-font-size;
-	line-height:@cascade-transfer-line-height;
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  box-sizing:border-box;
+  color:@cascade-transfer-font-color;
+  font-size:@cascade-transfer-font-size;
+  line-height:@cascade-transfer-line-height;
 
-	&-source {
-		flex:1;
-		display:flex;
-		flex-direction:column;
-		justify-content:flex-start;
-		align-items:stretch;
-		box-sizing:border-box;
-		min-width:@cascade-transfer-panel-width;
-		height:@cascade-transfer-panel-height;
-		border:1px solid @cascade-transfer-panel-border-color;
-		border-radius:@cascade-transfer-panel-border-radius;
+  &-source {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
+    box-sizing:border-box;
+    width:@cascade-transfer-panel-width;
+    border:1px solid @cascade-transfer-panel-border-color;
+    border-radius:@cascade-transfer-panel-border-radius;
 
-		&-header {
-			display:flex;
-			align-items:center;
-			box-sizing:border-box;
-			border-bottom:1px solid @cascade-transfer-panel-header-border-color;
-			background-color:@cascade-transfer-panel-header-background-color;
-			padding:@cascade-transfer-panel-header-padding;
+    &-header {
+      display:flex;
+      align-items:center;
+      box-sizing:border-box;
+      border-bottom:1px solid @cascade-transfer-panel-header-border-color;
+      background-color:@cascade-transfer-panel-header-background-color;
+      padding:@cascade-transfer-panel-header-padding;
 
-			&-checkbox {
-				display:block;
-				box-sizing:border-box;
-				margin-right:@cascade-transfer-panel-header-checkbox-margin-right;
+     &-checkbox {
+        display:block;
+        box-sizing:border-box;
+        margin-right:@cascade-transfer-panel-header-checkbox-margin-right;
 
-				label {
-					display:block;
-				}
-			}
+        label {
+          display:block;
+        }
+      }
 
-			&-title {
-				flex:1;
-				display:block;
-				box-sizing:border-box;
-				.writeEllipsis;
-			}
-		}
+      &-title {
+        flex:1;
+        display:block;
+        box-sizing:border-box;
+        .writeEllipsis;
+      }
+    }
 
-		&-body {
-			flex:auto;
-			display:block;
-			box-sizing:border-box;
-			overflow:auto;
-		}
-	}
+    &-search {
+      display:block;
+      box-sizing:border-box;
+      border-bottom:1px solid @cascade-transfer-panel-search-border-color;
+      padding:@cascade-transfer-panel-search-padding;
+    }
 
-	&-source-list {
-		display:flex;
-		flex-direction:row;
-		box-sizing:border-box;
-		min-width:399px;
-	}
-	&-source-list &-source {
-		border-radius:0;
-	}
-	&-source-list &-source:first-child {
-		border-top-left-radius:@cascade-transfer-panel-border-radius;
-		border-bottom-left-radius:@cascade-transfer-panel-border-radius;
-	}
-	&-source-list &-source:last-child {
-		border-top-left-radius:@cascade-transfer-panel-border-radius;
-		border-bottom-left-radius:@cascade-transfer-panel-border-radius;
-	}
-	&-source-list &-source + &-source {
-		margin-left:-1px;
-	}
+    &-body {
+      flex:auto;
+      display:block;
+      box-sizing:border-box;
+      height:@cascade-transfer-panel-body-height;
+      overflow:auto;
+    }
+  }
 
-	&-menu {
-		flex:auto;
-		display:block;
-		box-sizing:border-box;
-		padding:@cascade-transfer-panel-body-menu-padding;
+  &-source-list {
+    display:flex;
+    flex-direction:row;
+    box-sizing:border-box;
+    min-width:@cascade-transfer-panel-width * 2 - 1px;
+  }
+  &-source-list &-source {
+    border-radius:0;
+  }
+  &-source-list &-source:first-child {
+    border-top-left-radius:@cascade-transfer-panel-border-radius;
+    border-bottom-left-radius:@cascade-transfer-panel-border-radius;
+  }
+  &-source-list &-source:last-child {
+    border-top-left-radius:@cascade-transfer-panel-border-radius;
+    border-bottom-left-radius:@cascade-transfer-panel-border-radius;
+  }
+  &-source-list &-source + &-source {
+    margin-left:-1px;
+  }
 
-		&-item {
-			cursor:pointer;
-			display:flex;
-			flex-flow:row nowrap;
-			justify-content:flex-start;
-			align-items:center;
-			box-sizing:border-box;
-			height:@cascade-transfer-panel-body-menu-item-height;
-			padding:@cascade-transfer-panel-body-menu-item-padding;
-			transition:all @transition-duration @transition-timing-function;
+  &-menu {
+    flex:auto;
+    display:block;
+    box-sizing:border-box;
+    padding:@cascade-transfer-panel-body-menu-padding;
 
-			&-checkbox {
-				display:flex;
-				justify-content:center;
-				align-items:center;
-				box-sizing:border-box;
-				margin-right:@cascade-transfer-panel-body-menu-item-checkbox-margin-right;
-			}
+    &-item {
+      cursor:pointer;
+      display:flex;
+      flex-flow:row nowrap;
+      justify-content:flex-start;
+      align-items:center;
+      box-sizing:border-box;
+      height:@cascade-transfer-panel-body-menu-item-height;
+      padding:@cascade-transfer-panel-body-menu-item-padding;
+      transition:all @transition-duration @transition-timing-function;
 
-			&-label {
-				flex:1;
-				display:block;
-				box-sizing:border-box;
+      &-checkbox {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        box-sizing:border-box;
+        margin-right:@cascade-transfer-panel-body-menu-item-checkbox-margin-right;
+      }
 
-				.writeEllipsis;
-			}
+      &-label {
+        flex:1;
+        display:block;
+        box-sizing:border-box;
 
-			&-arrow {
-				display:flex;
-				justify-content:center;
-				align-items:center;
-				box-sizing:border-box;
-				margin-left:@cascade-transfer-panel-body-menu-item-arrow-margin-left;
-				color:@cascade-transfer-panel-body-menu-item-arrow-color;
-				font-size:@cascade-transfer-panel-body-menu-item-arrow-size;
-				transform:scale(0.85);
-			}
+        .writeEllipsis;
+      }
 
-			&:hover {
-				background-color:@cascade-transfer-panel-body-menu-item-hover-background-color;
-			}
+      &-arrow {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        box-sizing:border-box;
+        margin-left:@cascade-transfer-panel-body-menu-item-arrow-margin-left;
+        color:@cascade-transfer-panel-body-menu-item-arrow-color;
+        font-size:@cascade-transfer-panel-body-menu-item-arrow-size;
+        transform:scale(0.85);
+      }
 
-			&-expanded {
-				color:@cascade-transfer-panel-body-menu-item-expanded-font-color;
+      &:hover {
+        background-color:@cascade-transfer-panel-body-menu-item-hover-background-color;
+      }
 
-				&:hover {
-					color:@cascade-transfer-panel-body-menu-item-expanded-font-color;
-				}
-			}
+      &-expanded {
+        color:@cascade-transfer-panel-body-menu-item-expanded-font-color;
 
-			&-checked {
-				color:@cascade-transfer-panel-body-menu-item-checked-font-color;
+        &:hover {
+          color:@cascade-transfer-panel-body-menu-item-expanded-font-color;
+        }
+      }
 
-				&:hover {
-					color:@cascade-transfer-panel-body-menu-item-checked-font-color;
-				}
-			}
+      &-checked {
+        color:@cascade-transfer-panel-body-menu-item-checked-font-color;
 
-			&-disabled {
-				cursor:not-allowed;
-				background-color:@cascade-transfer-panel-body-menu-item-disabled-background-color;
+        &:hover {
+          color:@cascade-transfer-panel-body-menu-item-checked-font-color;
+        }
+      }
 
-				&:hover {
-					background-color:@cascade-transfer-panel-body-menu-item-disabled-hover-background-color;
-				}
-			}
-		}
-	}
+      &-disabled {
+        background-color:@cascade-transfer-panel-body-menu-item-disabled-background-color;
 
-	&-target {
-		display:flex;
-		flex-direction:column;
-		justify-content:flex-start;
-		align-items:stretch;
-		box-sizing:border-box;
-		width:@cascade-transfer-panel-width;
-		height:@cascade-transfer-panel-height;
-		border:1px solid @cascade-transfer-panel-border-color;
-		border-radius:@cascade-transfer-panel-border-radius;
-		margin-left:@margin-md;
+        &:hover {
+          background-color:@cascade-transfer-panel-body-menu-item-disabled-hover-background-color;
+        }
+      }
+    }
+  }
 
-		&-header {
-			display:flex;
-			align-items:center;
-			box-sizing:border-box;
-			border-bottom:1px solid @cascade-transfer-panel-header-border-color;
-			background-color:@cascade-transfer-panel-header-background-color;
-			padding:@cascade-transfer-panel-header-padding;
+  &-target {
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:stretch;
+    box-sizing:border-box;
+    width:@cascade-transfer-panel-width;
+    border:1px solid @cascade-transfer-panel-border-color;
+    border-radius:@cascade-transfer-panel-border-radius;
+    margin-left:@margin-md;
 
-			&-title {
-				flex:1;
-				display:block;
-				box-sizing:border-box;
-				.writeEllipsis;
-			}
+    &-header {
+      display:flex;
+      align-items:center;
+      box-sizing:border-box;
+      border-bottom:1px solid @cascade-transfer-panel-header-border-color;
+      background-color:@cascade-transfer-panel-header-background-color;
+      padding:@cascade-transfer-panel-header-padding;
 
-			&-extra {
-				display:block;
-				box-sizing:border-box;
-				margin-left:@cascade-transfer-panel-header-extra-margin-left;
-			}
-		}
+      &-title {
+        flex:1;
+        display:block;
+        box-sizing:border-box;
+        .writeEllipsis;
+      }
 
-		&-body {
-			flex:auto;
-			display:block;
-			box-sizing:border-box;
-			overflow:auto;
-		}
-	}
+      &-extra {
+        display:block;
+        box-sizing:border-box;
+        margin-left:@cascade-transfer-panel-header-extra-margin-left;
+      }
+    }
 
-	&-choice {
-		flex:auto;
-		display:block;
-		box-sizing:border-box;
-		padding:6px 6px;
+    &-search {
+      display:block;
+      box-sizing:border-box;
+      border-bottom:1px solid @cascade-transfer-panel-search-border-color;
+      padding:@cascade-transfer-panel-search-padding;
+    }
 
-		&-item {
-			display:flex;
-			flex-flow:row nowrap;
-			justify-content:flex-start;
-			align-items:center;
-			box-sizing:border-box;
-			border-radius:@cascade-transfer-panel-body-menu-item-border-radius;
-			background-color:#fafafa;
-			height:@cascade-transfer-panel-body-menu-item-height;
-			padding:@cascade-transfer-panel-body-menu-item-padding;
+    &-body {
+      flex:auto;
+      display:block;
+      box-sizing:border-box;
+      height:@cascade-transfer-panel-body-height;
+      overflow:auto;
+    }
+  }
 
-			&-label {
-				flex:1;
-				display:block;
-				box-sizing:border-box;
+  &-choice {
+    flex:auto;
+    display:block;
+    box-sizing:border-box;
+    padding:6px 6px;
 
-				.writeEllipsis;
-			}
+    &-item {
+      display:flex;
+      flex-flow:row nowrap;
+      justify-content:flex-start;
+      align-items:center;
+      box-sizing:border-box;
+      border-radius:@cascade-transfer-panel-body-menu-item-border-radius;
+      background-color:#fafafa;
+      height:@cascade-transfer-panel-body-menu-item-height;
+      padding:@cascade-transfer-panel-body-menu-item-padding;
 
-			&-btn-deselect {
-				cursor:pointer;
-				display:flex;
-				justify-content:center;
-				align-items:center;
-				box-sizing:border-box;
-				margin-left:8px;
-				color:rgba(0,0,0,0.25);
-				font-size:12px;
-				transform:scale(0.85);
-				transition:all @transition-duration @transition-timing-function;
+      &-label {
+        flex:1;
+        display:block;
+        box-sizing:border-box;
 
-				&:hover {
-					color:rgba(0,0,0,0.45);
-				}
-			}
+        .writeEllipsis;
+      }
 
-			&-disabled {
-				cursor:not-allowed;
-				background-color:@cascade-transfer-panel-body-menu-item-disabled-background-color;
+      &-btn-deselect {
+        cursor:pointer;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        box-sizing:border-box;
+        margin-left:8px;
+        color:rgba(0,0,0,0.25);
+        font-size:12px;
+        transform:scale(0.85);
+        transition:all @transition-duration @transition-timing-function;
 
-				&:hover {
-					background-color:@cascade-transfer-panel-body-menu-item-disabled-hover-background-color;
-				}
-			}
-		}
+        &:hover {
+          color:rgba(0,0,0,0.45);
+        }
+      }
 
-		&-item + &-item {
-			margin-top:6px;
-		}
-	}
+      &-disabled {
+        cursor:not-allowed;
+        background-color:@cascade-transfer-panel-body-menu-item-disabled-background-color;
 
-	&-empty {
-		display:flex;
-		justify-content:center;
-		align-items:center;
-		box-sizing:border-box;
-		height:100%;
-	}
+        &:hover {
+          background-color:@cascade-transfer-panel-body-menu-item-disabled-hover-background-color;
+        }
+      }
+    }
+
+    &-item + &-item {
+      margin-top:6px;
+    }
+  }
+
+  &-empty {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    height:100%;
+  }
 }
