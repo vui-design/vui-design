@@ -85,7 +85,7 @@ const VuiCascadeTransfer = {
 
       this.state.selectedKeys = selectedKeys;
       this.state.value = clone(props.value);
-      this.state.sourceList = sourceList.concat(source);
+      this.state.sourceList = sourceList;
     }
   },
   methods: {

@@ -29802,7 +29802,7 @@ var VuiCascadeTransfer = {
 
       this.state.selectedKeys = selectedKeys;
       this.state.value = Object(utils_clone["a" /* default */])(props.value);
-      this.state.sourceList = sourceList.concat(source);
+      this.state.sourceList = sourceList;
     }
   },
   methods: {
@@ -29877,12 +29877,12 @@ var VuiCascadeTransfer = {
 
       if (children && children.length > 0) {
         var sourceList = this.state.sourceList.slice(0, level);
-        var _source = {
+        var source = {
           parent: option,
           options: children
         };
 
-        this.state.sourceList = sourceList.concat(_source);
+        this.state.sourceList = sourceList.concat(source);
       } else {
         this.state.sourceList = this.state.sourceList.slice(0, level);
       }
@@ -43869,7 +43869,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.7",
+  version: "1.10.8",
   install: src_install,
   // Locale
   locale: src_locale.use,
