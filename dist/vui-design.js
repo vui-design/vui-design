@@ -34972,27 +34972,17 @@ var VuiTableFilter = {
 
 
 
+// 
+var rowTreeviewChildrenKey = "children";
+var rowExpansionWidth = 50;
+var rowSelectionWidth = 50;
+
 // 判断事件源元素是否需要被忽略
 var utils_isIgnoreElements = function isIgnoreElements(event, predicate) {
   var e = event || window.event;
   var element = e.target || e.srcElement;
 
   return is["a" /* default */].function(predicate) ? predicate(element) : false;
-};
-
-// 获取列数据的唯一键值
-var utils_getColumnKey = function getColumnKey(column) {
-  var columnKey = void 0;
-
-  if (column.key) {
-    columnKey = column.key;
-  } else if (column.dataIndex) {
-    columnKey = column.dataIndex;
-  } else {
-    columnKey = guid();
-  }
-
-  return columnKey;
 };
 
 // 获取行数据的唯一键值
@@ -35015,21 +35005,21 @@ var utils_getRowKey = function getRowKey(row, property) {
 // 获取子行数据
 var getRowChildren = function getRowChildren(row) {
   var childrenKey = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "children";
-
   return row[childrenKey];
 };
 
 // 判断给定行是否可展开（用于树形结构，根据子行数量判断是否允许展开）
 var utils_getRowTogglable = function getRowTogglable(row, rowTreeview) {
-  var children = getRowChildren(row, rowTreeview.children);
+  var childrenKey = getTreeviewChildrenKey(rowTreeview);
+  var children = getRowChildren(row, childrenKey);
 
   return is["a" /* default */].array(children) && children.length > 0;
 };
 
 // 判断给定行是否可展开（用于展开功能，根据用户配置判断是否允许展开）
 var utils_getRowExpandable = function getRowExpandable(row, rowKey, rowExpansion) {
-  var expandable = true;
   var predicate = rowExpansion.expandable;
+  var expandable = true;
 
   if (is["a" /* default */].function(predicate)) {
     expandable = predicate(Object(utils_clone["a" /* default */])(row), rowKey);
@@ -35098,6 +35088,16 @@ var getTreemapParents = function getTreemapParents(treemap, rowKey) {
   return parents;
 };
 
+// 启用了树形表格时，获取子行对应的键名
+var getTreeviewChildrenKey = function getTreeviewChildrenKey(rowTreeview) {
+  return rowTreeview.children ? rowTreeview.children : rowTreeviewChildrenKey;
+};
+
+// 启用了折叠功能时，获取折叠操作列的列宽
+var getExpansionWidth = function getExpansionWidth(rowExpansion) {
+  return rowExpansion.width ? rowExpansion.width : rowExpansionWidth;
+};
+
 // 启用了选择功能时，获取选择方式（多选或单选）
 var getSelectionMultiple = function getSelectionMultiple(rowSelection) {
   var multiple = true;
@@ -35109,10 +35109,15 @@ var getSelectionMultiple = function getSelectionMultiple(rowSelection) {
   return multiple;
 };
 
+// 启用了选择功能时，获取选择操作列的列宽
+var getSelectionWidth = function getSelectionWidth(rowSelection) {
+  return rowSelection.width ? rowSelection.width : rowSelectionWidth;
+};
+
 // 启用了选择功能时，获取 Checkbox 或 Radio 组件的自定义属性
 var utils_getSelectionComponentProps = function getSelectionComponentProps(row, rowKey, rowSelection) {
-  var componentProps = void 0;
   var getter = rowSelection.getComponentProps;
+  var componentProps = void 0;
 
   if (is["a" /* default */].function(getter)) {
     componentProps = getter(Object(utils_clone["a" /* default */])(row), rowKey);
@@ -35147,31 +35152,78 @@ var getSelectionComponentStatus = function getSelectionComponentStatus(rows, opt
   };
 };
 
-// 将 columns 配置解析为组件内部状态
-var utils_addPropertiesToColumnsItem = function addPropertiesToColumnsItem(columns, parent) {
-  var isGroupingColumns = columns.some(function (column) {
-    return "children" in column;
-  });
+// 为 columns 配置填充缺省属性
+var utils_addColumnProperties = function addColumnProperties(array, parent) {
+  return array.map(function (target, targetIndex) {
+    var column = Object(utils_clone["a" /* default */])(target);
 
-  return columns.map(function (column) {
     // 填充 key 属性
     if (!("key" in column)) {
-      column.key = "dataIndex" in column ? column.dataIndex : guid();
+      column.key = "dataIndex" in column ? column.dataIndex : parent ? parent.key + "-" + targetIndex : "" + targetIndex;
     }
 
-    // 如果具有父级，则 fixed 属性强制继承父级
+    // 如果存在父级，则 fixed 属性强制继承父级（表头分组中不支持对子列头设置 fixed 属性，否则将导致滚动时布局混乱）
     if (parent) {
-      column.fixed = parent.fixed;
+      if (parent.fixed) {
+        column.fixed = parent.fixed;
+      } else {
+        delete column.fixed;
+      }
+    }
+
+    // 计算列在 fixed 模式下的位置及其偏移量
+    if (column.fixed === "left" || column.fixed === "right") {
+      // 
+      var prev = array[targetIndex - 1];
+
+      if (parent) {
+        column.fixedFirst = parent.fixedFirst ? !prev : false;
+      } else {
+        column.fixedFirst = !prev || prev.fixed !== column.fixed;
+      }
+
+      // 
+      var next = array[targetIndex + 1];
+
+      if (parent) {
+        column.fixedLast = parent.fixedLast ? !next : false;
+      } else {
+        column.fixedLast = !next || next.fixed !== column.fixed;
+      }
+
+      // 
+      var startIndex = column.fixed === "left" ? 0 : targetIndex + 1;
+      var endIndex = column.fixed === "left" ? targetIndex : array.length;
+      var offset = array.slice(startIndex, endIndex).reduce(function (a, b) {
+        if (b.children) {
+          return a + flatten_flatten(b.children, "children").reduce(function (m, n) {
+            return m + (n.width ? n.width : 0);
+          }, 0);
+        } else {
+          return a + (b.width ? b.width : 0);
+        }
+      }, 0);
+
+      if (parent && parent.offset) {
+        column.offset = offset + parent.offset;
+      } else {
+        column.offset = offset;
+      }
+    }
+
+    // 填充层级属性
+    column.level = parent ? parent.level + 1 : 1;
+
+    // 不支持对分组表头进行自定义表头列合并
+    if (column.children) {
+      column.colSpan = flatten_flatten(column.children, "children").length;
+    } else if (!("colSpan" in column)) {
+      column.colSpan = 1;
     }
 
     // 设置列的默认水平对齐方式
     if (!column.align) {
       column.align = "left";
-    }
-
-    // 表头分组中，不允许自定义表头列合并
-    if (isGroupingColumns && "colSpan" in column) {
-      delete column.colSpan;
     }
 
     // 列提示
@@ -35219,7 +35271,7 @@ var utils_addPropertiesToColumnsItem = function addPropertiesToColumnsItem(colum
 
     // 子列头
     if (column.children) {
-      column.children = addPropertiesToColumnsItem(column.children, column);
+      column.children = addColumnProperties(column.children, column);
     }
 
     // 返回填充属性后的列数据
@@ -35227,10 +35279,12 @@ var utils_addPropertiesToColumnsItem = function addPropertiesToColumnsItem(colum
   });
 };
 
-var utils_getStateColumnsFromProps = function getStateColumnsFromProps(columns) {
-  columns = Object(utils_clone["a" /* default */])(columns);
+// 将 columns 属性解析为组件内部状态
+var utils_getColumns = function getColumns(columns) {
+  var array = columns.slice();
 
-  columns.sort(function (a, b) {
+  // 根据 fixed 属性进行排序，fixed 为 left 排左侧，fixed 为 right 排右侧
+  array.sort(function (a, b) {
     if (a.fixed === "left") {
       return b.fixed === "left" ? 0 : -1;
     } else if (a.fixed === "right") {
@@ -35240,72 +35294,40 @@ var utils_getStateColumnsFromProps = function getStateColumnsFromProps(columns) 
     }
   });
 
-  return utils_addPropertiesToColumnsItem(columns);
+  // 填充缺省属性并返回
+  return utils_addColumnProperties(array);
 };
 
-// 将 data 配置解析为组件内部状态
-var addPropertiesToDataItem = function addPropertiesToDataItem(data, rowKey) {
-  return data.map(function (row) {
-    return row;
-  });
+// 将 data 属性解析为组件内部状态
+// 这里使用数组的 slice 方法实现浅拷贝出于以下两种考虑：
+// 1、防止内部排序逻辑改变原数组
+// 2、防止数组中的对象在无变化时被复制成一个新对象，导致不必要的重新渲染
+var getData = function getData(data) {
+  return data.slice();
 };
 
-var utils_getStateDataFromProps = function getStateDataFromProps(data) {
-  data = Object(utils_clone["a" /* default */])(data);
-
-  return addPropertiesToDataItem(data);
-};
-
-// 获取表格 colgroup 数据，用于设置列宽
-var utils_getStateColgroup = function getStateColgroup(state) {
+// 获取表格 colgroup 数据，用于设置列宽及固定列偏移距离
+var utils_getColgroup = function getColgroup(state) {
   return flatten_flatten(state.columns, "children");
 };
 
 // 获取表格 thead 数据，用于渲染表格头
-var utils_getStateThead = function getStateThead(state) {
-  var max = 1;
-  var traverse = function traverse(column, parent) {
-    if (parent) {
-      column.level = parent.level + 1;
-
-      if (max < column.level) {
-        max = column.level;
-      }
-    } else {
-      column.level = 1;
-    }
-
-    if (column.children) {
-      var colSpan = 0;
-
-      column.children.forEach(function (element) {
-        traverse(element, column);
-        colSpan += element.colSpan;
-      });
-
-      column.colSpan = colSpan;
-    } else {
-      column.colSpan = "colSpan" in column ? column.colSpan : 1;
-    }
-  };
-
-  state.columns.forEach(function (column) {
-    return traverse(column);
-  });
-
+var utils_getThead = function getThead(state) {
+  var columns = flatten_flatten(state.columns, "children", true);
+  var level = Math.max.apply(null, columns.map(function (column) {
+    return column.level;
+  }));
   var rows = [];
 
-  for (var i = 0; i < max; i++) {
+  for (var i = 0; i < level; i++) {
     rows.push([]);
   }
 
-  state.columns = flatten_flatten(state.columns, "children", true);
-
-  state.columns.forEach(function (column) {
+  columns.forEach(function (column) {
     if (column.children) {
       column.rowSpan = 1;
     } else {
-      column.rowSpan = max - column.level + 1;
+      column.rowSpan = level - column.level + 1;
     }
 
     rows[column.level - 1].push(column);
@@ -35324,7 +35346,7 @@ var src_utils_filter = function filter(column, data, props) {
     var boolean = method(value, Object(utils_clone["a" /* default */])(row));
 
     if (boolean && props.rowTreeview) {
-      var childrenKey = props.rowTreeview.children || "children";
+      var childrenKey = getTreeviewChildrenKey(props.rowTreeview);
       var children = getRowChildren(row, childrenKey);
 
       if (is["a" /* default */].array(children) && children.length > 0) {
@@ -35336,9 +35358,7 @@ var src_utils_filter = function filter(column, data, props) {
   });
 };
 
-var utils_getStateTbodyByFilter = function getStateTbodyByFilter(columns, data, props) {
-  columns = flatten_flatten(columns, "children");
-
+var getTbodyByFilter = function getTbodyByFilter(columns, data, props) {
   columns.forEach(function (column) {
     if (column.filter && column.filter.method && !column.filter.useServerFilter) {
       data = src_utils_filter(column, data, props);
@@ -35371,7 +35391,7 @@ var utils_sorter = function sorter(column, data, props) {
   });
 
   if (props.rowTreeview) {
-    var childrenKey = props.rowTreeview.children || "children";
+    var childrenKey = getTreeviewChildrenKey(props.rowTreeview);
 
     data.forEach(function (row) {
       var children = getRowChildren(row, childrenKey);
@@ -35385,9 +35405,7 @@ var utils_sorter = function sorter(column, data, props) {
   return data;
 };
 
-var utils_getStateTbodyBySorter = function getStateTbodyBySorter(columns, data, props) {
-  columns = flatten_flatten(columns, "children");
-
+var getTbodyBySorter = function getTbodyBySorter(columns, data, props) {
   columns.forEach(function (column) {
     if (column.sorter && !column.sorter.useServerSort) {
       data = utils_sorter(column, data, props);
@@ -35398,14 +35416,14 @@ var utils_getStateTbodyBySorter = function getStateTbodyBySorter(columns, data, 
 };
 
 // 获取表格 body 数据，用于渲染表格体
-var utils_getStateTbody = function getStateTbody(props, state) {
-  var columns = Object(utils_clone["a" /* default */])(state.columns);
-  var data = Object(utils_clone["a" /* default */])(state.data);
+var utils_getTbody = function getTbody(props, state) {
+  var columns = state.colgroup;
+  var data = state.data;
 
   // 启用了本地筛选功能时进行筛选处理（包含了嵌套数据的筛选）
-  data = utils_getStateTbodyByFilter(columns, data, props);
+  data = getTbodyByFilter(columns, data, props);
   // 启用了本地排序功能时进行排序处理（包含了嵌套数据的排序）
-  data = utils_getStateTbodyBySorter(columns, data, props);
+  data = getTbodyBySorter(columns, data, props);
 
   return data;
 };
@@ -35413,7 +35431,6 @@ var utils_getStateTbody = function getStateTbody(props, state) {
 // 默认导出指定接口
 /* harmony default export */ var table_src_utils = ({
   isIgnoreElements: utils_isIgnoreElements,
-  getColumnKey: utils_getColumnKey,
   getRowKey: utils_getRowKey,
   getRowChildren: getRowChildren,
   getRowTogglable: utils_getRowTogglable,
@@ -35421,16 +35438,19 @@ var utils_getStateTbody = function getStateTbody(props, state) {
   getTreemap: utils_getTreemap,
   getTreemapChildren: getTreemapChildren,
   getTreemapParents: getTreemapParents,
+  getTreeviewChildrenKey: getTreeviewChildrenKey,
+  getExpansionWidth: getExpansionWidth,
+  getSelectionWidth: getSelectionWidth,
   getSelectionMultiple: getSelectionMultiple,
   getSelectionComponentProps: utils_getSelectionComponentProps,
   getSelectionComponentStatus: getSelectionComponentStatus,
-  getStateColumnsFromProps: utils_getStateColumnsFromProps,
-  getStateDataFromProps: utils_getStateDataFromProps,
-  getStateColgroup: utils_getStateColgroup,
-  getStateThead: utils_getStateThead,
-  getStateTbodyByFilter: utils_getStateTbodyByFilter,
-  getStateTbodyBySorter: utils_getStateTbodyBySorter,
-  getStateTbody: utils_getStateTbody
+  getColumns: utils_getColumns,
+  getData: getData,
+  getColgroup: utils_getColgroup,
+  getThead: utils_getThead,
+  getTbodyByFilter: getTbodyByFilter,
+  getTbodyBySorter: getTbodyBySorter,
+  getTbody: utils_getTbody
 });
 // CONCATENATED MODULE: ./src/components/table/src/table-thead.js
 
@@ -35459,7 +35479,6 @@ var VuiTableThead = {
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string.def("vui-table"),
-    fixed: prop_types["a" /* default */].string,
     columns: prop_types["a" /* default */].array.def([]),
     data: prop_types["a" /* default */].array.def([]),
     colgroup: prop_types["a" /* default */].array.def([]),
@@ -35474,85 +35493,65 @@ var VuiTableThead = {
     locale: prop_types["a" /* default */].object
   },
   methods: {
-    maybeShowColumn: function maybeShowColumn(column) {
-      var props = this.$props;
-
-      var boolean = false;
-
-      if (!props.fixed && !column.fixed) {
-        boolean = true;
-      } else if (props.fixed === "left" && column.fixed === "left") {
-        boolean = true;
-      } else if (props.fixed === "right" && column.fixed === "right") {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnTooltip: function maybeShowColumnTooltip(column) {
-      var props = this.$props;
-
-      var maybeShowColumn = this.maybeShowColumn(column);
-      var boolean = false;
-
-      if (column.tooltip && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnSorter: function maybeShowColumnSorter(column) {
-      var props = this.$props;
-
-      var maybeShowColumn = this.maybeShowColumn(column);
-      var boolean = false;
-
-      if (column.sorter && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnFilter: function maybeShowColumnFilter(column) {
-      var props = this.$props;
-
-      var maybeShowColumn = this.maybeShowColumn(column);
-      var boolean = false;
-
-      if (column.filter && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
     getColumnClassName: function getColumnClassName(type, column) {
-      if (!column) {
-        column = type;
-        type = undefined;
-      }
+      var _ref;
 
       var props = this.$props;
+      var fixedFirst = column.fixedFirst,
+          fixedLast = column.fixedLast,
+          _column$align = column.align,
+          align = _column$align === undefined ? "center" : _column$align,
+          ellipsis = column.ellipsis,
+          className = column.className;
 
-      var align = column.align || "center";
-      var ellipsis = column.ellipsis;
-      var className = column.className;
+      var fixed = column.fixed;
 
-      if (type === "expansion") {
-        var _ref;
+      if (type === "expansion" || type === "selection") {
+        fixed = props.colgroup.findIndex(function (col) {
+          return col.fixed === "left";
+        }) > -1 ? "left" : undefined;
+      }
 
-        return _ref = {}, defineProperty_default()(_ref, props.classNamePrefix + "-column", true), defineProperty_default()(_ref, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref, props.classNamePrefix + "-column-with-expansion", true), defineProperty_default()(_ref, "" + className, className), _ref;
-      } else if (type === "selection") {
-        var _ref2;
+      return _ref = {}, defineProperty_default()(_ref, props.classNamePrefix + "-column", true), defineProperty_default()(_ref, props.classNamePrefix + "-column-fixed-" + fixed, fixed), defineProperty_default()(_ref, props.classNamePrefix + "-column-fixed-left-last", fixed === "left" && fixedLast), defineProperty_default()(_ref, props.classNamePrefix + "-column-fixed-right-first", fixed === "right" && fixedFirst), defineProperty_default()(_ref, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref, props.classNamePrefix + "-column-with-" + type, type), defineProperty_default()(_ref, props.classNamePrefix + "-column-with-sorter", column.sorter), defineProperty_default()(_ref, props.classNamePrefix + "-column-with-filter", column.filter), defineProperty_default()(_ref, "" + className, className), _ref;
+    },
+    getColumnStyle: function getColumnStyle(type, column) {
+      var props = this.$props;
 
-        return _ref2 = {}, defineProperty_default()(_ref2, props.classNamePrefix + "-column", true), defineProperty_default()(_ref2, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref2, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref2, props.classNamePrefix + "-column-with-selection", true), defineProperty_default()(_ref2, "" + className, className), _ref2;
-      } else {
-        var _ref3;
 
-        var maybeShowColumn = this.maybeShowColumn(column);
-        var maybeShowColumnSorter = this.maybeShowColumnSorter(column);
-        var maybeShowColumnFilter = this.maybeShowColumnFilter(column);
+      if (type === "expansion" || type === "selection") {
+        var isFixed = props.colgroup.findIndex(function (col) {
+          return col.fixed === "left";
+        }) > -1;
 
-        return _ref3 = {}, defineProperty_default()(_ref3, props.classNamePrefix + "-column", true), defineProperty_default()(_ref3, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref3, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref3, props.classNamePrefix + "-column-hidden", !maybeShowColumn), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-sorter", maybeShowColumnSorter), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-filter", maybeShowColumnFilter), defineProperty_default()(_ref3, "" + className, className), _ref3;
+        if (isFixed) {
+          var offset = 0;
+
+          if (type === "selection" && props.rowExpansion) {
+            offset = offset + (props.rowExpansion.width ? props.rowExpansion.width : 50);
+          }
+
+          return {
+            left: offset + "px"
+          };
+        }
+      } else if (column.fixed === "left") {
+        var _offset = column.offset;
+
+        if (props.rowExpansion) {
+          _offset = _offset + (props.rowExpansion.width ? props.rowExpansion.width : 50);
+        }
+
+        if (props.rowSelection) {
+          _offset = _offset + (props.rowSelection.width ? props.rowSelection.width : 50);
+        }
+
+        return {
+          left: _offset + "px"
+        };
+      } else if (column.fixed === "right") {
+        return {
+          right: column.offset + "px"
+        };
       }
     },
     getColumnBodyClassName: function getColumnBodyClassName(column) {
@@ -35574,12 +35573,12 @@ var VuiTableThead = {
       return defineProperty_default()({}, props.classNamePrefix + "-column-title", true);
     },
     getColumnSelectionClassName: function getColumnSelectionClassName(column, checked) {
-      var _ref7;
+      var _ref5;
 
       var props = this.$props;
 
 
-      return _ref7 = {}, defineProperty_default()(_ref7, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref7, "active", checked), _ref7;
+      return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref5, "active", checked), _ref5;
     },
     getColumnTooltipClassName: function getColumnTooltipClassName(column) {
       var props = this.$props;
@@ -35594,12 +35593,12 @@ var VuiTableThead = {
       return defineProperty_default()({}, props.classNamePrefix + "-column-sorter", true);
     },
     getColumnSorterCaretClassName: function getColumnSorterCaretClassName(column, order) {
-      var _ref10;
+      var _ref8;
 
       var props = this.$props;
 
 
-      return _ref10 = {}, defineProperty_default()(_ref10, props.classNamePrefix + "-column-sorter-caret", true), defineProperty_default()(_ref10, "active", column.sorter.order === order), _ref10;
+      return _ref8 = {}, defineProperty_default()(_ref8, props.classNamePrefix + "-column-sorter-caret", true), defineProperty_default()(_ref8, "active", column.sorter.order === order), _ref8;
     },
     handleSelectAll: function handleSelectAll(checked) {
       this.vuiTable.handleSelectAll(checked);
@@ -35619,14 +35618,14 @@ var VuiTableThead = {
         order = "none";
       }
 
-      this.vuiTable.handleSort(Object(utils_clone["a" /* default */])(column), order);
+      this.vuiTable.handleSort(column, order);
     },
     handleFilter: function handleFilter(column, value) {
       if (!column.filter) {
         return;
       }
 
-      this.vuiTable.handleFilter(Object(utils_clone["a" /* default */])(column), value);
+      this.vuiTable.handleFilter(column, value);
     },
     getColgroup: function getColgroup(h) {
       var props = this.$props;
@@ -35642,21 +35641,17 @@ var VuiTableThead = {
 
 
       if (props.rowExpansion) {
-        var width = props.rowExpansion.width || 50;
-
-        cols.push(h("col", { key: "expansion", attrs: { width: width }
+        cols.push(h("col", { key: "expansion", attrs: { width: table_src_utils.getExpansionWidth(props.rowExpansion) }
         }));
       }
 
       if (props.rowSelection) {
-        var _width = props.rowSelection.width || 50;
-
-        cols.push(h("col", { key: "selection", attrs: { width: _width }
+        cols.push(h("col", { key: "selection", attrs: { width: table_src_utils.getSelectionWidth(props.rowSelection) }
         }));
       }
 
-      columns.forEach(function (column, columnIndex) {
-        cols.push(h("col", { key: column.key || columnIndex, attrs: { width: column.width }
+      columns.forEach(function (column) {
+        cols.push(h("col", { key: column.key, attrs: { width: column.width }
         }));
       });
     },
@@ -35686,15 +35681,16 @@ var VuiTableThead = {
               attrs: { colspan: "1",
                 rowspan: rows.length
               },
-              "class": _this.getColumnClassName("expansion", props.rowExpansion)
+              "class": _this.getColumnClassName("expansion", props.rowExpansion),
+              style: _this.getColumnStyle("expansion", props.rowExpansion)
             },
             [props.rowExpansion.title]
           ));
         }
 
         if (props.rowSelection && rowIndex === 0) {
-          var component = void 0;
           var isMultiple = table_src_utils.getSelectionMultiple(props.rowSelection);
+          var component = void 0;
 
           if (props.rowSelection.title) {
             component = h(
@@ -35706,9 +35702,7 @@ var VuiTableThead = {
             var data = [];
 
             if (props.rowTreeview) {
-              var property = props.rowTreeview.children || "children";
-
-              data = flatten_flatten(props.tbody, property, true);
+              data = flatten_flatten(props.tbody, table_src_utils.getTreeviewChildrenKey(props.rowTreeview), true);
             } else {
               data = props.tbody;
             }
@@ -35739,7 +35733,8 @@ var VuiTableThead = {
               attrs: { colspan: "1",
                 rowspan: rows.length
               },
-              "class": _this.getColumnClassName("selection", props.rowSelection)
+              "class": _this.getColumnClassName("selection", props.rowSelection),
+              style: _this.getColumnStyle("selection", props.rowSelection)
             },
             [component]
           ));
@@ -35758,7 +35753,7 @@ var VuiTableThead = {
             [is["a" /* default */].function(column.title) ? column.title(h, Object(utils_clone["a" /* default */])(column), columnIndex) : column.title]
           ));
 
-          if (_this.maybeShowColumnTooltip(column)) {
+          if (column.tooltip) {
             body.push(h(
               "div",
               { "class": _this.getColumnTooltipClassName(column) },
@@ -35778,7 +35773,7 @@ var VuiTableThead = {
             ));
           }
 
-          if (_this.maybeShowColumnSorter(column)) {
+          if (column.sorter) {
             body.push(h(
               "div",
               { "class": _this.getColumnSorterClassName(column) },
@@ -35794,7 +35789,7 @@ var VuiTableThead = {
 
           var extra = void 0;
 
-          if (_this.maybeShowColumnFilter(column)) {
+          if (column.filter) {
             extra = h(
               "div",
               { "class": _this.getColumnExtraClassName(column) },
@@ -35822,7 +35817,8 @@ var VuiTableThead = {
               attrs: { colspan: column.colSpan,
                 rowspan: column.rowSpan
               },
-              "class": _this.getColumnClassName(column),
+              "class": _this.getColumnClassName(undefined, column),
+              style: _this.getColumnStyle(undefined, column),
               on: {
                 "click": function click(e) {
                   return _this.handleSort(column);
@@ -35897,7 +35893,6 @@ var VuiTableTbody = {
   mixins: [mixins_locale],
   props: {
     classNamePrefix: prop_types["a" /* default */].string.def("vui-table"),
-    fixed: prop_types["a" /* default */].string,
     columns: prop_types["a" /* default */].array.def([]),
     data: prop_types["a" /* default */].array.def([]),
     colgroup: prop_types["a" /* default */].array.def([]),
@@ -35911,7 +35906,6 @@ var VuiTableTbody = {
     openedRowKeys: prop_types["a" /* default */].array.def([]),
     expandedRowKeys: prop_types["a" /* default */].array.def([]),
     selectedRowKeys: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].array, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def([]),
-    hoveredRowKey: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     striped: prop_types["a" /* default */].bool.def(false),
     scroll: prop_types["a" /* default */].object,
     locale: prop_types["a" /* default */].object
@@ -35953,12 +35947,6 @@ var VuiTableTbody = {
         return props.selectedRowKeys === rowKey;
       }
     },
-    isRowHovered: function isRowHovered(rowKey) {
-      var props = this.$props;
-
-
-      return props.hoveredRowKey === rowKey;
-    },
     getRowClassName: function getRowClassName(type, row, rowIndex, rowKey) {
       var props = this.$props;
 
@@ -35972,7 +35960,6 @@ var VuiTableTbody = {
 
         var stripe = rowIndex % 2 === 0 ? "even" : "odd";
         var isSelected = this.isRowSelected(rowKey);
-        var isHovered = this.isRowHovered(rowKey);
         var className = void 0;
 
         if (is["a" /* default */].string(props.rowClassName)) {
@@ -35981,70 +35968,98 @@ var VuiTableTbody = {
           className = props.rowClassName(row, rowIndex, rowKey);
         }
 
-        return _ref2 = {}, defineProperty_default()(_ref2, props.classNamePrefix + "-row", true), defineProperty_default()(_ref2, props.classNamePrefix + "-row-" + stripe, props.striped), defineProperty_default()(_ref2, props.classNamePrefix + "-row-selected", isSelected), defineProperty_default()(_ref2, props.classNamePrefix + "-row-hovered", isHovered), defineProperty_default()(_ref2, "" + className, className), _ref2;
+        return _ref2 = {}, defineProperty_default()(_ref2, props.classNamePrefix + "-row", true), defineProperty_default()(_ref2, props.classNamePrefix + "-row-" + stripe, props.striped), defineProperty_default()(_ref2, props.classNamePrefix + "-row-selected", isSelected), defineProperty_default()(_ref2, "" + className, className), _ref2;
       }
     },
-    getColumnClassName: function getColumnClassName(type, column, columnKey, row, rowKey) {
+    getColumnClassName: function getColumnClassName(type, column, columnKey, row) {
+      var _ref3;
+
+      var props = this.$props;
+      var fixedFirst = column.fixedFirst,
+          fixedLast = column.fixedLast,
+          _column$align = column.align,
+          align = _column$align === undefined ? "center" : _column$align,
+          ellipsis = column.ellipsis,
+          className = column.className;
+
+      var fixed = column.fixed;
+      var cellClassName = void 0;
+
+      if (type === "expansion" || type === "selection") {
+        fixed = props.colgroup.findIndex(function (col) {
+          return col.fixed === "left";
+        }) > -1 ? "left" : undefined;
+      }
+
+      if (row && row.cellClassName && columnKey) {
+        cellClassName = row.cellClassName[columnKey];
+      }
+
+      return _ref3 = {}, defineProperty_default()(_ref3, props.classNamePrefix + "-column", true), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-" + fixed, fixed), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-left-last", fixed === "left" && fixedLast), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-right-first", fixed === "right" && fixedFirst), defineProperty_default()(_ref3, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref3, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-" + type, type), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-sorter", column.sorter), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-filter", column.filter), defineProperty_default()(_ref3, "" + className, className), defineProperty_default()(_ref3, "" + cellClassName, cellClassName), _ref3;
+    },
+    getColumnStyle: function getColumnStyle(type, column) {
       var props = this.$props;
 
-      var align = column.align || "center";
-      var ellipsis = column.ellipsis;
-      var className = column.className;
 
-      if (type === "expansion") {
-        var _ref3;
+      if (type === "expansion" || type === "selection") {
+        var isFixed = props.colgroup.findIndex(function (col) {
+          return col.fixed === "left";
+        }) > -1;
 
-        return _ref3 = {}, defineProperty_default()(_ref3, props.classNamePrefix + "-column", true), defineProperty_default()(_ref3, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref3, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-expansion", true), defineProperty_default()(_ref3, "" + className, className), _ref3;
-      } else if (type === "selection") {
-        var _ref4;
+        if (isFixed) {
+          var offset = 0;
 
-        return _ref4 = {}, defineProperty_default()(_ref4, props.classNamePrefix + "-column", true), defineProperty_default()(_ref4, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref4, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref4, props.classNamePrefix + "-column-with-selection", true), defineProperty_default()(_ref4, "" + className, className), _ref4;
-      } else {
-        var _ref5;
+          if (type === "selection" && props.rowExpansion) {
+            offset = offset + table_src_utils.getExpansionWidth(props.rowExpansion);
+          }
 
-        var maybeShowColumnSorter = column.sorter;
-        var maybeShowColumnFilter = column.filter;
-        var maybeShowColumn = false;
-        var customizedClassName = void 0;
+          return {
+            left: offset + "px"
+          };
+        }
+      } else if (column.fixed === "left") {
+        var _offset = column.offset;
 
-        if (!props.fixed && !column.fixed) {
-          maybeShowColumn = true;
-        } else if (props.fixed === "left" && column.fixed === "left") {
-          maybeShowColumn = true;
-        } else if (props.fixed === "right" && column.fixed === "right") {
-          maybeShowColumn = true;
+        if (props.rowExpansion) {
+          _offset = _offset + table_src_utils.getExpansionWidth(props.rowExpansion);
         }
 
-        if (row.columnClassNames && columnKey && row.columnClassNames[columnKey]) {
-          customizedClassName = row.columnClassNames[columnKey];
+        if (props.rowSelection) {
+          _offset = _offset + table_src_utils.getSelectionWidth(props.rowSelection);
         }
 
-        return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column", true), defineProperty_default()(_ref5, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref5, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref5, props.classNamePrefix + "-column-hidden", !maybeShowColumn), defineProperty_default()(_ref5, props.classNamePrefix + "-column-with-sorter", maybeShowColumnSorter), defineProperty_default()(_ref5, props.classNamePrefix + "-column-with-filter", maybeShowColumnFilter), defineProperty_default()(_ref5, "" + className, className), defineProperty_default()(_ref5, "" + customizedClassName, customizedClassName), _ref5;
+        return {
+          left: _offset + "px"
+        };
+      } else if (column.fixed === "right") {
+        return {
+          right: column.offset + "px"
+        };
       }
     },
     getColumnSwitchClassName: function getColumnSwitchClassName(column, opened) {
+      var _ref4;
+
+      var props = this.$props;
+
+
+      return _ref4 = {}, defineProperty_default()(_ref4, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref4, "active", opened), _ref4;
+    },
+    getColumnExpansionClassName: function getColumnExpansionClassName(column, expanded) {
+      var _ref5;
+
+      var props = this.$props;
+
+
+      return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref5, "active", expanded), _ref5;
+    },
+    getColumnSelectionClassName: function getColumnSelectionClassName(column, selected) {
       var _ref6;
 
       var props = this.$props;
 
 
-      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref6, "active", opened), _ref6;
-    },
-    getColumnExpansionClassName: function getColumnExpansionClassName(column, expanded) {
-      var _ref7;
-
-      var props = this.$props;
-
-
-      return _ref7 = {}, defineProperty_default()(_ref7, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref7, "active", expanded), _ref7;
-    },
-    getColumnSelectionClassName: function getColumnSelectionClassName(column, selected) {
-      var _ref8;
-
-      var props = this.$props;
-
-
-      return _ref8 = {}, defineProperty_default()(_ref8, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref8, "active", selected), _ref8;
+      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref6, "active", selected), _ref6;
     },
     handleRowMouseenter: function handleRowMouseenter(event, row, rowIndex, rowKey) {
       this.vuiTable.handleRowMouseenter(row, rowIndex, rowKey);
@@ -36154,26 +36169,17 @@ var VuiTableTbody = {
 
 
       if (props.rowExpansion) {
-        var _props$rowExpansion$w = props.rowExpansion.width,
-            width = _props$rowExpansion$w === undefined ? 50 : _props$rowExpansion$w;
-
-
-        cols.push(h("col", { key: "expansion", attrs: { width: width }
+        cols.push(h("col", { key: "expansion", attrs: { width: table_src_utils.getExpansionWidth(props.rowExpansion) }
         }));
       }
 
       if (props.rowSelection) {
-        var _props$rowSelection$w = props.rowSelection.width,
-            _width = _props$rowSelection$w === undefined ? 50 : _props$rowSelection$w;
-
-        cols.push(h("col", { key: "selection", attrs: { width: _width }
+        cols.push(h("col", { key: "selection", attrs: { width: table_src_utils.getExpansionWidth(props.rowSelection) }
         }));
       }
 
       columns.forEach(function (column, columnIndex) {
-        var columnKey = table_src_utils.getColumnKey(column);
-
-        cols.push(h("col", { key: columnKey, attrs: { width: column.width }
+        cols.push(h("col", { key: column.key, attrs: { width: column.width }
         }));
       });
     },
@@ -36238,12 +36244,11 @@ var VuiTableTbody = {
 
         if (props.rowExpansion) {
           var isExpandable = table_src_utils.getRowExpandable(row, rowKey, props.rowExpansion);
-          var isRowExpanded = _this.isRowExpanded(rowKey);
           var btnExpansion = void 0;
 
           if (isExpandable) {
             var btnExpansionAttributes = {
-              class: _this.getColumnExpansionClassName(props.rowExpansion, isRowExpanded),
+              class: _this.getColumnExpansionClassName(props.rowExpansion, _this.isRowExpanded(rowKey)),
               on: {
                 click: function click(e) {
                   return _this.handleRowExpand(e, row, rowIndex, rowKey);
@@ -36256,7 +36261,7 @@ var VuiTableTbody = {
 
           tds.push(h(
             "td",
-            { key: "expansion", "class": _this.getColumnClassName("expansion", props.rowExpansion) },
+            { key: "expansion", "class": _this.getColumnClassName("expansion", props.rowExpansion), style: _this.getColumnStyle("expansion", props.rowExpansion) },
             [btnExpansion]
           ));
         }
@@ -36280,7 +36285,7 @@ var VuiTableTbody = {
           };
 
           if (props.rowTreeview && isMultiple && !props.rowSelection.strictly) {
-            var childrenKey = props.rowTreeview.children;
+            var childrenKey = table_src_utils.getTreeviewChildrenKey(props.rowTreeview);
             var children = table_src_utils.getRowChildren(row, childrenKey);
 
             if (is["a" /* default */].array(children) && children.length > 0) {
@@ -36306,7 +36311,7 @@ var VuiTableTbody = {
 
           tds.push(h(
             "td",
-            { key: "selection", "class": _this.getColumnClassName("selection", props.rowSelection) },
+            { key: "selection", "class": _this.getColumnClassName("selection", props.rowSelection), style: _this.getColumnStyle("selection", props.rowExpansion) },
             [btnSelection]
           ));
         }
@@ -36336,7 +36341,7 @@ var VuiTableTbody = {
             var lastLevelIndex = level - 1;
 
             for (var i = 0; i < level; i++) {
-              var _childrenKey = props.rowTreeview.children;
+              var _childrenKey = table_src_utils.getTreeviewChildrenKey(props.rowTreeview);
               var _children = table_src_utils.getRowChildren(row, _childrenKey);
               var btnSwitchAttributes = void 0;
 
@@ -36364,7 +36369,6 @@ var VuiTableTbody = {
             }
           }
 
-          var columnKey = table_src_utils.getColumnKey(column);
           var content = void 0;
 
           if (column.slot) {
@@ -36391,7 +36395,7 @@ var VuiTableTbody = {
 
           tds.push(h(
             "td",
-            babel_helper_vue_jsx_merge_props_default()([{ key: columnKey, "class": _this.getColumnClassName("", column, columnKey, row, rowKey) }, columnCellProps]),
+            babel_helper_vue_jsx_merge_props_default()([{ key: column.key, "class": _this.getColumnClassName(undefined, column, column.key, row), style: _this.getColumnStyle(undefined, column) }, columnCellProps]),
             [btnSwitches, content]
           ));
         });
@@ -36452,7 +36456,7 @@ var VuiTableTbody = {
         _this.rowIndex++;
 
         if (props.rowTreeview && _this.isRowOpened(rowKey)) {
-          var _childrenKey2 = props.rowTreeview.children;
+          var _childrenKey2 = table_src_utils.getTreeviewChildrenKey(props.rowTreeview);
           var _children2 = table_src_utils.getRowChildren(row, _childrenKey2);
 
           if (is["a" /* default */].array(_children2) && _children2.length > 0) {
@@ -36706,13 +36710,12 @@ var VuiTable = {
     var state = {
       columns: [],
       data: [],
-      openedRowKeys: [],
-      expandedRowKeys: [],
-      selectedRowKeys: [],
-      hoveredRowKey: undefined,
       colgroup: [],
       thead: [],
-      tbody: []
+      tbody: [],
+      openedRowKeys: [],
+      expandedRowKeys: [],
+      selectedRowKeys: []
     };
 
     return {
@@ -36725,22 +36728,20 @@ var VuiTable = {
       handler: function handler(value) {
         var props = this.$props;
 
-        var columns = table_src_utils.getStateColumnsFromProps(value);
 
-        this.state.columns = columns;
-        this.state.colgroup = table_src_utils.getStateColgroup(this.state);
-        this.state.thead = table_src_utils.getStateThead(this.state);
-        this.state.tbody = table_src_utils.getStateTbody(props, this.state);
+        this.state.columns = table_src_utils.getColumns(value);
+        this.state.colgroup = table_src_utils.getColgroup(this.state);
+        this.state.thead = table_src_utils.getThead(this.state);
+        this.state.tbody = table_src_utils.getTbody(props, this.state);
       }
     },
     data: {
       handler: function handler(value) {
         var props = this.$props;
 
-        var data = table_src_utils.getStateDataFromProps(value);
 
-        this.state.data = data;
-        this.state.tbody = table_src_utils.getStateTbody(props, this.state);
+        this.state.data = table_src_utils.getData(value);
+        this.state.tbody = table_src_utils.getTbody(props, this.state);
       }
     },
     rowTreeview: {
@@ -36841,67 +36842,35 @@ var VuiTable = {
       });
     },
 
-    // 同步横向滚动位置
-    changeScrollXPosition: function changeScrollXPosition(e) {
+    // 更新横向滚动位置
+    changeScrollPosition: function changeScrollPosition(e) {
       if (e.currentTarget !== e.target) {
         return;
       }
 
-      var refs = this.$refs;
-      var tableMiddleHeaderScrollbar = refs.tableMiddleHeaderScrollbar,
-          tableMiddleBodyScrollbar = refs.tableMiddleBodyScrollbar;
+      var _$refs = this.$refs,
+          tableHeaderScrollbar = _$refs.tableHeaderScrollbar,
+          tableBodyScrollbar = _$refs.tableBodyScrollbar;
 
       var target = e.target;
       var scrollLeft = target.scrollLeft;
 
       if (scrollLeft !== this.lastScrollLeft) {
-        if (target === tableMiddleHeaderScrollbar && tableMiddleBodyScrollbar) {
-          tableMiddleBodyScrollbar.scrollLeft = scrollLeft;
+        if (target === tableHeaderScrollbar && tableBodyScrollbar) {
+          tableBodyScrollbar.scrollLeft = scrollLeft;
         }
 
-        if (target === tableMiddleBodyScrollbar && tableMiddleHeaderScrollbar) {
-          tableMiddleHeaderScrollbar.scrollLeft = scrollLeft;
+        if (target === tableBodyScrollbar && tableHeaderScrollbar) {
+          tableHeaderScrollbar.scrollLeft = scrollLeft;
         }
       }
 
       this.lastScrollLeft = scrollLeft;
     },
 
-    // 同步纵向滚动位置
-    changeScrollYPosition: function changeScrollYPosition(e) {
-      if (e.currentTarget !== e.target) {
-        return;
-      }
-
-      var refs = this.$refs;
-      var tableLeftBodyScrollbar = refs.tableLeftBodyScrollbar,
-          tableMiddleBodyScrollbar = refs.tableMiddleBodyScrollbar,
-          tableRightBodyScrollbar = refs.tableRightBodyScrollbar;
-
-      var target = e.target;
-      var scrollTop = target.scrollTop;
-
-      if (scrollTop !== this.lastScrollTop) {
-        if (tableLeftBodyScrollbar && target !== tableLeftBodyScrollbar) {
-          tableLeftBodyScrollbar.scrollTop = scrollTop;
-        }
-
-        if (tableMiddleBodyScrollbar && target !== tableMiddleBodyScrollbar) {
-          tableMiddleBodyScrollbar.scrollTop = scrollTop;
-        }
-
-        if (tableRightBodyScrollbar && target !== tableRightBodyScrollbar) {
-          tableRightBodyScrollbar.scrollTop = scrollTop;
-        }
-      }
-
-      this.lastScrollTop = scrollTop;
-    },
-
     // 滚动事件回调函数
     handleScroll: function handleScroll(e) {
-      this.changeScrollXPosition(e);
-      this.changeScrollYPosition(e);
+      this.changeScrollPosition(e);
     },
 
     // 行点击事件回调函数
@@ -36916,58 +36885,53 @@ var VuiTable = {
 
     // 行切换事件回调函数
     handleRowToggle: function handleRowToggle(row, rowIndex, rowKey) {
-      var props = this.$props,
-          state = this.state;
+      var props = this.$props;
 
 
       if (!props.rowTreeview) {
         return;
       }
 
-      var openedRowKeys = Object(utils_clone["a" /* default */])(state.openedRowKeys);
-      var index = openedRowKeys.indexOf(rowKey);
+      var index = this.state.openedRowKeys.indexOf(rowKey);
 
       if (index === -1) {
-        openedRowKeys.push(rowKey);
+        this.state.openedRowKeys.push(rowKey);
       } else {
-        openedRowKeys.splice(index, 1);
+        this.state.openedRowKeys.splice(index, 1);
       }
 
-      this.state.openedRowKeys = openedRowKeys;
       this.$emit("rowToggle", Object(utils_clone["a" /* default */])(this.state.openedRowKeys));
     },
 
     // 行展开事件回调函数
     handleRowExpand: function handleRowExpand(row, rowIndex, rowKey) {
-      var props = this.$props,
-          state = this.state;
+      var props = this.$props;
 
 
       if (!props.rowExpansion) {
         return;
       }
 
-      var expandedRowKeys = Object(utils_clone["a" /* default */])(state.expandedRowKeys);
-      var index = expandedRowKeys.indexOf(rowKey);
+      var index = this.state.expandedRowKeys.indexOf(rowKey);
 
       if (props.rowExpansion.accordion) {
-        expandedRowKeys = index === -1 ? [rowKey] : [];
+        this.state.expandedRowKeys = index === -1 ? [rowKey] : [];
       } else {
         if (index === -1) {
-          expandedRowKeys.push(rowKey);
+          this.state.expandedRowKeys.push(rowKey);
         } else {
-          expandedRowKeys.splice(index, 1);
+          this.state.expandedRowKeys.splice(index, 1);
         }
       }
 
-      this.state.expandedRowKeys = expandedRowKeys;
       this.$emit("rowExpand", Object(utils_clone["a" /* default */])(this.state.expandedRowKeys));
     },
 
     // 行选择事件回调函数
     handleRowSelect: function handleRowSelect(checked, row, rowIndex, rowKey) {
-      var props = this.$props,
-          state = this.state;
+      var _this = this;
+
+      var props = this.$props;
 
 
       if (!props.rowSelection) {
@@ -36975,23 +36939,21 @@ var VuiTable = {
       }
 
       var isMultiple = table_src_utils.getSelectionMultiple(props.rowSelection);
-      var selectedRowKeys = Object(utils_clone["a" /* default */])(state.selectedRowKeys);
 
       if (isMultiple) {
         if (props.rowTreeview && !props.rowSelection.strictly) {
-          var treemap = table_src_utils.getTreemap(state.tbody, props.rowKey, props.rowTreeview.children);
+          var treemap = table_src_utils.getTreemap(this.state.tbody, props.rowKey, props.rowTreeview.children);
           var children = table_src_utils.getTreemapChildren(treemap, rowKey);
           var parents = table_src_utils.getTreemapParents(treemap, rowKey);
+          var index = this.state.selectedRowKeys.indexOf(rowKey);
 
           if (checked) {
-            if (selectedRowKeys.indexOf(rowKey) === -1) {
-              selectedRowKeys.push(rowKey);
+            if (index === -1) {
+              this.state.selectedRowKeys.push(rowKey);
             }
           } else {
-            var index = selectedRowKeys.indexOf(rowKey);
-
             if (index > -1) {
-              selectedRowKeys.splice(index, 1);
+              this.state.selectedRowKeys.splice(index, 1);
             }
           }
 
@@ -37005,15 +36967,15 @@ var VuiTable = {
                 return;
               }
 
+              var index = _this.state.selectedRowKeys.indexOf(childKey);
+
               if (checked) {
-                if (selectedRowKeys.indexOf(childKey) === -1) {
-                  selectedRowKeys.push(childKey);
+                if (index === -1) {
+                  _this.state.selectedRowKeys.push(childKey);
                 }
               } else {
-                var _index = selectedRowKeys.indexOf(childKey);
-
-                if (_index > -1) {
-                  selectedRowKeys.splice(_index, 1);
+                if (index > -1) {
+                  _this.state.selectedRowKeys.splice(index, 1);
                 }
               }
             });
@@ -37025,59 +36987,56 @@ var VuiTable = {
               var status = table_src_utils.getSelectionComponentStatus(parent.children, {
                 rowKey: props.rowKey,
                 rowSelection: props.rowSelection,
-                selectedRowKeys: selectedRowKeys
+                selectedRowKeys: _this.state.selectedRowKeys
               });
+              var index = _this.state.selectedRowKeys.indexOf(parentKey);
 
               if (status.checked) {
-                if (selectedRowKeys.indexOf(parentKey) === -1) {
-                  selectedRowKeys.push(parentKey);
+                if (index === -1) {
+                  _this.state.selectedRowKeys.push(parentKey);
                 }
               } else {
-                var _index2 = selectedRowKeys.indexOf(parentKey);
-
-                if (_index2 > -1) {
-                  selectedRowKeys.splice(_index2, 1);
+                if (index > -1) {
+                  _this.state.selectedRowKeys.splice(index, 1);
                 }
               }
             });
           }
         } else {
+          var _index = this.state.selectedRowKeys.indexOf(rowKey);
+
           if (checked) {
-            if (selectedRowKeys.indexOf(rowKey) === -1) {
-              selectedRowKeys.push(rowKey);
+            if (_index === -1) {
+              this.state.selectedRowKeys.push(rowKey);
             }
           } else {
-            var _index3 = selectedRowKeys.indexOf(rowKey);
-
-            if (_index3 > -1) {
-              selectedRowKeys.splice(_index3, 1);
+            if (_index > -1) {
+              this.state.selectedRowKeys.splice(_index, 1);
             }
           }
         }
       } else {
-        selectedRowKeys = checked ? rowKey : undefined;
+        this.state.selectedRowKeys = checked ? rowKey : undefined;
       }
 
-      this.state.selectedRowKeys = selectedRowKeys;
       this.$emit("rowSelect", Object(utils_clone["a" /* default */])(this.state.selectedRowKeys));
     },
 
     // 行鼠标移入事件回调函数
     handleRowMouseenter: function handleRowMouseenter(row, rowIndex, rowKey) {
-      this.state.hoveredRowKey = rowKey;
       this.$emit("rowMouseenter", row, rowIndex, rowKey);
     },
 
     // 行鼠标移出事件回调函数
     handleRowMouseleave: function handleRowMouseleave(row, rowIndex, rowKey) {
-      this.state.hoveredRowKey = undefined;
       this.$emit("rowMouseleave", row, rowIndex, rowKey);
     },
 
     // 全选&取消全选事件回调函数
     handleSelectAll: function handleSelectAll(checked) {
-      var props = this.$props,
-          state = this.state;
+      var _this2 = this;
+
+      var props = this.$props;
 
       // 以下两种情况返回不处理
       // 1、未启用行选择功能
@@ -37089,12 +37048,11 @@ var VuiTable = {
 
       // 
       var rows = [];
-      var selectedRowKeys = Object(utils_clone["a" /* default */])(state.selectedRowKeys);
 
       if (props.rowTreeview) {
-        rows = flatten_flatten(state.tbody, props.rowTreeview.children, true);
+        rows = flatten_flatten(this.state.tbody, props.rowTreeview.children, true);
       } else {
-        rows = state.tbody;
+        rows = this.state.tbody;
       }
 
       rows.forEach(function (row, rowIndex) {
@@ -37106,37 +37064,35 @@ var VuiTable = {
           return;
         }
 
+        var index = _this2.state.selectedRowKeys.indexOf(rowKey);
+
         if (checked) {
-          if (selectedRowKeys.indexOf(rowKey) === -1) {
-            selectedRowKeys.push(rowKey);
+          if (index === -1) {
+            _this2.state.selectedRowKeys.push(rowKey);
           }
         } else {
-          var index = selectedRowKeys.indexOf(rowKey);
-
           if (index > -1) {
-            selectedRowKeys.splice(index, 1);
+            _this2.state.selectedRowKeys.splice(index, 1);
           }
         }
       });
 
-      this.state.selectedRowKeys = selectedRowKeys;
       this.$emit("rowSelect", Object(utils_clone["a" /* default */])(this.state.selectedRowKeys));
     },
 
     // 筛选事件回调函数
     handleFilter: function handleFilter(column, value) {
-      var props = this.$props,
-          state = this.state;
+      var props = this.$props;
 
 
       if (!column.filter) {
         return;
       }
 
-      this.changeFilterColumnState(state.columns, column.key, value);
+      this.changeFilterColumnState(this.state.columns, column.key, value);
 
       if (!column.filter.useServerFilter) {
-        this.state.tbody = table_src_utils.getStateTbody(props, state);
+        this.state.tbody = table_src_utils.getTbody(props, this.state);
       }
 
       this.$emit("filter", Object(utils_clone["a" /* default */])(column), value);
@@ -37144,438 +37100,20 @@ var VuiTable = {
 
     // 排序事件回调函数
     handleSort: function handleSort(column, order) {
-      var props = this.$props,
-          state = this.state;
+      var props = this.$props;
 
 
       if (!column.sorter) {
         return;
       }
 
-      this.changeSorterColumnState(state.columns, column.key, order);
+      this.changeSorterColumnState(this.state.columns, column.key, order);
 
       if (!column.sorter.useServerSort) {
-        this.state.tbody = table_src_utils.getStateTbody(props, state);
+        this.state.tbody = table_src_utils.getTbody(props, this.state);
       }
 
       this.$emit("sort", Object(utils_clone["a" /* default */])(column), order);
-    },
-
-    // 绘制左固定表格
-    renderLeftTable: function renderLeftTable() {
-      var _el;
-
-      var h = this.$createElement;
-      var props = this.$props,
-          state = this.state;
-
-      var header = void 0;
-      var body = void 0;
-
-      // 计算 style 样式
-      var width = state.colgroup.filter(function (column) {
-        return column.fixed === "left";
-      }).reduce(function (total, column) {
-        return total + column.width;
-      }, 0);
-
-      if (props.rowExpansion) {
-        width += props.rowExpansion.width || 50;
-      }
-
-      if (props.rowSelection) {
-        width += props.rowSelection.width || 50;
-      }
-
-      var showXScrollbar = props.scroll && props.scroll.x > 0;
-      var showYScrollbar = props.scroll && props.scroll.y > 0;
-      var styles = {
-        el: {
-          width: width + "px"
-        }
-      };
-
-      if (showYScrollbar) {
-        var scrollbarSize = getScrollbarSize();
-
-        styles.elBodyScrollbar = {
-          width: width + scrollbarSize + "px",
-          height: showXScrollbar ? props.scroll.y - scrollbarSize + "px" : props.scroll.y + "px",
-          overflowY: "scroll"
-        };
-      } else {
-        styles.elBodyScrollbar = {
-          width: width + "px"
-        };
-      }
-
-      // 计算 class 样式
-      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
-      var classes = {
-        el: (_el = {}, defineProperty_default()(_el, "" + classNamePrefix, true), defineProperty_default()(_el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_el, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_el, classNamePrefix + "-left", true), _el),
-        elHeader: classNamePrefix + "-header",
-        elHeaderScrollbar: classNamePrefix + "-header-scrollbar",
-        elBody: classNamePrefix + "-body",
-        elBodyScrollbar: classNamePrefix + "-body-scrollbar"
-      };
-
-      // 是否显示表头
-      if (props.showHeader) {
-        header = h(
-          "div",
-          { ref: "tableLeftHeader", "class": classes.elHeader },
-          [h(
-            "div",
-            { ref: "tableLeftHeaderScrollbar", "class": classes.elHeaderScrollbar },
-            [h(table_thead, {
-              attrs: {
-                fixed: "left",
-                classNamePrefix: classNamePrefix,
-                columns: state.columns,
-                data: state.data,
-                colgroup: state.colgroup,
-                thead: state.thead,
-                tbody: state.tbody,
-                rowKey: props.rowKey,
-                rowTreeview: props.rowTreeview,
-                rowExpansion: props.rowExpansion,
-                rowSelection: props.rowSelection,
-                selectedRowKeys: state.selectedRowKeys,
-                scroll: props.scroll,
-                locale: props.locale
-              }
-            })]
-          )]
-        );
-
-        if (props.affixHeader) {
-          var affixHeader = props.affixHeader;
-
-          if (!is["a" /* default */].json(affixHeader)) {
-            affixHeader = {};
-          }
-
-          header = h(
-            components_affix,
-            {
-              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
-            },
-            [header]
-          );
-        }
-      }
-
-      // 表格内容
-      body = h(
-        "div",
-        { ref: "tableLeftBody", "class": classes.elBody },
-        [h(
-          "div",
-          { ref: "tableLeftBodyScrollbar", style: styles.elBodyScrollbar, "class": classes.elBodyScrollbar, on: {
-              "scroll": this.handleScroll
-            }
-          },
-          [h(table_tbody, {
-            attrs: {
-              fixed: "left",
-              classNamePrefix: classNamePrefix,
-              columns: state.columns,
-              data: state.data,
-              colgroup: state.colgroup,
-              thead: state.thead,
-              tbody: state.tbody,
-              rowKey: props.rowKey,
-              rowClassName: props.rowClassName,
-              rowTreeview: props.rowTreeview,
-              rowExpansion: props.rowExpansion,
-              rowSelection: props.rowSelection,
-              openedRowKeys: state.openedRowKeys,
-              expandedRowKeys: state.expandedRowKeys,
-              selectedRowKeys: state.selectedRowKeys,
-              hoveredRowKey: state.hoveredRowKey,
-              striped: props.striped,
-              scroll: props.scroll,
-              locale: props.locale
-            }
-          })]
-        )]
-      );
-
-      return h(
-        "div",
-        { "class": classes.el, style: styles.el },
-        [header, body]
-      );
-    },
-
-    // 绘制中间表格
-    renderMiddleTable: function renderMiddleTable() {
-      var _el2;
-
-      var h = this.$createElement;
-      var props = this.$props,
-          state = this.state;
-
-      var header = void 0;
-      var body = void 0;
-
-      // 计算 style 样式
-      var width = state.colgroup.filter(function (column) {
-        return column.fixed === "left";
-      }).reduce(function (total, column) {
-        return total + column.width;
-      }, 0);
-      var showXScrollbar = props.scroll && props.scroll.x > 0;
-      var showYScrollbar = props.scroll && props.scroll.y > 0;
-      var styles = {
-        elHeaderScrollbar: {},
-        elBodyScrollbar: {}
-      };
-
-      if (showXScrollbar) {
-        styles.elBodyScrollbar.overflowX = "scroll";
-      }
-
-      if (showYScrollbar) {
-        styles.elHeaderScrollbar.overflowY = "scroll";
-        styles.elBodyScrollbar.height = props.scroll.y + "px";
-        styles.elBodyScrollbar.overflowY = "scroll";
-      }
-
-      // 计算 class 样式
-      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
-      var classes = {
-        el: (_el2 = {}, defineProperty_default()(_el2, "" + classNamePrefix, true), defineProperty_default()(_el2, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_el2, classNamePrefix + "-bordered", props.bordered), _el2),
-        elHeader: classNamePrefix + "-header",
-        elHeaderScrollbar: classNamePrefix + "-header-scrollbar",
-        elBody: classNamePrefix + "-body",
-        elBodyScrollbar: classNamePrefix + "-body-scrollbar"
-      };
-
-      // 是否显示表头
-      if (props.showHeader) {
-        header = h(
-          "div",
-          { ref: "tableMiddleHeader", "class": classes.elHeader },
-          [h(
-            "div",
-            { ref: "tableMiddleHeaderScrollbar", style: styles.elHeaderScrollbar, "class": classes.elHeaderScrollbar },
-            [h(table_thead, {
-              attrs: {
-                classNamePrefix: classNamePrefix,
-                columns: state.columns,
-                data: state.data,
-                colgroup: state.colgroup,
-                thead: state.thead,
-                tbody: state.tbody,
-                rowKey: props.rowKey,
-                rowTreeview: props.rowTreeview,
-                rowExpansion: props.rowExpansion,
-                rowSelection: props.rowSelection,
-                selectedRowKeys: state.selectedRowKeys,
-                scroll: props.scroll,
-                locale: props.locale
-              }
-            })]
-          )]
-        );
-
-        if (props.affixHeader) {
-          var affixHeader = props.affixHeader;
-
-          if (!is["a" /* default */].json(affixHeader)) {
-            affixHeader = {};
-          }
-
-          header = h(
-            components_affix,
-            {
-              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
-            },
-            [header]
-          );
-        }
-      }
-
-      // 表格内容
-      body = h(
-        "div",
-        { ref: "tableMiddleBody", "class": classes.elBody },
-        [h(
-          "div",
-          { ref: "tableMiddleBodyScrollbar", "class": classes.elBodyScrollbar, style: styles.elBodyScrollbar, on: {
-              "scroll": this.handleScroll
-            }
-          },
-          [h(table_tbody, {
-            attrs: {
-              classNamePrefix: classNamePrefix,
-              columns: state.columns,
-              data: state.data,
-              colgroup: state.colgroup,
-              thead: state.thead,
-              tbody: state.tbody,
-              rowKey: props.rowKey,
-              rowClassName: props.rowClassName,
-              rowTreeview: props.rowTreeview,
-              rowExpansion: props.rowExpansion,
-              rowSelection: props.rowSelection,
-              openedRowKeys: state.openedRowKeys,
-              expandedRowKeys: state.expandedRowKeys,
-              selectedRowKeys: state.selectedRowKeys,
-              hoveredRowKey: state.hoveredRowKey,
-              striped: props.striped,
-              scroll: props.scroll,
-              locale: props.locale
-            }
-          })]
-        )]
-      );
-
-      return h(
-        "div",
-        { "class": classes.el },
-        [header, body]
-      );
-    },
-
-    // 绘制右固定表格
-    renderRightTable: function renderRightTable() {
-      var _el3;
-
-      var h = this.$createElement;
-      var props = this.$props,
-          state = this.state;
-
-      var header = void 0;
-      var body = void 0;
-
-      // 计算 style 样式
-      var width = state.colgroup.filter(function (column) {
-        return column.fixed === "right";
-      }).reduce(function (total, column) {
-        return total + column.width;
-      }, 0);
-      var showXScrollbar = props.scroll && props.scroll.x > 0;
-      var showYScrollbar = props.scroll && props.scroll.y > 0;
-      var styles = {
-        el: {
-          width: width + "px"
-        }
-      };
-
-      if (showYScrollbar) {
-        var scrollbarSize = getScrollbarSize();
-
-        styles.el.right = scrollbarSize + "px";
-        styles.elBodyScrollbar = {
-          width: width + scrollbarSize + "px",
-          height: showXScrollbar ? props.scroll.y - scrollbarSize + "px" : props.scroll.y + "px",
-          overflowY: "scroll"
-        };
-      } else {
-        styles.elBodyScrollbar = {
-          width: width + "px"
-        };
-      }
-
-      // 计算 class 样式
-      var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
-      var classes = {
-        el: (_el3 = {}, defineProperty_default()(_el3, "" + classNamePrefix, true), defineProperty_default()(_el3, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_el3, classNamePrefix + "-bordered", props.bordered), defineProperty_default()(_el3, classNamePrefix + "-right", true), _el3),
-        elHeader: classNamePrefix + "-header",
-        elHeaderScrollbar: classNamePrefix + "-header-scrollbar",
-        elBody: classNamePrefix + "-body",
-        elBodyScrollbar: classNamePrefix + "-body-scrollbar"
-      };
-
-      // 是否显示表头
-      if (props.showHeader) {
-        header = h(
-          "div",
-          { ref: "tableRightHeader", "class": classes.elHeader },
-          [h(
-            "div",
-            { ref: "tableRightHeaderScrollbar", "class": classes.elHeaderScrollbar },
-            [h(table_thead, {
-              attrs: {
-                fixed: "right",
-                classNamePrefix: classNamePrefix,
-                columns: state.columns,
-                data: state.data,
-                colgroup: state.colgroup,
-                thead: state.thead,
-                tbody: state.tbody,
-                rowKey: props.rowKey,
-                rowTreeview: props.rowTreeview,
-                rowExpansion: props.rowExpansion,
-                rowSelection: props.rowSelection,
-                selectedRowKeys: state.selectedRowKeys,
-                scroll: props.scroll,
-                locale: props.locale
-              }
-            })]
-          )]
-        );
-
-        if (props.affixHeader) {
-          var affixHeader = props.affixHeader;
-
-          if (!is["a" /* default */].json(affixHeader)) {
-            affixHeader = {};
-          }
-
-          header = h(
-            components_affix,
-            {
-              attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
-            },
-            [header]
-          );
-        }
-      }
-
-      // 表格内容
-      body = h(
-        "div",
-        { ref: "tableRightBody", "class": classes.elBody },
-        [h(
-          "div",
-          { ref: "tableRightBodyScrollbar", style: styles.elBodyScrollbar, "class": classes.elBodyScrollbar, on: {
-              "scroll": this.handleScroll
-            }
-          },
-          [h(table_tbody, {
-            attrs: {
-              fixed: "right",
-              classNamePrefix: classNamePrefix,
-              columns: state.columns,
-              data: state.data,
-              colgroup: state.colgroup,
-              thead: state.thead,
-              tbody: state.tbody,
-              rowKey: props.rowKey,
-              rowClassName: props.rowClassName,
-              rowTreeview: props.rowTreeview,
-              rowExpansion: props.rowExpansion,
-              rowSelection: props.rowSelection,
-              openedRowKeys: state.openedRowKeys,
-              expandedRowKeys: state.expandedRowKeys,
-              selectedRowKeys: state.selectedRowKeys,
-              hoveredRowKey: state.hoveredRowKey,
-              striped: props.striped,
-              scroll: props.scroll,
-              locale: props.locale
-            }
-          })]
-        )]
-      );
-
-      return h(
-        "div",
-        { "class": classes.el, style: styles.el },
-        [header, body]
-      );
     }
   },
   created: function created() {
@@ -37585,12 +37123,9 @@ var VuiTable = {
         rowSelection = props.rowSelection;
 
 
-    var columns = table_src_utils.getStateColumnsFromProps(props.columns);
-    var data = table_src_utils.getStateDataFromProps(props.data);
     var openedRowKeys = [];
     var expandedRowKeys = [];
     var selectedRowKeys = [];
-    var hoveredRowKey = undefined;
 
     if (rowTreeview && is["a" /* default */].array(rowTreeview.value)) {
       openedRowKeys = Object(utils_clone["a" /* default */])(rowTreeview.value);
@@ -37610,40 +37145,131 @@ var VuiTable = {
       }
     }
 
-    this.state.columns = columns;
-    this.state.data = data;
+    this.state.columns = table_src_utils.getColumns(props.columns);
+    this.state.data = table_src_utils.getData(props.data);
+    this.state.colgroup = table_src_utils.getColgroup(this.state);
+    this.state.thead = table_src_utils.getThead(this.state);
+    this.state.tbody = table_src_utils.getTbody(props, this.state);
     this.state.openedRowKeys = openedRowKeys;
     this.state.expandedRowKeys = expandedRowKeys;
     this.state.selectedRowKeys = selectedRowKeys;
-    this.state.hoveredRowKey = hoveredRowKey;
-    this.state.colgroup = table_src_utils.getStateColgroup(this.state);
-    this.state.thead = table_src_utils.getStateThead(this.state);
-    this.state.tbody = table_src_utils.getStateTbody(props, this.state);
   },
   render: function render() {
-    var _classes$el;
+    var _el;
 
     var h = arguments[0];
     var props = this.$props,
         state = this.state;
-    var renderLeftTable = this.renderLeftTable,
-        renderMiddleTable = this.renderMiddleTable,
-        renderRightTable = this.renderRightTable;
 
-    // class
+    var header = void 0;
+    var body = void 0;
 
+    // 计算 style 样式
+    var showXScrollbar = props.scroll && props.scroll.x > 0;
+    var showYScrollbar = props.scroll && props.scroll.y > 0;
+    var styles = {
+      elHeaderScrollbar: {},
+      elBodyScrollbar: {}
+    };
+
+    if (showXScrollbar) {
+      styles.elBodyScrollbar.overflowX = "scroll";
+    }
+
+    if (showYScrollbar) {
+      styles.elHeaderScrollbar.overflowY = "scroll";
+      styles.elBodyScrollbar.height = props.scroll.y + "px";
+      styles.elBodyScrollbar.overflowY = "scroll";
+    }
+
+    // 计算 class 样式
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
-    var classes = {};
+    var classes = {
+      el: (_el = {}, defineProperty_default()(_el, "" + classNamePrefix, true), defineProperty_default()(_el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_el, classNamePrefix + "-bordered", props.bordered), _el),
+      elHeader: classNamePrefix + "-header",
+      elHeaderScrollbar: classNamePrefix + "-header-scrollbar",
+      elBody: classNamePrefix + "-body",
+      elBodyScrollbar: classNamePrefix + "-body-scrollbar"
+    };
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, classNamePrefix + "-wrapper", true), defineProperty_default()(_classes$el, classNamePrefix + "-wrapper-bordered", props.bordered), _classes$el);
+    // 是否显示表头
+    if (props.showHeader) {
+      header = h(
+        "div",
+        { ref: "tableHeader", "class": classes.elHeader },
+        [h(
+          "div",
+          { ref: "tableHeaderScrollbar", style: styles.elHeaderScrollbar, "class": classes.elHeaderScrollbar },
+          [h(table_thead, {
+            attrs: {
+              classNamePrefix: classNamePrefix,
+              columns: state.columns,
+              data: state.data,
+              colgroup: state.colgroup,
+              thead: state.thead,
+              tbody: state.tbody,
+              rowKey: props.rowKey,
+              rowTreeview: props.rowTreeview,
+              rowExpansion: props.rowExpansion,
+              rowSelection: props.rowSelection,
+              selectedRowKeys: state.selectedRowKeys,
+              scroll: props.scroll,
+              locale: props.locale
+            }
+          })]
+        )]
+      );
 
-    // render
-    var showLeftTable = state.columns.some(function (column) {
-      return column.fixed === "left";
-    });
-    var showRightTable = state.columns.some(function (column) {
-      return column.fixed === "right";
-    });
+      if (props.affixHeader) {
+        var affixHeader = props.affixHeader;
+
+        if (!is["a" /* default */].json(affixHeader)) {
+          affixHeader = {};
+        }
+
+        header = h(
+          components_affix,
+          {
+            attrs: { offsetTop: affixHeader.offsetTop, offsetBottom: affixHeader.offsetBottom, getScrollContainer: affixHeader.getScrollContainer }
+          },
+          [header]
+        );
+      }
+    }
+
+    // 表格内容
+    body = h(
+      "div",
+      { ref: "tableBody", "class": classes.elBody },
+      [h(
+        "div",
+        { ref: "tableBodyScrollbar", "class": classes.elBodyScrollbar, style: styles.elBodyScrollbar, on: {
+            "scroll": this.handleScroll
+          }
+        },
+        [h(table_tbody, {
+          attrs: {
+            classNamePrefix: classNamePrefix,
+            columns: state.columns,
+            data: state.data,
+            colgroup: state.colgroup,
+            thead: state.thead,
+            tbody: state.tbody,
+            rowKey: props.rowKey,
+            rowClassName: props.rowClassName,
+            rowTreeview: props.rowTreeview,
+            rowExpansion: props.rowExpansion,
+            rowSelection: props.rowSelection,
+            openedRowKeys: state.openedRowKeys,
+            expandedRowKeys: state.expandedRowKeys,
+            selectedRowKeys: state.selectedRowKeys,
+            striped: props.striped,
+            scroll: props.scroll,
+            locale: props.locale
+          }
+        })]
+      )]
+    );
 
     return h(
       components_spin,
@@ -37653,7 +37279,7 @@ var VuiTable = {
       [h(
         "div",
         { "class": classes.el },
-        [showLeftTable && renderLeftTable(), renderMiddleTable(), showRightTable && renderRightTable()]
+        [header, body]
       )]
     );
   }
@@ -43869,7 +43495,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.8",
+  version: "1.10.9",
   install: src_install,
   // Locale
   locale: src_locale.use,

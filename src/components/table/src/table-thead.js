@@ -23,7 +23,6 @@ const VuiTableThead = {
   },
   props: {
     classNamePrefix: PropTypes.string.def("vui-table"),
-    fixed: PropTypes.string,
     columns: PropTypes.array.def([]),
     data: PropTypes.array.def([]),
     colgroup: PropTypes.array.def([]),
@@ -38,97 +37,64 @@ const VuiTableThead = {
     locale: PropTypes.object
   },
   methods: {
-    maybeShowColumn(column) {
-      const { $props: props } = this;
-      let boolean = false;
-
-      if (!props.fixed && !column.fixed) {
-        boolean = true;
-      }
-      else if (props.fixed === "left" && column.fixed === "left") {
-        boolean = true;
-      }
-      else if (props.fixed === "right" && column.fixed === "right") {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnTooltip(column) {
-      const { $props: props } = this;
-      const maybeShowColumn = this.maybeShowColumn(column);
-      let boolean = false;
-
-      if (column.tooltip && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnSorter(column) {
-      const { $props: props } = this;
-      const maybeShowColumn = this.maybeShowColumn(column);
-      let boolean = false;
-
-      if (column.sorter && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
-    maybeShowColumnFilter(column) {
-      const { $props: props } = this;
-      const maybeShowColumn = this.maybeShowColumn(column);
-      let boolean = false;
-
-      if (column.filter && maybeShowColumn) {
-        boolean = true;
-      }
-
-      return boolean;
-    },
     getColumnClassName(type, column) {
-      if (!column) {
-        column = type;
-        type = undefined;
-      }
-
       const { $props: props } = this;
-      const align = column.align || "center";
-      const ellipsis = column.ellipsis;
-      const className = column.className;
+      const { fixedFirst, fixedLast, align = "center", ellipsis, className } = column;
+      let fixed = column.fixed;
 
-      if (type === "expansion") {
+      if (type === "expansion" || type === "selection") {
+        fixed = props.colgroup.findIndex(col => col.fixed === "left") > -1 ? "left" : undefined;
+      }
+
+      return {
+        [`${props.classNamePrefix}-column`]: true,
+        [`${props.classNamePrefix}-column-fixed-${fixed}`]: fixed,
+        [`${props.classNamePrefix}-column-fixed-left-last`]: fixed === "left" && fixedLast,
+        [`${props.classNamePrefix}-column-fixed-right-first`]: fixed === "right" && fixedFirst,
+        [`${props.classNamePrefix}-column-align-${align}`]: align,
+        [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+        [`${props.classNamePrefix}-column-with-${type}`]: type,
+        [`${props.classNamePrefix}-column-with-sorter`]: column.sorter,
+        [`${props.classNamePrefix}-column-with-filter`]: column.filter,
+        [`${className}`]: className
+      };
+    },
+    getColumnStyle(type, column) {
+      const { $props: props } = this;
+
+      if (type === "expansion" || type === "selection") {
+        const isFixed = props.colgroup.findIndex(col => col.fixed === "left") > -1;
+
+        if (isFixed) {
+          let offset = 0;
+
+          if (type === "selection" && props.rowExpansion) {
+            offset = offset + (props.rowExpansion.width ? props.rowExpansion.width : 50);
+          }
+
+          return {
+            left: offset + "px"
+          };
+        }
+      }
+      else if (column.fixed === "left") {
+        let offset = column.offset;
+
+        if (props.rowExpansion) {
+          offset = offset + (props.rowExpansion.width ? props.rowExpansion.width : 50);
+        }
+
+        if (props.rowSelection) {
+          offset = offset + (props.rowSelection.width ? props.rowSelection.width : 50);
+        }
+
         return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-with-expansion`]: true,
-          [`${className}`]: className
+          left: offset + "px"
         };
       }
-      else if (type === "selection") {
+      else if (column.fixed === "right") {
         return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-with-selection`]: true,
-          [`${className}`]: className
-        };
-      }
-      else {
-        const maybeShowColumn = this.maybeShowColumn(column);
-        const maybeShowColumnSorter = this.maybeShowColumnSorter(column);
-        const maybeShowColumnFilter = this.maybeShowColumnFilter(column);
-
-        return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-hidden`]: !maybeShowColumn,
-          [`${props.classNamePrefix}-column-with-sorter`]: maybeShowColumnSorter,
-          [`${props.classNamePrefix}-column-with-filter`]: maybeShowColumnFilter,
-          [`${className}`]: className
+          right: column.offset + "px"
         };
       }
     },
@@ -203,14 +169,14 @@ const VuiTableThead = {
         order = "none";
       }
 
-      this.vuiTable.handleSort(clone(column), order);
+      this.vuiTable.handleSort(column, order);
     },
     handleFilter(column, value) {
       if (!column.filter) {
         return;
       }
 
-      this.vuiTable.handleFilter(clone(column), value);
+      this.vuiTable.handleFilter(column, value);
     },
     getColgroup(h) {
       const { $props: props } = this;
@@ -226,24 +192,20 @@ const VuiTableThead = {
       const { $props: props } = this;
 
       if (props.rowExpansion) {
-        const width = props.rowExpansion.width || 50;
-
         cols.push(
-          <col key="expansion" width={width} />
+          <col key="expansion" width={utils.getExpansionWidth(props.rowExpansion)} />
         );
       }
 
       if (props.rowSelection) {
-        const width = props.rowSelection.width || 50;
-
         cols.push(
-          <col key="selection" width={width} />
+          <col key="selection" width={utils.getSelectionWidth(props.rowSelection)} />
         );
       }
 
-      columns.forEach((column, columnIndex) => {
+      columns.forEach(column => {
         cols.push(
-          <col key={column.key || columnIndex} width={column.width} />
+          <col key={column.key} width={column.width} />
         );
       });
     },
@@ -270,6 +232,7 @@ const VuiTableThead = {
               colspan="1"
               rowspan={rows.length}
               class={this.getColumnClassName("expansion", props.rowExpansion)}
+              style={this.getColumnStyle("expansion", props.rowExpansion)}
             >
               {props.rowExpansion.title}
             </th>
@@ -277,8 +240,8 @@ const VuiTableThead = {
         }
 
         if (props.rowSelection && rowIndex === 0) {
-          let component;
           const isMultiple = utils.getSelectionMultiple(props.rowSelection);
+          let component;
 
           if (props.rowSelection.title) {
             component = (
@@ -291,9 +254,7 @@ const VuiTableThead = {
             let data = [];
 
             if (props.rowTreeview) {
-              const property = props.rowTreeview.children || "children";
-
-              data = flatten(props.tbody, property, true);
+              data = flatten(props.tbody, utils.getTreeviewChildrenKey(props.rowTreeview), true);
             }
             else {
               data = props.tbody;
@@ -323,6 +284,7 @@ const VuiTableThead = {
               colspan="1"
               rowspan={rows.length}
               class={this.getColumnClassName("selection", props.rowSelection)}
+              style={this.getColumnStyle("selection", props.rowSelection)}
             >
               {component}
             </th>
@@ -342,7 +304,7 @@ const VuiTableThead = {
             </div>
           );
 
-          if (this.maybeShowColumnTooltip(column)) {
+          if (column.tooltip) {
             body.push(
               <div class={this.getColumnTooltipClassName(column)}>
                 <VuiTooltip color={column.tooltip.color} placement={column.tooltip.placement} maxWidth={column.tooltip.maxWidth}>
@@ -353,7 +315,7 @@ const VuiTableThead = {
             );
           }
 
-          if (this.maybeShowColumnSorter(column)) {
+          if (column.sorter) {
             body.push(
               <div class={this.getColumnSorterClassName(column)}>
                 <i class={this.getColumnSorterCaretClassName(column, "asc")}></i>
@@ -370,7 +332,7 @@ const VuiTableThead = {
 
           let extra;
 
-          if (this.maybeShowColumnFilter(column)) {
+          if (column.filter) {
             extra = (
               <div class={this.getColumnExtraClassName(column)}>
                 <VuiTableFilter
@@ -390,7 +352,8 @@ const VuiTableThead = {
               key={column.key || columnIndex}
               colspan={column.colSpan}
               rowspan={column.rowSpan}
-              class={this.getColumnClassName(column)}
+              class={this.getColumnClassName(undefined, column)}
+              style={this.getColumnStyle(undefined, column)}
               onClick={e => this.handleSort(column)}
             >
               {body}

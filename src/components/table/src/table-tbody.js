@@ -31,7 +31,6 @@ const VuiTableTbody = {
   ],
   props: {
     classNamePrefix: PropTypes.string.def("vui-table"),
-    fixed: PropTypes.string,
     columns: PropTypes.array.def([]),
     data: PropTypes.array.def([]),
     colgroup: PropTypes.array.def([]),
@@ -45,7 +44,6 @@ const VuiTableTbody = {
     openedRowKeys: PropTypes.array.def([]),
     expandedRowKeys: PropTypes.array.def([]),
     selectedRowKeys: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.number]).def([]),
-    hoveredRowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     striped: PropTypes.bool.def(false),
     scroll: PropTypes.object,
     locale: PropTypes.object
@@ -85,11 +83,6 @@ const VuiTableTbody = {
         return props.selectedRowKeys === rowKey;
       }
     },
-    isRowHovered(rowKey) {
-      const { $props: props } = this;
-
-      return props.hoveredRowKey === rowKey;
-    },
     getRowClassName(type, row, rowIndex, rowKey) {
       const { $props: props } = this;
 
@@ -102,7 +95,6 @@ const VuiTableTbody = {
       else {
         const stripe = rowIndex % 2 === 0 ? "even" : "odd";
         const isSelected = this.isRowSelected(rowKey);
-        const isHovered = this.isRowHovered(rowKey);
         let className;
 
         if (is.string(props.rowClassName)) {
@@ -116,64 +108,74 @@ const VuiTableTbody = {
           [`${props.classNamePrefix}-row`]: true,
           [`${props.classNamePrefix}-row-${stripe}`]: props.striped,
           [`${props.classNamePrefix}-row-selected`]: isSelected,
-          [`${props.classNamePrefix}-row-hovered`]: isHovered,
           [`${className}`]: className
         };
       }
     },
-    getColumnClassName(type, column, columnKey, row, rowKey) {
+    getColumnClassName(type, column, columnKey, row) {
       const { $props: props } = this;
-      const align = column.align || "center";
-      const ellipsis = column.ellipsis;
-      const className = column.className;
+      const { fixedFirst, fixedLast, align = "center", ellipsis, className } = column;
+      let fixed = column.fixed;
+      let cellClassName;
 
-      if (type === "expansion") {
+      if (type === "expansion" || type === "selection") {
+        fixed = props.colgroup.findIndex(col => col.fixed === "left") > -1 ? "left" : undefined;
+      }
+
+      if (row && row.cellClassName && columnKey) {
+        cellClassName = row.cellClassName[columnKey];
+      }
+
+      return {
+        [`${props.classNamePrefix}-column`]: true,
+        [`${props.classNamePrefix}-column-fixed-${fixed}`]: fixed,
+        [`${props.classNamePrefix}-column-fixed-left-last`]: fixed === "left" && fixedLast,
+        [`${props.classNamePrefix}-column-fixed-right-first`]: fixed === "right" && fixedFirst,
+        [`${props.classNamePrefix}-column-align-${align}`]: align,
+        [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
+        [`${props.classNamePrefix}-column-with-${type}`]: type,
+        [`${props.classNamePrefix}-column-with-sorter`]: column.sorter,
+        [`${props.classNamePrefix}-column-with-filter`]: column.filter,
+        [`${className}`]: className,
+        [`${cellClassName}`]: cellClassName
+      };
+    },
+    getColumnStyle(type, column) {
+      const { $props: props } = this;
+
+      if (type === "expansion" || type === "selection") {
+        const isFixed = props.colgroup.findIndex(col => col.fixed === "left") > -1;
+
+        if (isFixed) {
+          let offset = 0;
+
+          if (type === "selection" && props.rowExpansion) {
+            offset = offset + utils.getExpansionWidth(props.rowExpansion);
+          }
+
+          return {
+            left: offset + "px"
+          };
+        }
+      }
+      else if (column.fixed === "left") {
+        let offset = column.offset;
+
+        if (props.rowExpansion) {
+          offset = offset + utils.getExpansionWidth(props.rowExpansion);
+        }
+
+        if (props.rowSelection) {
+          offset = offset + utils.getSelectionWidth(props.rowSelection);
+        }
+
         return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-with-expansion`]: true,
-          [`${className}`]: className
+          left: offset + "px"
         };
       }
-      else if (type === "selection") {
+      else if (column.fixed === "right") {
         return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-with-selection`]: true,
-          [`${className}`]: className
-        };
-      }
-      else {
-        const maybeShowColumnSorter = column.sorter;
-        const maybeShowColumnFilter = column.filter;
-        let maybeShowColumn = false;
-        let customizedClassName;
-
-        if (!props.fixed && !column.fixed) {
-          maybeShowColumn = true;
-        }
-        else if (props.fixed === "left" && column.fixed === "left") {
-          maybeShowColumn = true;
-        }
-        else if (props.fixed === "right" && column.fixed === "right") {
-          maybeShowColumn = true;
-        }
-
-        if (row.columnClassNames && columnKey && row.columnClassNames[columnKey]) {
-          customizedClassName = row.columnClassNames[columnKey];
-        }
-
-        return {
-          [`${props.classNamePrefix}-column`]: true,
-          [`${props.classNamePrefix}-column-align-${align}`]: align,
-          [`${props.classNamePrefix}-column-ellipsis`]: ellipsis,
-          [`${props.classNamePrefix}-column-hidden`]: !maybeShowColumn,
-          [`${props.classNamePrefix}-column-with-sorter`]: maybeShowColumnSorter,
-          [`${props.classNamePrefix}-column-with-filter`]: maybeShowColumnFilter,
-          [`${className}`]: className,
-          [`${customizedClassName}`]: customizedClassName
+          right: column.offset + "px"
         };
       }
     },
@@ -305,26 +307,20 @@ const VuiTableTbody = {
       const { $props: props } = this;
 
       if (props.rowExpansion) {
-        const { width = 50 } = props.rowExpansion;
-
         cols.push(
-          <col key="expansion" width={width} />
+          <col key="expansion" width={utils.getExpansionWidth(props.rowExpansion)} />
         );
       }
 
       if (props.rowSelection) {
-        const { width = 50 } = props.rowSelection;
-
         cols.push(
-          <col key="selection" width={width} />
+          <col key="selection" width={utils.getExpansionWidth(props.rowSelection)} />
         );
       }
 
       columns.forEach((column, columnIndex) => {
-        const columnKey = utils.getColumnKey(column);
-
         cols.push(
-          <col key={columnKey} width={column.width} />
+          <col key={column.key} width={column.width} />
         );
       });
     },
@@ -388,12 +384,11 @@ const VuiTableTbody = {
 
         if (props.rowExpansion) {
           const isExpandable = utils.getRowExpandable(row, rowKey, props.rowExpansion);
-          const isRowExpanded = this.isRowExpanded(rowKey);
           let btnExpansion;
 
           if (isExpandable) {
             const btnExpansionAttributes = {
-              class: this.getColumnExpansionClassName(props.rowExpansion, isRowExpanded),
+              class: this.getColumnExpansionClassName(props.rowExpansion, this.isRowExpanded(rowKey)),
               on: {
                 click: e => this.handleRowExpand(e, row, rowIndex, rowKey)
               }
@@ -405,7 +400,7 @@ const VuiTableTbody = {
           }
 
           tds.push(
-            <td key="expansion" class={this.getColumnClassName("expansion", props.rowExpansion)}>
+            <td key="expansion" class={this.getColumnClassName("expansion", props.rowExpansion)} style={this.getColumnStyle("expansion", props.rowExpansion)}>
               {btnExpansion}
             </td>
           );
@@ -428,7 +423,7 @@ const VuiTableTbody = {
           };
 
           if (props.rowTreeview && isMultiple && !props.rowSelection.strictly) {
-            const childrenKey = props.rowTreeview.children;
+            const childrenKey = utils.getTreeviewChildrenKey(props.rowTreeview);
             const children = utils.getRowChildren(row, childrenKey);
 
             if (is.array(children) && children.length > 0) {
@@ -461,7 +456,7 @@ const VuiTableTbody = {
           }
 
           tds.push(
-            <td key="selection" class={this.getColumnClassName("selection", props.rowSelection)}>
+            <td key="selection" class={this.getColumnClassName("selection", props.rowSelection)} style={this.getColumnStyle("selection", props.rowExpansion)}>
               {btnSelection}
             </td>
           );
@@ -493,7 +488,7 @@ const VuiTableTbody = {
             const lastLevelIndex = level - 1;
 
             for (let i = 0; i < level; i++) {
-              const childrenKey = props.rowTreeview.children;
+              const childrenKey = utils.getTreeviewChildrenKey(props.rowTreeview);
               const children = utils.getRowChildren(row, childrenKey);
               let btnSwitchAttributes;
 
@@ -522,7 +517,6 @@ const VuiTableTbody = {
             }
           }
 
-          const columnKey = utils.getColumnKey(column);
           let content;
 
           if (column.slot) {
@@ -550,7 +544,7 @@ const VuiTableTbody = {
           }
 
           tds.push(
-            <td key={columnKey} class={this.getColumnClassName("", column, columnKey, row, rowKey)} {...columnCellProps}>
+            <td key={column.key} class={this.getColumnClassName(undefined, column, column.key, row)} style={this.getColumnStyle(undefined, column)} {...columnCellProps}>
               {btnSwitches}
               {content}
             </td>
@@ -599,7 +593,7 @@ const VuiTableTbody = {
         this.rowIndex++;
 
         if (props.rowTreeview && this.isRowOpened(rowKey)) {
-          const childrenKey = props.rowTreeview.children;
+          const childrenKey = utils.getTreeviewChildrenKey(props.rowTreeview);
           const children = utils.getRowChildren(row, childrenKey);
 
           if (is.array(children) && children.length > 0) {

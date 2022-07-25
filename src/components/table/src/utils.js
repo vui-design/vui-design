@@ -4,29 +4,17 @@ import clone from "../../../utils/clone";
 import flatten from "../../../utils/flatten";
 import getTargetByPath from "../../../utils/getTargetByPath";
 
+// 
+const rowTreeviewChildrenKey = "children";
+const rowExpansionWidth = 50;
+const rowSelectionWidth = 50;
+
 // 判断事件源元素是否需要被忽略
 const isIgnoreElements = (event, predicate) => {
   const e = event || window.event;
   const element = e.target || e.srcElement;
 
   return is.function(predicate) ? predicate(element) : false;
-};
-
-// 获取列数据的唯一键值
-const getColumnKey = (column) => {
-  let columnKey;
-
-  if (column.key) {
-    columnKey = column.key;
-  }
-  else if (column.dataIndex) {
-    columnKey = column.dataIndex;
-  }
-  else {
-    columnKey = guid();
-  }
-
-  return columnKey;
 };
 
 // 获取行数据的唯一键值
@@ -49,21 +37,20 @@ const getRowKey = (row, property) => {
 };
 
 // 获取子行数据
-const getRowChildren = (row, childrenKey = "children") => {
-  return row[childrenKey];
-};
+const getRowChildren = (row, childrenKey = "children") => row[childrenKey];
 
 // 判断给定行是否可展开（用于树形结构，根据子行数量判断是否允许展开）
 const getRowTogglable = (row, rowTreeview) => {
-  const children = getRowChildren(row, rowTreeview.children);
+  const childrenKey = getTreeviewChildrenKey(rowTreeview);
+  const children = getRowChildren(row, childrenKey);
 
   return is.array(children) && children.length > 0;
 };
 
 // 判断给定行是否可展开（用于展开功能，根据用户配置判断是否允许展开）
 const getRowExpandable = (row, rowKey, rowExpansion) => {
-  let expandable = true;
   const predicate = rowExpansion.expandable;
+  let expandable = true;
 
   if (is.function(predicate)) {
     expandable = predicate(clone(row), rowKey);
@@ -118,8 +105,14 @@ const getTreemapParents = (treemap, rowKey, parents = []) => {
   return parents;
 };
 
+// 启用了树形表格时，获取子行对应的键名
+const getTreeviewChildrenKey = rowTreeview => rowTreeview.children ? rowTreeview.children : rowTreeviewChildrenKey;
+
+// 启用了折叠功能时，获取折叠操作列的列宽
+const getExpansionWidth = rowExpansion => rowExpansion.width ? rowExpansion.width : rowExpansionWidth;
+
 // 启用了选择功能时，获取选择方式（多选或单选）
-const getSelectionMultiple = (rowSelection) => {
+const getSelectionMultiple = rowSelection => {
   let multiple = true;
 
   if ("multiple" in rowSelection) {
@@ -129,10 +122,13 @@ const getSelectionMultiple = (rowSelection) => {
   return multiple;
 };
 
+// 启用了选择功能时，获取选择操作列的列宽
+const getSelectionWidth = rowSelection => rowSelection.width ? rowSelection.width : rowSelectionWidth;
+
 // 启用了选择功能时，获取 Checkbox 或 Radio 组件的自定义属性
 const getSelectionComponentProps = (row, rowKey, rowSelection) => {
-  let componentProps;
   const getter = rowSelection.getComponentProps;
+  let componentProps;
 
   if (is.function(getter)) {
     componentProps = getter(clone(row), rowKey);
@@ -167,29 +163,82 @@ const getSelectionComponentStatus = (rows, options) => {
   };
 };
 
-// 将 columns 配置解析为组件内部状态
-const addPropertiesToColumnsItem = (columns, parent) => {
-  let isGroupingColumns= columns.some(column => "children" in column);
+// 为 columns 配置填充缺省属性
+const addColumnProperties = (array, parent) => {
+  return array.map((target, targetIndex) => {
+    let column = clone(target);
 
-  return columns.map(column => {
     // 填充 key 属性
     if (!("key" in column)) {
-      column.key = "dataIndex" in column ? column.dataIndex : guid();
+      column.key = "dataIndex" in column ? column.dataIndex : (parent ? `${parent.key}-${targetIndex}` : `${targetIndex}`);
     }
 
-    // 如果具有父级，则 fixed 属性强制继承父级
+    // 如果存在父级，则 fixed 属性强制继承父级（表头分组中不支持对子列头设置 fixed 属性，否则将导致滚动时布局混乱）
     if (parent) {
-      column.fixed = parent.fixed;
+      if (parent.fixed) {
+        column.fixed = parent.fixed;
+      }
+      else {
+        delete column.fixed;
+      }
+    }
+
+    // 计算列在 fixed 模式下的位置及其偏移量
+    if (column.fixed === "left" || column.fixed === "right") {
+      // 
+      const prev = array[targetIndex - 1];
+
+      if (parent) {
+        column.fixedFirst = parent.fixedFirst ? !prev : false;
+      }
+      else {
+        column.fixedFirst = !prev || prev.fixed !== column.fixed;
+      }
+
+      // 
+      const next = array[targetIndex + 1];
+
+      if (parent) {
+        column.fixedLast = parent.fixedLast ? !next : false;
+      }
+      else {
+        column.fixedLast = !next || next.fixed !== column.fixed;
+      }
+
+      // 
+      const startIndex = column.fixed === "left" ? 0 : (targetIndex + 1);
+      const endIndex = column.fixed === "left" ? targetIndex : array.length;
+      const offset = array.slice(startIndex, endIndex).reduce((a, b) => {
+        if (b.children) {
+          return a + flatten(b.children, "children").reduce((m, n) => m + (n.width ? n.width : 0), 0);
+        }
+        else {
+          return a + (b.width ? b.width : 0);
+        }
+      }, 0);
+
+      if (parent && parent.offset) {
+        column.offset = offset + parent.offset;
+      }
+      else {
+        column.offset = offset;
+      }
+    }
+
+    // 填充层级属性
+    column.level = parent ? (parent.level + 1) : 1;
+
+    // 不支持对分组表头进行自定义表头列合并
+    if (column.children) {
+      column.colSpan = flatten(column.children, "children").length;
+    }
+    else if (!("colSpan" in column)){
+      column.colSpan = 1;
     }
 
     // 设置列的默认水平对齐方式
     if (!column.align) {
       column.align = "left";
-    }
-
-    // 表头分组中，不允许自定义表头列合并
-    if (isGroupingColumns && "colSpan" in column) {
-      delete column.colSpan;
     }
 
     // 列提示
@@ -237,7 +286,7 @@ const addPropertiesToColumnsItem = (columns, parent) => {
 
     // 子列头
     if (column.children) {
-      column.children = addPropertiesToColumnsItem(column.children, column);
+      column.children = addColumnProperties(column.children, column);
     }
 
     // 返回填充属性后的列数据
@@ -245,10 +294,12 @@ const addPropertiesToColumnsItem = (columns, parent) => {
   });
 };
 
-export const getStateColumnsFromProps = columns => {
-  columns = clone(columns);
+// 将 columns 属性解析为组件内部状态
+export const getColumns = columns => {
+  let array = columns.slice();
 
-  columns.sort((a, b) => {
+  // 根据 fixed 属性进行排序，fixed 为 left 排左侧，fixed 为 right 排右侧
+  array.sort((a, b) => {
     if (a.fixed === "left") {
       return b.fixed === "left" ? 0 : -1;
     }
@@ -260,69 +311,35 @@ export const getStateColumnsFromProps = columns => {
     }
   });
 
-  return addPropertiesToColumnsItem(columns);
+  // 填充缺省属性并返回
+  return addColumnProperties(array);
 };
 
-// 将 data 配置解析为组件内部状态
-const addPropertiesToDataItem = (data, rowKey) => {
-  return data.map(row => row);
-};
+// 将 data 属性解析为组件内部状态
+// 这里使用数组的 slice 方法实现浅拷贝出于以下两种考虑：
+// 1、防止内部排序逻辑改变原数组
+// 2、防止数组中的对象在无变化时被复制成一个新对象，导致不必要的重新渲染
+export const getData = data => data.slice();
 
-export const getStateDataFromProps = data => {
-  data = clone(data);
-
-  return addPropertiesToDataItem(data);
-};
-
-// 获取表格 colgroup 数据，用于设置列宽
-export const getStateColgroup = state => flatten(state.columns, "children");
+// 获取表格 colgroup 数据，用于设置列宽及固定列偏移距离
+export const getColgroup = state => flatten(state.columns, "children");
 
 // 获取表格 thead 数据，用于渲染表格头
-export const getStateThead = state => {
-  let max = 1;
-  const traverse = (column, parent) => {
-    if (parent) {
-      column.level = parent.level + 1;
-
-      if (max < column.level) {
-        max = column.level;
-      }
-    }
-    else {
-      column.level = 1;
-    }
-
-    if (column.children) {
-      let colSpan = 0;
-
-      column.children.forEach(element => {
-        traverse(element, column);
-        colSpan += element.colSpan;
-      });
-
-      column.colSpan = colSpan;
-    }
-    else {
-      column.colSpan = "colSpan" in column ? column.colSpan : 1;
-    }
-  };
-
-  state.columns.forEach(column => traverse(column));
-
+export const getThead = state => {
+  const columns = flatten(state.columns, "children", true);
+  const level = Math.max.apply(null, columns.map(column => column.level));
   let rows = [];
 
-  for (let i = 0; i < max; i++) {
+  for (let i = 0; i < level; i++) {
     rows.push([]);
   }
 
-  state.columns = flatten(state.columns, "children", true);
-
-  state.columns.forEach(column => {
+  columns.forEach(column => {
     if (column.children) {
       column.rowSpan = 1;
     }
     else {
-      column.rowSpan = max - column.level + 1;
+      column.rowSpan = level - column.level + 1;
     }
 
     rows[column.level - 1].push(column);
@@ -338,7 +355,7 @@ const filter = (column, data, props) => {
     const boolean = method(value, clone(row));
 
     if (boolean && props.rowTreeview) {
-      const childrenKey = props.rowTreeview.children || "children";
+      const childrenKey = getTreeviewChildrenKey(props.rowTreeview);
       const children = getRowChildren(row, childrenKey);
 
       if (is.array(children) && children.length > 0) {
@@ -350,9 +367,7 @@ const filter = (column, data, props) => {
   });
 };
 
-export const getStateTbodyByFilter = (columns, data, props) => {
-  columns = flatten(columns, "children");
-
+export const getTbodyByFilter = (columns, data, props) => {
   columns.forEach(column => {
     if (column.filter && column.filter.method && !column.filter.useServerFilter) {
       data = filter(column, data, props);
@@ -385,7 +400,7 @@ const sorter = (column, data, props) => {
   });
 
   if (props.rowTreeview) {
-    const childrenKey = props.rowTreeview.children || "children";
+    const childrenKey = getTreeviewChildrenKey(props.rowTreeview);
 
     data.forEach(row => {
       const children = getRowChildren(row, childrenKey);
@@ -399,9 +414,7 @@ const sorter = (column, data, props) => {
   return data;
 };
 
-export const getStateTbodyBySorter = (columns, data, props) => {
-  columns = flatten(columns, "children");
-
+export const getTbodyBySorter = (columns, data, props) => {
   columns.forEach(column => {
     if (column.sorter && !column.sorter.useServerSort) {
       data = sorter(column, data, props);
@@ -412,14 +425,14 @@ export const getStateTbodyBySorter = (columns, data, props) => {
 };
 
 // 获取表格 body 数据，用于渲染表格体
-export const getStateTbody = (props, state) => {
-  let columns = clone(state.columns);
-  let data = clone(state.data);
+export const getTbody = (props, state) => {
+  const columns = state.colgroup;
+  let data = state.data;
 
   // 启用了本地筛选功能时进行筛选处理（包含了嵌套数据的筛选）
-  data = getStateTbodyByFilter(columns, data, props);
+  data = getTbodyByFilter(columns, data, props);
   // 启用了本地排序功能时进行排序处理（包含了嵌套数据的排序）
-  data = getStateTbodyBySorter(columns, data, props);
+  data = getTbodyBySorter(columns, data, props);
 
   return data;
 };
@@ -427,7 +440,6 @@ export const getStateTbody = (props, state) => {
 // 默认导出指定接口
 export default {
   isIgnoreElements,
-  getColumnKey,
   getRowKey,
   getRowChildren,
   getRowTogglable,
@@ -435,14 +447,17 @@ export default {
   getTreemap,
   getTreemapChildren,
   getTreemapParents,
+  getTreeviewChildrenKey,
+  getExpansionWidth,
+  getSelectionWidth,
   getSelectionMultiple,
   getSelectionComponentProps,
   getSelectionComponentStatus,
-  getStateColumnsFromProps,
-  getStateDataFromProps,
-  getStateColgroup,
-  getStateThead,
-  getStateTbodyByFilter,
-  getStateTbodyBySorter,
-  getStateTbody
+  getColumns,
+  getData,
+  getColgroup,
+  getThead,
+  getTbodyByFilter,
+  getTbodyBySorter,
+  getTbody
 };

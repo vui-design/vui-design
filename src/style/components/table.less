@@ -1,13 +1,13 @@
 @vui-table: ~"@{vui}-table";
 
 .@{vui-table} {
-	&-wrapper {
+	& {
 		position:relative;
+		z-index:1;
 		display:block;
 		box-sizing:border-box;
-		max-width:100%;
-		border-radius:@table-border-radius;
-		overflow:hidden;
+		width:100%;
+		line-height:@table-line-height;
 
 		&-bordered {
 			&:before,
@@ -36,15 +36,6 @@
 		}
 	}
 
-	& {
-		position:relative;
-		z-index:1;
-		display:block;
-		box-sizing:border-box;
-		width:100%;
-		line-height:@table-line-height;
-	}
-
 	&-header {
 		position:relative;
 		display:block;
@@ -67,11 +58,47 @@
 				border-spacing:0;
 
 				& > thead > tr > th {
+					position:relative;
 					box-sizing:border-box;
 					vertical-align:middle;
 					transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
 
 					.writeBreak;
+
+					&.@{vui-table}-column-fixed-left {
+						position:sticky;
+						z-index:1;
+						background:#fafafa;
+					}
+					&.@{vui-table}-column-fixed-left-last:after {
+						content:"";
+						position:absolute;
+						right:-6px;
+						top:0;
+						bottom:0;
+						display:block;
+						box-sizing:border-box;
+						width:6px;
+						background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+						pointer-events:none;
+					}
+					&.@{vui-table}-column-fixed-right {
+						position:sticky;
+						z-index:1;
+						background:#fafafa;
+					}
+					&.@{vui-table}-column-fixed-right-first:after {
+						content:"";
+						position:absolute;
+						left:-6px;
+						top:0;
+						bottom:0;
+						display:block;
+						box-sizing:border-box;
+						width:6px;
+						background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+						pointer-events:none;
+					}
 
 					&.@{vui-table}-column-align-left {
 						text-align:left;
@@ -101,7 +128,6 @@
 					}
 
 					&.@{vui-table}-column-with-filter {
-						position:relative;
 						padding-right:@table-filter-width !important;
 						user-select:none;
 					}
@@ -141,6 +167,41 @@
 					transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
 
 					.writeBreak;
+
+					&.@{vui-table}-column-fixed-left {
+						position:sticky;
+						z-index:1;
+						background:#fff;
+					}
+					&.@{vui-table}-column-fixed-left-last:after {
+						content:"";
+						position:absolute;
+						right:-6px;
+						top:0;
+						bottom:0;
+						display:block;
+						box-sizing:border-box;
+						width:6px;
+						background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+						pointer-events:none;
+					}
+					&.@{vui-table}-column-fixed-right {
+						position:sticky;
+						z-index:1;
+						background:#fff;
+					}
+					&.@{vui-table}-column-fixed-right-first:after {
+						content:"";
+						position:absolute;
+						left:-6px;
+						top:0;
+						bottom:0;
+						display:block;
+						box-sizing:border-box;
+						width:6px;
+						background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+						pointer-events:none;
+					}
 
 					&.@{vui-table}-column-align-left {
 						text-align:left;
@@ -576,81 +637,6 @@
 		margin-top:-4px;
 	}
 
-	/* table position */
-	&-left {
-		position:absolute;
-		top:0;
-		left:0;
-		z-index:2;
-		width:0;
-
-		&:after {
-			content:"";
-			position:absolute;
-			right:-6px;
-			top:0;
-			bottom:0;
-			z-index:1;
-			display:block;
-			box-sizing:border-box;
-			width:6px;
-			background:linear-gradient(to right, rgba(0,0,0,0.06) -40%, rgba(0,0,0,0) 100%);
-			pointer-events:none;
-		}
-	}
-
-	&-left > &-header > &-header-scrollbar > table {
-		float:left;
-	}
-
-	&-left > &-body > &-body-scrollbar > table {
-		float:left;
-	}
-
-	&-bordered &-left {
-		&:after {
-			right:-5px;
-			border-left:1px solid @table-border-color;
-		}
-	}
-
-	&-right {
-		position:absolute;
-		top:0;
-		right:0;
-		z-index:2;
-		width:0;
-
-		&:before {
-			content:"";
-			position:absolute;
-			left:-6px;
-			top:0;
-			bottom:0;
-			z-index:1;
-			display:block;
-			box-sizing:border-box;
-			width:6px;
-			background:linear-gradient(to left, rgba(0,0,0,0.06) -40%, rgba(0,0,0,0) 100%);
-			pointer-events:none;
-		}
-	}
-
-	&-right > &-header > &-header-scrollbar > table {
-		float:right;
-	}
-
-	&-right > &-body > &-body-scrollbar > table {
-		float:right;
-	}
-
-	&-bordered &-right {
-		&:after {
-			left:-6px;
-			border-right:1px solid @table-border-color;
-		}
-	}
-
 	/* table size */
 	&-small > &-header > &-header-scrollbar > table > thead > tr > th,
 	&-small > &-body > &-body-scrollbar > table > tbody > tr > td {
@@ -707,11 +693,11 @@
 		background-color:@table-row-selected-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-hovered > td {
+	& > &-body > &-body-scrollbar > table > tbody > tr:hover > td {
 		background-color:@table-row-hover-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-selected.@{vui}-table-row-hovered > td {
+	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-selected:hover > td {
 		background-color:darken(@table-row-selected-background-color, 2%)
 	}
 }
