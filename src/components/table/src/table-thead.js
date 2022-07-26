@@ -98,28 +98,28 @@ const VuiTableThead = {
         };
       }
     },
-    getColumnBodyClassName(column) {
+    getColumnBodyClassName() {
       const { $props: props } = this;
 
       return {
         [`${props.classNamePrefix}-column-body`]: true
       };
     },
-    getColumnExtraClassName(column) {
+    getColumnExtraClassName() {
       const { $props: props } = this;
 
       return {
         [`${props.classNamePrefix}-column-extra`]: true
       };
     },
-    getColumnTitleClassName(column) {
+    getColumnTitleClassName() {
       const { $props: props } = this;
 
       return {
         [`${props.classNamePrefix}-column-title`]: true
       };
     },
-    getColumnSelectionClassName(column, checked) {
+    getColumnSelectionClassName(checked) {
       const { $props: props } = this;
 
       return {
@@ -127,14 +127,14 @@ const VuiTableThead = {
         [`active`]: checked
       };
     },
-    getColumnTooltipClassName(column) {
+    getColumnTooltipClassName() {
       const { $props: props } = this;
 
       return {
         [`${props.classNamePrefix}-column-tooltip`]: true
       };
     },
-    getColumnSorterClassName(column) {
+    getColumnSorterClassName() {
       const { $props: props } = this;
 
       return {
@@ -245,7 +245,7 @@ const VuiTableThead = {
 
           if (props.rowSelection.title) {
             component = (
-              <div class={this.getColumnTitleClassName(props.rowSelection)}>
+              <div class={this.getColumnTitleClassName()}>
                 {props.rowSelection.title}
               </div>
             );
@@ -268,7 +268,7 @@ const VuiTableThead = {
 
             component = (
               <VuiCheckbox
-                class={this.getColumnSelectionClassName(props.rowSelection, status.checked)}
+                class={this.getColumnSelectionClassName(status.checked)}
                 indeterminate={status.indeterminate}
                 checked={status.checked}
                 disabled={status.disabled}
@@ -299,14 +299,14 @@ const VuiTableThead = {
           let body = [];
 
           body.push(
-            <div class={this.getColumnTitleClassName(column)}>
+            <div class={this.getColumnTitleClassName()}>
               {is.function(column.title) ? column.title(h, clone(column), columnIndex) : column.title}
             </div>
           );
 
           if (column.tooltip) {
             body.push(
-              <div class={this.getColumnTooltipClassName(column)}>
+              <div class={this.getColumnTooltipClassName()}>
                 <VuiTooltip color={column.tooltip.color} placement={column.tooltip.placement} maxWidth={column.tooltip.maxWidth}>
                   <VuiIcon type={column.tooltip.icon} />
                   <div slot="content">{column.tooltip.content}</div>
@@ -317,7 +317,7 @@ const VuiTableThead = {
 
           if (column.sorter) {
             body.push(
-              <div class={this.getColumnSorterClassName(column)}>
+              <div class={this.getColumnSorterClassName()}>
                 <i class={this.getColumnSorterCaretClassName(column, "asc")}></i>
                 <i class={this.getColumnSorterCaretClassName(column, "desc")}></i>
               </div>
@@ -325,7 +325,7 @@ const VuiTableThead = {
           }
 
           body = (
-            <div class={this.getColumnBodyClassName(column)}>
+            <div class={this.getColumnBodyClassName()}>
               {body}
             </div>
           );
@@ -334,7 +334,7 @@ const VuiTableThead = {
 
           if (column.filter) {
             extra = (
-              <div class={this.getColumnExtraClassName(column)}>
+              <div class={this.getColumnExtraClassName()}>
                 <VuiTableFilter
                   classNamePrefix={props.classNamePrefix}
                   options={column.filter.options}

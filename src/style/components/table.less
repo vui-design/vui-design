@@ -110,10 +110,6 @@
 						text-align:right;
 					}
 
-					&.@{vui-table}-column-ellipsis {
-						.writeEllipsis;
-					}
-
 					&.@{vui-table}-column-with-expansion {
 
 					}
@@ -213,10 +209,6 @@
 						text-align:right;
 					}
 
-					&.@{vui-table}-column-ellipsis {
-						.writeEllipsis;
-					}
-
 					&.@{vui-table}-column-with-expansion {
 
 					}
@@ -267,7 +259,7 @@
 	}
 
 	&-column-title {
-		flex-shrink:1;
+		flex:1;
 		display:block;
 		box-sizing:border-box;
 		color:@table-font-primary-color;
@@ -276,6 +268,17 @@
 		.writeBreak;
 	}
 	&-column-ellipsis &-column-title {
+		.writeEllipsis;
+	}
+
+	&-column-content {
+		flex:1;
+		display:block;
+		box-sizing:border-box;
+
+		.writeBreak;
+	}
+	&-column-ellipsis &-column-content {
 		.writeEllipsis;
 	}
 
@@ -485,16 +488,14 @@
 	&-column-switch {
 		position:relative;
 		cursor:pointer;
-		display:inline-block;
+		display:block;
 		box-sizing:border-box;
 		width:@table-switch-size;
 		height:@table-switch-size;
 		border:1px solid @table-switch-border-color;
 		border-radius:@table-switch-border-radius;
 		background-color:@table-switch-background-color;
-		margin-top:-4px;
 		margin-right:8px;
-		vertical-align:middle;
 		color:@table-switch-color;
 		user-select:none;
 		outline:none;
@@ -561,15 +562,13 @@
 	&-column-expansion {
 		position:relative;
 		cursor:pointer;
-		display:inline-block;
+		display:block;
 		box-sizing:border-box;
 		width:@table-expansion-size;
 		height:@table-expansion-size;
 		border:1px solid @table-expansion-border-color;
 		border-radius:@table-expansion-border-radius;
 		background-color:@table-expansion-background-color;
-		margin-top:-4px;
-		vertical-align:middle;
 		color:@table-expansion-color;
 		user-select:none;
 		outline:none;
@@ -634,7 +633,7 @@
 	}
 
 	&-column-selection {
-		margin-top:-4px;
+
 	}
 
 	/* table size */

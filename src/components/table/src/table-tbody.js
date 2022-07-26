@@ -179,7 +179,14 @@ const VuiTableTbody = {
         };
       }
     },
-    getColumnSwitchClassName(column, opened) {
+    getColumnBodyClassName() {
+      const { $props: props } = this;
+
+      return {
+        [`${props.classNamePrefix}-column-body`]: true
+      };
+    },
+    getColumnSwitchClassName(opened) {
       const { $props: props } = this;
 
       return {
@@ -187,7 +194,7 @@ const VuiTableTbody = {
         [`active`]: opened
       };
     },
-    getColumnExpansionClassName(column, expanded) {
+    getColumnExpansionClassName(expanded) {
       const { $props: props } = this;
 
       return {
@@ -195,12 +202,19 @@ const VuiTableTbody = {
         [`active`]: expanded
       };
     },
-    getColumnSelectionClassName(column, selected) {
+    getColumnSelectionClassName(selected) {
       const { $props: props } = this;
 
       return {
         [`${props.classNamePrefix}-column-selection`]: true,
         [`active`]: selected
+      };
+    },
+    getColumnContentClassName() {
+      const { $props: props } = this;
+
+      return {
+        [`${props.classNamePrefix}-column-content`]: true
       };
     },
     handleRowMouseenter(event, row, rowIndex, rowKey) {
@@ -388,7 +402,7 @@ const VuiTableTbody = {
 
           if (isExpandable) {
             const btnExpansionAttributes = {
-              class: this.getColumnExpansionClassName(props.rowExpansion, this.isRowExpanded(rowKey)),
+              class: this.getColumnExpansionClassName(this.isRowExpanded(rowKey)),
               on: {
                 click: e => this.handleRowExpand(e, row, rowIndex, rowKey)
               }
@@ -401,7 +415,9 @@ const VuiTableTbody = {
 
           tds.push(
             <td key="expansion" class={this.getColumnClassName("expansion", props.rowExpansion)} style={this.getColumnStyle("expansion", props.rowExpansion)}>
-              {btnExpansion}
+              <div class={this.getColumnBodyClassName()}>
+                {btnExpansion}
+              </div>
             </td>
           );
         }
@@ -412,7 +428,7 @@ const VuiTableTbody = {
           const componentProps = utils.getSelectionComponentProps(row, rowKey, props.rowSelection);
           let btnSelection;
           let btnSelectionAttributes = {
-            class: this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
+            class: this.getColumnSelectionClassName(isRowSelected),
             props: {
               validator: false,
               checked: isRowSelected
@@ -457,7 +473,9 @@ const VuiTableTbody = {
 
           tds.push(
             <td key="selection" class={this.getColumnClassName("selection", props.rowSelection)} style={this.getColumnStyle("selection", props.rowExpansion)}>
-              {btnSelection}
+              <div class={this.getColumnBodyClassName()}>
+                {btnSelection}
+              </div>
             </td>
           );
         }
@@ -496,7 +514,7 @@ const VuiTableTbody = {
                 const isRowOpened = this.isRowOpened(rowKey);
 
                 btnSwitchAttributes = {
-                  class: this.getColumnSwitchClassName(props.rowTreeview, isRowOpened),
+                  class: this.getColumnSwitchClassName(isRowOpened),
                   on: {
                     click: e => this.handleRowToggle(e, row, rowIndex, rowKey)
                   }
@@ -504,7 +522,7 @@ const VuiTableTbody = {
               }
               else {
                 btnSwitchAttributes = {
-                  class: this.getColumnSwitchClassName(props.rowTreeview, false),
+                  class: this.getColumnSwitchClassName(false),
                   style: {
                     visibility: "hidden"
                   }
@@ -545,8 +563,10 @@ const VuiTableTbody = {
 
           tds.push(
             <td key={column.key} class={this.getColumnClassName(undefined, column, column.key, row)} style={this.getColumnStyle(undefined, column)} {...columnCellProps}>
-              {btnSwitches}
-              {content}
+              <div class={this.getColumnBodyClassName()}>
+                {btnSwitches}
+                <div class={this.getColumnContentClassName()}>{content}</div>
+              </div>
             </td>
           );
         });

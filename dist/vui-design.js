@@ -35554,25 +35554,25 @@ var VuiTableThead = {
         };
       }
     },
-    getColumnBodyClassName: function getColumnBodyClassName(column) {
+    getColumnBodyClassName: function getColumnBodyClassName() {
       var props = this.$props;
 
 
       return defineProperty_default()({}, props.classNamePrefix + "-column-body", true);
     },
-    getColumnExtraClassName: function getColumnExtraClassName(column) {
+    getColumnExtraClassName: function getColumnExtraClassName() {
       var props = this.$props;
 
 
       return defineProperty_default()({}, props.classNamePrefix + "-column-extra", true);
     },
-    getColumnTitleClassName: function getColumnTitleClassName(column) {
+    getColumnTitleClassName: function getColumnTitleClassName() {
       var props = this.$props;
 
 
       return defineProperty_default()({}, props.classNamePrefix + "-column-title", true);
     },
-    getColumnSelectionClassName: function getColumnSelectionClassName(column, checked) {
+    getColumnSelectionClassName: function getColumnSelectionClassName(checked) {
       var _ref5;
 
       var props = this.$props;
@@ -35580,13 +35580,13 @@ var VuiTableThead = {
 
       return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref5, "active", checked), _ref5;
     },
-    getColumnTooltipClassName: function getColumnTooltipClassName(column) {
+    getColumnTooltipClassName: function getColumnTooltipClassName() {
       var props = this.$props;
 
 
       return defineProperty_default()({}, props.classNamePrefix + "-column-tooltip", true);
     },
-    getColumnSorterClassName: function getColumnSorterClassName(column) {
+    getColumnSorterClassName: function getColumnSorterClassName() {
       var props = this.$props;
 
 
@@ -35695,7 +35695,7 @@ var VuiTableThead = {
           if (props.rowSelection.title) {
             component = h(
               "div",
-              { "class": _this.getColumnTitleClassName(props.rowSelection) },
+              { "class": _this.getColumnTitleClassName() },
               [props.rowSelection.title]
             );
           } else if (isMultiple) {
@@ -35714,7 +35714,7 @@ var VuiTableThead = {
             });
 
             component = h(components_checkbox, {
-              "class": _this.getColumnSelectionClassName(props.rowSelection, status.checked),
+              "class": _this.getColumnSelectionClassName(status.checked),
               attrs: { indeterminate: status.indeterminate,
                 checked: status.checked,
                 disabled: status.disabled,
@@ -35749,14 +35749,14 @@ var VuiTableThead = {
 
           body.push(h(
             "div",
-            { "class": _this.getColumnTitleClassName(column) },
+            { "class": _this.getColumnTitleClassName() },
             [is["a" /* default */].function(column.title) ? column.title(h, Object(utils_clone["a" /* default */])(column), columnIndex) : column.title]
           ));
 
           if (column.tooltip) {
             body.push(h(
               "div",
-              { "class": _this.getColumnTooltipClassName(column) },
+              { "class": _this.getColumnTooltipClassName() },
               [h(
                 components_tooltip,
                 {
@@ -35776,14 +35776,14 @@ var VuiTableThead = {
           if (column.sorter) {
             body.push(h(
               "div",
-              { "class": _this.getColumnSorterClassName(column) },
+              { "class": _this.getColumnSorterClassName() },
               [h("i", { "class": _this.getColumnSorterCaretClassName(column, "asc") }), h("i", { "class": _this.getColumnSorterCaretClassName(column, "desc") })]
             ));
           }
 
           body = h(
             "div",
-            { "class": _this.getColumnBodyClassName(column) },
+            { "class": _this.getColumnBodyClassName() },
             [body]
           );
 
@@ -35792,7 +35792,7 @@ var VuiTableThead = {
           if (column.filter) {
             extra = h(
               "div",
-              { "class": _this.getColumnExtraClassName(column) },
+              { "class": _this.getColumnExtraClassName() },
               [h(table_filter, {
                 attrs: {
                   classNamePrefix: props.classNamePrefix,
@@ -36037,29 +36037,41 @@ var VuiTableTbody = {
         };
       }
     },
-    getColumnSwitchClassName: function getColumnSwitchClassName(column, opened) {
-      var _ref4;
-
+    getColumnBodyClassName: function getColumnBodyClassName() {
       var props = this.$props;
 
 
-      return _ref4 = {}, defineProperty_default()(_ref4, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref4, "active", opened), _ref4;
+      return defineProperty_default()({}, props.classNamePrefix + "-column-body", true);
     },
-    getColumnExpansionClassName: function getColumnExpansionClassName(column, expanded) {
+    getColumnSwitchClassName: function getColumnSwitchClassName(opened) {
       var _ref5;
 
       var props = this.$props;
 
 
-      return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref5, "active", expanded), _ref5;
+      return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref5, "active", opened), _ref5;
     },
-    getColumnSelectionClassName: function getColumnSelectionClassName(column, selected) {
+    getColumnExpansionClassName: function getColumnExpansionClassName(expanded) {
       var _ref6;
 
       var props = this.$props;
 
 
-      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref6, "active", selected), _ref6;
+      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref6, "active", expanded), _ref6;
+    },
+    getColumnSelectionClassName: function getColumnSelectionClassName(selected) {
+      var _ref7;
+
+      var props = this.$props;
+
+
+      return _ref7 = {}, defineProperty_default()(_ref7, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref7, "active", selected), _ref7;
+    },
+    getColumnContentClassName: function getColumnContentClassName() {
+      var props = this.$props;
+
+
+      return defineProperty_default()({}, props.classNamePrefix + "-column-content", true);
     },
     handleRowMouseenter: function handleRowMouseenter(event, row, rowIndex, rowKey) {
       this.vuiTable.handleRowMouseenter(row, rowIndex, rowKey);
@@ -36248,7 +36260,7 @@ var VuiTableTbody = {
 
           if (isExpandable) {
             var btnExpansionAttributes = {
-              class: _this.getColumnExpansionClassName(props.rowExpansion, _this.isRowExpanded(rowKey)),
+              class: _this.getColumnExpansionClassName(_this.isRowExpanded(rowKey)),
               on: {
                 click: function click(e) {
                   return _this.handleRowExpand(e, row, rowIndex, rowKey);
@@ -36262,7 +36274,11 @@ var VuiTableTbody = {
           tds.push(h(
             "td",
             { key: "expansion", "class": _this.getColumnClassName("expansion", props.rowExpansion), style: _this.getColumnStyle("expansion", props.rowExpansion) },
-            [btnExpansion]
+            [h(
+              "div",
+              { "class": _this.getColumnBodyClassName() },
+              [btnExpansion]
+            )]
           ));
         }
 
@@ -36272,7 +36288,7 @@ var VuiTableTbody = {
           var componentProps = table_src_utils.getSelectionComponentProps(row, rowKey, props.rowSelection);
           var btnSelection = void 0;
           var btnSelectionAttributes = {
-            class: _this.getColumnSelectionClassName(props.rowSelection, isRowSelected),
+            class: _this.getColumnSelectionClassName(isRowSelected),
             props: {
               validator: false,
               checked: isRowSelected
@@ -36312,7 +36328,11 @@ var VuiTableTbody = {
           tds.push(h(
             "td",
             { key: "selection", "class": _this.getColumnClassName("selection", props.rowSelection), style: _this.getColumnStyle("selection", props.rowExpansion) },
-            [btnSelection]
+            [h(
+              "div",
+              { "class": _this.getColumnBodyClassName() },
+              [btnSelection]
+            )]
           ));
         }
 
@@ -36349,7 +36369,7 @@ var VuiTableTbody = {
                 var isRowOpened = _this.isRowOpened(rowKey);
 
                 btnSwitchAttributes = {
-                  class: _this.getColumnSwitchClassName(props.rowTreeview, isRowOpened),
+                  class: _this.getColumnSwitchClassName(isRowOpened),
                   on: {
                     click: function click(e) {
                       return _this.handleRowToggle(e, row, rowIndex, rowKey);
@@ -36358,7 +36378,7 @@ var VuiTableTbody = {
                 };
               } else {
                 btnSwitchAttributes = {
-                  class: _this.getColumnSwitchClassName(props.rowTreeview, false),
+                  class: _this.getColumnSwitchClassName(false),
                   style: {
                     visibility: "hidden"
                   }
@@ -36396,7 +36416,15 @@ var VuiTableTbody = {
           tds.push(h(
             "td",
             babel_helper_vue_jsx_merge_props_default()([{ key: column.key, "class": _this.getColumnClassName(undefined, column, column.key, row), style: _this.getColumnStyle(undefined, column) }, columnCellProps]),
-            [btnSwitches, content]
+            [h(
+              "div",
+              { "class": _this.getColumnBodyClassName() },
+              [btnSwitches, h(
+                "div",
+                { "class": _this.getColumnContentClassName() },
+                [content]
+              )]
+            )]
           ));
         });
 
@@ -43495,7 +43523,7 @@ if (typeof window !== "undefined" && window.Vue) {
 
 
 /* harmony default export */ var src_0 = __webpack_exports__["default"] = ({
-  version: "1.10.9",
+  version: "1.10.10",
   install: src_install,
   // Locale
   locale: src_locale.use,
