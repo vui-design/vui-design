@@ -3,6 +3,12 @@ if (typeof console !== "undefined" && console.warn && typeof window !== "undefin
   console.warn("You are using a whole package of Vui Design, please use https://www.npmjs.com/package/babel-plugin-import to reduce app bundle size.");
 }
 
+// Package
+import pkg from "../package.json";
+
+// Language
+import locale from "./locale";
+
 // General
 import Icon from "./components/icon";
 import ButtonGroup from "./components/button-group";
@@ -121,16 +127,14 @@ import Authorizer from "./components/authorizer";
 import Backtop from "./components/backtop";
 import Collapser from "./components/collapser";
 import Fullscreen from "./components/fullscreen";
-import Loading from "./components/loading";
 import ResizeObserver from "./components/resize-observer";
-// Language
-import locale from "./locale";
+import Loading from "./components/loading";
 
 const components = [
   // General
   Icon,
-  ButtonGroup,
   Button,
+  ButtonGroup,
   Link,
   // Layout
   Divider,
@@ -190,8 +194,8 @@ const components = [
   CascadeTransfer,
   Upload,
   // Data Display
-  AvatarGroup,
   Avatar,
+  AvatarGroup,
   Badge,
   Card,
   CardGrid,
@@ -280,8 +284,8 @@ if (typeof window !== "undefined" && window.Vue) {
 export {
   // General
   Icon,
-  ButtonGroup,
   Button,
+  ButtonGroup,
   Link,
   // Layout
   Divider,
@@ -371,8 +375,8 @@ export {
   TimelineItem,
   Tooltip,
   Tree,
-  // Feedback
   Watermark,
+  // Feedback
   Alert,
   Drawer,
   Message,
@@ -394,136 +398,16 @@ export {
   AnchorLink,
   Authorizer,
   Backtop,
-  Loading,
   Collapser,
   Fullscreen,
-  ResizeObserver
+  ResizeObserver,
+  Loading
 };
 
 export default {
-  version: "1.10.10",
+  version: pkg.version,
   install,
-  // Locale
   locale: locale.use,
   i18n: locale.i18n,
-  // General
-  Icon,
-  ButtonGroup,
-  Button,
-  Link,
-  // Layout
-  Divider,
-  Row,
-  Col,
-  Layout,
-  Header,
-  Sider,
-  Content,
-  Footer,
-  Space,
-  // Navigation
-  Affix,
-  Breadcrumb,
-  BreadcrumbItem,
-  Dropdown,
-  DropdownButton,
-  DropdownMenu,
-  DropdownSubmenu,
-  DropdownMenuItem,
-  DropdownMenuItemGroup,
-  DropdownMenuDivider,
-  Menu,
-  Submenu,
-  MenuItem,
-  MenuItemGroup,
-  MenuDivider,
-  PageHeader,
-  Pagination,
-  Steps,
-  Step,
-  Tabs,
-  TabPanel,
-  // Data Entry
-  Cascader,
-  Checkbox,
-  CheckboxGroup,
-  Datepicker,
-  Form,
-  FormGroup,
-  FormItem,
-  Input,
-  InputGroup,
-  InputNumber,
-  MutexGroup,
-  Radio,
-  RadioGroup,
-  Rate,
-  Select,
-  Option,
-  OptionGroup,
-  Slider,
-  Switch,
-  Textarea,
-  Timeroutine,
-  Transfer,
-  CascadeTransfer,
-  Upload,
-  // Data Display
-  Avatar,
-  AvatarGroup,
-  Badge,
-  Card,
-  CardGrid,
-  CardMeta,
-  Cell,
-  CellGroup,
-  Collapse,
-  Countdown,
-  Panel,
-  Descriptions,
-  Description,
-  Empty,
-  Image,
-  List,
-  ListItem,
-  ListItemMeta,
-  Popover,
-  Qrcode,
-  Ratio,
-  Ribbon,
-  Statistic,
-  Table,
-  Tag,
-  Time,
-  Timeline,
-  TimelineItem,
-  Tooltip,
-  Tree,
-  // Feedback
-  Watermark,
-  Alert,
-  Drawer,
-  Message,
-  Modal,
-  Notice,
-  Popconfirm,
-  Progress,
-  Result,
-  Skeleton,
-  SkeletonAvatar,
-  SkeletonTitle,
-  SkeletonParagraph,
-  SkeletonInput,
-  SkeletonButton,
-  SkeletonImage,
-  Spin,
-  // Other
-  Anchor,
-  AnchorLink,
-  Authorizer,
-  Backtop,
-  Collapser,
-  Loading,
-  Fullscreen,
-  ResizeObserver
+  loading: Loading
 };
