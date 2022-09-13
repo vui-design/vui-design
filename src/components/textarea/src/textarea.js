@@ -59,10 +59,6 @@ const VuiTextarea = {
 
       this.state.value = value;
       this.resize();
-
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", value);
-      }
     },
     rows() {
       this.resize();

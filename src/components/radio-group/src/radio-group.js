@@ -59,10 +59,6 @@ const VuiRadioGroup = {
       }
 
       this.state.value = value;
-
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", value);
-      }
     }
   },
   methods: {

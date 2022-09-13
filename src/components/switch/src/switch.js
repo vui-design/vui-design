@@ -53,10 +53,6 @@ const VuiSwitch = {
       }
 
       this.state.checked = value;
-
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", value);
-      }
     }
   },
   methods: {
