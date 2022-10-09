@@ -44,93 +44,85 @@
 		background-color:@table-header-background-color;
 		overflow:hidden;
 
-		&-scrollbar {
-			display:block;
-			box-sizing:border-box;
-			width:100%;
-			height:100%;
-			overflow:hidden;
+		& > table {
+			table-layout:fixed;
+			min-width:100%;
+			border-collapse:separate;
+			border-spacing:0;
 
-			& > table {
-				table-layout:fixed;
-				min-width:100%;
-				border-collapse:separate;
-				border-spacing:0;
+			& > thead > tr > th {
+				position:relative;
+				box-sizing:border-box;
+				vertical-align:middle;
+				transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
 
-				& > thead > tr > th {
-					position:relative;
+				.writeBreak;
+
+				&.@{vui-table}-column-fixed-left {
+					position:sticky;
+					z-index:1;
+					background:#fafafa;
+				}
+				&.@{vui-table}-column-fixed-left-last:after {
+					content:"";
+					position:absolute;
+					right:-6px;
+					top:0;
+					bottom:0;
+					display:block;
 					box-sizing:border-box;
-					vertical-align:middle;
-					transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
+					width:6px;
+					background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+					pointer-events:none;
+				}
+				&.@{vui-table}-column-fixed-right {
+					position:sticky;
+					z-index:1;
+					background:#fafafa;
+				}
+				&.@{vui-table}-column-fixed-right-first:after {
+					content:"";
+					position:absolute;
+					left:-6px;
+					top:0;
+					bottom:0;
+					display:block;
+					box-sizing:border-box;
+					width:6px;
+					background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+					pointer-events:none;
+				}
 
-					.writeBreak;
+				&.@{vui-table}-column-align-left {
+					text-align:left;
+				}
+				&.@{vui-table}-column-align-center {
+					text-align:center;
+				}
+				&.@{vui-table}-column-align-right {
+					text-align:right;
+				}
 
-					&.@{vui-table}-column-fixed-left {
-						position:sticky;
-						z-index:1;
-						background:#fafafa;
-					}
-					&.@{vui-table}-column-fixed-left-last:after {
-						content:"";
-						position:absolute;
-						right:-6px;
-						top:0;
-						bottom:0;
-						display:block;
-						box-sizing:border-box;
-						width:6px;
-						background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
-						pointer-events:none;
-					}
-					&.@{vui-table}-column-fixed-right {
-						position:sticky;
-						z-index:1;
-						background:#fafafa;
-					}
-					&.@{vui-table}-column-fixed-right-first:after {
-						content:"";
-						position:absolute;
-						left:-6px;
-						top:0;
-						bottom:0;
-						display:block;
-						box-sizing:border-box;
-						width:6px;
-						background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
-						pointer-events:none;
-					}
+				&.@{vui-table}-column-with-expansion {
 
-					&.@{vui-table}-column-align-left {
-						text-align:left;
-					}
-					&.@{vui-table}-column-align-center {
-						text-align:center;
-					}
-					&.@{vui-table}-column-align-right {
-						text-align:right;
-					}
+				}
 
-					&.@{vui-table}-column-with-expansion {
+				&.@{vui-table}-column-with-selection {
 
-					}
+				}
 
-					&.@{vui-table}-column-with-selection {
+				&.@{vui-table}-column-with-sorter {
+					cursor:pointer;
+					user-select:none;
+				}
 
-					}
+				&.@{vui-table}-column-with-filter {
+					padding-right:@table-filter-width !important;
+					user-select:none;
+				}
 
-					&.@{vui-table}-column-with-sorter {
-						cursor:pointer;
-						user-select:none;
-					}
-
-					&.@{vui-table}-column-with-filter {
-						padding-right:@table-filter-width !important;
-						user-select:none;
-					}
-
-					&.@{vui-table}-column-hidden {
-						visibility:hidden;
-					}
+				&.@{vui-table}-column-hidden {
+					visibility:hidden;
 				}
 			}
 		}
@@ -143,91 +135,83 @@
 		background-color:@table-body-background-color;
 		overflow:hidden;
 
-		&-scrollbar {
-			display:block;
-			box-sizing:border-box;
-			width:100%;
-			height:100%;
-			overflow:hidden;
+		& > table {
+			table-layout:fixed;
+			min-width:100%;
+			border-collapse:separate;
+			border-spacing:0;
 
-			& > table {
-				table-layout:fixed;
-				min-width:100%;
-				border-collapse:separate;
-				border-spacing:0;
+			& > tbody > tr > td {
+				box-sizing:border-box;
+				border-bottom:1px solid @table-border-color;
+				vertical-align:middle;
+				transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
 
-				& > tbody > tr > td {
+				.writeBreak;
+
+				&.@{vui-table}-column-fixed-left {
+					position:sticky;
+					z-index:1;
+					background:#fff;
+				}
+				&.@{vui-table}-column-fixed-left-last:after {
+					content:"";
+					position:absolute;
+					right:-6px;
+					top:0;
+					bottom:0;
+					display:block;
 					box-sizing:border-box;
-					border-bottom:1px solid @table-border-color;
-					vertical-align:middle;
-					transition:background-color @transition-duration @transition-timing-function, padding @transition-duration @transition-timing-function;
+					width:6px;
+					background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+					pointer-events:none;
+				}
+				&.@{vui-table}-column-fixed-right {
+					position:sticky;
+					z-index:1;
+					background:#fff;
+				}
+				&.@{vui-table}-column-fixed-right-first:after {
+					content:"";
+					position:absolute;
+					left:-6px;
+					top:0;
+					bottom:0;
+					display:block;
+					box-sizing:border-box;
+					width:6px;
+					background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
+					pointer-events:none;
+				}
 
-					.writeBreak;
+				&.@{vui-table}-column-align-left {
+					text-align:left;
+				}
+				&.@{vui-table}-column-align-center {
+					text-align:center;
+				}
+				&.@{vui-table}-column-align-right {
+					text-align:right;
+				}
 
-					&.@{vui-table}-column-fixed-left {
-						position:sticky;
-						z-index:1;
-						background:#fff;
-					}
-					&.@{vui-table}-column-fixed-left-last:after {
-						content:"";
-						position:absolute;
-						right:-6px;
-						top:0;
-						bottom:0;
-						display:block;
-						box-sizing:border-box;
-						width:6px;
-						background:linear-gradient(to right, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
-						pointer-events:none;
-					}
-					&.@{vui-table}-column-fixed-right {
-						position:sticky;
-						z-index:1;
-						background:#fff;
-					}
-					&.@{vui-table}-column-fixed-right-first:after {
-						content:"";
-						position:absolute;
-						left:-6px;
-						top:0;
-						bottom:0;
-						display:block;
-						box-sizing:border-box;
-						width:6px;
-						background:linear-gradient(to left, rgba(0, 0, 0, 0.06) -40%, rgba(0, 0, 0, 0) 100%);
-						pointer-events:none;
-					}
+				&.@{vui-table}-column-with-expansion {
 
-					&.@{vui-table}-column-align-left {
-						text-align:left;
-					}
-					&.@{vui-table}-column-align-center {
-						text-align:center;
-					}
-					&.@{vui-table}-column-align-right {
-						text-align:right;
-					}
+				}
 
-					&.@{vui-table}-column-with-expansion {
+				&.@{vui-table}-column-with-selection {
 
-					}
+				}
 
-					&.@{vui-table}-column-with-selection {
+				&.@{vui-table}-column-with-sorter {
 
-					}
+				}
 
-					&.@{vui-table}-column-with-sorter {
+				&.@{vui-table}-column-with-filter {
 
-					}
+				}
 
-					&.@{vui-table}-column-with-filter {
-
-					}
-
-					&.@{vui-table}-column-hidden {
-						visibility:hidden;
-					}
+				&.@{vui-table}-column-hidden {
+					visibility:hidden;
 				}
 			}
 		}
@@ -637,18 +621,18 @@
 	}
 
 	/* table size */
-	&-small > &-header > &-header-scrollbar > table > thead > tr > th,
-	&-small > &-body > &-body-scrollbar > table > tbody > tr > td {
+	&-small > &-header > table > thead > tr > th,
+	&-small > &-body > table > tbody > tr > td {
 		padding:@table-cell-padding-sm;
 	}
 
-	&-medium > &-header > &-header-scrollbar > table > thead > tr > th,
-	&-medium > &-body > &-body-scrollbar > table > tbody > tr > td {
+	&-medium > &-header > table > thead > tr > th,
+	&-medium > &-body > table > tbody > tr > td {
 		padding:@table-cell-padding-md;
 	}
 
-	&-large > &-header > &-header-scrollbar > table > thead > tr > th,
-	&-large > &-body > &-body-scrollbar > table > tbody > tr > td {
+	&-large > &-header > table > thead > tr > th,
+	&-large > &-body > table > tbody > tr > td {
 		padding:@table-cell-padding-lg;
 	}
 
@@ -656,49 +640,56 @@
 	&-bordered > &-header {
 		border-bottom:none;
 	}
-	&-bordered > &-header > &-header-scrollbar > table > thead > tr > th,
-	&-bordered > &-body > &-body-scrollbar > table > tbody > tr > td {
+	&-bordered > &-header > table > thead > tr > th,
+	&-bordered > &-body > table > tbody > tr > td {
 		border-right:1px solid @table-border-color;
 		border-bottom:1px solid @table-border-color;
 	}
 
 	/* table row color */
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row > td {
 
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-even > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-even > td {
 		background-color:@table-row-even-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-odd > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-odd > td {
 		background-color:@table-row-odd-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-strikeout > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-strikeout > td {
 		text-decoration:line-through;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-weaken > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-weaken > td {
 		opacity:0.4;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-error > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-error > td {
 		color:@error-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-selected > td {
+	& > &-body > table > tbody > tr.@{vui}-table-row-selected > td {
 		border-color:rgba(0,0,0,0.04);
 		background-color:@table-row-selected-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr:hover > td {
+	& > &-body > table > tbody > tr:hover > td {
 		background-color:@table-row-hover-background-color;
 	}
 
-	& > &-body > &-body-scrollbar > table > tbody > tr.@{vui}-table-row-selected:hover > td {
-		background-color:darken(@table-row-selected-background-color, 2%)
+	& > &-body > table > tbody > tr.@{vui}-table-row-selected:hover > td {
+		background-color:darken(@table-row-selected-background-color, 2%);
 	}
+
+	& > &-body > table > tbody > tr.@{vui}-table-row-placeholder:hover > td {
+		background-color:transparent;
+	}
+
+	&-pagination + & { margin-top:16px; }
+	& + &-pagination { margin-top:16px; }
 }
 
 @keyframes vuiTableColumnFilterDropdownSlideIn {

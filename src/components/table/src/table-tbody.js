@@ -7,6 +7,7 @@ import is from "../../../utils/is";
 import clone from "../../../utils/clone";
 import flatten from "../../../utils/flatten";
 import getTargetByPath from "../../../utils/getTargetByPath";
+import getScrollbarSize from "../../../utils/getScrollbarSize";
 import utils from "./utils";
 
 const VuiTableTbody = {
@@ -86,7 +87,13 @@ const VuiTableTbody = {
     getRowClassName(type, row, rowIndex, rowKey) {
       const { $props: props } = this;
 
-      if (type === "expansion") {
+      if (type === "placeholder") {
+        return {
+          [`${props.classNamePrefix}-row`]: true,
+          [`${props.classNamePrefix}-row-placeholder`]: true
+        };
+      }
+      else if (type === "expansion") {
         return {
           [`${props.classNamePrefix}-row`]: true,
           [`${props.classNamePrefix}-row-expanded`]: true
@@ -109,6 +116,15 @@ const VuiTableTbody = {
           [`${props.classNamePrefix}-row-${stripe}`]: props.striped,
           [`${props.classNamePrefix}-row-selected`]: isSelected,
           [`${className}`]: className
+        };
+      }
+    },
+    getRowStyle(type) {
+      const { $props: props } = this;
+
+      if (type === "placeholder") {
+        return {
+          height: props.scroll && props.scroll.y > 0 ? (props.scroll.x > 0 ? (`${props.scroll.y - getScrollbarSize()}px`) : `${props.scroll.y}px`) : "auto"
         };
       }
     },
@@ -339,8 +355,8 @@ const VuiTableTbody = {
       });
     },
     getTbody(h) {
-      const { $slots: vuiTableSlots } = this.vuiTable;
       const { $props: props } = this;
+      const { $slots: vuiTableSlots } = this.vuiTable;
       let trs = [];
 
       if (props.tbody.length === 0) {
@@ -366,12 +382,12 @@ const VuiTableTbody = {
           const description = locale && locale.empty ? locale.empty : this.t("vui.table.empty");
 
           empty = (
-            <VuiEmpty description={description} style="padding: 40px 0;" />
+            <VuiEmpty description={description} style="padding: 48px 0;" />
           );
         }
 
         trs.push(
-          <tr>
+          <tr class={this.getRowClassName("placeholder")} style={this.getRowStyle("placeholder")}>
             <td colspan={colspan}>
               {empty}
             </td>

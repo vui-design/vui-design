@@ -1,7 +1,5 @@
+import withInstall from "../../utils/withInstall";
 import VuiButton from "./src/button";
 
-VuiButton.install = function(Vue) {
-  Vue.component(VuiButton.name, VuiButton);
-};
-
-export default VuiButton;
+export { createProps } from "./src/button";
+export default withInstall(VuiButton);

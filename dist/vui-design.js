@@ -7956,6 +7956,14 @@ var i18n = function i18n(fn) {
   use: use,
   i18n: i18n
 });
+// CONCATENATED MODULE: ./src/utils/withInstall.js
+function withInstall(component) {
+  component.install = function (Vue) {
+    Vue.component(component.name, component);
+  };
+
+  return component;
+};
 // EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/extends.js
 var helpers_extends = __webpack_require__(3);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
@@ -8002,14 +8010,18 @@ var icons_default = /*#__PURE__*/__webpack_require__.n(icons);
 
 
 
-var VuiIcon = {
-  name: "vui-icon",
-  props: {
+var icon_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].string,
     color: prop_types["a" /* default */].string,
     size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  };
+};
+
+var VuiIcon = {
+  name: "vui-icon",
+  props: icon_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -8070,11 +8082,9 @@ var VuiIcon = {
 // CONCATENATED MODULE: ./src/components/icon/index.js
 
 
-src_icon.install = function (Vue) {
-  Vue.component(src_icon.name, src_icon);
-};
 
-/* harmony default export */ var components_icon = (src_icon);
+
+/* harmony default export */ var components_icon = (withInstall(src_icon));
 // CONCATENATED MODULE: ./src/components/button-group/src/button-group.js
 
 
@@ -8211,6 +8221,22 @@ function guardLinkEvent(e) {
 
 
 
+var button_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    htmlType: prop_types["a" /* default */].oneOf(["button", "submit", "reset"]).def("button"),
+    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed", "text"]).def("default"),
+    block: prop_types["a" /* default */].bool.def(false),
+    ghost: prop_types["a" /* default */].bool.def(false),
+    shape: prop_types["a" /* default */].oneOf(["round", "circle"]),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    autofocus: prop_types["a" /* default */].bool.def(false),
+    loading: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    icon: prop_types["a" /* default */].string
+  };
+};
+
 var VuiButton = {
   name: "vui-button",
   inject: {
@@ -8229,19 +8255,7 @@ var VuiButton = {
   },
   mixins: [mixins_link],
   inheritAttrs: false,
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    htmlType: prop_types["a" /* default */].oneOf(["button", "submit", "reset"]).def("button"),
-    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed", "text"]).def("default"),
-    block: prop_types["a" /* default */].bool.def(false),
-    ghost: prop_types["a" /* default */].bool.def(false),
-    shape: prop_types["a" /* default */].oneOf(["round", "circle"]),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    autofocus: prop_types["a" /* default */].bool.def(false),
-    loading: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    icon: prop_types["a" /* default */].string
-  },
+  props: button_createProps(),
   methods: {
     insertTextIntoSpan: function insertTextIntoSpan(element) {
       var h = this.$createElement;
@@ -8416,11 +8430,9 @@ var VuiButton = {
 // CONCATENATED MODULE: ./src/components/button/index.js
 
 
-src_button.install = function (Vue) {
-  Vue.component(src_button.name, src_button);
-};
 
-/* harmony default export */ var components_button = (src_button);
+
+/* harmony default export */ var components_button = (withInstall(src_button));
 // CONCATENATED MODULE: ./src/components/link/src/link.js
 
 
@@ -8430,14 +8442,8 @@ src_button.install = function (Vue) {
 
 
 
-var VuiLink = {
-  name: "vui-link",
-  components: {
-    VuiIcon: components_icon
-  },
-  mixins: [mixins_link],
-  inheritAttrs: false,
-  props: {
+var link_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "danger"]).def("default"),
     icon: prop_types["a" /* default */].string,
@@ -8446,7 +8452,17 @@ var VuiLink = {
     underline: prop_types["a" /* default */].bool.def(false),
     loading: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+var VuiLink = {
+  name: "vui-link",
+  components: {
+    VuiIcon: components_icon
   },
+  mixins: [mixins_link],
+  inheritAttrs: false,
+  props: link_createProps(),
   methods: {
     insertTextIntoSpan: function insertTextIntoSpan(element) {
       var h = this.$createElement;
@@ -8531,11 +8547,9 @@ var VuiLink = {
 // CONCATENATED MODULE: ./src/components/link/index.js
 
 
-src_link.install = function (Vue) {
-  Vue.component(src_link.name, src_link);
-};
 
-/* harmony default export */ var components_link = (src_link);
+
+/* harmony default export */ var components_link = (withInstall(src_link));
 // CONCATENATED MODULE: ./src/components/divider/src/divider.js
 
 
@@ -13803,6 +13817,7 @@ var VuiTooltip = {
     classNamePrefix: prop_types["a" /* default */].string,
     trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
     visible: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
     color: prop_types["a" /* default */].string.def("dark"),
     content: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     maxWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
@@ -13831,6 +13846,10 @@ var VuiTooltip = {
       var props = this.$props;
 
 
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = props.trigger === "always" ? true : value;
     }
   },
@@ -13839,6 +13858,11 @@ var VuiTooltip = {
       var _this = this;
 
       var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
 
       var callback = function callback() {
         _this.state.visible = visible;
@@ -18416,19 +18440,8 @@ function range(start, end, step) {
 
 
 
-var VuiPagination = {
-  name: "vui-pagination",
-  components: {
-    VuiSelect: components_select,
-    VuiOption: components_option,
-    VuiInput: components_input
-  },
-  mixins: [mixins_locale],
-  model: {
-    prop: "page",
-    event: "input"
-  },
-  props: {
+var pagination_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     small: prop_types["a" /* default */].bool.def(false),
     simple: prop_types["a" /* default */].bool.def(false),
@@ -18443,7 +18456,22 @@ var VuiPagination = {
     prevPageText: prop_types["a" /* default */].string,
     nextPageText: prop_types["a" /* default */].string,
     hideOnSinglePage: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+var VuiPagination = {
+  name: "vui-pagination",
+  components: {
+    VuiSelect: components_select,
+    VuiOption: components_option,
+    VuiInput: components_input
   },
+  mixins: [mixins_locale],
+  model: {
+    prop: "page",
+    event: "input"
+  },
+  props: pagination_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -18910,11 +18938,9 @@ var VuiPagination = {
 // CONCATENATED MODULE: ./src/components/pagination/index.js
 
 
-src_pagination.install = function (Vue) {
-  Vue.component(src_pagination.name, src_pagination);
-};
 
-/* harmony default export */ var components_pagination = (src_pagination);
+
+/* harmony default export */ var components_pagination = (withInstall(src_pagination));
 // CONCATENATED MODULE: ./src/components/steps/src/steps.js
 
 
@@ -33797,8 +33823,9 @@ var VuiPopover = {
   },
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
-    visible: prop_types["a" /* default */].bool.def(false),
     trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
+    visible: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
     title: prop_types["a" /* default */].string,
     content: prop_types["a" /* default */].string,
     minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(160),
@@ -33828,6 +33855,10 @@ var VuiPopover = {
       var props = this.$props;
 
 
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = props.trigger === "always" ? true : value;
     }
   },
@@ -33836,6 +33867,11 @@ var VuiPopover = {
       var _this = this;
 
       var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
 
       var callback = function callback() {
         _this.state.visible = visible;
@@ -34948,10 +34984,17 @@ var VuiTableFilter = {
 
 
 
+
 // 
 var rowTreeviewChildrenKey = "children";
 var rowExpansionWidth = 50;
 var rowSelectionWidth = 50;
+var defaultPaginationProps = {
+  position: "bottom",
+  align: "right",
+  page: 1,
+  pageSize: 10
+};
 
 // 判断事件源元素是否需要被忽略
 var utils_isIgnoreElements = function isIgnoreElements(event, predicate) {
@@ -35404,6 +35447,101 @@ var utils_getTbody = function getTbody(props, state) {
   return data;
 };
 
+// 获取表格分页配置
+var utils_getPagination = function getPagination(pagination, prevPagination) {
+  var props = is["a" /* default */].json(pagination) ? pagination : {};
+
+  if (!pagination) {
+    return props;
+  }
+
+  return extends_default()({}, defaultPaginationProps, prevPagination, props);
+};
+
+// 获取当前页码（当前页码可能在数据总量发生变化时，超出了总页数）
+var getPage = function getPage(total, pagination) {
+  var page = pagination.page,
+      pageSize = pagination.pageSize;
+
+
+  if ((page - 1) * pageSize >= total) {
+    return Math.floor((total - 1) / pageSize) + 1;
+  }
+
+  return page;
+};
+
+// 
+var utils_getOpenedRowKeys = function getOpenedRowKeys(props) {
+  var rowTreeview = props.rowTreeview;
+  var openedRowKeys = [];
+
+  if (rowTreeview && is["a" /* default */].array(rowTreeview.value)) {
+    var data = flatten_flatten(props.data, getTreeviewChildrenKey(rowTreeview), true);
+
+    openedRowKeys = Object(utils_clone["a" /* default */])(rowTreeview.value);
+    openedRowKeys = openedRowKeys.filter(function (openedRowKey) {
+      return data.findIndex(function (row) {
+        return utils_getRowKey(row, props.rowKey) === openedRowKey;
+      }) > -1;
+    });
+  }
+
+  return openedRowKeys;
+};
+
+// 
+var utils_getExpandedRowKeys = function getExpandedRowKeys(props) {
+  var rowExpansion = props.rowExpansion;
+  var expandedRowKeys = [];
+
+  if (rowExpansion && is["a" /* default */].array(rowExpansion.value)) {
+    var data = props.rowTreeview ? flatten_flatten(props.data, getTreeviewChildrenKey(props.rowTreeview), true) : props.data;
+
+    expandedRowKeys = Object(utils_clone["a" /* default */])(rowExpansion.value);
+    expandedRowKeys = expandedRowKeys.filter(function (expandedRowKey) {
+      return data.findIndex(function (row) {
+        return utils_getRowKey(row, props.rowKey) === expandedRowKey;
+      }) > -1;
+    });
+  }
+
+  return expandedRowKeys;
+};
+
+// 
+var utils_getSelectedRowKeys = function getSelectedRowKeys(props) {
+  var rowSelection = props.rowSelection;
+  var selectedRowKeys = [];
+
+  if (rowSelection) {
+    var isMultiple = getSelectionMultiple(rowSelection);
+    var data = props.rowTreeview ? flatten_flatten(props.data, getTreeviewChildrenKey(props.rowTreeview), true) : props.data;
+
+    if (isMultiple) {
+      selectedRowKeys = is["a" /* default */].array(rowSelection.value) ? Object(utils_clone["a" /* default */])(rowSelection.value) : [];
+
+      if (selectedRowKeys.length > 0) {
+        selectedRowKeys = selectedRowKeys.filter(function (selectedRowKey) {
+          return data.findIndex(function (row) {
+            return utils_getRowKey(row, props.rowKey) === selectedRowKey;
+          }) > -1;
+        });
+      }
+    } else {
+      selectedRowKeys = is["a" /* default */].string(rowSelection.value) || is["a" /* default */].number(rowSelection.value) ? rowSelection.value : undefined;
+
+      if (selectedRowKeys !== undefined) {
+        selectedRowKeys = data.findIndex(function (row) {
+          return utils_getRowKey(row, props.rowKey) === selectedRowKeys;
+        }) > -1 ? selectedRowKeys : undefined;
+      }
+    }
+  }
+
+  return selectedRowKeys;
+};
+
 // 默认导出指定接口
 /* harmony default export */ var table_src_utils = ({
   isIgnoreElements: utils_isIgnoreElements,
@@ -35426,7 +35564,12 @@ var utils_getTbody = function getTbody(props, state) {
   getThead: utils_getThead,
   getTbodyByFilter: getTbodyByFilter,
   getTbodyBySorter: getTbodyBySorter,
-  getTbody: utils_getTbody
+  getTbody: utils_getTbody,
+  getPagination: utils_getPagination,
+  getPage: getPage,
+  getOpenedRowKeys: utils_getOpenedRowKeys,
+  getExpandedRowKeys: utils_getExpandedRowKeys,
+  getSelectedRowKeys: utils_getSelectedRowKeys
 });
 // CONCATENATED MODULE: ./src/components/table/src/table-thead.js
 
@@ -35848,6 +35991,7 @@ var VuiTableThead = {
 
 
 
+
 var VuiTableTbody = {
   name: "vui-table-tbody",
   inject: {
@@ -35927,12 +36071,16 @@ var VuiTableTbody = {
       var props = this.$props;
 
 
-      if (type === "expansion") {
+      if (type === "placeholder") {
         var _ref;
 
-        return _ref = {}, defineProperty_default()(_ref, props.classNamePrefix + "-row", true), defineProperty_default()(_ref, props.classNamePrefix + "-row-expanded", true), _ref;
-      } else {
+        return _ref = {}, defineProperty_default()(_ref, props.classNamePrefix + "-row", true), defineProperty_default()(_ref, props.classNamePrefix + "-row-placeholder", true), _ref;
+      } else if (type === "expansion") {
         var _ref2;
+
+        return _ref2 = {}, defineProperty_default()(_ref2, props.classNamePrefix + "-row", true), defineProperty_default()(_ref2, props.classNamePrefix + "-row-expanded", true), _ref2;
+      } else {
+        var _ref3;
 
         var stripe = rowIndex % 2 === 0 ? "even" : "odd";
         var isSelected = this.isRowSelected(rowKey);
@@ -35944,11 +36092,21 @@ var VuiTableTbody = {
           className = props.rowClassName(row, rowIndex, rowKey);
         }
 
-        return _ref2 = {}, defineProperty_default()(_ref2, props.classNamePrefix + "-row", true), defineProperty_default()(_ref2, props.classNamePrefix + "-row-" + stripe, props.striped), defineProperty_default()(_ref2, props.classNamePrefix + "-row-selected", isSelected), defineProperty_default()(_ref2, "" + className, className), _ref2;
+        return _ref3 = {}, defineProperty_default()(_ref3, props.classNamePrefix + "-row", true), defineProperty_default()(_ref3, props.classNamePrefix + "-row-" + stripe, props.striped), defineProperty_default()(_ref3, props.classNamePrefix + "-row-selected", isSelected), defineProperty_default()(_ref3, "" + className, className), _ref3;
+      }
+    },
+    getRowStyle: function getRowStyle(type) {
+      var props = this.$props;
+
+
+      if (type === "placeholder") {
+        return {
+          height: props.scroll && props.scroll.y > 0 ? props.scroll.x > 0 ? props.scroll.y - getScrollbarSize() + "px" : props.scroll.y + "px" : "auto"
+        };
       }
     },
     getColumnClassName: function getColumnClassName(type, column, columnKey, row) {
-      var _ref3;
+      var _ref4;
 
       var props = this.$props;
       var fixedFirst = column.fixedFirst,
@@ -35971,7 +36129,7 @@ var VuiTableTbody = {
         cellClassName = row.cellClassName[columnKey];
       }
 
-      return _ref3 = {}, defineProperty_default()(_ref3, props.classNamePrefix + "-column", true), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-" + fixed, fixed), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-left-last", fixed === "left" && fixedLast), defineProperty_default()(_ref3, props.classNamePrefix + "-column-fixed-right-first", fixed === "right" && fixedFirst), defineProperty_default()(_ref3, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref3, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-" + type, type), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-sorter", column.sorter), defineProperty_default()(_ref3, props.classNamePrefix + "-column-with-filter", column.filter), defineProperty_default()(_ref3, "" + className, className), defineProperty_default()(_ref3, "" + cellClassName, cellClassName), _ref3;
+      return _ref4 = {}, defineProperty_default()(_ref4, props.classNamePrefix + "-column", true), defineProperty_default()(_ref4, props.classNamePrefix + "-column-fixed-" + fixed, fixed), defineProperty_default()(_ref4, props.classNamePrefix + "-column-fixed-left-last", fixed === "left" && fixedLast), defineProperty_default()(_ref4, props.classNamePrefix + "-column-fixed-right-first", fixed === "right" && fixedFirst), defineProperty_default()(_ref4, props.classNamePrefix + "-column-align-" + align, align), defineProperty_default()(_ref4, props.classNamePrefix + "-column-ellipsis", ellipsis), defineProperty_default()(_ref4, props.classNamePrefix + "-column-with-" + type, type), defineProperty_default()(_ref4, props.classNamePrefix + "-column-with-sorter", column.sorter), defineProperty_default()(_ref4, props.classNamePrefix + "-column-with-filter", column.filter), defineProperty_default()(_ref4, "" + className, className), defineProperty_default()(_ref4, "" + cellClassName, cellClassName), _ref4;
     },
     getColumnStyle: function getColumnStyle(type, column) {
       var props = this.$props;
@@ -36020,28 +36178,28 @@ var VuiTableTbody = {
       return defineProperty_default()({}, props.classNamePrefix + "-column-body", true);
     },
     getColumnSwitchClassName: function getColumnSwitchClassName(opened) {
-      var _ref5;
-
-      var props = this.$props;
-
-
-      return _ref5 = {}, defineProperty_default()(_ref5, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref5, "active", opened), _ref5;
-    },
-    getColumnExpansionClassName: function getColumnExpansionClassName(expanded) {
       var _ref6;
 
       var props = this.$props;
 
 
-      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref6, "active", expanded), _ref6;
+      return _ref6 = {}, defineProperty_default()(_ref6, props.classNamePrefix + "-column-switch", true), defineProperty_default()(_ref6, "active", opened), _ref6;
     },
-    getColumnSelectionClassName: function getColumnSelectionClassName(selected) {
+    getColumnExpansionClassName: function getColumnExpansionClassName(expanded) {
       var _ref7;
 
       var props = this.$props;
 
 
-      return _ref7 = {}, defineProperty_default()(_ref7, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref7, "active", selected), _ref7;
+      return _ref7 = {}, defineProperty_default()(_ref7, props.classNamePrefix + "-column-expansion", true), defineProperty_default()(_ref7, "active", expanded), _ref7;
+    },
+    getColumnSelectionClassName: function getColumnSelectionClassName(selected) {
+      var _ref8;
+
+      var props = this.$props;
+
+
+      return _ref8 = {}, defineProperty_default()(_ref8, props.classNamePrefix + "-column-selection", true), defineProperty_default()(_ref8, "active", selected), _ref8;
     },
     getColumnContentClassName: function getColumnContentClassName() {
       var props = this.$props;
@@ -36172,8 +36330,8 @@ var VuiTableTbody = {
       });
     },
     getTbody: function getTbody(h) {
-      var vuiTableSlots = this.vuiTable.$slots;
       var props = this.$props;
+      var vuiTableSlots = this.vuiTable.$slots;
 
       var trs = [];
 
@@ -36201,16 +36359,20 @@ var VuiTableTbody = {
 
           empty = h(components_empty, {
             attrs: { description: description },
-            style: "padding: 40px 0;" });
+            style: "padding: 48px 0;" });
         }
 
-        trs.push(h("tr", [h(
-          "td",
-          {
-            attrs: { colspan: colspan }
-          },
-          [empty]
-        )]));
+        trs.push(h(
+          "tr",
+          { "class": this.getRowClassName("placeholder"), style: this.getRowStyle("placeholder") },
+          [h(
+            "td",
+            {
+              attrs: { colspan: colspan }
+            },
+            [empty]
+          )]
+        ));
       } else {
         this.rowIndex = 0;
         this.getTbodyChildren(h, trs, 1, props.tbody);
@@ -36678,6 +36840,33 @@ csv_csv.export = function (filename, text) {
 
 
 
+
+var createdPaginationProps = pagination_createProps();
+
+var table_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    columns: prop_types["a" /* default */].array.def([]),
+    data: prop_types["a" /* default */].array.def([]),
+    rowKey: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]).def("key"),
+    rowClassName: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
+    loading: prop_types["a" /* default */].bool.def(false),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+    bordered: prop_types["a" /* default */].bool.def(false),
+    striped: prop_types["a" /* default */].bool.def(false),
+    showHeader: prop_types["a" /* default */].bool.def(true),
+    affixHeader: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(false),
+    scroll: prop_types["a" /* default */].object,
+    locale: prop_types["a" /* default */].object,
+    pagination: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].shape(extends_default()({}, createdPaginationProps, {
+      position: prop_types["a" /* default */].oneOf(["top", "bottom", "both"])
+    }))]).def(false),
+    rowTreeview: prop_types["a" /* default */].object,
+    rowExpansion: prop_types["a" /* default */].object,
+    rowSelection: prop_types["a" /* default */].object
+  };
+};
+
 var VuiTable = {
   name: "vui-table",
   provide: function provide() {
@@ -36689,38 +36878,35 @@ var VuiTable = {
   components: {
     VuiSpin: components_spin,
     VuiAffix: components_affix,
+    VuiPagination: components_pagination,
     VuiTableThead: table_thead,
     VuiTableTbody: table_tbody
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    columns: prop_types["a" /* default */].array.def([]),
-    data: prop_types["a" /* default */].array.def([]),
-    rowTreeview: prop_types["a" /* default */].object,
-    rowExpansion: prop_types["a" /* default */].object,
-    rowSelection: prop_types["a" /* default */].object,
-    showHeader: prop_types["a" /* default */].bool.def(true),
-    affixHeader: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(false),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
-    bordered: prop_types["a" /* default */].bool.def(false),
-    striped: prop_types["a" /* default */].bool.def(false),
-    scroll: prop_types["a" /* default */].object,
-    loading: prop_types["a" /* default */].bool.def(false),
-    rowKey: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]).def("key"),
-    rowClassName: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
-    locale: prop_types["a" /* default */].object
-  },
+  props: table_createProps(),
   data: function data() {
+    var props = this.$props;
+
     var state = {
       columns: [],
       data: [],
       colgroup: [],
       thead: [],
       tbody: [],
+      pagination: {},
       openedRowKeys: [],
       expandedRowKeys: [],
       selectedRowKeys: []
     };
+
+    state.columns = table_src_utils.getColumns(props.columns);
+    state.data = table_src_utils.getData(props.data);
+    state.colgroup = table_src_utils.getColgroup(state);
+    state.thead = table_src_utils.getThead(state);
+    state.tbody = table_src_utils.getTbody(props, state);
+    state.pagination = table_src_utils.getPagination(props.pagination);
+    state.openedRowKeys = table_src_utils.getOpenedRowKeys(props);
+    state.expandedRowKeys = table_src_utils.getExpandedRowKeys(props);
+    state.selectedRowKeys = table_src_utils.getSelectedRowKeys(props);
 
     return {
       state: state
@@ -36746,40 +36932,46 @@ var VuiTable = {
 
         this.state.data = table_src_utils.getData(value);
         this.state.tbody = table_src_utils.getTbody(props, this.state);
+        this.state.openedRowKeys = table_src_utils.getOpenedRowKeys(props);
+        this.state.expandedRowKeys = table_src_utils.getExpandedRowKeys(props);
+        this.state.selectedRowKeys = table_src_utils.getSelectedRowKeys(props);
+      }
+    },
+    pagination: {
+      deep: true,
+      handler: function handler() {
+        var props = this.$props,
+            state = this.state;
+
+
+        this.state.pagination = table_src_utils.getPagination(props.pagination, state.pagination);
       }
     },
     rowTreeview: {
       deep: true,
-      handler: function handler(options) {
-        if (options && is["a" /* default */].array(options.value)) {
-          this.state.openedRowKeys = Object(utils_clone["a" /* default */])(options.value);
-        }
+      handler: function handler() {
+        var props = this.$props;
+
+
+        this.state.openedRowKeys = table_src_utils.getOpenedRowKeys(props);
       }
     },
     rowExpansion: {
       deep: true,
-      handler: function handler(options) {
-        if (options && is["a" /* default */].array(options.value)) {
-          this.state.expandedRowKeys = Object(utils_clone["a" /* default */])(options.value);
-        }
+      handler: function handler() {
+        var props = this.$props;
+
+
+        this.state.expandedRowKeys = table_src_utils.getExpandedRowKeys(props);
       }
     },
     rowSelection: {
       deep: true,
-      handler: function handler(options) {
-        if (options) {
-          var isMultiple = table_src_utils.getSelectionMultiple(options);
+      handler: function handler() {
+        var props = this.$props;
 
-          if (isMultiple) {
-            if (is["a" /* default */].array(options.value)) {
-              this.state.selectedRowKeys = Object(utils_clone["a" /* default */])(options.value);
-            }
-          } else {
-            if (is["a" /* default */].string(options.value) || is["a" /* default */].number(options.value)) {
-              this.state.selectedRowKeys = options.value;
-            }
-          }
-        }
+
+        this.state.selectedRowKeys = table_src_utils.getSelectedRowKeys(props);
       }
     }
   },
@@ -36824,6 +37016,16 @@ var VuiTable = {
       }
     },
 
+    // 滚动到顶部
+    scrollToTop: function scrollToTop() {
+      var props = this.$props;
+
+
+      if (props.scroll && props.scroll.y > 0 && props.scroll.scrollToTop !== false) {
+        this.$refs.body.scrollTop = 0;
+      }
+    },
+
     // 更新筛选列的状态
     changeFilterColumnState: function changeFilterColumnState(columns, key, value) {
       columns = flatten_flatten(columns, "children", true);
@@ -36853,19 +37055,19 @@ var VuiTable = {
       }
 
       var _$refs = this.$refs,
-          tableHeaderScrollbar = _$refs.tableHeaderScrollbar,
-          tableBodyScrollbar = _$refs.tableBodyScrollbar;
+          header = _$refs.header,
+          body = _$refs.body;
 
       var target = e.target;
       var scrollLeft = target.scrollLeft;
 
       if (scrollLeft !== this.lastScrollLeft) {
-        if (target === tableHeaderScrollbar && tableBodyScrollbar) {
-          tableBodyScrollbar.scrollLeft = scrollLeft;
+        if (target === header && body) {
+          body.scrollLeft = scrollLeft;
         }
 
-        if (target === tableBodyScrollbar && tableHeaderScrollbar) {
-          tableHeaderScrollbar.scrollLeft = scrollLeft;
+        if (target === body && header) {
+          header.scrollLeft = scrollLeft;
         }
       }
 
@@ -37118,45 +37320,21 @@ var VuiTable = {
       }
 
       this.$emit("sort", Object(utils_clone["a" /* default */])(column), order);
+    },
+
+    // 页码切换事件回调函数
+    handleChangePage: function handleChangePage(page) {
+      this.state.pagination.page = page;
+      this.scrollToTop();
+      this.$emit("paging", page, this.state.pagination.pageSize);
+    },
+
+    // 页数切换事件回调函数
+    handleChangePageSize: function handleChangePageSize(pageSize) {
+      this.state.pagination.pageSize = pageSize;
+      this.scrollToTop();
+      this.$emit("paging", this.state.pagination.page, pageSize);
     }
-  },
-  created: function created() {
-    var props = this.$props;
-    var rowTreeview = props.rowTreeview,
-        rowExpansion = props.rowExpansion,
-        rowSelection = props.rowSelection;
-
-
-    var openedRowKeys = [];
-    var expandedRowKeys = [];
-    var selectedRowKeys = [];
-
-    if (rowTreeview && is["a" /* default */].array(rowTreeview.value)) {
-      openedRowKeys = Object(utils_clone["a" /* default */])(rowTreeview.value);
-    }
-
-    if (rowExpansion && is["a" /* default */].array(rowExpansion.value)) {
-      expandedRowKeys = Object(utils_clone["a" /* default */])(rowExpansion.value);
-    }
-
-    if (rowSelection) {
-      var isMultiple = table_src_utils.getSelectionMultiple(rowSelection);
-
-      if (isMultiple) {
-        selectedRowKeys = is["a" /* default */].array(rowSelection.value) ? Object(utils_clone["a" /* default */])(rowSelection.value) : [];
-      } else {
-        selectedRowKeys = is["a" /* default */].string(rowSelection.value) || is["a" /* default */].number(rowSelection.value) ? rowSelection.value : undefined;
-      }
-    }
-
-    this.state.columns = table_src_utils.getColumns(props.columns);
-    this.state.data = table_src_utils.getData(props.data);
-    this.state.colgroup = table_src_utils.getColgroup(this.state);
-    this.state.thead = table_src_utils.getThead(this.state);
-    this.state.tbody = table_src_utils.getTbody(props, this.state);
-    this.state.openedRowKeys = openedRowKeys;
-    this.state.expandedRowKeys = expandedRowKeys;
-    this.state.selectedRowKeys = selectedRowKeys;
   },
   render: function render() {
     var _el;
@@ -37165,63 +37343,59 @@ var VuiTable = {
     var props = this.$props,
         state = this.state;
 
-    var header = void 0;
-    var body = void 0;
-
     // 计算 style 样式
+
     var showXScrollbar = props.scroll && props.scroll.x > 0;
     var showYScrollbar = props.scroll && props.scroll.y > 0;
     var styles = {
-      elHeaderScrollbar: {},
-      elBodyScrollbar: {}
+      elHeader: {},
+      elBody: {}
     };
 
     if (showXScrollbar) {
-      styles.elBodyScrollbar.overflowX = "scroll";
+      styles.elBody.overflowX = "scroll";
     }
 
     if (showYScrollbar) {
-      styles.elHeaderScrollbar.overflowY = "scroll";
-      styles.elBodyScrollbar.height = props.scroll.y + "px";
-      styles.elBodyScrollbar.overflowY = "scroll";
+      styles.elHeader.overflowY = "scroll";
+      styles.elBody.height = props.scroll.y + "px";
+      styles.elBody.overflowY = "scroll";
     }
 
     // 计算 class 样式
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
     var classes = {
       el: (_el = {}, defineProperty_default()(_el, "" + classNamePrefix, true), defineProperty_default()(_el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_el, classNamePrefix + "-bordered", props.bordered), _el),
+      elWrapper: classNamePrefix + "-wrapper",
       elHeader: classNamePrefix + "-header",
-      elHeaderScrollbar: classNamePrefix + "-header-scrollbar",
       elBody: classNamePrefix + "-body",
-      elBodyScrollbar: classNamePrefix + "-body-scrollbar"
+      elPagination: classNamePrefix + "-pagination"
     };
 
     // 是否显示表头
+    var header = void 0;
+
     if (props.showHeader) {
       header = h(
         "div",
-        { ref: "tableHeader", "class": classes.elHeader },
-        [h(
-          "div",
-          { ref: "tableHeaderScrollbar", style: styles.elHeaderScrollbar, "class": classes.elHeaderScrollbar },
-          [h(table_thead, {
-            attrs: {
-              classNamePrefix: classNamePrefix,
-              columns: state.columns,
-              data: state.data,
-              colgroup: state.colgroup,
-              thead: state.thead,
-              tbody: state.tbody,
-              rowKey: props.rowKey,
-              rowTreeview: props.rowTreeview,
-              rowExpansion: props.rowExpansion,
-              rowSelection: props.rowSelection,
-              selectedRowKeys: state.selectedRowKeys,
-              scroll: props.scroll,
-              locale: props.locale
-            }
-          })]
-        )]
+        { ref: "header", "class": classes.elHeader, style: styles.elHeader },
+        [h(table_thead, {
+          attrs: {
+            classNamePrefix: classNamePrefix,
+            columns: state.columns,
+            data: state.data,
+            colgroup: state.colgroup,
+            thead: state.thead,
+            tbody: state.tbody,
+            rowKey: props.rowKey,
+            rowTreeview: props.rowTreeview,
+            rowExpansion: props.rowExpansion,
+            rowSelection: props.rowSelection,
+            selectedRowKeys: state.selectedRowKeys,
+            scroll: props.scroll,
+            locale: props.locale
+          }
+        })]
       );
 
       if (props.affixHeader) {
@@ -37242,49 +37416,89 @@ var VuiTable = {
     }
 
     // 表格内容
-    body = h(
+    var tbody = state.tbody;
+
+    if (state.pagination) {
+      var page = table_src_utils.getPage(state.pagination.total || tbody.length, state.pagination);
+      var pageSize = state.pagination.pageSize;
+
+      if (tbody.length > pageSize || pageSize === Number.MAX_VALUE) {
+        tbody = tbody.slice((page - 1) * pageSize, page * pageSize);
+      }
+    }
+
+    var body = h(
       "div",
-      { ref: "tableBody", "class": classes.elBody },
-      [h(
-        "div",
-        { ref: "tableBodyScrollbar", "class": classes.elBodyScrollbar, style: styles.elBodyScrollbar, on: {
-            "scroll": this.handleScroll
-          }
-        },
-        [h(table_tbody, {
-          attrs: {
-            classNamePrefix: classNamePrefix,
-            columns: state.columns,
-            data: state.data,
-            colgroup: state.colgroup,
-            thead: state.thead,
-            tbody: state.tbody,
-            rowKey: props.rowKey,
-            rowClassName: props.rowClassName,
-            rowTreeview: props.rowTreeview,
-            rowExpansion: props.rowExpansion,
-            rowSelection: props.rowSelection,
-            openedRowKeys: state.openedRowKeys,
-            expandedRowKeys: state.expandedRowKeys,
-            selectedRowKeys: state.selectedRowKeys,
-            striped: props.striped,
-            scroll: props.scroll,
-            locale: props.locale
-          }
-        })]
-      )]
+      { ref: "body", "class": classes.elBody, style: styles.elBody, on: {
+          "scroll": this.handleScroll
+        }
+      },
+      [h(table_tbody, {
+        attrs: {
+          classNamePrefix: classNamePrefix,
+          columns: state.columns,
+          data: state.data,
+          colgroup: state.colgroup,
+          thead: state.thead,
+          tbody: tbody,
+          rowKey: props.rowKey,
+          rowClassName: props.rowClassName,
+          rowTreeview: props.rowTreeview,
+          rowExpansion: props.rowExpansion,
+          rowSelection: props.rowSelection,
+          openedRowKeys: state.openedRowKeys,
+          expandedRowKeys: state.expandedRowKeys,
+          selectedRowKeys: state.selectedRowKeys,
+          striped: props.striped,
+          scroll: props.scroll,
+          locale: props.locale
+        }
+      })]
     );
+
+    // 分页
+    var showTopPagination = false;
+    var showBottomPagination = false;
+    var pagination = void 0;
+
+    if (state.pagination) {
+      var small = false;
+      var total = state.pagination.total || state.tbody.length;
+
+      if (state.pagination.small || props.size === "small") {
+        small = true;
+      }
+
+      var paginationProps = {
+        props: extends_default()({}, state.pagination, {
+          small: small,
+          total: total
+        }),
+        on: {
+          change: this.handleChangePage,
+          changePageSize: this.handleChangePageSize
+        }
+      };
+
+      showTopPagination = state.pagination.position === "top" || state.pagination.position === "both";
+      showBottomPagination = state.pagination.position === "bottom" || state.pagination.position === "both";
+      pagination = h(
+        "div",
+        { "class": classes.elPagination },
+        [h(components_pagination, paginationProps)]
+      );
+    }
 
     return h(
       components_spin,
       {
-        attrs: { spinning: props.loading }
-      },
-      [h(
+        attrs: { spinning: props.loading },
+        "class": classes.elWrapper },
+      [showTopPagination ? pagination : null, h(
         "div",
         { "class": classes.el },
         [header, body]
-      )]
+      ), showBottomPagination ? pagination : null]
     );
   }
 };
@@ -37293,11 +37507,9 @@ var VuiTable = {
 // CONCATENATED MODULE: ./src/components/table/index.js
 
 
-table.install = function (Vue) {
-	Vue.component(table.name, table);
-};
 
-/* harmony default export */ var components_table = (table);
+
+/* harmony default export */ var components_table = (withInstall(table));
 // CONCATENATED MODULE: ./src/components/time/src/time.js
 
 
@@ -40974,6 +41186,7 @@ var VuiPopconfirm = {
   props: {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
     icon: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     cancelButtonType: prop_types["a" /* default */].string.def("text"),
@@ -41002,11 +41215,25 @@ var VuiPopconfirm = {
 
   watch: {
     visible: function visible(value) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = value;
     }
   },
   methods: {
     toggle: function toggle(visible) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = visible;
       this.$emit("input", visible);
       this.$emit("change", visible);
@@ -41068,7 +41295,7 @@ var VuiPopconfirm = {
     return h(
       components_popover,
       {
-        attrs: { trigger: "click", classNamePrefix: props.classNamePrefix, visible: state.visible, minWidth: props.minWidth, maxWidth: props.maxWidth, placement: props.placement, animation: props.animation, getPopupContainer: props.getPopupContainer },
+        attrs: { trigger: "click", classNamePrefix: props.classNamePrefix, visible: state.visible, disabled: props.disabled, minWidth: props.minWidth, maxWidth: props.maxWidth, placement: props.placement, animation: props.animation, getPopupContainer: props.getPopupContainer },
         on: {
           "change": handleChange
         }
@@ -43514,7 +43741,7 @@ if (typeof window !== "undefined" && window.Vue) {
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"vui-design","version":"1.10.12","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --config build/webpack.dev.config.js","dev:s":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --host 0.0.0.0 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist:locale":"webpack --config build/webpack.dist.locale.config.js","dist":"npm run dist:style && npm run dist:dev && npm run dist:prod && npm run dist:locale","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
+module.exports = {"name":"vui-design","version":"1.10.13","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --config build/webpack.dev.config.js","dev:s":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --host 0.0.0.0 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist:locale":"webpack --config build/webpack.dist.locale.config.js","dist":"npm run dist:style && npm run dist:dev && npm run dist:prod && npm run dist:locale","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
 
 /***/ }),
 /* 89 */

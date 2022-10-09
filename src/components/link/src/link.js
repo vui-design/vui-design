@@ -4,6 +4,19 @@ import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "danger"]).def("default"),
+    icon: PropTypes.string,
+    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+    block: PropTypes.bool.def(false),
+    underline: PropTypes.bool.def(false),
+    loading: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false)
+  };
+};
+
 const VuiLink = {
   name: "vui-link",
   components: {
@@ -13,16 +26,7 @@ const VuiLink = {
     Link
   ],
   inheritAttrs: false,
-  props: {
-    classNamePrefix: PropTypes.string,
-    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "danger"]).def("default"),
-    icon: PropTypes.string,
-    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
-    block: PropTypes.bool.def(false),
-    underline: PropTypes.bool.def(false),
-    loading: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false)
-  },
+  props: createProps(),
   methods: {
     insertTextIntoSpan(element) {
       if (is.string(element.text)) {

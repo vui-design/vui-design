@@ -1,16 +1,46 @@
 import VuiSpin from "../../spin";
 import VuiAffix from "../../affix";
+import VuiPagination from "../../pagination";
 import VuiTableThead from "./table-thead";
 import VuiTableTbody from "./table-tbody";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import clone from "../../../utils/clone";
 import flatten from "../../../utils/flatten";
-import getTargetByPath from "../../../utils/getTargetByPath";
-import getScrollbarSize from "../../../utils/getScrollbarSize";
 import csv from "../../../utils/csv";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
+import { createProps as createPaginationProps } from "../../pagination";
+
+const createdPaginationProps = createPaginationProps();
+
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    columns: PropTypes.array.def([]),
+    data: PropTypes.array.def([]),
+    rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
+    rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    loading: PropTypes.bool.def(false),
+    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
+    bordered: PropTypes.bool.def(false),
+    striped: PropTypes.bool.def(false),
+    showHeader: PropTypes.bool.def(true),
+    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
+    scroll: PropTypes.object,
+    locale: PropTypes.object,
+    pagination: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.shape({
+        ...createdPaginationProps,
+        position: PropTypes.oneOf(["top", "bottom", "both"]),
+      })
+    ]).def(false),
+    rowTreeview: PropTypes.object,
+    rowExpansion: PropTypes.object,
+    rowSelection: PropTypes.object
+  };
+};
 
 const VuiTable = {
   name: "vui-table",
@@ -22,38 +52,34 @@ const VuiTable = {
   components: {
     VuiSpin,
     VuiAffix,
+    VuiPagination,
     VuiTableThead,
     VuiTableTbody
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    columns: PropTypes.array.def([]),
-    data: PropTypes.array.def([]),
-    rowTreeview: PropTypes.object,
-    rowExpansion: PropTypes.object,
-    rowSelection: PropTypes.object,
-    showHeader: PropTypes.bool.def(true),
-    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
-    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
-    bordered: PropTypes.bool.def(false),
-    striped: PropTypes.bool.def(false),
-    scroll: PropTypes.object,
-    loading: PropTypes.bool.def(false),
-    rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def("key"),
-    rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
-    locale: PropTypes.object
-  },
+  props: createProps(),
   data() {
+    const { $props: props } = this;
     const state = {
       columns: [],
       data: [],
       colgroup: [],
       thead: [],
       tbody: [],
+      pagination: {},
       openedRowKeys: [],
       expandedRowKeys: [],
       selectedRowKeys: []
     };
+
+    state.columns = utils.getColumns(props.columns);
+    state.data = utils.getData(props.data);
+    state.colgroup = utils.getColgroup(state);
+    state.thead = utils.getThead(state);
+    state.tbody = utils.getTbody(props, state);
+    state.pagination = utils.getPagination(props.pagination);
+    state.openedRowKeys = utils.getOpenedRowKeys(props);
+    state.expandedRowKeys = utils.getExpandedRowKeys(props);
+    state.selectedRowKeys = utils.getSelectedRowKeys(props);
 
     return {
       state
@@ -76,41 +102,41 @@ const VuiTable = {
 
         this.state.data = utils.getData(value);
         this.state.tbody = utils.getTbody(props, this.state);
+        this.state.openedRowKeys = utils.getOpenedRowKeys(props);
+        this.state.expandedRowKeys = utils.getExpandedRowKeys(props);
+        this.state.selectedRowKeys = utils.getSelectedRowKeys(props);
+      }
+    },
+    pagination: {
+      deep: true,
+      handler() {
+        const { $props: props, state } = this;
+
+        this.state.pagination = utils.getPagination(props.pagination, state.pagination);
       }
     },
     rowTreeview: {
       deep: true,
-      handler(options) {
-        if (options && is.array(options.value)) {
-          this.state.openedRowKeys = clone(options.value);
-        }
+      handler() {
+        const { $props: props } = this;
+
+        this.state.openedRowKeys = utils.getOpenedRowKeys(props);
       }
     },
     rowExpansion: {
       deep: true,
-      handler(options) {
-        if (options && is.array(options.value)) {
-          this.state.expandedRowKeys = clone(options.value);
-        }
+      handler() {
+        const { $props: props } = this;
+
+        this.state.expandedRowKeys = utils.getExpandedRowKeys(props);
       }
     },
     rowSelection: {
       deep: true,
-      handler(options) {
-        if (options) {
-          const isMultiple = utils.getSelectionMultiple(options);
+      handler() {
+        const { $props: props } = this;
 
-          if (isMultiple) {
-            if (is.array(options.value)) {
-              this.state.selectedRowKeys = clone(options.value);
-            }
-          }
-          else {
-            if (is.string(options.value) || is.number(options.value)) {
-              this.state.selectedRowKeys = options.value;
-            }
-          }
-        }
+        this.state.selectedRowKeys = utils.getSelectedRowKeys(props);
       }
     }
   },
@@ -156,6 +182,14 @@ const VuiTable = {
         csv.export(settings.filename, content);
       }
     },
+    // 滚动到顶部
+    scrollToTop() {
+      const { $props: props } = this;
+
+      if (props.scroll && props.scroll.y > 0 && props.scroll.scrollToTop !== false) {
+        this.$refs.body.scrollTop = 0;
+      }
+    },
     // 更新筛选列的状态
     changeFilterColumnState(columns, key, value) {
       columns = flatten(columns, "children", true);
@@ -182,17 +216,17 @@ const VuiTable = {
         return;
       }
 
-      const { tableHeaderScrollbar, tableBodyScrollbar } = this.$refs;
+      const { header, body } = this.$refs;
       const target = e.target;
       const scrollLeft = target.scrollLeft;
 
       if (scrollLeft !== this.lastScrollLeft) {
-        if (target === tableHeaderScrollbar && tableBodyScrollbar) {
-          tableBodyScrollbar.scrollLeft = scrollLeft;
+        if (target === header && body) {
+          body.scrollLeft = scrollLeft;
         }
 
-        if (target === tableBodyScrollbar && tableHeaderScrollbar) {
-          tableHeaderScrollbar.scrollLeft = scrollLeft;
+        if (target === body && header) {
+          header.scrollLeft = scrollLeft;
         }
       }
 
@@ -422,7 +456,7 @@ const VuiTable = {
     },
     // 排序事件回调函数
     handleSort(column, order) {
-      let { $props: props } = this;
+      const { $props: props } = this;
 
       if (!column.sorter) {
         return;
@@ -435,102 +469,76 @@ const VuiTable = {
       }
 
       this.$emit("sort", clone(column), order);
+    },
+    // 页码切换事件回调函数
+    handleChangePage(page) {
+      this.state.pagination.page = page;
+      this.scrollToTop();
+      this.$emit("paging", page, this.state.pagination.pageSize);
+    },
+    // 页数切换事件回调函数
+    handleChangePageSize(pageSize) {
+      this.state.pagination.pageSize = pageSize;
+      this.scrollToTop();
+      this.$emit("paging", this.state.pagination.page, pageSize);
     }
-  },
-  created() {
-    const { $props: props } = this;
-    const { rowTreeview, rowExpansion, rowSelection } = props;
-
-    let openedRowKeys = [];
-    let expandedRowKeys = [];
-    let selectedRowKeys = [];
-
-    if (rowTreeview && is.array(rowTreeview.value)) {
-      openedRowKeys = clone(rowTreeview.value);
-    }
-
-    if (rowExpansion && is.array(rowExpansion.value)) {
-      expandedRowKeys = clone(rowExpansion.value);
-    }
-
-    if (rowSelection) {
-      const isMultiple = utils.getSelectionMultiple(rowSelection);
-
-      if (isMultiple) {
-        selectedRowKeys = is.array(rowSelection.value) ? clone(rowSelection.value) : [];
-      }
-      else {
-        selectedRowKeys = is.string(rowSelection.value) || is.number(rowSelection.value) ? rowSelection.value : undefined;
-      }
-    }
-
-    this.state.columns = utils.getColumns(props.columns);
-    this.state.data = utils.getData(props.data);
-    this.state.colgroup = utils.getColgroup(this.state);
-    this.state.thead = utils.getThead(this.state);
-    this.state.tbody = utils.getTbody(props, this.state);
-    this.state.openedRowKeys = openedRowKeys;
-    this.state.expandedRowKeys = expandedRowKeys;
-    this.state.selectedRowKeys = selectedRowKeys;
   },
   render() {
     const { $props: props, state } = this;
-    let header;
-    let body;
 
     // 计算 style 样式
-    let showXScrollbar = props.scroll && props.scroll.x > 0;
-    let showYScrollbar = props.scroll && props.scroll.y > 0;
+    const showXScrollbar = props.scroll && props.scroll.x > 0;
+    const showYScrollbar = props.scroll && props.scroll.y > 0;
     let styles = {
-      elHeaderScrollbar: {},
-      elBodyScrollbar: {}
+      elHeader: {},
+      elBody: {}
     };
 
     if (showXScrollbar) {
-      styles.elBodyScrollbar.overflowX = `scroll`;
+      styles.elBody.overflowX = `scroll`;
     }
 
     if (showYScrollbar) {
-      styles.elHeaderScrollbar.overflowY = `scroll`;
-      styles.elBodyScrollbar.height = `${props.scroll.y}px`;
-      styles.elBodyScrollbar.overflowY = `scroll`;
+      styles.elHeader.overflowY = `scroll`;
+      styles.elBody.height = `${props.scroll.y}px`;
+      styles.elBody.overflowY = `scroll`;
     }
 
     // 计算 class 样式
-    let classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
-    let classes = {
+    const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "table");
+    const classes = {
       el: {
         [`${classNamePrefix}`]: true,
         [`${classNamePrefix}-${props.size}`]: props.size,
         [`${classNamePrefix}-bordered`]: props.bordered
       },
+      elWrapper: `${classNamePrefix}-wrapper`,
       elHeader: `${classNamePrefix}-header`,
-      elHeaderScrollbar: `${classNamePrefix}-header-scrollbar`,
       elBody: `${classNamePrefix}-body`,
-      elBodyScrollbar: `${classNamePrefix}-body-scrollbar`
+      elPagination: `${classNamePrefix}-pagination`
     };
 
     // 是否显示表头
+    let header;
+
     if (props.showHeader) {
       header = (
-        <div ref="tableHeader" class={classes.elHeader}>
-          <div ref="tableHeaderScrollbar" style={styles.elHeaderScrollbar} class={classes.elHeaderScrollbar}>
-            <VuiTableThead
-              classNamePrefix={classNamePrefix}
-              columns={state.columns}
-              data={state.data}
-              colgroup={state.colgroup}
-              thead={state.thead}
-              tbody={state.tbody}
-              rowKey={props.rowKey}
-              rowTreeview={props.rowTreeview}
-              rowExpansion={props.rowExpansion}
-              rowSelection={props.rowSelection}
-              selectedRowKeys={state.selectedRowKeys}
-              scroll={props.scroll}
-              locale={props.locale}
-            />
-          </div>
+        <div ref="header" class={classes.elHeader} style={styles.elHeader}>
+          <VuiTableThead
+            classNamePrefix={classNamePrefix}
+            columns={state.columns}
+            data={state.data}
+            colgroup={state.colgroup}
+            thead={state.thead}
+            tbody={state.tbody}
+            rowKey={props.rowKey}
+            rowTreeview={props.rowTreeview}
+            rowExpansion={props.rowExpansion}
+            rowSelection={props.rowSelection}
+            selectedRowKeys={state.selectedRowKeys}
+            scroll={props.scroll}
+            locale={props.locale}
+          />
         </div>
       );
 
@@ -550,38 +558,87 @@ const VuiTable = {
     }
 
     // 表格内容
-    body = (
-      <div ref="tableBody" class={classes.elBody}>
-        <div ref="tableBodyScrollbar" class={classes.elBodyScrollbar} style={styles.elBodyScrollbar} onScroll={this.handleScroll}>
-          <VuiTableTbody
-            classNamePrefix={classNamePrefix}
-            columns={state.columns}
-            data={state.data}
-            colgroup={state.colgroup}
-            thead={state.thead}
-            tbody={state.tbody}
-            rowKey={props.rowKey}
-            rowClassName={props.rowClassName}
-            rowTreeview={props.rowTreeview}
-            rowExpansion={props.rowExpansion}
-            rowSelection={props.rowSelection}
-            openedRowKeys={state.openedRowKeys}
-            expandedRowKeys={state.expandedRowKeys}
-            selectedRowKeys={state.selectedRowKeys}
-            striped={props.striped}
-            scroll={props.scroll}
-            locale={props.locale}
-          />
-        </div>
+    let tbody = state.tbody;
+
+    if (state.pagination) {
+      const page = utils.getPage(state.pagination.total || tbody.length, state.pagination);
+      const pageSize = state.pagination.pageSize;
+
+      if (tbody.length > pageSize || pageSize === Number.MAX_VALUE) {
+        tbody = tbody.slice((page - 1) * pageSize, page * pageSize);
+      }
+    }
+
+    const body = (
+      <div ref="body" class={classes.elBody} style={styles.elBody} onScroll={this.handleScroll}>
+        <VuiTableTbody
+          classNamePrefix={classNamePrefix}
+          columns={state.columns}
+          data={state.data}
+          colgroup={state.colgroup}
+          thead={state.thead}
+          tbody={tbody}
+          rowKey={props.rowKey}
+          rowClassName={props.rowClassName}
+          rowTreeview={props.rowTreeview}
+          rowExpansion={props.rowExpansion}
+          rowSelection={props.rowSelection}
+          openedRowKeys={state.openedRowKeys}
+          expandedRowKeys={state.expandedRowKeys}
+          selectedRowKeys={state.selectedRowKeys}
+          striped={props.striped}
+          scroll={props.scroll}
+          locale={props.locale}
+        />
       </div>
     );
 
+    // 分页
+    let showTopPagination = false;
+    let showBottomPagination = false;
+    let pagination;
+
+    if (state.pagination) {
+      let small = false;
+      let total = state.pagination.total || state.tbody.length;
+
+      if (state.pagination.small || props.size === "small") {
+        small = true;
+      }
+
+      const paginationProps = {
+        props: {
+          ...state.pagination,
+          small,
+          total
+        },
+        on: {
+          change: this.handleChangePage,
+          changePageSize: this.handleChangePageSize
+        }
+      };
+
+      showTopPagination = state.pagination.position === "top" || state.pagination.position === "both";
+      showBottomPagination = state.pagination.position === "bottom" || state.pagination.position === "both";
+      pagination = (
+        <div class={classes.elPagination}>
+          <VuiPagination {...paginationProps} />
+        </div>
+      );
+    }
+
     return (
-      <VuiSpin spinning={props.loading}>
+      <VuiSpin spinning={props.loading} class={classes.elWrapper}>
+        {
+          showTopPagination ? pagination : null
+        }
         <div class={classes.el}>
           {header}
           {body}
         </div>
+        {
+          showBottomPagination ? pagination : null
+        }
       </VuiSpin>
     );
   }

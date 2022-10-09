@@ -23,6 +23,7 @@ const VuiPopconfirm = {
   props: {
     classNamePrefix: PropTypes.string,
     visible: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
     icon: PropTypes.string,
     title: PropTypes.string,
     cancelButtonType: PropTypes.string.def("text"),
@@ -47,11 +48,23 @@ const VuiPopconfirm = {
   },
   watch: {
     visible(value) {
+      const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = value;
     }
   },
   methods: {
     toggle(visible) {
+      const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = visible;
       this.$emit("input", visible);
       this.$emit("change", visible);
@@ -105,7 +118,7 @@ const VuiPopconfirm = {
 
     // render
     return (
-      <VuiPopover trigger="click" classNamePrefix={props.classNamePrefix} visible={state.visible} minWidth={props.minWidth} maxWidth={props.maxWidth} placement={props.placement} animation={props.animation} getPopupContainer={props.getPopupContainer} onChange={handleChange}>
+      <VuiPopover trigger="click" classNamePrefix={props.classNamePrefix} visible={state.visible} disabled={props.disabled} minWidth={props.minWidth} maxWidth={props.maxWidth} placement={props.placement} animation={props.animation} getPopupContainer={props.getPopupContainer} onChange={handleChange}>
         {slots.default}
         <div slot="content" class={classes.elConfirm}>
           <div class={classes.elConfirmBody}>

@@ -8,6 +8,12 @@ import getTargetByPath from "../../../utils/getTargetByPath";
 const rowTreeviewChildrenKey = "children";
 const rowExpansionWidth = 50;
 const rowSelectionWidth = 50;
+const defaultPaginationProps = {
+  position: "bottom",
+  align: "right",
+  page: 1,
+  pageSize: 10
+};
 
 // 判断事件源元素是否需要被忽略
 const isIgnoreElements = (event, predicate) => {
@@ -437,6 +443,96 @@ export const getTbody = (props, state) => {
   return data;
 };
 
+// 获取表格分页配置
+export const getPagination = (pagination, prevPagination) => {
+  const props = is.json(pagination) ? pagination : {};
+
+  if (!pagination) {
+    return props;
+  }
+
+  return {
+    ...defaultPaginationProps,
+    ...prevPagination,
+    ...props
+  };
+};
+
+// 获取当前页码（当前页码可能在数据总量发生变化时，超出了总页数）
+export const getPage = (total, pagination) => {
+  const { page, pageSize } = pagination;
+
+  if ((page - 1) * pageSize >= total) {
+    return Math.floor((total - 1) / pageSize) + 1;
+  }
+
+  return page;
+};
+
+// 
+export const getOpenedRowKeys = props => {
+  const rowTreeview = props.rowTreeview; 
+  let openedRowKeys = [];
+
+  if (rowTreeview && is.array(rowTreeview.value)) {
+    const data = flatten(props.data, getTreeviewChildrenKey(rowTreeview), true);
+
+    openedRowKeys = clone(rowTreeview.value);
+    openedRowKeys = openedRowKeys.filter(openedRowKey => {
+      return data.findIndex(row => getRowKey(row, props.rowKey) === openedRowKey) > -1;
+    });
+  }
+
+  return openedRowKeys;
+};
+
+// 
+export const getExpandedRowKeys = props => {
+  const rowExpansion = props.rowExpansion; 
+  let expandedRowKeys = [];
+
+  if (rowExpansion && is.array(rowExpansion.value)) {
+    const data = props.rowTreeview ? flatten(props.data, getTreeviewChildrenKey(props.rowTreeview), true) : props.data;
+
+    expandedRowKeys = clone(rowExpansion.value);
+    expandedRowKeys = expandedRowKeys.filter(expandedRowKey => {
+      return data.findIndex(row => getRowKey(row, props.rowKey) === expandedRowKey) > -1;
+    });
+  }
+
+  return expandedRowKeys;
+};
+
+// 
+export const getSelectedRowKeys = props => {
+  const rowSelection = props.rowSelection; 
+  let selectedRowKeys = [];
+
+  if (rowSelection) {
+    const isMultiple = getSelectionMultiple(rowSelection);
+    const data = props.rowTreeview ? flatten(props.data, getTreeviewChildrenKey(props.rowTreeview), true) : props.data;
+
+    if (isMultiple) {
+      selectedRowKeys = is.array(rowSelection.value) ? clone(rowSelection.value) : [];
+
+      if (selectedRowKeys.length > 0) {
+        selectedRowKeys = selectedRowKeys.filter(selectedRowKey => {
+          return data.findIndex(row => getRowKey(row, props.rowKey) === selectedRowKey) > -1;
+        });
+      }
+    }
+    else {
+      selectedRowKeys = is.string(rowSelection.value) || is.number(rowSelection.value) ? rowSelection.value : undefined;
+
+      if (selectedRowKeys !== undefined) {
+        selectedRowKeys = data.findIndex(row => getRowKey(row, props.rowKey) === selectedRowKeys) > -1 ? selectedRowKeys : undefined;
+      }
+    }
+  }
+
+  return selectedRowKeys;
+};
+
 // 默认导出指定接口
 export default {
   isIgnoreElements,
@@ -459,5 +555,10 @@ export default {
   getThead,
   getTbodyByFilter,
   getTbodyBySorter,
-  getTbody
+  getTbody,
+  getPagination,
+  getPage,
+  getOpenedRowKeys,
+  getExpandedRowKeys,
+  getSelectedRowKeys
 };

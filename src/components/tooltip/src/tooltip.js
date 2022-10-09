@@ -28,6 +28,7 @@ const VuiTooltip = {
     classNamePrefix: PropTypes.string,
     trigger: PropTypes.oneOf(["hover", "focus", "click", "always"]).def("hover"),
     visible: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
     color: PropTypes.string.def("dark"),
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -51,12 +52,21 @@ const VuiTooltip = {
     visible(value) {
       const { $props: props } = this;
 
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = props.trigger === "always" ? true : value;
     }
   },
   methods: {
     toggle(visible) {
       const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       const callback = () => {
         this.state.visible = visible;
         this.$emit("input", visible);

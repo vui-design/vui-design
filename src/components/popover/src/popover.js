@@ -24,8 +24,9 @@ const VuiPopover = {
   },
   props: {
     classNamePrefix: PropTypes.string,
-    visible: PropTypes.bool.def(false),
     trigger: PropTypes.oneOf(["hover", "focus", "click", "always"]).def("hover"),
+    visible: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
     title: PropTypes.string,
     content: PropTypes.string,
     minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(160),
@@ -50,12 +51,21 @@ const VuiPopover = {
     visible(value) {
       const { $props: props } = this;
 
+      if (props.disabled) {
+        return;
+      }
+
       this.state.visible = props.trigger === "always" ? true : value;
     }
   },
   methods: {
     toggle(visible) {
       const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       const callback = () => {
         this.state.visible = visible;
         this.$emit("input", visible);

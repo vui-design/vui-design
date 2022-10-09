@@ -1,7 +1,5 @@
+import withInstall from "../../utils/withInstall";
 import VuiIcon from "./src/icon";
 
-VuiIcon.install = function(Vue) {
-  Vue.component(VuiIcon.name, VuiIcon);
-};
-
-export default VuiIcon;
+export { createProps } from "./src/icon";
+export default withInstall(VuiIcon);

@@ -1,7 +1,5 @@
+import withInstall from "../../utils/withInstall";
 import VuiLink from "./src/link";
 
-VuiLink.install = function(Vue) {
-  Vue.component(VuiLink.name, VuiLink);
-};
-
-export default VuiLink;
+export { createProps } from "./src/link";
+export default withInstall(VuiLink);

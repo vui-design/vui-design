@@ -4,6 +4,22 @@ import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    htmlType: PropTypes.oneOf(["button", "submit", "reset"]).def("button"),
+    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed", "text"]).def("default"),
+    block: PropTypes.bool.def(false),
+    ghost: PropTypes.bool.def(false),
+    shape: PropTypes.oneOf(["round", "circle"]),
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    autofocus: PropTypes.bool.def(false),
+    loading: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    icon: PropTypes.string
+  };
+};
+
 const VuiButton = {
   name: "vui-button",
   inject: {
@@ -24,19 +40,7 @@ const VuiButton = {
     Link
   ],
   inheritAttrs: false,
-  props: {
-    classNamePrefix: PropTypes.string,
-    htmlType: PropTypes.oneOf(["button", "submit", "reset"]).def("button"),
-    type: PropTypes.oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed", "text"]).def("default"),
-    block: PropTypes.bool.def(false),
-    ghost: PropTypes.bool.def(false),
-    shape: PropTypes.oneOf(["round", "circle"]),
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    autofocus: PropTypes.bool.def(false),
-    loading: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    icon: PropTypes.string
-  },
+  props: createProps(),
   methods: {
     insertTextIntoSpan(element) {
       if (is.string(element.text)) {

@@ -1,7 +1,5 @@
+import withInstall from "../../utils/withInstall";
 import VuiPagination from "./src/pagination";
 
-VuiPagination.install = function(Vue) {
-  Vue.component(VuiPagination.name, VuiPagination);
-};
-
-export default VuiPagination;
+export { createProps } from "./src/pagination";
+export default withInstall(VuiPagination);

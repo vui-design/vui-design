@@ -3,14 +3,18 @@ import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import "../../../icons";
 
-const VuiIcon = {
-  name: "vui-icon",
-  props: {
+export const createProps = () => {
+  return {
     classNamePrefix: PropTypes.string,
     type: PropTypes.string,
     color: PropTypes.string,
     size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  },
+  };
+};
+
+const VuiIcon = {
+  name: "vui-icon",
+  props: createProps(),
   render(h) {
     const { $props: props, $listeners: listeners } = this;
 

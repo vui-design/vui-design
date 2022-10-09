@@ -7,21 +7,8 @@ import is from "../../../utils/is";
 import range from "../../../utils/range";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
-const VuiPagination = {
-  name: "vui-pagination",
-  components: {
-    VuiSelect,
-    VuiOption,
-    VuiInput
-  },
-  mixins: [
-    Locale
-  ],
-  model: {
-    prop: "page",
-    event: "input"
-  },
-  props: {
+export const createProps = () => {
+  return {
     classNamePrefix: PropTypes.string,
     small: PropTypes.bool.def(false),
     simple: PropTypes.bool.def(false),
@@ -36,7 +23,24 @@ const VuiPagination = {
     prevPageText: PropTypes.string,
     nextPageText: PropTypes.string,
     hideOnSinglePage: PropTypes.bool.def(false)
+  };
+};
+
+const VuiPagination = {
+  name: "vui-pagination",
+  components: {
+    VuiSelect,
+    VuiOption,
+    VuiInput
   },
+  mixins: [
+    Locale
+  ],
+  model: {
+    prop: "page",
+    event: "input"
+  },
+  props: createProps(),
   data() {
     const { $props: props } = this;
     const totalPages = this.getTotalPages(props.total, props.pageSize);
