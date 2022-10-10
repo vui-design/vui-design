@@ -1,7 +1,5 @@
 import VuiTextarea from "./src/textarea";
+import withInstall from "../../utils/withInstall";
 
-VuiTextarea.install = function(Vue) {
-  Vue.component(VuiTextarea.name, VuiTextarea);
-};
-
-export default VuiTextarea;
+export { createProps } from "./src/textarea";
+export default withInstall(VuiTextarea);

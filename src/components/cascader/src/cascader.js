@@ -10,6 +10,34 @@ import clone from "../../../utils/clone";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.array.def([]),
+    options: PropTypes.array.def([]),
+    expandTrigger: PropTypes.oneOf(["click", "hover"]).def("click"),
+    optionKeys: PropTypes.object.def(utils.optionKeys),
+    formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
+    changeOnSelect: PropTypes.bool.def(false),
+    bordered: PropTypes.bool.def(true),
+    searchable: PropTypes.bool.def(false),
+    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
+    filterOptionProp: PropTypes.string.def("label"),
+    notFoundText: PropTypes.string,
+    clearable: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+    animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
+    dropdownClassName: PropTypes.string,
+    dropdownAutoWidth: PropTypes.bool.def(true),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
+    beforeSelect: PropTypes.func,
+    validator: PropTypes.bool.def(true)
+  };
+};
+
 const VuiCascader = {
   name: "vui-cascader",
   inject: {
@@ -39,31 +67,7 @@ const VuiCascader = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.array.def([]),
-    options: PropTypes.array.def([]),
-    expandTrigger: PropTypes.oneOf(["click", "hover"]).def("click"),
-    optionKeys: PropTypes.object.def(utils.optionKeys),
-    formatter: PropTypes.func.def((labels, options) => labels.join(" / ")),
-    changeOnSelect: PropTypes.bool.def(false),
-    bordered: PropTypes.bool.def(true),
-    searchable: PropTypes.bool.def(false),
-    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
-    filterOptionProp: PropTypes.string.def("label"),
-    notFoundText: PropTypes.string,
-    clearable: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    animation: PropTypes.string.def("vui-cascader-dropdown-scale"),
-    dropdownClassName: PropTypes.string,
-    dropdownAutoWidth: PropTypes.bool.def(true),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
-    beforeSelect: PropTypes.func,
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   data() {
     const { $props: props } = this;
     const optionKeys = utils.getOptionKeys(props.optionKeys);
@@ -73,7 +77,7 @@ const VuiCascader = {
       actived: false,
       searching: false,
       keyword: "",
-      value: this.getStateValueFromProps({
+      value: this.getValue({
         value: props.value,
         options: props.options,
         optionKeys: optionKeys
@@ -90,7 +94,7 @@ const VuiCascader = {
       const { $props: props } = this;
       const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getStateValueFromProps({
+      this.state.value = this.getValue({
         value: value,
         options: props.options,
         optionKeys: optionKeys
@@ -100,7 +104,7 @@ const VuiCascader = {
       const { $props: props } = this;
       const optionKeys = utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getStateValueFromProps({
+      this.state.value = this.getValue({
         value: props.value,
         options: value,
         optionKeys: optionKeys
@@ -108,7 +112,7 @@ const VuiCascader = {
     }
   },
   methods: {
-    getStateValueFromProps(props) {
+    getValue(props) {
       let value = clone(props.value);
       let result = [];
 
@@ -124,7 +128,7 @@ const VuiCascader = {
         result = result.concat(clone(option));
 
         if (option[childrenKey]) {
-          result = result.concat(this.getStateValueFromProps({
+          result = result.concat(this.getValue({
             value: value,
             options: option[childrenKey],
             optionKeys: props.optionKeys

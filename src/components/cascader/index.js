@@ -1,7 +1,5 @@
 import VuiCascader from "./src/cascader";
+import withInstall from "../../utils/withInstall";
 
-VuiCascader.install = function(Vue) {
-  Vue.component(VuiCascader.name, VuiCascader);
-};
-
-export default VuiCascader;
+export { createProps } from "./src/cascader";
+export default withInstall(VuiCascader);

@@ -600,8 +600,8 @@ Object.defineProperty(VuePropTypes, "sensibleDefaults", {
 "use strict";
 /* unused harmony export isServer */
 /* unused harmony export isVNode */
-/* unused harmony export isNull */
 /* unused harmony export isUndefined */
+/* unused harmony export isNull */
 /* unused harmony export isNaN */
 /* unused harmony export isNumber */
 /* unused harmony export isInteger */
@@ -669,14 +669,14 @@ var isVNode = function isVNode(node) {
   return node !== null && (typeof node === "undefined" ? "undefined" : __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default()(node)) === "object" && hasOwnProperty.call(node, "componentOptions");
 };
 
-// 检查给定的值是否是 null
-var isNull = function isNull(value) {
-  return value === null;
-};
-
 // 检查给定的值是否是 undefined
 var isUndefined = function isUndefined(value) {
   return value === void 0;
+};
+
+// 检查给定的值是否是 null
+var isNull = function isNull(value) {
+  return value === null;
 };
 
 // 检查给定的值是否是 NaN
@@ -841,8 +841,8 @@ var isMergeableObject = function isMergeableObject(value) {
 /* harmony default export */ __webpack_exports__["a"] = ({
   server: isServer,
   vnode: isVNode,
-  null: isNull,
   undefined: isUndefined,
+  null: isNull,
   nan: isNaN,
   number: isNumber,
   integer: isInteger,
@@ -7956,14 +7956,6 @@ var i18n = function i18n(fn) {
   use: use,
   i18n: i18n
 });
-// CONCATENATED MODULE: ./src/utils/withInstall.js
-function withInstall(component) {
-  component.install = function (Vue) {
-    Vue.component(component.name, component);
-  };
-
-  return component;
-};
 // EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/extends.js
 var helpers_extends = __webpack_require__(3);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
@@ -8079,6 +8071,14 @@ var VuiIcon = {
 };
 
 /* harmony default export */ var src_icon = (VuiIcon);
+// CONCATENATED MODULE: ./src/utils/withInstall.js
+function withInstall(component) {
+  component.install = function (Vue) {
+    Vue.component(component.name, component);
+  };
+
+  return component;
+};
 // CONCATENATED MODULE: ./src/components/icon/index.js
 
 
@@ -16444,11 +16444,43 @@ var isExisted = function isExisted(keyword, options) {
 };
 
 /**
+* 获取子组件的文本内容
+* @param {Array} children 子组件
+*/
+var utils_getTextFromChildren = function getTextFromChildren(children) {
+  var text = "";
+
+  if (!children || !children.length) {
+    return text;
+  }
+
+  if (is["a" /* default */].string(children)) {
+    return children;
+  }
+
+  children.forEach(function (node) {
+    if (!node) {
+      return;
+    }
+
+    if (node.text) {
+      text += node.text;
+    }
+
+    if (node.children && node.children.length) {
+      text += getTextFromChildren(node.children);
+    }
+  });
+
+  return text;
+};
+
+/**
 * 从 children 中解析获取 options 选项列表
 * @param {Array} children 子组件
 * @param {Boolean} parent 父级
 */
-var utils_getOptionsFromChildren = function getOptionsFromChildren(children) {
+var utils_getOptions = function getOptions(children) {
   var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
   var parent = arguments[2];
 
@@ -16491,7 +16523,7 @@ var utils_getOptionsFromChildren = function getOptionsFromChildren(children) {
 
     if (config.name === "vui-option-group") {
       option.type = "option-group";
-      option.children = getOptionsFromChildren(component.children, level + 1, option);
+      option.children = getOptions(component.children, level + 1, option);
 
       options.push(option);
       options.push.apply(options, option.children);
@@ -16504,38 +16536,6 @@ var utils_getOptionsFromChildren = function getOptionsFromChildren(children) {
   });
 
   return options;
-};
-
-/**
-* 获取子组件的文本内容
-* @param {Array} children 子组件
-*/
-var utils_getTextFromChildren = function getTextFromChildren(children) {
-  var text = "";
-
-  if (!children || !children.length) {
-    return text;
-  }
-
-  if (is["a" /* default */].string(children)) {
-    return children;
-  }
-
-  children.forEach(function (node) {
-    if (!node) {
-      return;
-    }
-
-    if (node.text) {
-      text += node.text;
-    }
-
-    if (node.children && node.children.length) {
-      text += getTextFromChildren(node.children);
-    }
-  });
-
-  return text;
 };
 
 /**
@@ -16579,10 +16579,6 @@ var utils_getFilteredOptions = function getFilteredOptions(keyword, options, fil
 * @param {Array} props 属性
 */
 var utils_getSelectedOption = function getSelectedOption(value, option, props) {
-  if (is["a" /* default */].undefined(value)) {
-    return;
-  }
-
   var target = props.options.find(function (target) {
     return (target.type === "option" || target.type === "keyword") && target.value === value;
   });
@@ -16593,6 +16589,10 @@ var utils_getSelectedOption = function getSelectedOption(value, option, props) {
 
   if (option && option.value === value) {
     return option;
+  }
+
+  if (is["a" /* default */].undefined(value) || is["a" /* default */].null(value)) {
+    return;
   }
 
   if (is["a" /* default */].string(value) && is["a" /* default */].falsy(value)) {
@@ -16617,16 +16617,16 @@ var utils_getSelectedOptions = function getSelectedOptions(value, options, props
   var array = [];
 
   if (is["a" /* default */].array(value)) {
-    value.forEach(function (element) {
+    value.forEach(function (val) {
       var option = void 0;
 
       if (options && options.length > 0) {
         option = options.find(function (target) {
-          return target.value === element;
+          return target.value === val;
         });
       }
 
-      var target = utils_getSelectedOption(element, option, props);
+      var target = utils_getSelectedOption(val, option, props);
 
       if (!target) {
         return;
@@ -16642,10 +16642,10 @@ var utils_getSelectedOptions = function getSelectedOptions(value, options, props
 /**
 * 根据选中值及选项列表获取组件内部状态值
 * @param {Array} value 选中值
-* @param {Array} selectedOptions 选中项
+* @param {Array} options 历史选中项
 * @param {Array} props 属性
 */
-var utils_getValueFromProps = function getValueFromProps(value, options, props) {
+var utils_getValue = function getValue(value, options, props) {
   var getter = void 0;
 
   if (props.multiple) {
@@ -16662,10 +16662,9 @@ var utils_getValueFromProps = function getValueFromProps(value, options, props) 
 */
 /* harmony default export */ var src_utils = ({
   isExisted: isExisted,
-  getOptionsFromChildren: utils_getOptionsFromChildren,
-  getTextFromChildren: utils_getTextFromChildren,
+  getOptions: utils_getOptions,
   getFilteredOptions: utils_getFilteredOptions,
-  getValueFromProps: utils_getValueFromProps
+  getValue: utils_getValue
 });
 // CONCATENATED MODULE: ./src/components/select/src/select-menu-item.js
 
@@ -17155,37 +17154,10 @@ function _broadcast(component, event, params) {
 
 
 
-
 var valueProp = prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]);
-var VuiSelect = {
-  name: "vui-select",
-  inject: {
-    vuiForm: {
-      default: undefined
-    },
-    vuiInputGroup: {
-      default: undefined
-    }
-  },
-  provide: function provide() {
-    return {
-      vuiSelect: this
-    };
-  },
 
-  components: {
-    VuiSelectSelection: select_selection,
-    VuiSelectDropdown: select_dropdown,
-    VuiSelectSpin: select_spin,
-    VuiSelectEmpty: select_empty,
-    VuiSelectMenu: select_menu
-  },
-  mixins: [emitter],
-  model: {
-    prop: "value",
-    event: "input"
-  },
-  props: {
+var select_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
@@ -17218,7 +17190,38 @@ var VuiSelect = {
     beforeSelect: prop_types["a" /* default */].func,
     beforeDeselect: prop_types["a" /* default */].func,
     validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+var VuiSelect = {
+  name: "vui-select",
+  inject: {
+    vuiForm: {
+      default: undefined
+    },
+    vuiInputGroup: {
+      default: undefined
+    }
   },
+  provide: function provide() {
+    return {
+      vuiSelect: this
+    };
+  },
+
+  components: {
+    VuiSelectSelection: select_selection,
+    VuiSelectDropdown: select_dropdown,
+    VuiSelectSpin: select_spin,
+    VuiSelectEmpty: select_empty,
+    VuiSelectMenu: select_menu
+  },
+  mixins: [emitter],
+  model: {
+    prop: "value",
+    event: "input"
+  },
+  props: select_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -17230,7 +17233,7 @@ var VuiSelect = {
         actived: false,
         searching: false,
         keyword: "",
-        value: src_utils.getValueFromProps(props.value, undefined, props),
+        value: src_utils.getValue(props.value, undefined, props),
         options: [],
         activedEventType: "navigate",
         activedMenuItemIndex: 0,
@@ -17249,10 +17252,10 @@ var VuiSelect = {
   },
   watch: {
     value: function value(_value) {
-      this.state.value = src_utils.getValueFromProps(_value, this.state.value, this.$props);
+      this.state.value = src_utils.getValue(_value, this.state.value, this.$props);
     },
     options: function options(value) {
-      this.state.value = src_utils.getValueFromProps(this.value, this.state.value, this.$props);
+      this.state.value = src_utils.getValue(this.value, this.state.value, this.$props);
     },
     actived: function actived(value) {
       var _this = this;
@@ -17855,7 +17858,7 @@ var VuiSelect = {
 
 
 
-var select_valueProp = prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]);
+
 var VuiSelectWrapper = {
   name: src_select.name,
   components: {
@@ -17865,39 +17868,7 @@ var VuiSelectWrapper = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([select_valueProp, prop_types["a" /* default */].arrayOf(select_valueProp)]),
-    backfillOptionProp: prop_types["a" /* default */].string.def("children"),
-    multiple: prop_types["a" /* default */].bool.def(false),
-    maxTagCount: prop_types["a" /* default */].number,
-    maxTagPlaceholder: prop_types["a" /* default */].func.def(function (count) {
-      return "+" + count;
-    }),
-    searchable: prop_types["a" /* default */].bool.def(false),
-    filter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].func]).def(true),
-    filterOptionProp: prop_types["a" /* default */].string.def("children"),
-    allowCreate: prop_types["a" /* default */].bool.def(false),
-    loading: prop_types["a" /* default */].bool.def(false),
-    loadingText: prop_types["a" /* default */].string,
-    notFoundText: prop_types["a" /* default */].string,
-    clearKeywordOnSelect: prop_types["a" /* default */].bool.def(true),
-    bordered: prop_types["a" /* default */].bool.def(true),
-    clearable: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    animation: prop_types["a" /* default */].string.def("vui-select-dropdown-scale"),
-    dropdownClassName: prop_types["a" /* default */].string,
-    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-      return document.body;
-    }),
-    beforeSelect: prop_types["a" /* default */].func,
-    beforeDeselect: prop_types["a" /* default */].func,
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
+  props: select_createProps(),
   methods: {
     focus: function focus() {
       this.$refs.select.focus();
@@ -17915,7 +17886,7 @@ var VuiSelectWrapper = {
     var attributes = {
       ref: "select",
       props: extends_default()({}, props, {
-        options: src_utils.getOptionsFromChildren(slots.default)
+        options: src_utils.getOptions(slots.default)
       }),
       on: listeners
     };
@@ -17924,11 +17895,8 @@ var VuiSelectWrapper = {
   }
 };
 
-VuiSelectWrapper.install = function (Vue) {
-  Vue.component(VuiSelectWrapper.name, VuiSelectWrapper);
-};
 
-/* harmony default export */ var components_select = (VuiSelectWrapper);
+/* harmony default export */ var components_select = (withInstall(VuiSelectWrapper));
 // CONCATENATED MODULE: ./src/components/option/src/option.js
 
 
@@ -17964,22 +17932,8 @@ var babel_helper_vue_jsx_merge_props_default = /*#__PURE__*/__webpack_require__.
 
 
 
-var VuiInput = {
-  name: "vui-input",
-  inject: {
-    vuiForm: {
-      default: undefined
-    },
-    vuiInputGroup: {
-      default: undefined
-    }
-  },
-  components: {
-    VuiIcon: components_icon
-  },
-  mixins: [emitter],
-  inheritAttrs: false,
-  props: {
+var input_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].string.def("text"),
     placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
@@ -17996,7 +17950,25 @@ var VuiInput = {
     readonly: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
     validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+var VuiInput = {
+  name: "vui-input",
+  inject: {
+    vuiForm: {
+      default: undefined
+    },
+    vuiInputGroup: {
+      default: undefined
+    }
   },
+  components: {
+    VuiIcon: components_icon
+  },
+  mixins: [emitter],
+  inheritAttrs: false,
+  props: input_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -18014,8 +17986,7 @@ var VuiInput = {
 
   watch: {
     value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
+      var state = this.state;
 
 
       _value = is["a" /* default */].effective(_value) ? _value : "";
@@ -18396,11 +18367,9 @@ var VuiInput = {
 // CONCATENATED MODULE: ./src/components/input/index.js
 
 
-src_input.install = function (Vue) {
-  Vue.component(src_input.name, src_input);
-};
 
-/* harmony default export */ var components_input = (src_input);
+
+/* harmony default export */ var components_input = (withInstall(src_input));
 // CONCATENATED MODULE: ./src/utils/range.js
 /**
 * 创建一个 start ~ end 范围内的数值数组（包含 start，但不包含 end）
@@ -21268,6 +21237,38 @@ var VuiCascaderMenuList = {
 
 
 
+var cascader_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click"),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
+    formatter: prop_types["a" /* default */].func.def(function (labels, options) {
+      return labels.join(" / ");
+    }),
+    changeOnSelect: prop_types["a" /* default */].bool.def(false),
+    bordered: prop_types["a" /* default */].bool.def(true),
+    searchable: prop_types["a" /* default */].bool.def(false),
+    filter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].func]).def(true),
+    filterOptionProp: prop_types["a" /* default */].string.def("label"),
+    notFoundText: prop_types["a" /* default */].string,
+    clearable: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+    animation: prop_types["a" /* default */].string.def("vui-cascader-dropdown-scale"),
+    dropdownClassName: prop_types["a" /* default */].string,
+    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+      return document.body;
+    }),
+    beforeSelect: prop_types["a" /* default */].func,
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
 var VuiCascader = {
   name: "vui-cascader",
   inject: {
@@ -21296,35 +21297,7 @@ var VuiCascader = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].array.def([]),
-    options: prop_types["a" /* default */].array.def([]),
-    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click"),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
-    formatter: prop_types["a" /* default */].func.def(function (labels, options) {
-      return labels.join(" / ");
-    }),
-    changeOnSelect: prop_types["a" /* default */].bool.def(false),
-    bordered: prop_types["a" /* default */].bool.def(true),
-    searchable: prop_types["a" /* default */].bool.def(false),
-    filter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].func]).def(true),
-    filterOptionProp: prop_types["a" /* default */].string.def("label"),
-    notFoundText: prop_types["a" /* default */].string,
-    clearable: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    animation: prop_types["a" /* default */].string.def("vui-cascader-dropdown-scale"),
-    dropdownClassName: prop_types["a" /* default */].string,
-    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-      return document.body;
-    }),
-    beforeSelect: prop_types["a" /* default */].func,
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
+  props: cascader_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -21335,7 +21308,7 @@ var VuiCascader = {
       actived: false,
       searching: false,
       keyword: "",
-      value: this.getStateValueFromProps({
+      value: this.getValue({
         value: props.value,
         options: props.options,
         optionKeys: optionKeys
@@ -21354,7 +21327,7 @@ var VuiCascader = {
 
       var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getStateValueFromProps({
+      this.state.value = this.getValue({
         value: _value,
         options: props.options,
         optionKeys: optionKeys
@@ -21365,7 +21338,7 @@ var VuiCascader = {
 
       var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
 
-      this.state.value = this.getStateValueFromProps({
+      this.state.value = this.getValue({
         value: props.value,
         options: value,
         optionKeys: optionKeys
@@ -21373,7 +21346,7 @@ var VuiCascader = {
     }
   },
   methods: {
-    getStateValueFromProps: function getStateValueFromProps(props) {
+    getValue: function getValue(props) {
       var value = Object(utils_clone["a" /* default */])(props.value);
       var result = [];
 
@@ -21394,7 +21367,7 @@ var VuiCascader = {
         result = result.concat(Object(utils_clone["a" /* default */])(option));
 
         if (option[childrenKey]) {
-          result = result.concat(this.getStateValueFromProps({
+          result = result.concat(this.getValue({
             value: value,
             options: option[childrenKey],
             optionKeys: props.optionKeys
@@ -21795,11 +21768,9 @@ var VuiCascader = {
 // CONCATENATED MODULE: ./src/components/cascader/index.js
 
 
-cascader.install = function (Vue) {
-  Vue.component(cascader.name, cascader);
-};
 
-/* harmony default export */ var components_cascader = (cascader);
+
+/* harmony default export */ var components_cascader = (withInstall(cascader));
 // CONCATENATED MODULE: ./src/components/checkbox/src/checkbox.js
 
 
@@ -23229,6 +23200,24 @@ function getNumberPrecision(value) {
 
 var numeric = /^[\+\-]?\d*?\.?\d*?$/;
 
+var input_number_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].string]),
+    min: prop_types["a" /* default */].number.def(-Infinity),
+    max: prop_types["a" /* default */].number.def(Infinity),
+    step: prop_types["a" /* default */].number.def(1),
+    precision: prop_types["a" /* default */].number,
+    formatter: prop_types["a" /* default */].func,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    autofocus: prop_types["a" /* default */].bool.def(false),
+    readonly: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
 var VuiInputNumber = {
   name: "vui-input-number",
   inject: {
@@ -23247,21 +23236,7 @@ var VuiInputNumber = {
     Longpress: longpress
   },
   inheritAttrs: false,
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].string]),
-    min: prop_types["a" /* default */].number.def(-Infinity),
-    max: prop_types["a" /* default */].number.def(Infinity),
-    step: prop_types["a" /* default */].number.def(1),
-    precision: prop_types["a" /* default */].number,
-    formatter: prop_types["a" /* default */].func,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    autofocus: prop_types["a" /* default */].bool.def(false),
-    readonly: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
+  props: input_number_createProps(),
   data: function data() {
     var state = {
       hovered: false,
@@ -23292,8 +23267,8 @@ var VuiInputNumber = {
       immediate: true,
       deep: true,
       handler: function handler(value) {
-        this.state.value = this.getValueFromProps(value);
-        this.state.text = this.state.inputting ? this.state.text : this.getTextByValue(this.state.value, value);
+        this.state.value = this.getValue(value);
+        this.state.text = this.state.inputting ? this.state.text : this.getText(this.state.value, value);
       }
     }
   },
@@ -23341,7 +23316,7 @@ var VuiInputNumber = {
     setPrecision: function setPrecision(value, precision) {
       return parseFloat(Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision));
     },
-    getValueFromProps: function getValueFromProps(props) {
+    getValue: function getValue(props) {
       var value = void 0;
 
       if (is["a" /* default */].number(props.value)) {
@@ -23371,7 +23346,7 @@ var VuiInputNumber = {
 
       return value;
     },
-    getTextByValue: function getTextByValue(value, props) {
+    getText: function getText(value, props) {
       var text = "";
 
       if (!is["a" /* default */].existy(value)) {
@@ -23566,12 +23541,12 @@ var VuiInputNumber = {
         }
 
         if (value === this.state.value) {
-          this.state.text = this.getTextByValue(this.state.value, props);
+          this.state.text = this.getText(this.state.value, props);
         } else {
           this.change(value);
         }
       } else {
-        this.state.text = this.getTextByValue(this.state.value, props);
+        this.state.text = this.getText(this.state.value, props);
       }
     },
     handleIncrease: function handleIncrease() {
@@ -23791,11 +23766,9 @@ var VuiInputNumber = {
 // CONCATENATED MODULE: ./src/components/input-number/index.js
 
 
-input_number.install = function (Vue) {
-  Vue.component(input_number.name, input_number);
-};
 
-/* harmony default export */ var components_input_number = (input_number);
+
+/* harmony default export */ var components_input_number = (withInstall(input_number));
 // CONCATENATED MODULE: ./src/components/radio/src/radio.js
 
 
@@ -24814,7 +24787,7 @@ var utils_getPrecision = function getPrecision(min, max, step) {
 };
 
 // 根据组件的 props 属性获取内部 value 状态值
-var src_utils_getValueFromProps = function getValueFromProps(value, props) {
+var utils_getValueFromProps = function getValueFromProps(value, props) {
 	if (props.range) {
 		if (is["a" /* default */].array(value) && value.length === 2) {
 			value = [Math.max(props.min, value[0]), Math.min(props.max, value[1])];
@@ -24892,7 +24865,7 @@ var utils_getMarks = function getMarks(min, max, marks) {
 	getSliderSize: utils_getSliderSize,
 	getSliderDraggerValue: getSliderDraggerValue,
 	getPrecision: utils_getPrecision,
-	getValueFromProps: src_utils_getValueFromProps,
+	getValueFromProps: utils_getValueFromProps,
 	getSteps: utils_getSteps,
 	getMarks: utils_getMarks
 });
@@ -26350,19 +26323,8 @@ function getTextareaSize(targetElement) {
 
 
 
-var VuiTextarea = {
-  name: "vui-textarea",
-  inject: {
-    vuiForm: {
-      default: undefined
-    }
-  },
-  components: {
-    VuiIcon: components_icon
-  },
-  mixins: [emitter],
-  inheritAttrs: false,
-  props: {
+var textarea_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
@@ -26375,7 +26337,22 @@ var VuiTextarea = {
     readonly: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
     validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+var VuiTextarea = {
+  name: "vui-textarea",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
   },
+  components: {
+    VuiIcon: components_icon
+  },
+  mixins: [emitter],
+  inheritAttrs: false,
+  props: textarea_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -26392,8 +26369,7 @@ var VuiTextarea = {
 
   watch: {
     value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
+      var state = this.state;
 
 
       _value = is["a" /* default */].effective(_value) ? _value : "";
@@ -26704,11 +26680,9 @@ var VuiTextarea = {
 // CONCATENATED MODULE: ./src/components/textarea/index.js
 
 
-src_textarea.install = function (Vue) {
-  Vue.component(src_textarea.name, src_textarea);
-};
 
-/* harmony default export */ var components_textarea = (src_textarea);
+
+/* harmony default export */ var components_textarea = (withInstall(src_textarea));
 // CONCATENATED MODULE: ./src/utils/padStart.js
 function padStart(value, length, chars) {
   var string = String(value);
@@ -43741,7 +43715,7 @@ if (typeof window !== "undefined" && window.Vue) {
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"vui-design","version":"1.10.13","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --config build/webpack.dev.config.js","dev:s":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --host 0.0.0.0 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist:locale":"webpack --config build/webpack.dist.locale.config.js","dist":"npm run dist:style && npm run dist:dev && npm run dist:prod && npm run dist:locale","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
+module.exports = {"name":"vui-design","version":"1.10.14","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --config build/webpack.dev.config.js","dev:s":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 8081 --host 0.0.0.0 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist:locale":"webpack --config build/webpack.dist.locale.config.js","dist":"npm run dist:style && npm run dist:dev && npm run dist:prod && npm run dist:locale","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
 
 /***/ }),
 /* 89 */

@@ -8,6 +8,24 @@ import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
 const numeric = /^[\+\-]?\d*?\.?\d*?$/;
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    min: PropTypes.number.def(-Infinity),
+    max: PropTypes.number.def(Infinity),
+    step: PropTypes.number.def(1),
+    precision: PropTypes.number,
+    formatter: PropTypes.func,
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    autofocus: PropTypes.bool.def(false),
+    readonly: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    validator: PropTypes.bool.def(true)
+  };
+};
+
 const VuiInputNumber = {
   name: "vui-input-number",
   inject: {
@@ -28,21 +46,7 @@ const VuiInputNumber = {
     Longpress
   },
   inheritAttrs: false,
-  props: {
-    classNamePrefix: PropTypes.string,
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    min: PropTypes.number.def(-Infinity),
-    max: PropTypes.number.def(Infinity),
-    step: PropTypes.number.def(1),
-    precision: PropTypes.number,
-    formatter: PropTypes.func,
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    autofocus: PropTypes.bool.def(false),
-    readonly: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   data() {
     const state = {
       hovered: false,
@@ -72,8 +76,8 @@ const VuiInputNumber = {
       immediate: true,
       deep: true,
       handler(value) {
-        this.state.value = this.getValueFromProps(value);
-        this.state.text = this.state.inputting ? this.state.text : this.getTextByValue(this.state.value, value);
+        this.state.value = this.getValue(value);
+        this.state.text = this.state.inputting ? this.state.text : this.getText(this.state.value, value);
       }
     }
   },
@@ -121,7 +125,7 @@ const VuiInputNumber = {
     setPrecision(value, precision) {
       return parseFloat(Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision));
     },
-    getValueFromProps(props) {
+    getValue(props) {
       let value;
 
       if (is.number(props.value)) {
@@ -152,7 +156,7 @@ const VuiInputNumber = {
 
       return value;
     },
-    getTextByValue(value, props) {
+    getText(value, props) {
       let text = "";
 
       if (!is.existy(value)) {
@@ -342,14 +346,14 @@ const VuiInputNumber = {
         }
 
         if (value === this.state.value) {
-          this.state.text = this.getTextByValue(this.state.value, props);
+          this.state.text = this.getText(this.state.value, props);
         }
         else {
           this.change(value);
         }
       }
       else {
-        this.state.text = this.getTextByValue(this.state.value, props);
+        this.state.text = this.getText(this.state.value, props);
       }
     },
     handleIncrease() {

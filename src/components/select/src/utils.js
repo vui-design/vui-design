@@ -32,11 +32,43 @@ export const isExisted = (keyword, options) => {
 };
 
 /**
+* 获取子组件的文本内容
+* @param {Array} children 子组件
+*/
+export const getTextFromChildren = children => {
+  let text = "";
+
+  if (!children || !children.length) {
+    return text;
+  }
+
+  if (is.string(children)) {
+    return children;
+  }
+
+  children.forEach(node => {
+    if (!node) {
+      return;
+    }
+
+    if (node.text) {
+      text += node.text;
+    }
+
+    if (node.children && node.children.length) {
+      text += getTextFromChildren(node.children);
+    }
+  });
+
+  return text;
+};
+
+/**
 * 从 children 中解析获取 options 选项列表
 * @param {Array} children 子组件
 * @param {Boolean} parent 父级
 */
-export const getOptionsFromChildren = (children, level = 1, parent) => {
+export const getOptions = (children, level = 1, parent) => {
   let options = [];
 
   if (!is.array(children)) {
@@ -77,7 +109,7 @@ export const getOptionsFromChildren = (children, level = 1, parent) => {
 
     if (config.name === "vui-option-group") {
       option.type = "option-group";
-      option.children = getOptionsFromChildren(component.children, level + 1, option);
+      option.children = getOptions(component.children, level + 1, option);
 
       options.push(option);
       options.push.apply(options, option.children);
@@ -91,38 +123,6 @@ export const getOptionsFromChildren = (children, level = 1, parent) => {
   });
 
   return options;
-};
-
-/**
-* 获取子组件的文本内容
-* @param {Array} children 子组件
-*/
-export const getTextFromChildren = children => {
-  let text = "";
-
-  if (!children || !children.length) {
-    return text;
-  }
-
-  if (is.string(children)) {
-    return children;
-  }
-
-  children.forEach(node => {
-    if (!node) {
-      return;
-    }
-
-    if (node.text) {
-      text += node.text;
-    }
-
-    if (node.children && node.children.length) {
-      text += getTextFromChildren(node.children);
-    }
-  });
-
-  return text;
 };
 
 /**
@@ -170,10 +170,6 @@ export const getFilteredOptions = (keyword, options, filter, property) => {
 * @param {Array} props 属性
 */
 export const getSelectedOption = (value, option, props) => {
-  if (is.undefined(value)) {
-    return;
-  }
-
   const target = props.options.find(target => (target.type === "option" || target.type === "keyword") && target.value === value);
 
   if (target) {
@@ -182,6 +178,10 @@ export const getSelectedOption = (value, option, props) => {
 
   if (option && option.value === value) {
     return option;
+  }
+
+  if (is.undefined(value) || is.null(value)) {
+    return;
   }
 
   if (is.string(value) && is.falsy(value)) {
@@ -206,14 +206,14 @@ export const getSelectedOptions = (value, options, props) => {
   let array = [];
 
   if (is.array(value)) {
-    value.forEach(element => {
+    value.forEach(val => {
       let option;
 
       if (options && options.length > 0) {
-        option = options.find(target => target.value === element);
+        option = options.find(target => target.value === val);
       }
 
-      const target = getSelectedOption(element, option, props);
+      const target = getSelectedOption(val, option, props);
 
       if (!target) {
         return;
@@ -229,10 +229,10 @@ export const getSelectedOptions = (value, options, props) => {
 /**
 * 根据选中值及选项列表获取组件内部状态值
 * @param {Array} value 选中值
-* @param {Array} selectedOptions 选中项
+* @param {Array} options 历史选中项
 * @param {Array} props 属性
 */
-export const getValueFromProps = (value, options, props) => {
+export const getValue = (value, options, props) => {
   let getter;
 
   if (props.multiple) {
@@ -250,8 +250,7 @@ export const getValueFromProps = (value, options, props) => {
 */
 export default {
   isExisted,
-  getOptionsFromChildren,
-  getTextFromChildren,
+  getOptions,
   getFilteredOptions,
-  getValueFromProps
+  getValue
 };

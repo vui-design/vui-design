@@ -4,6 +4,27 @@ import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    type: PropTypes.string.def("text"),
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    prepend: PropTypes.string,
+    append: PropTypes.string,
+    prefix: PropTypes.string,
+    suffix: PropTypes.string,
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    bordered: PropTypes.bool.def(true),
+    autofocus: PropTypes.bool.def(false),
+    clearable: PropTypes.bool.def(false),
+    readonly: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    validator: PropTypes.bool.def(true)
+  };
+};
+
 const VuiInput = {
   name: "vui-input",
   inject: {
@@ -21,24 +42,7 @@ const VuiInput = {
     Emitter
   ],
   inheritAttrs: false,
-  props: {
-    classNamePrefix: PropTypes.string,
-    type: PropTypes.string.def("text"),
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    prepend: PropTypes.string,
-    append: PropTypes.string,
-    prefix: PropTypes.string,
-    suffix: PropTypes.string,
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    bordered: PropTypes.bool.def(true),
-    autofocus: PropTypes.bool.def(false),
-    clearable: PropTypes.bool.def(false),
-    readonly: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   data() {
     const { $props: props } = this;
     const state = {
@@ -54,7 +58,7 @@ const VuiInput = {
   },
   watch: {
     value(value) {
-      const { $props: props, state } = this;
+      const { state } = this;
 
       value = is.effective(value) ? value : "";
 

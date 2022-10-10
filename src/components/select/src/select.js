@@ -6,11 +6,44 @@ import VuiSelectMenu from "./select-menu";
 import Emitter from "../../../mixins/emitter";
 import PropTypes from "../../../utils/prop-types";
 import is from "../../../utils/is";
-import getStyle from "../../../utils/getStyle";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 import utils from "./utils";
 
 const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
+
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    size: PropTypes.oneOf(["small", "medium", "large"]),
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([valueProp, PropTypes.arrayOf(valueProp)]),
+    backfillOptionProp: PropTypes.string.def("children"),
+    options: PropTypes.array.def([]),
+    multiple: PropTypes.bool.def(false),
+    maxTagCount: PropTypes.number,
+    maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
+    searchable: PropTypes.bool.def(false),
+    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    filterOptionProp: PropTypes.string.def("children"),
+    allowCreate: PropTypes.bool.def(false),
+    loading: PropTypes.bool.def(false),
+    loadingText: PropTypes.string,
+    notFoundText: PropTypes.string,
+    clearKeywordOnSelect: PropTypes.bool.def(true),
+    bordered: PropTypes.bool.def(true),
+    clearable: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+    animation: PropTypes.string.def("vui-select-dropdown-scale"),
+    dropdownClassName: PropTypes.string,
+    dropdownAutoWidth: PropTypes.bool.def(true),
+    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
+    beforeSelect: PropTypes.func,
+    beforeDeselect: PropTypes.func,
+    validator: PropTypes.bool.def(true)
+  };
+};
+
 const VuiSelect = {
   name: "vui-select",
   inject: {
@@ -40,36 +73,7 @@ const VuiSelect = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([valueProp, PropTypes.arrayOf(valueProp)]),
-    backfillOptionProp: PropTypes.string.def("children"),
-    options: PropTypes.array.def([]),
-    multiple: PropTypes.bool.def(false),
-    maxTagCount: PropTypes.number,
-    maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
-    searchable: PropTypes.bool.def(false),
-    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-    filterOptionProp: PropTypes.string.def("children"),
-    allowCreate: PropTypes.bool.def(false),
-    loading: PropTypes.bool.def(false),
-    loadingText: PropTypes.string,
-    notFoundText: PropTypes.string,
-    clearKeywordOnSelect: PropTypes.bool.def(true),
-    bordered: PropTypes.bool.def(true),
-    clearable: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    animation: PropTypes.string.def("vui-select-dropdown-scale"),
-    dropdownClassName: PropTypes.string,
-    dropdownAutoWidth: PropTypes.bool.def(true),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
-    beforeSelect: PropTypes.func,
-    beforeDeselect: PropTypes.func,
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   data() {
     const { $props: props } = this;
 
@@ -80,7 +84,7 @@ const VuiSelect = {
         actived: false,
         searching: false,
         keyword: "",
-        value: utils.getValueFromProps(props.value, undefined, props),
+        value: utils.getValue(props.value, undefined, props),
         options: [],
         activedEventType: "navigate",
         activedMenuItemIndex: 0,
@@ -98,10 +102,10 @@ const VuiSelect = {
   },
   watch: {
     value(value) {
-      this.state.value = utils.getValueFromProps(value, this.state.value, this.$props);
+      this.state.value = utils.getValue(value, this.state.value, this.$props);
     },
     options(value) {
-      this.state.value = utils.getValueFromProps(this.value, this.state.value, this.$props);
+      this.state.value = utils.getValue(this.value, this.state.value, this.$props);
     },
     actived(value) {
       this.$nextTick(() => this.resetActivedMenuItem());

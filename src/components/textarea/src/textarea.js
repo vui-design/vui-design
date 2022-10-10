@@ -7,6 +7,23 @@ import setStyle from "../../../utils/setStyle";
 import getTextareaSize from "../../../utils/getTextareaSize";
 import getClassNamePrefix from "../../../utils/getClassNamePrefix";
 
+export const createProps = () => {
+  return {
+    classNamePrefix: PropTypes.string,
+    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(4),
+    autosize: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
+    resizable: PropTypes.bool.def(false),
+    bordered: PropTypes.bool.def(true),
+    clearable: PropTypes.bool.def(false),
+    readonly: PropTypes.bool.def(false),
+    disabled: PropTypes.bool.def(false),
+    validator: PropTypes.bool.def(true)
+  };
+};
+
 const VuiTextarea = {
   name: "vui-textarea",
   inject: {
@@ -21,20 +38,7 @@ const VuiTextarea = {
     Emitter
   ],
   inheritAttrs: false,
-  props: {
-    classNamePrefix: PropTypes.string,
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    maxLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    rows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def(4),
-    autosize: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).def(false),
-    resizable: PropTypes.bool.def(false),
-    bordered: PropTypes.bool.def(true),
-    clearable: PropTypes.bool.def(false),
-    readonly: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   data() {
     const { $props: props } = this;
     const state = {
@@ -49,7 +53,7 @@ const VuiTextarea = {
   },
   watch: {
     value(value) {
-      const { $props: props, state } = this;
+      const { state } = this;
 
       value = is.effective(value) ? value : "";
 

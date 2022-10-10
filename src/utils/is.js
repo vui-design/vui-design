@@ -21,14 +21,14 @@ export const isVNode = function(node) {
   return node !== null && typeof node === "object" && hasOwnProperty.call(node, "componentOptions");
 };
 
-// 检查给定的值是否是 null
-export const isNull = function(value) {
-  return value === null;
-};
-
 // 检查给定的值是否是 undefined
 export const isUndefined = function(value) {
   return value === void 0;
+};
+
+// 检查给定的值是否是 null
+export const isNull = function(value) {
+  return value === null;
 };
 
 // 检查给定的值是否是 NaN
@@ -193,8 +193,8 @@ export const isMergeableObject = function(value) {
 export default {
   server: isServer,
   vnode: isVNode,
-  null: isNull,
   undefined: isUndefined,
+  null: isNull,
   nan: isNaN,
   number: isNumber,
   integer: isInteger,

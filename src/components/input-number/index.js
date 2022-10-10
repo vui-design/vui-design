@@ -1,7 +1,5 @@
 import VuiInputNumber from "./src/input-number";
+import withInstall from "../../utils/withInstall";
 
-VuiInputNumber.install = function(Vue) {
-  Vue.component(VuiInputNumber.name, VuiInputNumber);
-};
-
-export default VuiInputNumber;
+export { createProps } from "./src/input-number";
+export default withInstall(VuiInputNumber);

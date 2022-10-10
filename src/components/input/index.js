@@ -1,7 +1,5 @@
 import VuiInput from "./src/input";
+import withInstall from "../../utils/withInstall";
 
-VuiInput.install = function(Vue) {
-  Vue.component(VuiInput.name, VuiInput);
-};
-
-export default VuiInput;
+export { createProps } from "./src/input";
+export default withInstall(VuiInput);

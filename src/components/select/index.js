@@ -1,8 +1,8 @@
 import VuiSelect from "./src/select";
-import PropTypes from "../../utils/prop-types";
+import withInstall from "../../utils/withInstall";
 import utils from "./src/utils";
+import { createProps } from "./src/select";
 
-const valueProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]);
 const VuiSelectWrapper = {
   name: VuiSelect.name,
   components: {
@@ -12,35 +12,7 @@ const VuiSelectWrapper = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    placeholder: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    value: PropTypes.oneOfType([valueProp, PropTypes.arrayOf(valueProp)]),
-    backfillOptionProp: PropTypes.string.def("children"),
-    multiple: PropTypes.bool.def(false),
-    maxTagCount: PropTypes.number,
-    maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
-    searchable: PropTypes.bool.def(false),
-    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
-    filterOptionProp: PropTypes.string.def("children"),
-    allowCreate: PropTypes.bool.def(false),
-    loading: PropTypes.bool.def(false),
-    loadingText: PropTypes.string,
-    notFoundText: PropTypes.string,
-    clearKeywordOnSelect: PropTypes.bool.def(true),
-    bordered: PropTypes.bool.def(true),
-    clearable: PropTypes.bool.def(false),
-    disabled: PropTypes.bool.def(false),
-    placement: PropTypes.oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    animation: PropTypes.string.def("vui-select-dropdown-scale"),
-    dropdownClassName: PropTypes.string,
-    dropdownAutoWidth: PropTypes.bool.def(true),
-    getPopupContainer: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).def(() => document.body),
-    beforeSelect: PropTypes.func,
-    beforeDeselect: PropTypes.func,
-    validator: PropTypes.bool.def(true)
-  },
+  props: createProps(),
   methods: {
     focus() {
       this.$refs.select.focus();
@@ -55,7 +27,7 @@ const VuiSelectWrapper = {
       ref: "select",
       props: {
         ...props,
-        options: utils.getOptionsFromChildren(slots.default)
+        options: utils.getOptions(slots.default)
       },
       on: listeners
     };
@@ -66,8 +38,5 @@ const VuiSelectWrapper = {
   }
 };
 
-VuiSelectWrapper.install = function(Vue) {
-  Vue.component(VuiSelectWrapper.name, VuiSelectWrapper);
-};
-
-export default VuiSelectWrapper;
+export { createProps };
+export default withInstall(VuiSelectWrapper);
