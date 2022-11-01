@@ -7,7 +7,6 @@
 <h1 align="center">Vui Design</h1>
 
 <div align="center">
-
 A high quality UI Toolkit based on Vue.js 2.x
 
 [![NPM version][npm-image]][npm-url] [![NPM downloads][dm-image]][dm-url] [![NPM downloads][dt-image]][dt-url]
@@ -24,7 +23,6 @@ A high quality UI Toolkit based on Vue.js 2.x
 [david-dev-url]: https://david-dm.org/vui-design/vui-design?type=dev
 [david-dev-image]: https://img.shields.io/david/dev/vui-design/vui-design?style=flat-square
 [david-url]: https://david-dm.org/vui-design/vui-design
-
 </div>
 
 ## Features
