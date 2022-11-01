@@ -90,4 +90,4 @@ Modern browsers and Internet Explorer 10+.
 ## License
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present, Vui Design
+Copyright (c) 2018-present, Vui Design
