@@ -23,7 +23,7 @@ export const createProps = () => {
     maxTagCount: PropTypes.number,
     maxTagPlaceholder: PropTypes.func.def(count => "+" + count),
     searchable: PropTypes.bool.def(false),
-    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    filter: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),
     filterOptionProp: PropTypes.string.def("children"),
     allowCreate: PropTypes.bool.def(false),
     loading: PropTypes.bool.def(false),
