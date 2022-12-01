@@ -117,7 +117,7 @@ const VuiInputNumber = {
       }
 
       if (b > precision) {
-        console.warn("[Vui warn][InputNumber]: the \"precision\" should not be less than the decimal places of \"step\"!");
+        console.warn("[Vui Design][InputNumber]: the \"precision\" should not be less than the decimal places of \"step\"!");
       }
 
       return precision;
@@ -263,6 +263,11 @@ const VuiInputNumber = {
     },
     handleKeydown(e) {
       const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       const keyCode = e.keyCode;
 
       if (keyCode === 38) {
@@ -277,11 +282,22 @@ const VuiInputNumber = {
       this.$emit("keydown", e);
     },
     handleKeyup(e) {
+      const { $props: props } = this;
+
+      if (props.disabled) {
+        return;
+      }
+
       this.$emit("keyup", e);
     },
     handleInput(e) {
       const { $props: props } = this;
-      let text = e.target.value;
+
+      if (props.disabled) {
+        return;
+      }
+
+      const text = e.target.value;
 
       this.state.inputting = true;
       this.state.text = text;
@@ -319,13 +335,18 @@ const VuiInputNumber = {
     },
     handleChange(e) {
       const { $props: props } = this;
-      let text = e.target.value;
+
+      if (props.disabled) {
+        return;
+      }
+
+      const text = e.target.value;
 
       this.state.inputting = false;
 
       if (this.isValidNumber(text)) {
         const string = text.trim();
-        let value = Number(text);
+        let value = Number(string);
 
         if (!is.number(value)) {
           return;
@@ -369,6 +390,7 @@ const VuiInputNumber = {
         return;
       }
 
+      this.state.text = value;
       this.change(value);
     },
     handleDecrease() {
@@ -384,6 +406,7 @@ const VuiInputNumber = {
         return;
       }
 
+      this.state.text = value;
       this.change(value);
     },
     handleIncreaseMousedown(e) {
