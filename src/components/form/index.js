@@ -1,7 +1,5 @@
-import VuiForm from "./src/form";
+import VuiForm from "./form";
+import withInstall from "../../utils/withInstall";
 
-VuiForm.install = function(Vue) {
-  Vue.component(VuiForm.name, VuiForm);
-};
-
-export default VuiForm;
+export { createProps } from "./form";
+export default withInstall(VuiForm);

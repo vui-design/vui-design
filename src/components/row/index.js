@@ -1,7 +1,5 @@
-import VuiRow from "./src/row";
+import VuiRow from "./row";
+import withInstall from "../../utils/withInstall";
 
-VuiRow.install = function(Vue) {
-  Vue.component(VuiRow.name, VuiRow);
-};
-
-export default VuiRow;
+export { createProps } from "./row";
+export default withInstall(VuiRow);

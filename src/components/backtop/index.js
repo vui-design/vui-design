@@ -1,7 +1,5 @@
-import VuiBacktop from "./src/backtop";
+import VuiBacktop from "./backtop";
+import withInstall from "../../utils/withInstall";
 
-VuiBacktop.install = function(Vue) {
-  Vue.component(VuiBacktop.name, VuiBacktop);
-};
-
-export default VuiBacktop;
+export { createProps } from "./backtop";
+export default withInstall(VuiBacktop);

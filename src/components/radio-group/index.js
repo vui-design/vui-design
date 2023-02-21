@@ -1,7 +1,5 @@
-import VuiRadioGroup from "./src/radio-group";
+import VuiRadioGroup from "../radio/radio-group";
+import withInstall from "../../utils/withInstall";
 
-VuiRadioGroup.install = function(Vue) {
-  Vue.component(VuiRadioGroup.name, VuiRadioGroup);
-};
-
-export default VuiRadioGroup;
+export { createProps } from "../radio/radio-group";
+export default withInstall(VuiRadioGroup);

@@ -1,5 +1,5 @@
-import VuiIcon from "./src/icon";
+import VuiIcon from "./icon";
 import withInstall from "../../utils/withInstall";
 
-export { createProps } from "./src/icon";
+export { createProps } from "./icon";
 export default withInstall(VuiIcon);

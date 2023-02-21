@@ -1,7 +1,5 @@
-import VuiCountdown from "./src/countdown";
+import VuiCountdown from "./countdown";
+import withInstall from "../../utils/withInstall";
 
-VuiCountdown.install = function(Vue) {
-  Vue.component(VuiCountdown.name, VuiCountdown);
-};
-
-export default VuiCountdown;
+export { createProps } from "./countdown";
+export default withInstall(VuiCountdown);

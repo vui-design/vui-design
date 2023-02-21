@@ -1,7 +1,5 @@
-import VuiHeader from "./src/header";
+import VuiHeader from "./header";
+import withInstall from "../../utils/withInstall";
 
-VuiHeader.install = function(Vue) {
-  Vue.component(VuiHeader.name, VuiHeader);
-};
-
-export default VuiHeader;
+export { createProps } from "./header";
+export default withInstall(VuiHeader);

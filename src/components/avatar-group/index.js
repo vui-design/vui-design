@@ -1,7 +1,5 @@
-import VuiAvatarGroup from "./src/avatar-group";
+import VuiAvatarGroup from "../avatar/avatar-group";
+import withInstall from "../../utils/withInstall";
 
-VuiAvatarGroup.install = function(Vue) {
-  Vue.component(VuiAvatarGroup.name, VuiAvatarGroup);
-};
-
-export default VuiAvatarGroup;
+export { createProps } from "../avatar/avatar-group";
+export default withInstall(VuiAvatarGroup);

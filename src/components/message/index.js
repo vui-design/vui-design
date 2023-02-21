@@ -1,20 +1,15 @@
 import Vue from "vue";
-import VuiMessage from "./src/message";
-import createChainedFunction from "../../utils/createChainedFunction";
+import VuiMessage from "./message";
 import is from "../../utils/is";
+import createChainedFunction from "../../utils/createChainedFunction";
+import withInstall from "../../utils/withInstall";
 
-/**
-* 默认配置
-*/
 const defaults = {
   top: 24,
   duration: 3,
   getPopupContainer: () => document.body
 };
 
-/**
-* 存储已打开的 Message，用于更新 top 属性
-*/
 const storage = {
   value: [],
   addItem: function(item) {
@@ -47,10 +42,6 @@ const storage = {
   }
 };
 
-/**
-* 创建 Message 实例
-* @param {Object} options 
-*/
 const createMessageInstance = function(options) {
   // 创建 Message 挂载的 html 根节点
   const container = options.getPopupContainer();
@@ -169,10 +160,6 @@ const createMessageInstance = function(options) {
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Object} options
-*/
 VuiMessage.open = function(options, type) {
   if (is.server) {
     return;
@@ -221,52 +208,25 @@ VuiMessage.open = function(options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {String/Object} options 
-*/
 VuiMessage.info = function(options) {
   return VuiMessage.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {String/Object} options 
-*/
 VuiMessage.warning = function(options) {
   return VuiMessage.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {String/Object} options 
-*/
 VuiMessage.success = function(options) {
   return VuiMessage.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {String/Object} options 
-*/
 VuiMessage.error = function(options) {
   return VuiMessage.open(options, "error");
 };
 
-/**
-* 对外提供 loading 接口
-* @param {String/Object} options 
-*/
 VuiMessage.loading = function(options) {
   return VuiMessage.open(options, "loading");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-VuiMessage.install = function(Vue) {
-  Vue.component(VuiMessage.name, VuiMessage);
-};
-
-export default VuiMessage;
+export { createProps } from "./message";
+export default withInstall(VuiMessage);

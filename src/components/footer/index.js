@@ -1,7 +1,5 @@
-import VuiFooter from "./src/footer";
+import VuiFooter from "./footer";
+import withInstall from "../../utils/withInstall";
 
-VuiFooter.install = function(Vue) {
-  Vue.component(VuiFooter.name, VuiFooter);
-};
-
-export default VuiFooter;
+export { createProps } from "./footer";
+export default withInstall(VuiFooter);

@@ -1,7 +1,5 @@
-import VuiDropdownMenu from "../dropdown/src/dropdown-menu";
+import VuiDropdownMenu from "../dropdown/dropdown-menu";
+import withInstall from "../../utils/withInstall";
 
-VuiDropdownMenu.install = function(Vue) {
-  Vue.component(VuiDropdownMenu.name, VuiDropdownMenu);
-};
-
-export default VuiDropdownMenu;
+export { createProps } from "../dropdown/dropdown-menu";
+export default withInstall(VuiDropdownMenu);

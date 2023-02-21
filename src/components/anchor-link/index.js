@@ -1,7 +1,5 @@
-import VuiAnchorLink from "../anchor/src/anchor-link";
+import VuiAnchorLink from "../anchor/anchor-link";
+import withInstall from "../../utils/withInstall";
 
-VuiAnchorLink.install = function(Vue) {
-  Vue.component(VuiAnchorLink.name, VuiAnchorLink);
-};
-
-export default VuiAnchorLink;
+export { createProps } from "../anchor/anchor-link";
+export default withInstall(VuiAnchorLink);

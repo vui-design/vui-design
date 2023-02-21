@@ -1,7 +1,5 @@
-import VuiRadio from "./src/radio";
+import VuiRadio from "./radio";
+import withInstall from "../../utils/withInstall";
 
-VuiRadio.install = function(Vue) {
-  Vue.component(VuiRadio.name, VuiRadio);
-};
-
-export default VuiRadio;
+export { createProps } from "./radio";
+export default withInstall(VuiRadio);

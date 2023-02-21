@@ -1,7 +1,5 @@
-import VuiCheckbox from "./src/checkbox";
+import VuiCheckbox from "./checkbox";
+import withInstall from "../../utils/withInstall";
 
-VuiCheckbox.install = function(Vue) {
-  Vue.component(VuiCheckbox.name, VuiCheckbox);
-};
-
-export default VuiCheckbox;
+export { createProps } from "./checkbox";
+export default withInstall(VuiCheckbox);

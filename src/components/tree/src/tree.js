@@ -117,7 +117,7 @@ const VuiTree = {
 		getDerivedStateFromProps(props) {
 			let data = getDerivedDataFromProps(props.data);
 			let expendedKeys = clone(props.expendedKeys);
-			let checkedKeys = getDerivedCheckedKeysFromProps(props.data, props.checkedKeys);
+			let checkedKeys = clone(props.checkedKeys);
 			let selectedKeys = clone(props.selectedKeys);
 
 			return {
@@ -145,6 +145,8 @@ const VuiTree = {
 			let checkedKeys = getDerivedCheckedKeysFromProps(state.checkedKeys, node, checked);
 
 			this.state.checkedKeys = checkedKeys;
+
+			this.$emit("check", clone(this.state.checkedKeys));
 			/*
 			let { state } = this;
 			let checkedKeys = clone(state.checkedKeys);
@@ -194,6 +196,8 @@ const VuiTree = {
 					this.state.selectedKeys = [node.key];
 				}
 			}
+
+			this.$emit("select", clone(this.state.selectedKeys));
 		}
 	},
 

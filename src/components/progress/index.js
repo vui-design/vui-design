@@ -1,7 +1,5 @@
-import VuiProgress from "./src/progress";
+import VuiProgress from "./progress";
+import withInstall from "../../utils/withInstall";
 
-VuiProgress.install = function(Vue) {
-  Vue.component(VuiProgress.name, VuiProgress);
-};
-
-export default VuiProgress;
+export { createProps } from "./progress";
+export default withInstall(VuiProgress);

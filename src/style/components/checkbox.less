@@ -4,22 +4,18 @@
   cursor:pointer;
   display:inline-flex;
   align-items:center;
-  box-sizing:border-box;
   max-width:100%;
   vertical-align:middle;
   color:@checkbox-font-color;
-  line-height:1.42857143;
+  line-height:@checkbox-line-height;
   white-space:nowrap;
 
   &-input {
     position:relative;
-    cursor:inherit;
     display:block;
-    box-sizing:border-box;
     border:1px solid @checkbox-border-color;
     border-radius:@checkbox-border-radius;
     background-color:@checkbox-background-color;
-    vertical-align:middle;
     transition:all @transition-duration @transition-timing-function;
 
     svg {
@@ -31,10 +27,10 @@
       transition:all @transition-duration @transition-timing-function;
 
       &:nth-child(1) {
-        fill:@checkbox-color;
+        fill:@checkbox-indeterminate-color;
       }
       &:nth-child(2) {
-        fill:#fff;
+        fill:@checkbox-checkmark-color;
       }
     }
 
@@ -47,7 +43,6 @@
       z-index:-1;
       cursor:inherit;
       display:block;
-      box-sizing:border-box;
       width:100%;
       height:100%;
       margin:0;
@@ -59,13 +54,10 @@
 
   &-label {
     flex:1;
-    cursor:inherit;
     display:block;
-    box-sizing:border-box;
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    vertical-align:middle;
   }
 
   // size
@@ -142,8 +134,9 @@
   }
 
   // checked
-  &-checked &-input {
-    border-color:@checkbox-checked-border-color !important;
+  &-checked &-input,
+  &-checked:hover &-input {
+    border-color:@checkbox-checked-border-color;
     background-color:@checkbox-checked-background-color;
 
     svg:nth-child(2) {
@@ -157,25 +150,25 @@
     cursor:not-allowed;
     color:@checkbox-disabled-font-color;
   }
-  &-disabled &-input {
-    border-color:@checkbox-disabled-border-color !important;
+  &-disabled &-input,
+  &-disabled:hover &-input {
+    border-color:@checkbox-disabled-border-color;
     background-color:@checkbox-disabled-background-color;
 
     svg:nth-child(1) {
-      fill:@checkbox-disabled-color;
+      fill:@checkbox-disabled-indeterminate-color;
     }
     svg:nth-child(2) {
-      fill:@checkbox-disabled-color;
+      fill:@checkbox-disabled-checkmark-color;
     }
   }
-  
+
   // button
   &-button {
     position:relative;
     cursor:pointer;
     display:inline-block;
-    box-sizing:border-box;
-    border:1px solid @checkbox-button-border-color;
+    border:@checkbox-button-border-width solid @checkbox-button-border-color;
     border-radius:@checkbox-button-border-radius;
     background-color:@checkbox-button-background-color;
     margin:0;
@@ -193,9 +186,7 @@
       left:0;
       right:0;
       z-index:-1;
-      cursor:inherit;
       display:block;
-      box-sizing:border-box;
       width:100%;
       height:100%;
       margin:0;
@@ -210,7 +201,6 @@
         right:0;
         cursor:inherit;
         display:block;
-        box-sizing:border-box;
         width:100%;
         height:100%;
         margin:0;
@@ -237,9 +227,9 @@
     // size
     &-small {
       height:@checkbox-button-size-sm;
-      padding:0 8px;
+      padding:0 @checkbox-button-padding-size-sm;
       font-size:@checkbox-button-font-size-sm;
-      line-height:@checkbox-button-size-sm - 2px;
+      line-height:@checkbox-button-size-sm - @checkbox-button-border-width * 2;
 
       &:after {
         border-width:3px;
@@ -248,9 +238,9 @@
 
     &-medium {
       height:@checkbox-button-size-md;
-      padding:0 14px;
+      padding:0 @checkbox-button-padding-size-md;
       font-size:@checkbox-button-font-size-md;
-      line-height:@checkbox-button-size-md - 2px;
+      line-height:@checkbox-button-size-md - @checkbox-button-border-width * 2;
 
       &:after {
         border-width:4px;
@@ -259,9 +249,9 @@
 
     &-large {
       height:@checkbox-button-size-lg;
-      padding:0 20px;
+      padding:0 @checkbox-button-padding-size-lg;
       font-size:@checkbox-button-font-size-lg;
-      line-height:@checkbox-button-size-lg - 2px;
+      line-height:@checkbox-button-size-lg - @checkbox-button-border-width * 2;
 
       &:after {
         border-width:5px;

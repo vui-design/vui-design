@@ -1,7 +1,5 @@
-import VuiCol from "./src/col";
+import VuiCol from "./col";
+import withInstall from "../../utils/withInstall";
 
-VuiCol.install = function(Vue) {
-  Vue.component(VuiCol.name, VuiCol);
-};
-
-export default VuiCol;
+export { createProps } from "./col";
+export default withInstall(VuiCol);

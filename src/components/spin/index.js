@@ -1,21 +1,15 @@
 import Vue from "vue";
-import VuiSpin from "./src/spin";
+import VuiSpin from "./spin";
 import Popup from "../../libs/popup";
 import is from "../../utils/is";
+import withInstall from "../../utils/withInstall";
 
-/**
-* 默认配置
-*/
 const defaults = {
   size: "large",
   animation: "vui-spin-fade",
   getPopupContainer: () => document.body
 };
 
-/**
-* 创建 Spin 实例
-* @param {Object} options 
-*/
 const createSpinInstance = options => {
   // 创建 Spin 挂载的 html 根节点
   const container = options.getPopupContainer();
@@ -85,10 +79,6 @@ const createSpinInstance = options => {
   return new Vue(component);
 };
 
-/**
-* 对外提供 spinning 接口
-* @param {String/Object} options 
-*/
 VuiSpin.spinning = function(options = {}) {
   if (is.server) {
     return;
@@ -116,12 +106,5 @@ VuiSpin.spinning = function(options = {}) {
   return instance;
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-VuiSpin.install = function(Vue) {
-  Vue.component(VuiSpin.name, VuiSpin);
-};
-
-export default VuiSpin;
+export { createProps } from "./spin";
+export default withInstall(VuiSpin);

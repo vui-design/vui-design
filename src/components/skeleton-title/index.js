@@ -1,7 +1,5 @@
-import VuiSkeletonTitle from "../skeleton/src/skeleton-title";
+import VuiSkeletonTitle from "../skeleton/skeleton-title";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeletonTitle.install = function(Vue) {
-  Vue.component(VuiSkeletonTitle.name, VuiSkeletonTitle);
-};
-
-export default VuiSkeletonTitle;
+export { createProps } from "../skeleton/skeleton-title";
+export default withInstall(VuiSkeletonTitle);

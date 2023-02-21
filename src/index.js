@@ -50,6 +50,7 @@ import TabPanel from "./components/tab-panel";
 import Cascader from "./components/cascader";
 import Checkbox from "./components/checkbox";
 import CheckboxGroup from "./components/checkbox-group";
+import ChoiceGroup from "./components/choice-group";
 import Datepicker from "./components/datepicker";
 import Form from "./components/form";
 import FormGroup from "./components/form-group";
@@ -57,7 +58,6 @@ import FormItem from "./components/form-item";
 import Input from "./components/input";
 import InputGroup from "./components/input-group";
 import InputNumber from "./components/input-number";
-import MutexGroup from "./components/mutex-group";
 import Radio from "./components/radio";
 import RadioGroup from "./components/radio-group";
 import Rate from "./components/rate";
@@ -179,7 +179,7 @@ const components = [
   Input,
   InputGroup,
   InputNumber,
-  MutexGroup,
+  ChoiceGroup,
   Radio,
   RadioGroup,
   Rate,
@@ -330,7 +330,7 @@ export {
   Input,
   InputGroup,
   InputNumber,
-  MutexGroup,
+  ChoiceGroup,
   Radio,
   RadioGroup,
   Rate,

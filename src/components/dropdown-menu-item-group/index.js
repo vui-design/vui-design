@@ -1,7 +1,5 @@
-import VuiDropdownMenuItemGroup from "../dropdown/src/dropdown-menu-item-group";
+import VuiDropdownMenuItemGroup from "../dropdown/dropdown-menu-item-group";
+import withInstall from "../../utils/withInstall";
 
-VuiDropdownMenuItemGroup.install = function(Vue) {
-  Vue.component(VuiDropdownMenuItemGroup.name, VuiDropdownMenuItemGroup);
-};
-
-export default VuiDropdownMenuItemGroup;
+export { createProps } from "../dropdown/dropdown-menu-item-group";
+export default withInstall(VuiDropdownMenuItemGroup);

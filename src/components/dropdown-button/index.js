@@ -1,7 +1,5 @@
-import VuiDropdownButton from "../dropdown/src/dropdown-button";
+import VuiDropdownButton from "../dropdown/dropdown-button";
+import withInstall from "../../utils/withInstall";
 
-VuiDropdownButton.install = function(Vue) {
-  Vue.component(VuiDropdownButton.name, VuiDropdownButton);
-};
-
-export default VuiDropdownButton;
+export { createProps } from "../dropdown/dropdown-button";
+export default withInstall(VuiDropdownButton);

@@ -1,5 +1,5 @@
-import VuiLink from "./src/link";
+import VuiLink from "./link";
 import withInstall from "../../utils/withInstall";
 
-export { createProps } from "./src/link";
+export { createProps } from "./link";
 export default withInstall(VuiLink);

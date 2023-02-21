@@ -1,7 +1,5 @@
-import VuiLayout from "./src/layout";
+import VuiLayout from "./layout";
+import withInstall from "../../utils/withInstall";
 
-VuiLayout.install = function(Vue) {
-  Vue.component(VuiLayout.name, VuiLayout);
-};
-
-export default VuiLayout;
+export { createProps } from "./layout";
+export default withInstall(VuiLayout);

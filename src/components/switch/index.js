@@ -1,7 +1,5 @@
-import VuiSwitch from "./src/switch";
+import VuiSwitch from "./switch";
+import withInstall from "../../utils/withInstall";
 
-VuiSwitch.install = function(Vue) {
-  Vue.component(VuiSwitch.name, VuiSwitch);
-};
-
-export default VuiSwitch;
+export { createProps } from "./switch";
+export default withInstall(VuiSwitch);

@@ -1,7 +1,5 @@
-import VuiList from "./src/list";
+import VuiList from "./list";
+import withInstall from "../../utils/withInstall";
 
-VuiList.install = function(Vue) {
-  Vue.component(VuiList.name, VuiList);
-};
-
-export default VuiList;
+export { createProps } from "./list";
+export default withInstall(VuiList);

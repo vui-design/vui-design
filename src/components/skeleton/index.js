@@ -1,7 +1,5 @@
-import VuiSkeleton from "./src/skeleton";
+import VuiSkeleton from "./skeleton";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeleton.install = function(Vue) {
-  Vue.component(VuiSkeleton.name, VuiSkeleton);
-};
-
-export default VuiSkeleton;
+export { createProps } from "./skeleton";
+export default withInstall(VuiSkeleton);

@@ -1,7 +1,5 @@
-import VuiAnchor from "./src/anchor";
+import VuiAnchor from "./anchor";
+import withInstall from "../../utils/withInstall";
 
-VuiAnchor.install = function(Vue) {
-  Vue.component(VuiAnchor.name, VuiAnchor);
-};
-
-export default VuiAnchor;
+export { createProps } from "./anchor";
+export default withInstall(VuiAnchor);

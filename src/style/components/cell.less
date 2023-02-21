@@ -1,160 +1,135 @@
 @vui-cell: ~"@{vui}-cell";
 
 .@{vui-cell} {
-	position:relative;
-	display:flex;
-	align-items:center;
-	box-sizing:border-box;
-	border-top:1px solid @cell-border-color;
-	border-bottom:1px solid @cell-border-color;
-	background-color:@cell-background-color;
-	padding:@cell-padding;
-	color:@cell-font-color;
-	font-size:@cell-font-size;
-	line-height:@cell-line-height;
-	transition:all @transition-duration @transition-timing-function;
+  position:relative;
+  display:flex;
+  align-items:center;
+  box-sizing:border-box;
+  border-top:@cell-border-width solid @cell-border-color;
+  border-bottom:@cell-border-width solid @cell-border-color;
+  background-color:@cell-background-color;
+  padding:@cell-padding;
+  color:@cell-font-color;
+  font-size:@cell-font-size;
+  line-height:@cell-line-height;
+  transition:all @transition-duration @transition-timing-function;
 
-	&-icon {
-		display:flex;
-		align-items:center;
-		box-sizing:border-box;
-		margin-right:@cell-icon-margin-right;
-	}
+  &-icon {
+    display:flex;
+    align-items:center;
+    box-sizing:border-box;
+    margin-right:@cell-icon-margin-right;
+  }
 
-	&-content {
-		flex:1;
-		display:block;
-		box-sizing:border-box;
-		width:0;
+  &-content {
+    flex:1;
+    display:block;
+    box-sizing:border-box;
+    width:0;
 
-		.writeEllipsis;
-	}
+    .writeEllipsis;
+  }
 
-	&-extra {
-		display:flex;
-		align-items:center;
-		box-sizing:border-box;
-		margin-left:@cell-extra-margin-left;
-		color:@cell-extra-font-color;
-	}
+  &-extra {
+    display:flex;
+    align-items:center;
+    box-sizing:border-box;
+    margin-left:@cell-extra-margin-left;
+    color:@cell-extra-font-color;
+  }
 
-	&-arrow {
-		display:flex;
-		align-items:center;
-		box-sizing:border-box;
-		margin-left:@cell-arrow-margin-left;
-		color:@cell-arrow-color;
-		font-size:@cell-arrow-size;
-	}
+  &-arrow {
+    display:flex;
+    align-items:center;
+    box-sizing:border-box;
+    margin-left:@cell-arrow-margin-left;
+    color:@cell-arrow-color;
+    font-size:@cell-arrow-size;
+  }
 
-	&-checkmark {
-		display:flex;
-		align-items:center;
-		box-sizing:border-box;
-		margin-left:@cell-checkmark-margin-left;
-		color:@cell-checkmark-color;
-		font-size:@cell-checkmark-size;
-	}
+  &-checkmark {
+    display:flex;
+    align-items:center;
+    box-sizing:border-box;
+    margin-left:@cell-checkmark-margin-left;
+    color:@cell-checkmark-color;
+    font-size:@cell-checkmark-size;
+  }
 
-	&-link {
-		cursor:pointer;
+  &-link {
+    cursor:pointer;
 
-		&:hover {
-			color:@cell-font-color;
-			background-color:@cell-hover-background-color;
-		}
+    &:hover {
+      background-color:@cell-hover-background-color;
+      color:@cell-font-color;
+    }
 
-		&:active {
-			color:@cell-font-color;
-			background-color:@cell-active-background-color;
-		}
-	}
+    &:active {
+      background-color:@cell-active-background-color;
+      color:@cell-font-color;
+    }
+  }
 
-	&-selected {
-		z-index:1;
-		border-color:@cell-selected-border-color;
-		background-color:@cell-selected-background-color;
-		color:@cell-selected-font-color;
-	}
-	&-selected &-extra {
-		color:inherit;
-	}
-	&-selected &-arrow {
-		color:inherit;
-	}
-	&-selected &-checkmark {
-		color:inherit;
-	}
+  &-selected {
+    z-index:1;
+    border-color:@cell-selected-border-color;
+    background-color:@cell-selected-background-color;
+    color:@cell-selected-font-color;
+  }
+  &-selected &-extra {
+    color:inherit;
+  }
+  &-selected &-arrow {
+    color:inherit;
+  }
+  &-selected &-checkmark {
+    color:inherit;
+  }
 
-	&-link&-selected {
-		&:hover {
-			border-color:@cell-selected-hover-border-color;
-			background-color:@cell-selected-hover-background-color;
-			color:@cell-selected-font-color;
-		}
+  &-link&-selected {
+    &:hover {
+      background-color:@cell-selected-hover-background-color;
+      color:@cell-selected-font-color;
+    }
 
-		&:active {
-			border-color:@cell-selected-active-border-color;
-			background-color:@cell-selected-active-background-color;
-			color:@cell-selected-font-color;
-		}
-	}
+    &:active {
+      background-color:@cell-selected-active-background-color;
+      color:@cell-selected-font-color;
+    }
+  }
 
-	&-disabled {
-		pointer-events:none;
-		cursor:not-allowed;
-		color:@cell-disabled-font-color;
-	}
-	&-disabled &-extra {
-		color:inherit;
-	}
-	&-disabled &-arrow {
-		color:inherit;
-	}
-	&-disabled &-checkmark {
-		color:inherit;
-	}
+  &-disabled {
+    pointer-events:none;
+    cursor:not-allowed;
+    color:@cell-disabled-font-color;
+  }
+  &-disabled &-extra {
+    color:inherit;
+  }
+  &-disabled &-arrow {
+    color:inherit;
+  }
+  &-disabled &-checkmark {
+    color:inherit;
+  }
 
-	&-group {
-		display:block;
-		box-sizing:border-box;
-		background-color:@cell-group-background-color;
+  &-group {
+    display:block;
+    box-sizing:border-box;
+    background-color:@cell-group-background-color;
 
-		&-title,
-		&-description {
-			display:block;
-			box-sizing:border-box;
-			margin:0;
-			padding:@cell-group-padding;
-			color:@cell-group-font-color;
-			font-size:@cell-group-font-size;
-			line-height:@cell-group-line-height;
-		}
-	}
-	&-group &:not(:last-child) {
-		margin-bottom:-1px;
-	}
+    &-title,
+    &-description {
+      display:block;
+      box-sizing:border-box;
+      margin:0;
+      padding:@cell-group-padding;
+      color:@cell-group-font-color;
+      font-size:@cell-group-font-size;
+      line-height:@cell-group-line-height;
+    }
+  }
+  &-group &:not(:last-child) {
+    margin-bottom:-1px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

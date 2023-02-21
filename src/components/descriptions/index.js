@@ -1,26 +1,15 @@
-import VuiDescriptions from "./src/descriptions";
-import PropTypes from "../../utils/prop-types";
-import is from "../../utils/is";
-import utils from "./src/utils";
+import VuiDescriptions from "./descriptions";
+import { createProps } from "./descriptions";
+import withInstall from "../../utils/withInstall";
+import utils from "./utils";
 
-const VuiDescriptionsWrapper = {
+export { createProps };
+export default withInstall({
   name: VuiDescriptions.name,
   components: {
     VuiDescriptions
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    layout: PropTypes.oneOf(["horizontal", "vertical"]).def("horizontal"),
-    layoutStyle: PropTypes.oneOf(["auto", "fixed"]),
-    bordered: PropTypes.bool.def(false),
-    size: PropTypes.oneOf(["small", "medium", "large"]).def("medium"),
-    columns: PropTypes.number.def(3),
-    colon: PropTypes.bool,
-    labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    labelAlign: PropTypes.oneOf(["left", "center", "right"]),
-    title: PropTypes.any,
-    extra: PropTypes.any
-  },
+  props: createProps(),
   render() {
     const { $slots: slots, $props: props } = this;
     const attributes = {
@@ -36,10 +25,4 @@ const VuiDescriptionsWrapper = {
       <VuiDescriptions {...attributes} />
     );
   }
-};
-
-VuiDescriptionsWrapper.install = function(Vue) {
-	Vue.component(VuiDescriptionsWrapper.name, VuiDescriptionsWrapper);
-};
-
-export default VuiDescriptionsWrapper;
+});

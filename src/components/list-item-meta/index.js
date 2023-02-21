@@ -1,7 +1,5 @@
-import VuiListItemMeta from "../list/src/list-item-meta";
+import VuiListItemMeta from "../list/list-item-meta";
+import withInstall from "../../utils/withInstall";
 
-VuiListItemMeta.install = function(Vue) {
-  Vue.component(VuiListItemMeta.name, VuiListItemMeta);
-};
-
-export default VuiListItemMeta;
+export { createProps } from "../list/list-item-meta";
+export default withInstall(VuiListItemMeta);

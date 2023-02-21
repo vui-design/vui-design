@@ -1,7 +1,5 @@
-import VuiAvatar from "./src/avatar";
+import VuiAvatar from "./avatar";
+import withInstall from "../../utils/withInstall";
 
-VuiAvatar.install = function(Vue) {
-  Vue.component(VuiAvatar.name, VuiAvatar);
-};
-
-export default VuiAvatar;
+export { createProps } from "./avatar";
+export default withInstall(VuiAvatar);

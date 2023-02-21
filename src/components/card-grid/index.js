@@ -1,7 +1,5 @@
-import VuiCardGrid from "../card/src/card-grid";
+import VuiCardGrid from "../card/card-grid";
+import withInstall from "../../utils/withInstall";
 
-VuiCardGrid.install = function(Vue) {
-  Vue.component(VuiCardGrid.name, VuiCardGrid);
-};
-
-export default VuiCardGrid;
+export { createProps } from "../card/card-grid";
+export default withInstall(VuiCardGrid);

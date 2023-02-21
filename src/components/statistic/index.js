@@ -1,7 +1,5 @@
-import VuiStatistic from "./src/statistic";
+import VuiStatistic from "./statistic";
+import withInstall from "../../utils/withInstall";
 
-VuiStatistic.install = function(Vue) {
-  Vue.component(VuiStatistic.name, VuiStatistic);
-};
-
-export default VuiStatistic;
+export { createProps } from "./statistic";
+export default withInstall(VuiStatistic);

@@ -1,7 +1,5 @@
-import VuiResizeObserver from "./src/resize-observer";
+import VuiResizeObserver from "./resize-observer";
+import withInstall from "../../utils/withInstall";
 
-VuiResizeObserver.install = function(Vue) {
-  Vue.component(VuiResizeObserver.name, VuiResizeObserver);
-};
-
-export default VuiResizeObserver;
+export { createProps } from "./resize-observer";
+export default withInstall(VuiResizeObserver);

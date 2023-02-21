@@ -1,7 +1,5 @@
-import VuiCellGroup from "../cell/src/cell-group";
+import VuiCellGroup from "../cell/cell-group";
+import withInstall from "../../utils/withInstall";
 
-VuiCellGroup.install = function(Vue) {
-	Vue.component(VuiCellGroup.name, VuiCellGroup);
-};
-
-export default VuiCellGroup;
+export { createProps } from "../cell/cell-group";
+export default withInstall(VuiCellGroup);

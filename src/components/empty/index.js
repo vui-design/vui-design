@@ -1,7 +1,5 @@
-import VuiEmpty from "./src/empty";
+import VuiEmpty from "./empty";
+import withInstall from "../../utils/withInstall";
 
-VuiEmpty.install = function(Vue) {
-  Vue.component(VuiEmpty.name, VuiEmpty);
-};
-
-export default VuiEmpty;
+export { createProps } from "./empty";
+export default withInstall(VuiEmpty);

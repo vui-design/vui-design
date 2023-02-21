@@ -1,7 +1,5 @@
-import VuiPopconfirm from "./src/popconfirm";
+import VuiPopconfirm from "./popconfirm";
+import withInstall from "../../utils/withInstall";
 
-VuiPopconfirm.install = function(Vue) {
-  Vue.component(VuiPopconfirm.name, VuiPopconfirm);
-};
-
-export default VuiPopconfirm;
+export { createProps } from "./popconfirm";
+export default withInstall(VuiPopconfirm);

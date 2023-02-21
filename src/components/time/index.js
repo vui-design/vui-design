@@ -1,7 +1,5 @@
-import VuiTime from "./src/time";
+import VuiTime from "./time";
+import withInstall from "../../utils/withInstall";
 
-VuiTime.install = function(Vue) {
-  Vue.component(VuiTime.name, VuiTime);
-};
-
-export default VuiTime;
+export { createProps } from "./time";
+export default withInstall(VuiTime);

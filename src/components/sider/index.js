@@ -1,7 +1,5 @@
-import VuiSider from "./src/sider";
+import VuiSider from "./sider";
+import withInstall from "../../utils/withInstall";
 
-VuiSider.install = function(Vue) {
-  Vue.component(VuiSider.name, VuiSider);
-};
-
-export default VuiSider;
+export { createProps } from "./sider";
+export default withInstall(VuiSider);

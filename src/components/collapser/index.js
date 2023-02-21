@@ -1,7 +1,5 @@
-import VuiCollapser from "./src/collapser";
+import VuiCollapser from "./collapser";
+import withInstall from "../../utils/withInstall";
 
-VuiCollapser.install = function(Vue) {
-  Vue.component(VuiCollapser.name, VuiCollapser);
-};
-
-export default VuiCollapser;
+export { createProps } from "./collapser";
+export default withInstall(VuiCollapser);

@@ -1,7 +1,5 @@
-import VuiRibbon from "./src/ribbon";
+import VuiRibbon from "./ribbon";
+import withInstall from "../../utils/withInstall";
 
-VuiRibbon.install = function(Vue) {
-  Vue.component(VuiRibbon.name, VuiRibbon);
-};
-
-export default VuiRibbon;
+export { createProps } from "./ribbon";
+export default withInstall(VuiRibbon);

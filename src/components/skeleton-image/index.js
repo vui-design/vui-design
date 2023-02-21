@@ -1,7 +1,5 @@
-import VuiSkeletonImage from "../skeleton/src/skeleton-image";
+import VuiSkeletonImage from "../skeleton/skeleton-image";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeletonImage.install = function(Vue) {
-  Vue.component(VuiSkeletonImage.name, VuiSkeletonImage);
-};
-
-export default VuiSkeletonImage;
+export { createProps } from "../skeleton/skeleton-image";
+export default withInstall(VuiSkeletonImage);

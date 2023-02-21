@@ -1,7 +1,5 @@
-import VuiTag from "./src/tag";
+import VuiTag from "./tag";
+import withInstall from "../../utils/withInstall";
 
-VuiTag.install = function(Vue) {
-  Vue.component(VuiTag.name, VuiTag);
-};
-
-export default VuiTag;
+export { createProps } from "./tag";
+export default withInstall(VuiTag);

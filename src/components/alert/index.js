@@ -1,7 +1,5 @@
-import VuiAlert from "./src/alert";
+import VuiAlert from "./alert";
+import withInstall from "../../utils/withInstall";
 
-VuiAlert.install = function(Vue) {
-  Vue.component(VuiAlert.name, VuiAlert);
-};
-
-export default VuiAlert;
+export { createProps } from "./alert";
+export default withInstall(VuiAlert);

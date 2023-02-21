@@ -1,7 +1,5 @@
-import VuiCell from "./src/cell";
+import VuiCell from "./cell";
+import withInstall from "../../utils/withInstall";
 
-VuiCell.install = function(Vue) {
-	Vue.component(VuiCell.name, VuiCell);
-};
-
-export default VuiCell;
+export { createProps } from "./cell";
+export default withInstall(VuiCell);

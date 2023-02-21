@@ -1,7 +1,5 @@
-import VuiSkeletonAvatar from "../skeleton/src/skeleton-avatar";
+import VuiSkeletonAvatar from "../skeleton/skeleton-avatar";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeletonAvatar.install = function(Vue) {
-  Vue.component(VuiSkeletonAvatar.name, VuiSkeletonAvatar);
-};
-
-export default VuiSkeletonAvatar;
+export { createProps } from "../skeleton/skeleton-avatar";
+export default withInstall(VuiSkeletonAvatar);

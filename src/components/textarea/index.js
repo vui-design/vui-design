@@ -1,5 +1,5 @@
-import VuiTextarea from "./src/textarea";
+import VuiTextarea from "./textarea";
 import withInstall from "../../utils/withInstall";
 
-export { createProps } from "./src/textarea";
+export { createProps } from "./textarea";
 export default withInstall(VuiTextarea);

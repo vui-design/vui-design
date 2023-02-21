@@ -1,7 +1,5 @@
-import VuiDropdownMenuDivider from "../dropdown/src/dropdown-menu-divider";
+import VuiDropdownMenuDivider from "../dropdown/dropdown-menu-divider";
+import withInstall from "../../utils/withInstall";
 
-VuiDropdownMenuDivider.install = function(Vue) {
-  Vue.component(VuiDropdownMenuDivider.name, VuiDropdownMenuDivider);
-};
-
-export default VuiDropdownMenuDivider;
+export { createProps } from "../dropdown/dropdown-menu-divider";
+export default withInstall(VuiDropdownMenuDivider);

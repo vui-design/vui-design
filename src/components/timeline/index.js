@@ -1,7 +1,5 @@
-import VuiTimeline from "./src/timeline";
+import VuiTimeline from "./timeline";
+import withInstall from "../../utils/withInstall";
 
-VuiTimeline.install = function(Vue) {
-  Vue.component(VuiTimeline.name, VuiTimeline);
-};
-
-export default VuiTimeline;
+export { createProps } from "./timeline";
+export default withInstall(VuiTimeline);

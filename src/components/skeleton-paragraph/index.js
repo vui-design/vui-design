@@ -1,7 +1,5 @@
-import VuiSkeletonParagraph from "../skeleton/src/skeleton-paragraph";
+import VuiSkeletonParagraph from "../skeleton/skeleton-paragraph";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeletonParagraph.install = function(Vue) {
-  Vue.component(VuiSkeletonParagraph.name, VuiSkeletonParagraph);
-};
-
-export default VuiSkeletonParagraph;
+export { createProps } from "../skeleton/skeleton-paragraph";
+export default withInstall(VuiSkeletonParagraph);

@@ -1,9 +1,10 @@
-import VuiSelect from "./src/select";
+import VuiSelect from "./select";
+import { createProps } from "./select";
 import withInstall from "../../utils/withInstall";
-import utils from "./src/utils";
-import { createProps } from "./src/select";
+import utils from "./utils";
 
-const VuiSelectWrapper = {
+export { createProps };
+export default withInstall({
   name: VuiSelect.name,
   components: {
     VuiSelect
@@ -36,7 +37,4 @@ const VuiSelectWrapper = {
       <VuiSelect {...attributes} />
     );
   }
-};
-
-export { createProps };
-export default withInstall(VuiSelectWrapper);
+});

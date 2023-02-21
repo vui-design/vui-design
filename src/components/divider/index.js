@@ -1,7 +1,5 @@
-import VuiDivider from "./src/divider";
+import VuiDivider from "./divider";
+import withInstall from "../../utils/withInstall";
 
-VuiDivider.install = function(Vue) {
-  Vue.component(VuiDivider.name, VuiDivider);
-};
-
-export default VuiDivider;
+export { createProps } from "./divider";
+export default withInstall(VuiDivider);

@@ -1,7 +1,5 @@
-import VuiBadge from "./src/badge";
+import VuiBadge from "./badge";
+import withInstall from "../../utils/withInstall";
 
-VuiBadge.install = function(Vue) {
-  Vue.component(VuiBadge.name, VuiBadge);
-};
-
-export default VuiBadge;
+export { createProps } from "./badge";
+export default withInstall(VuiBadge);

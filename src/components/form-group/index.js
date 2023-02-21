@@ -1,7 +1,5 @@
-import VuiFormGroup from "../form/src/form-group";
+import VuiFormGroup from "../form/form-group";
+import withInstall from "../../utils/withInstall";
 
-VuiFormGroup.install = function(Vue) {
-  Vue.component(VuiFormGroup.name, VuiFormGroup);
-};
-
-export default VuiFormGroup;
+export { createProps } from "../form/form-group";
+export default withInstall(VuiFormGroup);

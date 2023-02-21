@@ -1,7 +1,5 @@
-import VuiCard from "./src/card";
+import VuiCard from "./card";
+import withInstall from "../../utils/withInstall";
 
-VuiCard.install = function(Vue) {
-  Vue.component(VuiCard.name, VuiCard);
-};
-
-export default VuiCard;
+export { createProps } from "./card";
+export default withInstall(VuiCard);

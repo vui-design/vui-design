@@ -1,5 +1,5 @@
-import VuiPagination from "./src/pagination";
+import VuiPagination from "./pagination";
 import withInstall from "../../utils/withInstall";
 
-export { createProps } from "./src/pagination";
+export { createProps } from "./pagination";
 export default withInstall(VuiPagination);

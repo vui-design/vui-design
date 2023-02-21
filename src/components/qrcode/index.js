@@ -1,7 +1,5 @@
-import VuiQrcode from "./src/qrcode";
+import VuiQrcode from "./qrcode";
+import withInstall from "../../utils/withInstall";
 
-VuiQrcode.install = function(Vue) {
-  Vue.component(VuiQrcode.name, VuiQrcode);
-};
-
-export default VuiQrcode;
+export { createProps } from "./qrcode";
+export default withInstall(VuiQrcode);

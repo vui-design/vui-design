@@ -1,7 +1,5 @@
-import VuiBreadcrumbItem from "../breadcrumb/src/breadcrumb-item";
+import VuiBreadcrumbItem from "../breadcrumb/breadcrumb-item";
+import withInstall from "../../utils/withInstall";
 
-VuiBreadcrumbItem.install = function(Vue) {
-  Vue.component(VuiBreadcrumbItem.name, VuiBreadcrumbItem);
-};
-
-export default VuiBreadcrumbItem;
+export { createProps } from "../breadcrumb/breadcrumb-item";
+export default withInstall(VuiBreadcrumbItem);

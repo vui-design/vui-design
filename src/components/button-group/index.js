@@ -1,7 +1,5 @@
-import VuiButtonGroup from "./src/button-group";
+import VuiButtonGroup from "../button/button-group";
+import withInstall from "../../utils/withInstall";
 
-VuiButtonGroup.install = function(Vue) {
-	Vue.component(VuiButtonGroup.name, VuiButtonGroup);
-};
-
-export default VuiButtonGroup;
+export { createProps } from "../button/button-group";
+export default withInstall(VuiButtonGroup);

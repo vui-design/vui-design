@@ -1,7 +1,5 @@
-import VuiSpace from "./src/space";
+import VuiSpace from "./space";
+import withInstall from "../../utils/withInstall";
 
-VuiSpace.install = function(Vue) {
-  Vue.component(VuiSpace.name, VuiSpace);
-};
-
-export default VuiSpace;
+export { createProps } from "./space";
+export default withInstall(VuiSpace);

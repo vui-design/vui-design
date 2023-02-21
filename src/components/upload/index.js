@@ -1,7 +1,5 @@
-import VuiUpload from "./src/upload";
+import VuiUpload from "./upload";
+import withInstall from "../../utils/withInstall";
 
-VuiUpload.install = function(Vue) {
-	Vue.component(VuiUpload.name, VuiUpload);
-};
-
-export default VuiUpload;
+export { createProps } from "./upload";
+export default withInstall(VuiUpload);

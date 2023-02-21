@@ -1,11 +1,9 @@
 import Vue from "vue";
-import VuiNotice from "./src/notice";
-import createChainedFunction from "../../utils/createChainedFunction";
+import VuiNotice from "./notice";
 import is from "../../utils/is";
+import createChainedFunction from "../../utils/createChainedFunction";
+import withInstall from "../../utils/withInstall";
 
-/**
- * 默认配置
- */
 const placements = ["top-left", "top-right", "bottom-left", "bottom-right"];
 const defaults = {
   placement: placements[1],
@@ -15,9 +13,6 @@ const defaults = {
   getPopupContainer: () => document.body
 };
 
-/**
-* 存储已打开的 Notice，用于更新 top 或 bottom 属性
-*/
 const storage = {
   value: {},
   addItem: function(placement, item) {
@@ -58,10 +53,6 @@ const storage = {
 
 placements.forEach(placement => storage.value[placement] = []);
 
-/**
-* 创建 Notice 实例
-* @param {Object} options 
-*/
 const createNoticeInstance = function(options) {
   // 创建 Notice 挂载的 html 根节点
   const container = options.getPopupContainer();
@@ -189,10 +180,6 @@ const createNoticeInstance = function(options) {
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Function/Object} options 
-*/
 VuiNotice.open = function(options, type) {
   if (is.server) {
     return;
@@ -241,44 +228,21 @@ VuiNotice.open = function(options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {String/Function/Object} options 
-*/
 VuiNotice.info = function(options) {
   return VuiNotice.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {String/Function/Object} options 
-*/
 VuiNotice.warning = function(options) {
   return VuiNotice.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {String/Function/Object} options 
-*/
 VuiNotice.success = function(options) {
   return VuiNotice.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {String/Function/Object} options 
-*/
 VuiNotice.error = function(options) {
   return VuiNotice.open(options, "error");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-VuiNotice.install = function(Vue) {
-  Vue.component(VuiNotice.name, VuiNotice);
-};
-
-export default VuiNotice;
+export { createProps } from "./notice";
+export default withInstall(VuiNotice);

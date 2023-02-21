@@ -1,7 +1,5 @@
-import VuiCardMeta from "../card/src/card-meta";
+import VuiCardMeta from "../card/card-meta";
+import withInstall from "../../utils/withInstall";
 
-VuiCardMeta.install = function(Vue) {
-  Vue.component(VuiCardMeta.name, VuiCardMeta);
-};
-
-export default VuiCardMeta;
+export { createProps } from "../card/card-meta";
+export default withInstall(VuiCardMeta);

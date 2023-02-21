@@ -1,7 +1,5 @@
-import VuiSkeletonInput from "../skeleton/src/skeleton-input";
+import VuiSkeletonInput from "../skeleton/skeleton-input";
+import withInstall from "../../utils/withInstall";
 
-VuiSkeletonInput.install = function(Vue) {
-  Vue.component(VuiSkeletonInput.name, VuiSkeletonInput);
-};
-
-export default VuiSkeletonInput;
+export { createProps } from "../skeleton/skeleton-input";
+export default withInstall(VuiSkeletonInput);

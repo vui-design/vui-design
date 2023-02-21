@@ -1,23 +1,17 @@
 import Vue from "vue";
 import VuiIcon from "../icon";
-import VuiModal from "./src/modal";
-import createChainedFunction from "../../utils/createChainedFunction";
+import VuiModal from "./modal";
 import is from "../../utils/is";
+import createChainedFunction from "../../utils/createChainedFunction";
 import getClassNamePrefix from "../../utils/getClassNamePrefix";
+import withInstall from "../../utils/withInstall";
 
-/**
-* 默认配置
-*/
 const defaults = {
   width: 360,
   autofocusButton: "ok",
   getPopupContainer: () => document.body
 };
 
-/**
-* 创建 Modal 实例
-* @param {Object} options 
-*/
 const createModalInstance = function(options) {
   // 创建 Modal 挂载的 html 根节点
   const container = options.getPopupContainer();
@@ -176,10 +170,6 @@ const createModalInstance = function(options) {
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Function/Object} options 
-*/
 VuiModal.open = function(options, type) {
   if (is.server || !is.json(options)) {
     return;
@@ -228,52 +218,25 @@ VuiModal.open = function(options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {Object} options 
-*/
 VuiModal.info = function(options) {
   return VuiModal.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {Object} options 
-*/
 VuiModal.warning = function(options) {
   return VuiModal.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {Object} options 
-*/
 VuiModal.success = function(options) {
   return VuiModal.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {Object} options 
-*/
 VuiModal.error = function(options) {
   return VuiModal.open(options, "error");
 };
 
-/**
-* 对外提供 confirm 接口
-* @param {Object} options 
-*/
 VuiModal.confirm = function(options) {
   return VuiModal.open(options, "confirm");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-VuiModal.install = function(Vue) {
-  Vue.component(VuiModal.name, VuiModal);
-};
-
-export default VuiModal;
+export { createProps } from "./modal";
+export default withInstall(VuiModal);

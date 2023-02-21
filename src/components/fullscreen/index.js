@@ -1,7 +1,5 @@
-import VuiFullscreen from "./src/fullscreen";
+import VuiFullscreen from "./fullscreen";
+import withInstall from "../../utils/withInstall";
 
-VuiFullscreen.install = function(Vue) {
-  Vue.component(VuiFullscreen.name, VuiFullscreen);
-};
-
-export default VuiFullscreen;
+export { createProps } from "./fullscreen";
+export default withInstall(VuiFullscreen);

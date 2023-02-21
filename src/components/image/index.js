@@ -1,7 +1,5 @@
-import VuiImage from "./src/image";
+import VuiImage from "./image";
+import withInstall from "../../utils/withInstall";
 
-VuiImage.install = function(Vue) {
-	Vue.component(VuiImage.name, VuiImage);
-};
-
-export default VuiImage;
+export { createProps } from "./image";
+export default withInstall(VuiImage);

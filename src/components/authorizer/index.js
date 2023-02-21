@@ -1,7 +1,5 @@
-import VuiAuthorizer from "./src/authorizer";
+import VuiAuthorizer from "./authorizer";
+import withInstall from "../../utils/withInstall";
 
-VuiAuthorizer.install = function(Vue) {
-  Vue.component(VuiAuthorizer.name, VuiAuthorizer);
-};
-
-export default VuiAuthorizer;
+export { createProps } from "./authorizer";
+export default withInstall(VuiAuthorizer);

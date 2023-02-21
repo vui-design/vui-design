@@ -1,3 +1,3 @@
-import VuiLoading from "./src/loading";
+import VuiLoading from "./loading";
 
 export default VuiLoading;

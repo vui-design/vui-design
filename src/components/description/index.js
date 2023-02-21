@@ -1,7 +1,5 @@
-import VuiDescription from "./src/description";
+import VuiDescription from "../descriptions/description";
+import withInstall from "../../utils/withInstall";
 
-VuiDescription.install = function(Vue) {
-  Vue.component(VuiDescription.name, VuiDescription);
-};
-
-export default VuiDescription;
+export { createProps } from "../descriptions/description";
+export default withInstall(VuiDescription);

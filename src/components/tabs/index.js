@@ -1,9 +1,11 @@
-import VuiTabs from "./src/tabs";
-import PropTypes from "../../utils/prop-types";
+import VuiTabs from "./tabs";
+import { createProps } from "./tabs";
 import is from "../../utils/is";
-import utils from "./src/utils";
+import withInstall from "../../utils/withInstall";
+import utils from "./utils";
 
-const VuiTabsWrapper = {
+export { createProps };
+export default withInstall({
   name: VuiTabs.name,
   components: {
     VuiTabs
@@ -12,18 +14,7 @@ const VuiTabsWrapper = {
     prop: "activeKey",
     event: "input"
   },
-  props: {
-    classNamePrefix: PropTypes.string,
-    type: PropTypes.oneOf(["line", "card"]).def("line"),
-    size: PropTypes.oneOf(["small", "medium", "large"]),
-    activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    extra: PropTypes.any,
-    addable: PropTypes.bool.def(false),
-    closable: PropTypes.bool.def(false),
-    destroyOnHide: PropTypes.bool.def(false),
-    headerStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    bodyStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-  },
+  props: createProps(),
   render() {
     const { $slots: slots, $listeners: listeners, $props: props } = this;
 
@@ -54,10 +45,4 @@ const VuiTabsWrapper = {
       <VuiTabs {...attributes} />
     );
   }
-};
-
-VuiTabsWrapper.install = function(Vue) {
-  Vue.component(VuiTabsWrapper.name, VuiTabsWrapper);
-};
-
-export default VuiTabsWrapper;
+});

@@ -1,7 +1,5 @@
-import VuiDrawer from "./src/drawer";
+import VuiDrawer from "./drawer";
+import withInstall from "../../utils/withInstall";
 
-VuiDrawer.install = function(Vue) {
-  Vue.component(VuiDrawer.name, VuiDrawer);
-};
-
-export default VuiDrawer;
+export { createProps } from "./drawer";
+export default withInstall(VuiDrawer);

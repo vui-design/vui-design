@@ -1,7 +1,5 @@
-import VuiPopover from "./src/popover";
+import VuiPopover from "./popover";
+import withInstall from "../../utils/withInstall";
 
-VuiPopover.install = function(Vue) {
-  Vue.component(VuiPopover.name, VuiPopover);
-};
-
-export default VuiPopover;
+export { createProps } from "./popover";
+export default withInstall(VuiPopover);

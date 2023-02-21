@@ -1,7 +1,5 @@
-import VuiCheckboxGroup from "./src/checkbox-group";
+import VuiCheckboxGroup from "../checkbox/checkbox-group";
+import withInstall from "../../utils/withInstall";
 
-VuiCheckboxGroup.install = function(Vue) {
-  Vue.component(VuiCheckboxGroup.name, VuiCheckboxGroup);
-};
-
-export default VuiCheckboxGroup;
+export { createProps } from "../checkbox/checkbox-group";
+export default withInstall(VuiCheckboxGroup);

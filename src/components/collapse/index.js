@@ -1,7 +1,5 @@
-import VuiCollapse from "./src/collapse";
+import VuiCollapse from "./collapse";
+import withInstall from "../../utils/withInstall";
 
-VuiCollapse.install = function(Vue) {
-	Vue.component(VuiCollapse.name, VuiCollapse);
-};
-
-export default VuiCollapse;
+export { createProps } from "./collapse";
+export default withInstall(VuiCollapse);

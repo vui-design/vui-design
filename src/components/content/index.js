@@ -1,7 +1,5 @@
-import VuiContent from "./src/content";
+import VuiContent from "./content";
+import withInstall from "../../utils/withInstall";
 
-VuiContent.install = function(Vue) {
-  Vue.component(VuiContent.name, VuiContent);
-};
-
-export default VuiContent;
+export { createProps } from "./content";
+export default withInstall(VuiContent);

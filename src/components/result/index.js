@@ -1,7 +1,5 @@
-import VuiResult from "./src/result";
+import VuiResult from "./result";
+import withInstall from "../../utils/withInstall";
 
-VuiResult.install = function(Vue) {
-  Vue.component(VuiResult.name, VuiResult);
-};
-
-export default VuiResult;
+export { createProps } from "./result";
+export default withInstall(VuiResult);

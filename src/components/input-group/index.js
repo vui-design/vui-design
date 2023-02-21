@@ -1,7 +1,5 @@
-import VuiInputGroup from "./src/input-group";
+import VuiInputGroup from "../input/input-group";
+import withInstall from "../../utils/withInstall";
 
-VuiInputGroup.install = function(Vue) {
-  Vue.component(VuiInputGroup.name, VuiInputGroup);
-};
-
-export default VuiInputGroup;
+export { createProps } from "../input/input-group";
+export default withInstall(VuiInputGroup);

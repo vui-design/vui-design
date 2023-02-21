@@ -1,7 +1,5 @@
-import VuiWatermark from "./src/watermark";
+import VuiWatermark from "./watermark";
+import withInstall from "../../utils/withInstall";
 
-VuiWatermark.install = function(Vue) {
-  Vue.component(VuiWatermark.name, VuiWatermark);
-};
-
-export default VuiWatermark;
+export { createProps } from "./watermark";
+export default withInstall(VuiWatermark);

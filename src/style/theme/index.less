@@ -124,9 +124,9 @@
 @button-padding-size-md: 14px;
 @button-padding-size-lg: 20px;
 
-@button-font-size-sm: 12px;
-@button-font-size-md: 14px;
-@button-font-size-lg: 16px;
+@button-font-size-sm: @font-size-sm;
+@button-font-size-md: @font-size;
+@button-font-size-lg: @font-size-lg;
 
 @button-default-border-color: @border-color;
 @button-default-background-color: @component-background-color;
@@ -314,7 +314,7 @@
 @space-with-divider-size-lg: 16px;
 @space-divider-width: 1px;
 @space-divider-height: @font-size;
-@space-divider-color: #f0f0f0;
+@space-divider-color: shade(@component-background-color, 6%);
 
 // 导航组件 --------------------------------------------------------------------------------
 
@@ -516,13 +516,13 @@
 
 // Tabs
 @tabs-header-border-bottom-width: @border-width;
-@tabs-header-border-bottom-color: #f0f0f0;
+@tabs-header-border-bottom-color: shade(@component-background-color, 6%);
 @tabs-header-margin-bottom: @margin-md;
 
 @tabs-tab-border-width: @border-width;
-@tabs-tab-border-color: #f0f0f0;
+@tabs-tab-border-color: shade(@component-background-color, 6%);
 @tabs-tab-border-radius: @border-radius;
-@tabs-tab-background-color: #fafafa;
+@tabs-tab-background-color: shade(@component-background-color, 2%);
 @tabs-tab-active-background-color: @component-background-color;
 @tabs-tab-font-color: @font-color;
 @tabs-tab-hover-font-color: tint(@primary-color, 10%);
@@ -614,16 +614,18 @@
 @checkbox-border-color: @border-color;
 @checkbox-border-radius: @border-radius;
 @checkbox-background-color: @component-background-color;
-@checkbox-color: @primary-color;
+@checkbox-indeterminate-color: @primary-color;
+@checkbox-checkmark-color: @component-background-color;
 @checkbox-font-color: @font-color;
+@checkbox-line-height: @line-height;
 
 @checkbox-size-sm: 14px;
 @checkbox-size-md: 16px;
 @checkbox-size-lg: 18px;
 
-@checkbox-font-size-sm: 12px;
-@checkbox-font-size-md: 14px;
-@checkbox-font-size-lg: 16px;
+@checkbox-font-size-sm: @font-size-sm;
+@checkbox-font-size-md: @font-size;
+@checkbox-font-size-lg: @font-size-lg;
 
 @checkbox-hover-border-color: tint(@primary-color, 10%);
 
@@ -632,22 +634,28 @@
 
 @checkbox-disabled-border-color: @border-color;
 @checkbox-disabled-background-color: shade(@component-background-color, 2%);
-@checkbox-disabled-color: shade(@border-color, 10%);
+@checkbox-disabled-indeterminate-color: shade(@component-background-color, 25%);
+@checkbox-disabled-checkmark-color: shade(@component-background-color, 25%);
 @checkbox-disabled-font-color: @font-disabled-color;
 
 // Checkbox Button
+@checkbox-button-border-width: @border-width;
 @checkbox-button-border-color: @border-color;
 @checkbox-button-border-radius: @border-radius;
 @checkbox-button-background-color: @component-background-color;
 @checkbox-button-font-color: @font-color;
 
-@checkbox-button-size-sm: 24px;
-@checkbox-button-size-md: 34px;
-@checkbox-button-size-lg: 44px;
+@checkbox-button-size-sm: @button-size-sm;
+@checkbox-button-size-md: @button-size-md;
+@checkbox-button-size-lg: @button-size-lg;
 
-@checkbox-button-font-size-sm: 12px;
-@checkbox-button-font-size-md: 14px;
-@checkbox-button-font-size-lg: 16px;
+@checkbox-button-padding-size-sm: @button-padding-size-sm;
+@checkbox-button-padding-size-md: @button-padding-size-md;
+@checkbox-button-padding-size-lg: @button-padding-size-lg;
+
+@checkbox-button-font-size-sm: @font-size-sm;
+@checkbox-button-font-size-md: @font-size;
+@checkbox-button-font-size-lg: @font-size-lg;
 
 @checkbox-button-hover-font-color: tint(@primary-color, 10%);
 
@@ -732,16 +740,17 @@
 @radio-border-color: @border-color;
 @radio-border-radius: 50%;
 @radio-background-color: @component-background-color;
-@radio-color: @primary-color;
+@radio-checkmark-color: @primary-color;
 @radio-font-color: @font-color;
+@radio-line-height: @line-height;
 
 @radio-size-sm: 14px;
 @radio-size-md: 16px;
 @radio-size-lg: 18px;
 
-@radio-font-size-sm: 12px;
-@radio-font-size-md: 14px;
-@radio-font-size-lg: 16px;
+@radio-font-size-sm: @font-size-sm;
+@radio-font-size-md: @font-size;
+@radio-font-size-lg: @font-size-lg;
 
 @radio-hover-border-color: tint(@primary-color, 10%);
 
@@ -749,22 +758,27 @@
 
 @radio-disabled-border-color: @border-color;
 @radio-disabled-background-color: shade(@component-background-color, 2%);
-@radio-disabled-color: shade(@border-color, 10%);
+@radio-disabled-checkmark-color: shade(@component-background-color, 25%);
 @radio-disabled-font-color: @font-disabled-color;
 
 // Radio Button
+@radio-button-border-width: @border-width;
 @radio-button-border-color: @border-color;
 @radio-button-border-radius: @border-radius;
 @radio-button-background-color: @component-background-color;
 @radio-button-font-color: @font-color;
 
-@radio-button-size-sm: 24px;
-@radio-button-size-md: 34px;
-@radio-button-size-lg: 44px;
+@radio-button-size-sm: @button-size-sm;
+@radio-button-size-md: @button-size-md;
+@radio-button-size-lg: @button-size-lg;
 
-@radio-button-font-size-sm: 12px;
-@radio-button-font-size-md: 14px;
-@radio-button-font-size-lg: 16px;
+@radio-button-padding-size-sm: @button-padding-size-sm;
+@radio-button-padding-size-md: @button-padding-size-md;
+@radio-button-padding-size-lg: @button-padding-size-lg;
+
+@radio-button-font-size-sm: @font-size-sm;
+@radio-button-font-size-md: @font-size;
+@radio-button-font-size-lg: @font-size-lg;
 
 @radio-button-hover-font-color: tint(@primary-color, 10%);
 
@@ -776,11 +790,10 @@
 @radio-button-disabled-font-color: @font-disabled-color;
 
 // Rate
-@rate-star-margin-right: @margin-xs;
-@rate-star-color: #f0f0f0;
-@rate-star-checked-color: @warning-color;
 @rate-star-size: 20px;
-@rate-star-hover-scale: scale(1.1);
+@rate-star-margin-right: @margin-xs;
+@rate-star-color: shade(@component-background-color, 6%);
+@rate-star-checked-color: @warning-color;
 
 // Select
 @select-selection-border-color: @border-color;
@@ -882,10 +895,10 @@
 @slider-dragger-focus-disabled-box-shadow: 0 0 0 5px rgba(202,202,202,0.24);
 
 // Switch
-@switch-background-color: #ccc;
+@switch-background-color: shade(@component-background-color, 25%);
 @switch-checked-background-color: @primary-color;
 @switch-font-color: @font-reverse-color;
-@switch-input-background-color: @font-reverse-color;
+@switch-input-background-color: @component-background-color;
 
 @switch-size-sm: 16px;
 @switch-size-md: 22px;
@@ -929,12 +942,12 @@
 @transfer-panel-with-search-height: 310px;
 @transfer-panel-border-color: @border-color;
 @transfer-panel-border-radius: @border-radius;
-@transfer-panel-header-border-color: #f0f0f0;
+@transfer-panel-header-border-color: shade(@component-background-color, 6%);
 @transfer-panel-header-background-color: shade(@component-background-color, 2%);
 @transfer-panel-header-padding: @padding-sm;
-@transfer-panel-search-border-color: #f0f0f0;
+@transfer-panel-search-border-color: shade(@component-background-color, 6%);
 @transfer-panel-search-padding: @padding-sm;
-@transfer-panel-footer-border-color: #f0f0f0;
+@transfer-panel-footer-border-color: shade(@component-background-color, 6%);
 @transfer-panel-footer-padding: @padding-xs @padding-sm;
 @transfer-panel-body-menu-item-height: 34px;
 @transfer-panel-body-menu-item-padding: 0 @padding-sm;
@@ -954,12 +967,12 @@
 @cascade-transfer-panel-width: 240px;
 @cascade-transfer-panel-border-color: @border-color;
 @cascade-transfer-panel-border-radius: @border-radius;
-@cascade-transfer-panel-header-border-color: #f0f0f0;
+@cascade-transfer-panel-header-border-color: shade(@component-background-color, 6%);
 @cascade-transfer-panel-header-background-color: shade(@component-background-color, 2%);
 @cascade-transfer-panel-header-padding: @padding-sm;
 @cascade-transfer-panel-header-checkbox-margin-right: @margin-xs;
 @cascade-transfer-panel-header-extra-margin-left: @margin-xs;
-@cascade-transfer-panel-search-border-color: #f0f0f0;
+@cascade-transfer-panel-search-border-color: shade(@component-background-color, 6%);
 @cascade-transfer-panel-search-padding: @padding-sm;
 @cascade-transfer-panel-body-height: 34px * 8 + 6px * 2;
 @cascade-transfer-panel-body-menu-padding: 6px 0;
@@ -981,21 +994,21 @@
 @cascade-transfer-panel-body-menu-item-arrow-size: 12px;
 
 // Timeroutine
-@timeroutine-border-color: #f0f0f0;
-@timeroutine-background-color: #fff;
+@timeroutine-border-color: shade(@component-background-color, 6%);
+@timeroutine-background-color: @component-background-color;
 @timeroutine-font-color: @font-color;
 @timeroutine-font-primary-color: @font-primary-color;
 @timeroutine-font-secondary-color: @font-secondary-color;
 @timeroutine-font-size: @font-size;
 @timeroutine-time-hover-color: shade(@component-background-color, 2%);
-@timeroutine-time-selected-color: #2d8cf0;
+@timeroutine-time-selected-color: @primary-color;
 
 // Form
 @form-font-color: @font-color;
 @form-font-size: @font-size;
 @form-line-height: @line-height;
 
-@form-group-border-color: #f0f0f0;
+@form-group-border-color: shade(@component-background-color, 6%);
 @form-group-border-radius: @border-radius;
 @form-group-margin-top: @margin-xl;
 @form-group-padding: @padding-xl;
@@ -1094,7 +1107,7 @@
 
 // Card
 @card-border-width: @border-width;
-@card-border-color: #f0f0f0;
+@card-border-color: shade(@component-background-color, 6%);
 @card-border-radius: @border-radius;
 @card-background-color: @component-background-color;
 @card-box-shadow: @box-shadow;
@@ -1119,8 +1132,8 @@
 
 @card-loading-block-height: @font-size;
 @card-loading-block-border-radius: @border-radius;
-@card-loading-block-from-color: #f5f5f5;
-@card-loading-block-to-color: #f0f0f0;
+@card-loading-block-from-color: shade(@component-background-color, 4%);
+@card-loading-block-to-color: shade(@component-background-color, 6%);
 @card-loading-block-gutter: @margin-xs;
 
 @card-meta-avatar-margin-right: @margin-md;
@@ -1140,42 +1153,42 @@
 @card-action-divider-height: @card-action-font-size;
 
 // Cell
-@cell-border-color: #f3f3f3;
-@cell-background-color: #ffffff;
-@cell-hover-background-color: #f9f9f9;
-@cell-active-background-color: #f9f9f9;
-@cell-padding: 10px 16px;
-@cell-font-color: @font-color;
-@cell-font-size: @font-size;
-@cell-line-height: @line-height;
-@cell-icon-margin-right: 8px;
-@cell-extra-margin-left: 8px;
-@cell-extra-font-color: @font-secondary-color;
-@cell-arrow-margin-left: 4px;
-@cell-arrow-color: @font-secondary-color;
-@cell-arrow-size: @font-size-sm;
-@cell-checkmark-margin-left: 4px;
-@cell-checkmark-color: @font-secondary-color;
-@cell-checkmark-size: @font-size-sm;
-
-@cell-selected-background-color: #e6f7ff;
-@cell-selected-hover-background-color: #dcf4ff;
-@cell-selected-active-background-color: #dcf4ff;
-@cell-selected-border-color: #e1f2fa;
-@cell-selected-hover-border-color: #d8effa;
-@cell-selected-active-border-color: #d8effa;
-@cell-selected-font-color: @primary-color;
-
-@cell-disabled-font-color: @font-disabled-color;
-
 @cell-group-background-color: shade(@component-background-color, 2%);
 @cell-group-padding: 4px 16px;
 @cell-group-font-color: @font-disabled-color;
 @cell-group-font-size: @font-size-sm;
 @cell-group-line-height: 20px;
 
+@cell-border-width: @border-width;
+@cell-border-color: shade(@component-background-color, 4.75%);
+@cell-background-color: @component-background-color;
+@cell-hover-background-color: shade(@component-background-color, 2%);
+@cell-active-background-color: shade(@component-background-color, 2%);
+@cell-padding: @padding-sm - 2px @padding-md;
+@cell-font-color: @font-color;
+@cell-font-size: @font-size;
+@cell-line-height: @line-height;
+@cell-icon-margin-right: @margin-xs;
+@cell-extra-margin-left: @margin-xs;
+@cell-extra-font-color: @font-secondary-color;
+@cell-arrow-margin-left: @margin-xs;
+@cell-arrow-color: @font-secondary-color;
+@cell-arrow-size: @font-size-sm;
+@cell-checkmark-margin-left: @margin-xs;
+@cell-checkmark-color: @font-secondary-color;
+@cell-checkmark-size: @font-size-sm;
+
+@cell-selected-border-color: rgba(0,0,0,0.04);
+@cell-selected-background-color: #e6f7ff;
+@cell-selected-hover-background-color: darken(@cell-selected-background-color, 2%);
+@cell-selected-active-background-color: darken(@cell-selected-background-color, 2%);
+@cell-selected-font-color: @primary-color;
+
+@cell-disabled-font-color: @font-disabled-color;
+
 // Collapse
-@collapse-border-color: #f0f0f0;
+@collapse-border-width: @border-width;
+@collapse-border-color: shade(@component-background-color, 6%);
 @collapse-border-radius: @border-radius;
 @collapse-background-color: @component-background-color;
 @collapse-font-color: @font-color;
@@ -1236,7 +1249,7 @@
 @descriptions-item-label-colon-margin-right: @margin-xs;
 @descriptions-item-content-font-color: @font-color;
 
-@descriptions-cell-border-color: #f0f0f0;
+@descriptions-cell-border-color: shade(@component-background-color, 6%);
 @descriptions-cell-background-color: shade(@component-background-color, 2%);
 
 // Empty
@@ -1258,16 +1271,44 @@
 @image-error-font-color: @font-disabled-color;
 @image-error-font-size: @font-size;
 
+// List
+@list-border-color: @border-color;
+@list-border-radius: @border-radius;
+@list-font-color: @font-color;
+@list-font-size: @font-size;
+@list-line-height: @line-height;
+
+@list-header-font-color: @font-primary-color;
+
+@list-item-border-color: shade(@component-background-color, 6%);
+@list-item-padding-horizontal-sm: @padding-md;
+@list-item-padding-horizontal-md: @padding-lg;
+@list-item-padding-horizontal-lg: @padding-xl;
+@list-item-padding-vertical-sm: @padding-sm;
+@list-item-padding-vertical-md: @padding-md;
+@list-item-padding-vertical-lg: @padding-lg;
+
+@list-item-meta-avatar-margin-right: @margin-md;
+@list-item-meta-title-font-color: @font-primary-color;
+@list-item-meta-description-font-color: @font-secondary-color;
+
+@list-item-action-font-color: @font-secondary-color;
+@list-item-action-hover-font-color: @link-hover-color;
+@list-item-action-active-font-color: @link-active-color;
+@list-item-action-font-size: @font-size;
+@list-item-action-divider-width: 1px;
+@list-item-action-divider-height: @list-item-action-font-size;
+
 // Popover
 @popover-border-radius: @border-radius;
 @popover-background-color: @component-background-color;
 @popover-box-shadow: @box-shadow;
-@popover-padding: 12px 16px;
+@popover-padding: @padding-sm @padding-md;
 @popover-font-color: @font-color;
 @popover-font-size: @font-size;
 @popover-line-height: @line-height;
 
-@popover-header-border-color: #f0f0f0;
+@popover-header-border-color: shade(@component-background-color, 6%);
 @popover-header-font-color: @font-primary-color;
 
 @popover-arrow-size: 8px;
@@ -1333,7 +1374,7 @@
 @statistic-suffix-font-size: @font-size + 2px;
 
 // Table
-@table-border-color: #f0f0f0;
+@table-border-color: shade(@component-background-color, 6%);
 @table-border-radius: @border-radius;
 
 @table-font-primary-color: @font-primary-color;
@@ -1341,13 +1382,13 @@
 @table-font-size: @font-size;
 @table-line-height: @line-height;
 
-@table-header-background-color: #fafafa;
+@table-header-background-color: shade(@component-background-color, 2%);
 
 @table-body-background-color: @component-background-color;
 
-@table-row-even-background-color: #fff;
-@table-row-odd-background-color: #fafafa;
-@table-row-hover-background-color: #fafafa;
+@table-row-even-background-color: @component-background-color;
+@table-row-odd-background-color: shade(@component-background-color, 2%);
+@table-row-hover-background-color: shade(@component-background-color, 2%);
 @table-row-selected-background-color: #e6f7ff;
 
 @table-cell-padding-sm: 8px 8px;
@@ -1370,13 +1411,13 @@
 @table-filter-dropdown-border-radius: @border-radius;
 @table-filter-dropdown-background-color: @background-color;
 @table-filter-dropdown-box-shadow: @box-shadow;
-@table-filter-dropdown-footer-border-color: #f0f0f0;
+@table-filter-dropdown-footer-border-color: shade(@component-background-color, 6%);
 @table-filter-dropdown-footer-padding: 12px 12px;
 @table-filter-dropdown-footer-btn-color: @font-color;
 @table-filter-dropdown-footer-btn-hover-color: @primary-color;
 
 @table-switch-size: 17px;
-@table-switch-border-color: #f0f0f0;
+@table-switch-border-color: shade(@component-background-color, 6%);
 @table-switch-hover-border-color: tint(@primary-color, 10%);
 @table-switch-active-border-color: shade(@primary-color, 10%);
 @table-switch-border-radius: @border-radius;
@@ -1386,7 +1427,7 @@
 @table-switch-active-color: shade(@primary-color, 10%);
 
 @table-expansion-size: 17px;
-@table-expansion-border-color: #f0f0f0;
+@table-expansion-border-color: shade(@component-background-color, 6%);
 @table-expansion-hover-border-color: tint(@primary-color, 10%);
 @table-expansion-active-border-color: shade(@primary-color, 10%);
 @table-expansion-border-radius: @border-radius;
@@ -1412,7 +1453,7 @@
 @tag-font-size-lg: @font-size;
 
 @tag-default-border-color: @border-color;
-@tag-default-background-color: #fafafa;
+@tag-default-background-color: shade(@component-background-color, 2%);
 @tag-default-font-color: @font-color;
 @tag-primary-border-color: @primary-color;
 @tag-primary-background-color: @primary-color;
@@ -1590,7 +1631,7 @@
 @drawer-background-color: @component-background-color;
 @drawer-box-shadow: @box-shadow;
 
-@drawer-header-border-bottom: @border-width @border-style #f0f0f0;
+@drawer-header-border-bottom: @border-width @border-style shade(@component-background-color, 6%);
 @drawer-header-padding: @padding-lg;
 
 @drawer-title-font-color: @font-primary-color;
@@ -1602,7 +1643,7 @@
 @drawer-body-font-size: @font-size;
 @drawer-body-line-height: @line-height;
 
-@drawer-footer-border-top: @border-width @border-style #f0f0f0;
+@drawer-footer-border-top: @border-width @border-style shade(@component-background-color, 6%);
 @drawer-footer-padding: @padding-lg;
 
 @drawer-btn-close-color: @font-secondary-color;
@@ -1643,7 +1684,7 @@
 @modal-background-color: @component-background-color;
 @modal-box-shadow: @box-shadow;
 
-@modal-header-border-bottom: @border-width @border-style #f0f0f0;
+@modal-header-border-bottom: @border-width @border-style shade(@component-background-color, 6%);
 @modal-header-padding: @padding-lg;
 
 @modal-title-font-color: @font-primary-color;
@@ -1655,7 +1696,7 @@
 @modal-body-font-size: @font-size;
 @modal-body-line-height: @line-height;
 
-@modal-footer-border-top: @border-width @border-style #f0f0f0;
+@modal-footer-border-top: @border-width @border-style shade(@component-background-color, 6%);
 @modal-footer-padding: @padding-lg;
 
 @modal-btn-close-color: @font-secondary-color;
@@ -1761,7 +1802,7 @@
 // Skeleton
 @skeleton-color: #f2f2f2;
 @skeleton-from-color: #f5f5f5;
-@skeleton-to-color: #f0f0f0;
+@skeleton-to-color: shade(@component-background-color, 6%);
 @skeleton-header-padding-right: @padding-md;
 
 @skeleton-avatar-border-radius: @border-radius;
@@ -1817,7 +1858,7 @@
 @anchor-line-height: @line-height;
 
 @anchor-ink-track-size: 2px;
-@anchor-ink-track-color: #f0f0f0;
+@anchor-ink-track-color: shade(@component-background-color, 6%);
 
 @anchor-ink-thumb-size: 8px;
 @anchor-ink-thumb-color: @component-background-color;

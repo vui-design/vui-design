@@ -1,7 +1,5 @@
-import VuiRate from "./src/rate";
+import VuiRate from "./rate";
+import withInstall from "../../utils/withInstall";
 
-VuiRate.install = function(Vue) {
-	Vue.component(VuiRate.name, VuiRate);
-};
-
-export default VuiRate;
+export { createProps } from "./rate";
+export default withInstall(VuiRate);

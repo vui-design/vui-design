@@ -595,6 +595,36 @@ Object.defineProperty(VuePropTypes, "sensibleDefaults", {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _defineProperty = __webpack_require__(74);
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (obj, key, value) {
+  if (key in obj) {
+    (0, _defineProperty2.default)(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -874,36 +904,6 @@ var isMergeableObject = function isMergeableObject(value) {
 });
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _defineProperty = __webpack_require__(74);
-
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -951,7 +951,7 @@ exports.default = _assign2.default || function (target) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_core_js_object_create___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_core_js_object_create__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_babel_runtime_helpers_typeof__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__is__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__is__ = __webpack_require__(2);
 
 
 
@@ -7636,7 +7636,7 @@ var object_keys = __webpack_require__(12);
 var keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
 
 // EXTERNAL MODULE: ./src/utils/is.js
-var is = __webpack_require__(1);
+var is = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./src/utils/deepMerge.js
 
@@ -7961,7 +7961,7 @@ var helpers_extends = __webpack_require__(3);
 var extends_default = /*#__PURE__*/__webpack_require__.n(helpers_extends);
 
 // EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/defineProperty.js
-var defineProperty = __webpack_require__(2);
+var defineProperty = __webpack_require__(1);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
 // EXTERNAL MODULE: ./src/utils/prop-types.js
@@ -7994,7 +7994,7 @@ function getClassNamePrefix(customizedClassNamePrefix, componentName) {
 var icons = __webpack_require__(120);
 var icons_default = /*#__PURE__*/__webpack_require__.n(icons);
 
-// CONCATENATED MODULE: ./src/components/icon/src/icon.js
+// CONCATENATED MODULE: ./src/components/icon/icon.js
 
 
 
@@ -8011,7 +8011,7 @@ var icon_createProps = function createProps() {
   };
 };
 
-var VuiIcon = {
+/* harmony default export */ var icon_icon = ({
   name: "vui-icon",
   props: icon_createProps(),
   render: function render(h) {
@@ -8068,9 +8068,7 @@ var VuiIcon = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_icon = (VuiIcon);
+});
 // CONCATENATED MODULE: ./src/utils/withInstall.js
 function withInstall(component) {
   component.install = function (Vue) {
@@ -8084,12 +8082,23 @@ function withInstall(component) {
 
 
 
-/* harmony default export */ var components_icon = (withInstall(src_icon));
-// CONCATENATED MODULE: ./src/components/button-group/src/button-group.js
+/* harmony default export */ var components_icon = (withInstall(icon_icon));
+// CONCATENATED MODULE: ./src/components/button/button-group.js
 
 
 
-var VuiButtonGroup = {
+var button_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed"]).def("default"),
+    ghost: prop_types["a" /* default */].bool.def(false),
+    shape: prop_types["a" /* default */].oneOf(["round"]),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var button_group = ({
   name: "vui-button-group",
   provide: function provide() {
     return {
@@ -8097,14 +8106,7 @@ var VuiButtonGroup = {
     };
   },
 
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "danger", "dashed"]).def("default"),
-    ghost: prop_types["a" /* default */].bool.def(false),
-    shape: prop_types["a" /* default */].oneOf(["round"]),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    disabled: prop_types["a" /* default */].bool.def(false)
-  },
+  props: button_group_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -8122,17 +8124,13 @@ var VuiButtonGroup = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var button_group = (VuiButtonGroup);
+});
 // CONCATENATED MODULE: ./src/components/button-group/index.js
 
 
-button_group.install = function (Vue) {
-	Vue.component(button_group.name, button_group);
-};
 
-/* harmony default export */ var components_button_group = (button_group);
+
+/* harmony default export */ var components_button_group = (withInstall(button_group));
 // CONCATENATED MODULE: ./src/utils/guardLinkEvent.js
 /**
 * 链接点击事件守卫
@@ -8212,7 +8210,7 @@ function guardLinkEvent(e) {
     }
   }
 });
-// CONCATENATED MODULE: ./src/components/button/src/button.js
+// CONCATENATED MODULE: ./src/components/button/button.js
 
 
 
@@ -8237,7 +8235,7 @@ var button_createProps = function createProps() {
   };
 };
 
-var VuiButton = {
+/* harmony default export */ var button_button = ({
   name: "vui-button",
   inject: {
     vuiForm: {
@@ -8424,16 +8422,14 @@ var VuiButton = {
       );
     }
   }
-};
-
-/* harmony default export */ var src_button = (VuiButton);
+});
 // CONCATENATED MODULE: ./src/components/button/index.js
 
 
 
 
-/* harmony default export */ var components_button = (withInstall(src_button));
-// CONCATENATED MODULE: ./src/components/link/src/link.js
+/* harmony default export */ var components_button = (withInstall(button_button));
+// CONCATENATED MODULE: ./src/components/link/link.js
 
 
 
@@ -8455,7 +8451,7 @@ var link_createProps = function createProps() {
   };
 };
 
-var VuiLink = {
+/* harmony default export */ var link_link = ({
   name: "vui-link",
   components: {
     VuiIcon: components_icon
@@ -8541,30 +8537,32 @@ var VuiLink = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var src_link = (VuiLink);
+});
 // CONCATENATED MODULE: ./src/components/link/index.js
 
 
 
 
-/* harmony default export */ var components_link = (withInstall(src_link));
-// CONCATENATED MODULE: ./src/components/divider/src/divider.js
+/* harmony default export */ var components_link = (withInstall(link_link));
+// CONCATENATED MODULE: ./src/components/divider/divider.js
 
 
 
 
 
-var VuiDivider = {
-  name: "vui-divider",
-  props: {
+var divider_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
     dashed: prop_types["a" /* default */].bool.def(false),
     orientation: prop_types["a" /* default */].oneOf(["left", "center", "right"]).def("center"),
     gutter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  };
+};
+
+/* harmony default export */ var divider_divider = ({
+  name: "vui-divider",
+  props: divider_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -8611,23 +8609,29 @@ var VuiDivider = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_divider = (VuiDivider);
+});
 // CONCATENATED MODULE: ./src/components/divider/index.js
 
 
-src_divider.install = function (Vue) {
-  Vue.component(src_divider.name, src_divider);
+
+
+/* harmony default export */ var components_divider = (withInstall(divider_divider));
+// CONCATENATED MODULE: ./src/components/row/row.js
+
+
+
+
+var row_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["flex"]),
+    justify: prop_types["a" /* default */].oneOf(["start", "center", "end", "space-around", "space-between"]).def("start"),
+    align: prop_types["a" /* default */].oneOf(["top", "middle", "bottom"]).def("top"),
+    gutter: prop_types["a" /* default */].number.def(0)
+  };
 };
 
-/* harmony default export */ var components_divider = (src_divider);
-// CONCATENATED MODULE: ./src/components/row/src/row.js
-
-
-
-
-var VuiRow = {
+/* harmony default export */ var row_row = ({
   name: "vui-row",
   provide: function provide() {
     return {
@@ -8635,13 +8639,7 @@ var VuiRow = {
     };
   },
 
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].oneOf(["flex"]),
-    justify: prop_types["a" /* default */].oneOf(["start", "center", "end", "space-around", "space-between"]).def("start"),
-    align: prop_types["a" /* default */].oneOf(["top", "middle", "bottom"]).def("top"),
-    gutter: prop_types["a" /* default */].number.def(0)
-  },
+  props: row_createProps(),
   render: function render(h) {
     var _classes;
 
@@ -8665,31 +8663,21 @@ var VuiRow = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_row = (VuiRow);
+});
 // CONCATENATED MODULE: ./src/components/row/index.js
 
 
-src_row.install = function (Vue) {
-  Vue.component(src_row.name, src_row);
-};
 
-/* harmony default export */ var components_row = (src_row);
-// CONCATENATED MODULE: ./src/components/col/src/col.js
+
+/* harmony default export */ var components_row = (withInstall(row_row));
+// CONCATENATED MODULE: ./src/components/col/col.js
 
 
 
 
 
-var VuiCol = {
-  name: "vui-col",
-  inject: {
-    vuiRow: {
-      default: undefined
-    }
-  },
-  props: {
+var col_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     span: prop_types["a" /* default */].number.def(24),
     offset: prop_types["a" /* default */].number,
@@ -8702,7 +8690,17 @@ var VuiCol = {
     lg: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].object]),
     xl: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].object]),
     xxl: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].number, prop_types["a" /* default */].object])
+  };
+};
+
+/* harmony default export */ var col_col = ({
+  name: "vui-col",
+  inject: {
+    vuiRow: {
+      default: undefined
+    }
   },
+  props: col_createProps(),
   render: function render(h) {
     var vuiRow = this.vuiRow,
         slots = this.$slots,
@@ -8747,28 +8745,28 @@ var VuiCol = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_col = (VuiCol);
+});
 // CONCATENATED MODULE: ./src/components/col/index.js
 
 
-src_col.install = function (Vue) {
-  Vue.component(src_col.name, src_col);
-};
 
-/* harmony default export */ var components_col = (src_col);
-// CONCATENATED MODULE: ./src/components/layout/src/layout.js
+
+/* harmony default export */ var components_col = (withInstall(col_col));
+// CONCATENATED MODULE: ./src/components/layout/layout.js
 
 
 
 
-var VuiLayout = {
-  name: "vui-layout",
-  props: {
+var layout_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     withSider: prop_types["a" /* default */].bool.def(false)
-  },
+  };
+};
+
+/* harmony default export */ var layout = ({
+  name: "vui-layout",
+  props: layout_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -8796,31 +8794,31 @@ var VuiLayout = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var layout = (VuiLayout);
+});
 // CONCATENATED MODULE: ./src/components/layout/index.js
 
 
-layout.install = function (Vue) {
-  Vue.component(layout.name, layout);
-};
 
-/* harmony default export */ var components_layout = (layout);
-// CONCATENATED MODULE: ./src/components/header/src/header.js
+
+/* harmony default export */ var components_layout = (withInstall(layout));
+// CONCATENATED MODULE: ./src/components/header/header.js
 
 
 
 
 var colors = ["light", "dark"];
 
-var VuiHeader = {
-  name: "vui-header",
-  props: {
+var header_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     theme: prop_types["a" /* default */].string,
     color: prop_types["a" /* default */].string.def("light")
-  },
+  };
+};
+
+/* harmony default export */ var header_header = ({
+  name: "vui-header",
+  props: header_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -8855,17 +8853,13 @@ var VuiHeader = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_header = (VuiHeader);
+});
 // CONCATENATED MODULE: ./src/components/header/index.js
 
 
-src_header.install = function (Vue) {
-  Vue.component(src_header.name, src_header);
-};
 
-/* harmony default export */ var components_header = (src_header);
+
+/* harmony default export */ var components_header = (withInstall(header_header));
 // CONCATENATED MODULE: ./src/utils/noop.js
 /**
 * 默认的回调函数
@@ -8929,7 +8923,7 @@ function getScrollbarSize() {
 
     return cached;
 };
-// CONCATENATED MODULE: ./src/components/sider/src/sider.js
+// CONCATENATED MODULE: ./src/components/sider/sider.js
 
 
 
@@ -8961,16 +8955,8 @@ var dimensions = defineProperty_default()({
 
 var sider_colors = ["light", "dark"];
 
-var VuiSider = {
-  name: "vui-sider",
-  components: {
-    VuiIcon: components_icon
-  },
-  model: {
-    prop: "collapsed",
-    event: "collapse"
-  },
-  props: {
+var sider_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     theme: prop_types["a" /* default */].string,
     color: prop_types["a" /* default */].string.def("light"),
@@ -8982,7 +8968,19 @@ var VuiSider = {
     showTrigger: prop_types["a" /* default */].bool.def(true),
     trigger: prop_types["a" /* default */].string,
     showScrollbar: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var sider = ({
+  name: "vui-sider",
+  components: {
+    VuiIcon: components_icon
   },
+  model: {
+    prop: "collapsed",
+    event: "collapse"
+  },
+  props: sider_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -9156,27 +9154,27 @@ var VuiSider = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var sider = (VuiSider);
+});
 // CONCATENATED MODULE: ./src/components/sider/index.js
 
 
-sider.install = function (Vue) {
-  Vue.component(sider.name, sider);
+
+
+/* harmony default export */ var components_sider = (withInstall(sider));
+// CONCATENATED MODULE: ./src/components/content/content.js
+
+
+
+
+var content_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_sider = (sider);
-// CONCATENATED MODULE: ./src/components/content/src/content.js
-
-
-
-
-var VuiContent = {
+/* harmony default export */ var content_content = ({
   name: "vui-content",
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string
-  },
+  props: content_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -9195,27 +9193,27 @@ var VuiContent = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_content = (VuiContent);
+});
 // CONCATENATED MODULE: ./src/components/content/index.js
 
 
-src_content.install = function (Vue) {
-  Vue.component(src_content.name, src_content);
+
+
+/* harmony default export */ var components_content = (withInstall(content_content));
+// CONCATENATED MODULE: ./src/components/footer/footer.js
+
+
+
+
+var footer_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_content = (src_content);
-// CONCATENATED MODULE: ./src/components/footer/src/footer.js
-
-
-
-
-var VuiFooter = {
+/* harmony default export */ var footer_footer = ({
   name: "vui-footer",
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string
-  },
+  props: footer_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -9234,17 +9232,13 @@ var VuiFooter = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_footer = (VuiFooter);
+});
 // CONCATENATED MODULE: ./src/components/footer/index.js
 
 
-src_footer.install = function (Vue) {
-  Vue.component(src_footer.name, src_footer);
-};
 
-/* harmony default export */ var components_footer = (src_footer);
+
+/* harmony default export */ var components_footer = (withInstall(footer_footer));
 // CONCATENATED MODULE: ./src/utils/getValidElements.js
 var isValidElement = function isValidElement(element) {
   return element.tag || element.text && element.text.trim();
@@ -9267,7 +9261,7 @@ function getValidElements() {
     return element;
   });
 };
-// CONCATENATED MODULE: ./src/components/space/src/space.js
+// CONCATENATED MODULE: ./src/components/space/space.js
 
 
 
@@ -9276,9 +9270,8 @@ function getValidElements() {
 
 var sizes = ["small", "medium", "large"];
 
-var VuiSpace = {
-  name: "vui-space",
-  props: {
+var space_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     block: prop_types["a" /* default */].bool.def(false),
     direction: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
@@ -9286,7 +9279,12 @@ var VuiSpace = {
     align: prop_types["a" /* default */].oneOf(["start", "center", "end", "baseline", "stretch"]).def("center"),
     divider: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
     size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def("medium")
-  },
+  };
+};
+
+/* harmony default export */ var space = ({
+  name: "vui-space",
+  props: space_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -9373,29 +9371,29 @@ var VuiSpace = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var space = (VuiSpace);
+});
 // CONCATENATED MODULE: ./src/components/space/index.js
 
 
-space.install = function (Vue) {
-  Vue.component(space.name, space);
-};
 
-/* harmony default export */ var components_space = (space);
+
+/* harmony default export */ var components_space = (withInstall(space));
 // EXTERNAL MODULE: ./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js
 var ResizeObserver_es = __webpack_require__(121);
 
-// CONCATENATED MODULE: ./src/components/resize-observer/src/resize-observer.js
+// CONCATENATED MODULE: ./src/components/resize-observer/resize-observer.js
 
 
 
-var VuiResizeObserver = {
-  name: "vui-resize-observer",
-  props: {
+var resize_observer_createProps = function createProps() {
+  return {
     disabled: prop_types["a" /* default */].bool
-  },
+  };
+};
+
+/* harmony default export */ var resize_observer = ({
+  name: "vui-resize-observer",
+  props: resize_observer_createProps(),
   data: function data() {
     return {
       width: 0,
@@ -9471,17 +9469,13 @@ var VuiResizeObserver = {
 
     return slots.default ? slots.default[0] : null;
   }
-};
-
-/* harmony default export */ var resize_observer = (VuiResizeObserver);
+});
 // CONCATENATED MODULE: ./src/components/resize-observer/index.js
 
 
-resize_observer.install = function (Vue) {
-  Vue.component(resize_observer.name, resize_observer);
-};
 
-/* harmony default export */ var components_resize_observer = (resize_observer);
+
+/* harmony default export */ var components_resize_observer = (withInstall(resize_observer));
 // EXTERNAL MODULE: ./node_modules/babel-runtime/helpers/toConsumableArray.js
 var toConsumableArray = __webpack_require__(39);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray);
@@ -9560,7 +9554,7 @@ function addEventListener(target, type, listener, option) {
     };
   }
 };
-// CONCATENATED MODULE: ./src/components/affix/src/utils.js
+// CONCATENATED MODULE: ./src/components/affix/utils.js
 
 
 var eventTypes = ["resize", "scroll", "touchstart", "touchmove", "touchend", "pageshow", "load"];
@@ -9655,7 +9649,7 @@ var removeObserver = function removeObserver(affix) {
   addObserver: utils_addObserver,
   removeObserver: removeObserver
 });
-// CONCATENATED MODULE: ./src/components/affix/src/affix.js
+// CONCATENATED MODULE: ./src/components/affix/affix.js
 
 
 
@@ -9664,19 +9658,23 @@ var removeObserver = function removeObserver(affix) {
 
 
 
-var VuiAffix = {
-  name: "vui-affix",
-  components: {
-    VuiResizeObserver: components_resize_observer
-  },
-  props: {
+var affix_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     getScrollContainer: prop_types["a" /* default */].func.def(function () {
       return typeof window === "undefined" ? null : window;
     }),
     offsetTop: prop_types["a" /* default */].number,
     offsetBottom: prop_types["a" /* default */].number
+  };
+};
+
+/* harmony default export */ var affix_affix = ({
+  name: "vui-affix",
+  components: {
+    VuiResizeObserver: components_resize_observer
   },
+  props: affix_createProps(),
   data: function data() {
     var state = {
       scrollContainer: null,
@@ -9900,22 +9898,25 @@ var VuiAffix = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_affix = (VuiAffix);
+});
 // CONCATENATED MODULE: ./src/components/affix/index.js
 
 
-src_affix.install = function (Vue) {
-  Vue.component(src_affix.name, src_affix);
+
+
+/* harmony default export */ var components_affix = (withInstall(affix_affix));
+// CONCATENATED MODULE: ./src/components/breadcrumb/breadcrumb.js
+
+
+
+var breadcrumb_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    separator: prop_types["a" /* default */].string.def("/")
+  };
 };
 
-/* harmony default export */ var components_affix = (src_affix);
-// CONCATENATED MODULE: ./src/components/breadcrumb/src/breadcrumb.js
-
-
-
-var VuiBreadcrumb = {
+/* harmony default export */ var breadcrumb_breadcrumb = ({
   name: "vui-breadcrumb",
   provide: function provide() {
     return {
@@ -9923,10 +9924,7 @@ var VuiBreadcrumb = {
     };
   },
 
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    separator: prop_types["a" /* default */].string.def("/")
-  },
+  props: breadcrumb_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -9946,24 +9944,28 @@ var VuiBreadcrumb = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_breadcrumb = (VuiBreadcrumb);
+});
 // CONCATENATED MODULE: ./src/components/breadcrumb/index.js
 
 
-src_breadcrumb.install = function (Vue) {
-  Vue.component(src_breadcrumb.name, src_breadcrumb);
+
+
+/* harmony default export */ var components_breadcrumb = (withInstall(breadcrumb_breadcrumb));
+// CONCATENATED MODULE: ./src/components/breadcrumb/breadcrumb-item.js
+
+
+
+
+
+var breadcrumb_item_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
+  };
 };
 
-/* harmony default export */ var components_breadcrumb = (src_breadcrumb);
-// CONCATENATED MODULE: ./src/components/breadcrumb/src/breadcrumb-item.js
-
-
-
-
-
-var VuiBreadcrumbItem = {
+/* harmony default export */ var breadcrumb_item = ({
   name: "vui-breadcrumb-item",
   inject: {
     vuiBreadcrumb: {
@@ -9974,11 +9976,7 @@ var VuiBreadcrumbItem = {
     VuiIcon: components_icon
   },
   mixins: [mixins_link],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    icon: prop_types["a" /* default */].string,
-    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  props: breadcrumb_item_createProps(),
   render: function render() {
     var h = arguments[0];
     var vuiBreadcrumb = this.vuiBreadcrumb,
@@ -10061,17 +10059,13 @@ var VuiBreadcrumbItem = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var breadcrumb_item = (VuiBreadcrumbItem);
+});
 // CONCATENATED MODULE: ./src/components/breadcrumb-item/index.js
 
 
-breadcrumb_item.install = function (Vue) {
-  Vue.component(breadcrumb_item.name, breadcrumb_item);
-};
 
-/* harmony default export */ var components_breadcrumb_item = (breadcrumb_item);
+
+/* harmony default export */ var components_breadcrumb_item = (withInstall(breadcrumb_item));
 // CONCATENATED MODULE: ./src/components/lazy-render/src/lazy-render.js
 
 
@@ -11706,7 +11700,7 @@ function getStyle_getStyle(element, property) {
     return element.style[property];
   }
 };
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown.js
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown.js
 
 
 
@@ -11717,7 +11711,22 @@ function getStyle_getStyle(element, property) {
 
 
 
-var VuiDropdown = {
+var dropdown_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    trigger: prop_types["a" /* default */].oneOf(["hover", "click"]).def("hover"),
+    visible: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
+    animation: prop_types["a" /* default */].string.def("vui-dropdown-popup-scale"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    })
+  };
+};
+
+/* harmony default export */ var dropdown = ({
   name: "vui-dropdown",
   provide: function provide() {
     return {
@@ -11737,18 +11746,7 @@ var VuiDropdown = {
     prop: "visible",
     event: "change"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    trigger: prop_types["a" /* default */].oneOf(["hover", "click"]).def("hover"),
-    visible: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
-    animation: prop_types["a" /* default */].string.def("vui-dropdown-popup-scale"),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
-      return document.body;
-    })
-  },
+  props: dropdown_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -12028,25 +12026,39 @@ var VuiDropdown = {
       )]
     );
   }
-};
-
-/* harmony default export */ var dropdown = (VuiDropdown);
+});
 // CONCATENATED MODULE: ./src/components/dropdown/index.js
 
 
-dropdown.install = function (Vue) {
-  Vue.component(dropdown.name, dropdown);
+
+
+/* harmony default export */ var components_dropdown = (withInstall(dropdown));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-button.js
+
+
+
+
+
+
+var dropdown_button_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "dashed", "text"]).def("default"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    icon: prop_types["a" /* default */].string.def("more-x"),
+    visible: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    trigger: prop_types["a" /* default */].oneOf(["hover", "click"]).def("hover"),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-end"),
+    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
+    animation: prop_types["a" /* default */].string.def("vui-dropdown-popup-scale"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    })
+  };
 };
 
-/* harmony default export */ var components_dropdown = (dropdown);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-button.js
-
-
-
-
-
-
-var VuiDropdownButton = {
+/* harmony default export */ var dropdown_button = ({
   name: "vui-dropdown-button",
   components: {
     VuiIcon: components_icon,
@@ -12063,21 +12075,7 @@ var VuiDropdownButton = {
     prop: "visible",
     event: "change"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error", "dashed", "text"]).def("default"),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    icon: prop_types["a" /* default */].string.def("more-x"),
-    visible: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    trigger: prop_types["a" /* default */].oneOf(["hover", "click"]).def("hover"),
-    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-end"),
-    dropdownAutoWidth: prop_types["a" /* default */].bool.def(true),
-    animation: prop_types["a" /* default */].string.def("vui-dropdown-popup-scale"),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
-      return document.body;
-    })
-  },
+  props: dropdown_button_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -12211,24 +12209,28 @@ var VuiDropdownButton = {
       )]
     );
   }
-};
-
-/* harmony default export */ var dropdown_button = (VuiDropdownButton);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-button/index.js
 
 
-dropdown_button.install = function (Vue) {
-  Vue.component(dropdown_button.name, dropdown_button);
+
+
+/* harmony default export */ var components_dropdown_button = (withInstall(dropdown_button));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-menu.js
+
+
+
+
+
+var dropdown_menu_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    color: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
+    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
+  };
 };
 
-/* harmony default export */ var components_dropdown_button = (dropdown_button);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu.js
-
-
-
-
-
-var VuiDropdownMenu = {
+/* harmony default export */ var dropdown_menu = ({
   name: "vui-dropdown-menu",
   inject: {
     vuiDropdown: {
@@ -12241,11 +12243,7 @@ var VuiDropdownMenu = {
     };
   },
 
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    color: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
-    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  props: dropdown_menu_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -12259,7 +12257,7 @@ var VuiDropdownMenu = {
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.color, props.color), _classes$el);
 
-    // styles
+    // style
     var styles = {};
 
     if (props.width) {
@@ -12275,29 +12273,42 @@ var VuiDropdownMenu = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var dropdown_menu = (VuiDropdownMenu);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-menu/index.js
 
 
-dropdown_menu.install = function (Vue) {
-  Vue.component(dropdown_menu.name, dropdown_menu);
+
+
+/* harmony default export */ var components_dropdown_menu = (withInstall(dropdown_menu));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-submenu.js
+
+
+
+
+
+
+
+
+
+
+var dropdown_submenu_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    // TODO 将在后续版本中移除，请使用 value 属性替代
+    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    animation: prop_types["a" /* default */].string.def("vui-dropdown-submenu-body-scale"),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
+      return document.body;
+    })
+  };
 };
 
-/* harmony default export */ var components_dropdown_menu = (dropdown_menu);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-submenu.js
-
-
-
-
-
-
-
-
-
-
-var VuiDropdownSubmenu = {
+/* harmony default export */ var dropdown_submenu = ({
   name: "vui-dropdown-submenu",
   provide: function provide() {
     return {
@@ -12324,20 +12335,7 @@ var VuiDropdownSubmenu = {
   directives: {
     Portal: directives_portal
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    // TODO 将在后续版本中移除，请使用 value 属性替代
-    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    icon: prop_types["a" /* default */].string,
-    title: prop_types["a" /* default */].string,
-    width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    animation: prop_types["a" /* default */].string.def("vui-dropdown-submenu-body-scale"),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
-      return document.body;
-    })
-  },
+  props: dropdown_submenu_createProps(),
   data: function data() {
     var state = {
       visible: false
@@ -12595,27 +12593,36 @@ var VuiDropdownSubmenu = {
       )]
     );
   }
-};
-
-/* harmony default export */ var dropdown_submenu = (VuiDropdownSubmenu);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-submenu/index.js
 
 
-dropdown_submenu.install = function (Vue) {
-  Vue.component(dropdown_submenu.name, dropdown_submenu);
+
+
+/* harmony default export */ var components_dropdown_submenu = (withInstall(dropdown_submenu));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-menu-item.js
+
+
+
+
+
+
+
+
+var dropdown_menu_item_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    // TODO 将在后续版本中移除，请使用 value 属性替代
+    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    danger: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_dropdown_submenu = (dropdown_submenu);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-item.js
-
-
-
-
-
-
-
-
-var VuiDropdownMenuItem = {
+/* harmony default export */ var dropdown_menu_item = ({
   name: "vui-dropdown-menu-item",
   inject: {
     vuiDropdown: {
@@ -12632,16 +12639,7 @@ var VuiDropdownMenuItem = {
     VuiIcon: components_icon
   },
   mixins: [mixins_link],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    // TODO 将在后续版本中移除，请使用 value 属性替代
-    name: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    icon: prop_types["a" /* default */].string,
-    title: prop_types["a" /* default */].string,
-    danger: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false)
-  },
+  props: dropdown_menu_item_createProps(),
   methods: {
     handleClick: function handleClick(e) {
       var vuiDropdown = this.vuiDropdown,
@@ -12766,27 +12764,27 @@ var VuiDropdownMenuItem = {
       );
     }
   }
-};
-
-/* harmony default export */ var dropdown_menu_item = (VuiDropdownMenuItem);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-menu-item/index.js
 
 
-dropdown_menu_item.install = function (Vue) {
-  Vue.component(dropdown_menu_item.name, dropdown_menu_item);
-};
 
-/* harmony default export */ var components_dropdown_menu_item = (dropdown_menu_item);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-item-group.js
+
+/* harmony default export */ var components_dropdown_menu_item = (withInstall(dropdown_menu_item));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-menu-item-group.js
 
 
 
-var VuiDropdownMenuItemGroup = {
-  name: "vui-dropdown-menu-item-group",
-  props: {
+var dropdown_menu_item_group_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string
-  },
+  };
+};
+
+/* harmony default export */ var dropdown_menu_item_group = ({
+  name: "vui-dropdown-menu-item-group",
+  props: dropdown_menu_item_group_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -12815,28 +12813,28 @@ var VuiDropdownMenuItemGroup = {
       )]
     );
   }
-};
-
-/* harmony default export */ var dropdown_menu_item_group = (VuiDropdownMenuItemGroup);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-menu-item-group/index.js
 
 
-dropdown_menu_item_group.install = function (Vue) {
-  Vue.component(dropdown_menu_item_group.name, dropdown_menu_item_group);
-};
 
-/* harmony default export */ var components_dropdown_menu_item_group = (dropdown_menu_item_group);
-// CONCATENATED MODULE: ./src/components/dropdown/src/dropdown-menu-divider.js
+
+/* harmony default export */ var components_dropdown_menu_item_group = (withInstall(dropdown_menu_item_group));
+// CONCATENATED MODULE: ./src/components/dropdown/dropdown-menu-divider.js
 
 
 
 
-var VuiDropdownMenuDivider = {
-  name: "vui-dropdown-menu-divider",
-  props: {
+var dropdown_menu_divider_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     gutter: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(4)
-  },
+  };
+};
+
+/* harmony default export */ var dropdown_menu_divider = ({
+  name: "vui-dropdown-menu-divider",
+  props: dropdown_menu_divider_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -12864,17 +12862,13 @@ var VuiDropdownMenuDivider = {
     // render
     return h("div", { "class": classes.el, style: styles.el });
   }
-};
-
-/* harmony default export */ var dropdown_menu_divider = (VuiDropdownMenuDivider);
+});
 // CONCATENATED MODULE: ./src/components/dropdown-menu-divider/index.js
 
 
-dropdown_menu_divider.install = function (Vue) {
-  Vue.component(dropdown_menu_divider.name, dropdown_menu_divider);
-};
 
-/* harmony default export */ var components_dropdown_menu_divider = (dropdown_menu_divider);
+
+/* harmony default export */ var components_dropdown_menu_divider = (withInstall(dropdown_menu_divider));
 // CONCATENATED MODULE: ./src/components/menu/src/menu.js
 
 
@@ -13785,7 +13779,7 @@ function getElementByEvent(event) {
 
   return e.target || e.srcElement;
 };
-// CONCATENATED MODULE: ./src/components/tooltip/src/tooltip.js
+// CONCATENATED MODULE: ./src/components/tooltip/tooltip.js
 
 
 
@@ -13799,21 +13793,8 @@ function getElementByEvent(event) {
 
 var tooltip_colors = ["dark", "light", "blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
-var VuiTooltip = {
-  name: "vui-tooltip",
-  components: {
-    VuiLazyRender: components_lazy_render,
-    VuiResizeObserver: components_resize_observer
-  },
-  directives: {
-    Portal: directives_portal,
-    Outclick: outclick
-  },
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var tooltip_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
     visible: prop_types["a" /* default */].bool.def(false),
@@ -13828,7 +13809,24 @@ var VuiTooltip = {
     }),
     beforeOpen: prop_types["a" /* default */].func,
     beforeClose: prop_types["a" /* default */].func
+  };
+};
+
+/* harmony default export */ var tooltip_tooltip = ({
+  name: "vui-tooltip",
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
   },
+  directives: {
+    Portal: directives_portal,
+    Outclick: outclick
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: tooltip_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -14154,17 +14152,13 @@ var VuiTooltip = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_tooltip = (VuiTooltip);
+});
 // CONCATENATED MODULE: ./src/components/tooltip/index.js
 
 
-src_tooltip.install = function (Vue) {
-  Vue.component(src_tooltip.name, src_tooltip);
-};
 
-/* harmony default export */ var components_tooltip = (src_tooltip);
+
+/* harmony default export */ var components_tooltip = (withInstall(tooltip_tooltip));
 // CONCATENATED MODULE: ./src/components/menu-item/src/menu-item.js
 
 
@@ -14559,8 +14553,7 @@ menu_divider.install = function (Vue) {
 };
 
 /* harmony default export */ var components_menu_divider = (menu_divider);
-// CONCATENATED MODULE: ./src/components/avatar/src/avatar.js
-
+// CONCATENATED MODULE: ./src/components/avatar/avatar.js
 
 
 
@@ -14570,7 +14563,19 @@ menu_divider.install = function (Vue) {
 var shapes = ["circle", "square"];
 var avatar_sizes = ["small", "medium", "large"];
 
-var avatar_VuiAvatar = {
+var avatar_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    src: prop_types["a" /* default */].string,
+    replacement: prop_types["a" /* default */].string,
+    alt: prop_types["a" /* default */].string,
+    icon: prop_types["a" /* default */].string,
+    shape: prop_types["a" /* default */].oneOf(shapes),
+    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(avatar_sizes), prop_types["a" /* default */].number])
+  };
+};
+
+/* harmony default export */ var avatar_avatar = ({
   name: "vui-avatar",
   inject: {
     vuiAvatarGroup: {
@@ -14580,15 +14585,7 @@ var avatar_VuiAvatar = {
   components: {
     VuiIcon: components_icon
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    src: prop_types["a" /* default */].string,
-    replacement: prop_types["a" /* default */].string,
-    alt: prop_types["a" /* default */].string,
-    icon: prop_types["a" /* default */].string,
-    shape: prop_types["a" /* default */].oneOf(shapes),
-    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(avatar_sizes), prop_types["a" /* default */].number])
-  },
+  props: avatar_createProps(),
   data: function data() {
     var state = {
       scale: 1
@@ -14734,18 +14731,14 @@ var avatar_VuiAvatar = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var src_avatar = (avatar_VuiAvatar);
+});
 // CONCATENATED MODULE: ./src/components/avatar/index.js
 
 
-src_avatar.install = function (Vue) {
-  Vue.component(src_avatar.name, src_avatar);
-};
 
-/* harmony default export */ var components_avatar = (src_avatar);
-// CONCATENATED MODULE: ./src/components/tag/src/tag.js
+
+/* harmony default export */ var components_avatar = (withInstall(avatar_avatar));
+// CONCATENATED MODULE: ./src/components/tag/tag.js
 
 
 
@@ -14753,7 +14746,19 @@ src_avatar.install = function (Vue) {
 
 var tag_colors = ["default", "primary", "info", "warning", "success", "error", "blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
-var VuiTag = {
+var tag_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+    color: prop_types["a" /* default */].string.def("default"),
+    icon: prop_types["a" /* default */].string,
+    closable: prop_types["a" /* default */].bool.def(false),
+    checkable: prop_types["a" /* default */].bool.def(false),
+    checked: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var tag_tag = ({
   name: "vui-tag",
   components: {
     VuiIcon: components_icon
@@ -14762,15 +14767,7 @@ var VuiTag = {
     prop: "checked",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
-    color: prop_types["a" /* default */].string.def("default"),
-    icon: prop_types["a" /* default */].string,
-    closable: prop_types["a" /* default */].bool.def(false),
-    checkable: prop_types["a" /* default */].bool.def(false),
-    checked: prop_types["a" /* default */].bool.def(false)
-  },
+  props: tag_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -14900,18 +14897,14 @@ var VuiTag = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var src_tag = (VuiTag);
+});
 // CONCATENATED MODULE: ./src/components/tag/index.js
 
 
-src_tag.install = function (Vue) {
-  Vue.component(src_tag.name, src_tag);
-};
 
-/* harmony default export */ var components_tag = (src_tag);
-// CONCATENATED MODULE: ./src/components/page-header/src/page-header.js
+
+/* harmony default export */ var components_tag = (withInstall(tag_tag));
+// CONCATENATED MODULE: ./src/components/page-header/page-header.js
 
 
 
@@ -14921,16 +14914,8 @@ src_tag.install = function (Vue) {
 
 
 
-var VuiPageHeader = {
-  name: "vui-page-header",
-  components: {
-    VuiAvatar: components_avatar,
-    VuiBreadcrumb: components_breadcrumb,
-    VuiBreadcrumbItem: components_breadcrumb,
-    VuiIcon: components_icon,
-    VuiTag: components_tag
-  },
-  props: {
+var page_header_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     breadcrumb: prop_types["a" /* default */].array,
     backIcon: prop_types["a" /* default */].string,
@@ -14939,7 +14924,19 @@ var VuiPageHeader = {
     subTitle: prop_types["a" /* default */].string,
     tags: prop_types["a" /* default */].array,
     ghost: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+/* harmony default export */ var page_header = ({
+  name: "vui-page-header",
+  components: {
+    VuiAvatar: components_avatar,
+    VuiBreadcrumb: components_breadcrumb,
+    VuiBreadcrumbItem: components_breadcrumb,
+    VuiIcon: components_icon,
+    VuiTag: components_tag
   },
+  props: page_header_createProps(),
   methods: {
     handleBack: function handleBack(e) {
       this.$emit("back", e);
@@ -15153,17 +15150,13 @@ var VuiPageHeader = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var page_header = (VuiPageHeader);
+});
 // CONCATENATED MODULE: ./src/components/page-header/index.js
 
 
-page_header.install = function (Vue) {
-  Vue.component(page_header.name, page_header);
-};
 
-/* harmony default export */ var components_page_header = (page_header);
+
+/* harmony default export */ var components_page_header = (withInstall(page_header));
 // CONCATENATED MODULE: ./src/mixins/locale.js
 
 
@@ -15178,7 +15171,7 @@ page_header.install = function (Vue) {
     }
   }
 });
-// CONCATENATED MODULE: ./src/components/select/src/select-selection.js
+// CONCATENATED MODULE: ./src/components/select/select-selection.js
 
 
 
@@ -15186,19 +15179,8 @@ page_header.install = function (Vue) {
 
 
 
-/* harmony default export */ var select_selection = ({
-  name: "vui-select-selection",
-  inject: {
-    vuiSelect: {
-      default: undefined
-    }
-  },
-  componetns: {
-    VuiResizeObserver: components_resize_observer,
-    VuiIcon: components_icon
-  },
-  mixins: [mixins_locale],
-  props: {
+var select_selection_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     placeholder: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].array]),
@@ -15214,7 +15196,22 @@ page_header.install = function (Vue) {
     hovered: prop_types["a" /* default */].bool.def(false),
     focused: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var select_selection = ({
+  name: "vui-select-selection",
+  inject: {
+    vuiSelect: {
+      default: undefined
+    }
   },
+  componetns: {
+    VuiResizeObserver: components_resize_observer,
+    VuiIcon: components_icon
+  },
+  mixins: [mixins_locale],
+  props: select_selection_createProps(),
   methods: {
     focus: function focus() {
       this.$refs.input.focus();
@@ -15568,7 +15565,7 @@ page_header.install = function (Vue) {
     );
   }
 });
-// CONCATENATED MODULE: ./src/components/select/src/select-dropdown.js
+// CONCATENATED MODULE: ./src/components/select/select-dropdown.js
 
 
 
@@ -15578,16 +15575,8 @@ page_header.install = function (Vue) {
 
 
 
-var VuiSelectDropdown = {
-  name: "vui-select-dropdown",
-  components: {
-    VuiLazyRender: components_lazy_render,
-    VuiResizeObserver: components_resize_observer
-  },
-  directives: {
-    Portal: directives_portal
-  },
-  props: {
+var select_dropdown_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
     placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
@@ -15599,7 +15588,19 @@ var VuiSelectDropdown = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var select_dropdown = ({
+  name: "vui-select-dropdown",
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
   },
+  directives: {
+    Portal: directives_portal
+  },
+  props: select_dropdown_createProps(),
   methods: {
     register: function register() {
       if (is["a" /* default */].server || this.popup) {
@@ -15758,9 +15759,7 @@ var VuiSelectDropdown = {
       )]
     );
   }
-};
-
-/* harmony default export */ var select_dropdown = (VuiSelectDropdown);
+});
 // CONCATENATED MODULE: ./src/utils/restArgs.js
 /* harmony default export */ var restArgs = (function (fn, startIndex) {
   startIndex = startIndex == null ? fn.length - 1 : +startIndex;
@@ -15846,16 +15845,15 @@ var VuiSelectDropdown = {
 
   return debounced;
 });;
-// CONCATENATED MODULE: ./src/components/spin/src/spin.js
+// CONCATENATED MODULE: ./src/components/spin/spin.js
 
 
 
 
 
 
-var VuiSpin = {
-  name: "vui-spin",
-  props: {
+var spin_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     fullscreen: prop_types["a" /* default */].bool.def(false),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
@@ -15863,7 +15861,12 @@ var VuiSpin = {
     delay: prop_types["a" /* default */].number,
     indicator: prop_types["a" /* default */].func,
     message: prop_types["a" /* default */].string
-  },
+  };
+};
+
+/* harmony default export */ var spin = ({
+  name: "vui-spin",
+  props: spin_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -15991,9 +15994,7 @@ var VuiSpin = {
       )]
     );
   }
-};
-
-/* harmony default export */ var spin = (VuiSpin);
+});
 // CONCATENATED MODULE: ./src/components/spin/index.js
 
 
@@ -16001,9 +16002,7 @@ var VuiSpin = {
 
 
 
-/**
-* 默认配置
-*/
+
 var spin_defaults = {
   size: "large",
   animation: "vui-spin-fade",
@@ -16012,10 +16011,6 @@ var spin_defaults = {
   }
 };
 
-/**
-* 创建 Spin 实例
-* @param {Object} options 
-*/
 var spin_createSpinInstance = function createSpinInstance(options) {
   // 创建 Spin 挂载的 html 根节点
   var container = options.getPopupContainer();
@@ -16092,10 +16087,6 @@ var spin_createSpinInstance = function createSpinInstance(options) {
   return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a(component);
 };
 
-/**
-* 对外提供 spinning 接口
-* @param {String/Object} options 
-*/
 spin.spinning = function () {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -16122,31 +16113,28 @@ spin.spinning = function () {
   return instance;
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-spin.install = function (Vue) {
-  Vue.component(spin.name, spin);
+
+/* harmony default export */ var components_spin = (withInstall(spin));
+// CONCATENATED MODULE: ./src/components/select/select-spin.js
+
+
+
+
+
+var select_spin_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    loadingText: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_spin = (spin);
-// CONCATENATED MODULE: ./src/components/select/src/select-spin.js
-
-
-
-
-
-var VuiSelectSpin = {
+/* harmony default export */ var select_spin = ({
   name: "vui-select-spin",
   components: {
     VuiSpin: components_spin
   },
   mixins: [mixins_locale],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    loadingText: prop_types["a" /* default */].string
-  },
+  props: select_spin_createProps(),
   render: function render(h) {
     var props = this.$props,
         translate = this.t;
@@ -16175,23 +16163,25 @@ var VuiSelectSpin = {
       )]
     );
   }
-};
-
-/* harmony default export */ var select_spin = (VuiSelectSpin);
-// CONCATENATED MODULE: ./src/components/empty/src/empty.js
+});
+// CONCATENATED MODULE: ./src/components/empty/empty.js
 
 
 
 
 
-var VuiEmpty = {
-  name: "vui-empty",
-  mixins: [mixins_locale],
-  props: {
+var empty_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     image: prop_types["a" /* default */].string,
     description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].bool]).def(true)
-  },
+  };
+};
+
+/* harmony default export */ var empty_empty = ({
+  name: "vui-empty",
+  mixins: [mixins_locale],
+  props: empty_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -16273,33 +16263,33 @@ var VuiEmpty = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var src_empty = (VuiEmpty);
+});
 // CONCATENATED MODULE: ./src/components/empty/index.js
 
 
-src_empty.install = function (Vue) {
-  Vue.component(src_empty.name, src_empty);
+
+
+/* harmony default export */ var components_empty = (withInstall(empty_empty));
+// CONCATENATED MODULE: ./src/components/select/select-empty.js
+
+
+
+
+
+var select_empty_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    notFoundText: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_empty = (src_empty);
-// CONCATENATED MODULE: ./src/components/select/src/select-empty.js
-
-
-
-
-
-var VuiSelectEmpty = {
+/* harmony default export */ var select_empty = ({
   name: "vui-select-empty",
   components: {
     VuiEmpty: components_empty
   },
   mixins: [mixins_locale],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    notFoundText: prop_types["a" /* default */].string
-  },
+  props: select_empty_createProps(),
   render: function render(h) {
     var props = this.$props,
         translate = this.t;
@@ -16323,25 +16313,27 @@ var VuiSelectEmpty = {
       })]
     );
   }
+});
+// CONCATENATED MODULE: ./src/components/select/select-menu-item-group.js
+
+
+
+
+var select_menu_item_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    data: prop_types["a" /* default */].object.def({})
+  };
 };
 
-/* harmony default export */ var select_empty = (VuiSelectEmpty);
-// CONCATENATED MODULE: ./src/components/select/src/select-menu-item-group.js
-
-
-
-
-var VuiSelectMenuItemGroup = {
+/* harmony default export */ var select_menu_item_group = ({
   name: "vui-select-menu-item-group",
   inject: {
     vuiSelect: {
       default: undefined
     }
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    data: prop_types["a" /* default */].object.def({})
-  },
+  props: select_menu_item_group_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -16366,325 +16358,27 @@ var VuiSelectMenuItemGroup = {
       )]
     );
   }
-};
-
-/* harmony default export */ var select_menu_item_group = (VuiSelectMenuItemGroup);
-// EXTERNAL MODULE: ./src/utils/clone.js
-var utils_clone = __webpack_require__(4);
-
-// CONCATENATED MODULE: ./src/utils/scrollIntoView.js
-
-
-/**
-* @param {HTMLElement} view
-* @param {HTMLElement} target
-*/
-function scrollIntoView(view, target) {
-  if (is["a" /* default */].server) {
-    return;
-  }
-
-  if (!target) {
-    return view.scrollTop = 0;
-  }
-
-  var offsetParents = [];
-  var offsetParent = target.offsetParent;
-
-  while (offsetParent && view !== offsetParent && view.contains(offsetParent)) {
-    offsetParents.push(offsetParent);
-    offsetParent = offsetParent.offsetParent;
-  }
-
-  var top = target.offsetTop + offsetParents.reduce(function (prev, curr) {
-    return prev + curr.offsetTop;
-  }, 0);
-  var bottom = top + target.offsetHeight;
-  var viewRectTop = view.scrollTop;
-  var viewRectBottom = viewRectTop + view.clientHeight;
-
-  if (top < viewRectTop) {
-    view.scrollTop = top;
-  } else if (bottom > viewRectBottom) {
-    view.scrollTop = bottom - view.clientHeight;
-  }
-};
-// CONCATENATED MODULE: ./src/components/select/src/utils.js
+});
+// CONCATENATED MODULE: ./src/components/select/select-menu-item.js
 
 
 
-/**
-* 默认配置
-*/
-var utils_defaults = {
-  filter: function filter(keyword, option, property) {
-    if (!keyword) {
-      return true;
-    }
 
-    var regexper = new RegExp(String(keyword).replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i");
-
-    if (property === "label" || property === "value") {
-      return regexper.test(option[property]);
-    } else if (property === "children") {
-      return regexper.test(utils_getTextFromChildren(option.children));
-    }
-  }
-};
-
-/**
-* 判断输入的关键词是否是一个已经存在的选项
-* @param {String} keyword 关键词
-* @param {Array} options 选项列表
-*/
-var isExisted = function isExisted(keyword, options) {
-  return options.some(function (option) {
-    return (option.type === "option" || option.type === "keyword") && (option.label === keyword || option.value === keyword || utils_getTextFromChildren(option.children) === keyword);
-  });
-};
-
-/**
-* 获取子组件的文本内容
-* @param {Array} children 子组件
-*/
-var utils_getTextFromChildren = function getTextFromChildren(children) {
-  var text = "";
-
-  if (!children || !children.length) {
-    return text;
-  }
-
-  if (is["a" /* default */].string(children)) {
-    return children;
-  }
-
-  children.forEach(function (node) {
-    if (!node) {
-      return;
-    }
-
-    if (node.text) {
-      text += node.text;
-    }
-
-    if (node.children && node.children.length) {
-      text += getTextFromChildren(node.children);
-    }
-  });
-
-  return text;
-};
-
-/**
-* 从 children 中解析获取 options 选项列表
-* @param {Array} children 子组件
-* @param {Boolean} parent 父级
-*/
-var utils_getOptions = function getOptions(children) {
-  var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var parent = arguments[2];
-
-  var options = [];
-
-  if (!is["a" /* default */].array(children)) {
-    return options;
-  }
-
-  children.forEach(function (node, index) {
-    if (!node) {
-      return;
-    }
-
-    var component = node.componentOptions;
-
-    if (!component || !component.Ctor) {
-      return;
-    }
-
-    var config = component.Ctor.options;
-    var props = component.propsData;
-
-    if (!config || !props) {
-      return;
-    }
-
-    var option = extends_default()({}, props, {
-      key: parent ? parent.key + "-" + index : "" + index,
-      level: level
-    });
-
-    if (parent && parent.disabled) {
-      option.disabled = parent.disabled;
-    }
-
-    if (option.disabled === undefined || option.disabled === null || option.disabled === false) {
-      option.disabled = false;
-    }
-
-    if (config.name === "vui-option-group") {
-      option.type = "option-group";
-      option.children = getOptions(component.children, level + 1, option);
-
-      options.push(option);
-      options.push.apply(options, option.children);
-    } else if (config.name === "vui-option") {
-      option.type = "option";
-      option.children = component.children;
-
-      options.push(option);
-    }
-  });
-
-  return options;
-};
-
-/**
-* 根据搜索关键字 keyword 筛选 options 选项选项
-* @param {String} keyword 搜索关键字
-* @param {Array} options 选项列表
-* @param {Function} filter 筛选函数
-* @param {String} property 筛选属性
-*/
-var utils_getFilteredOptions = function getFilteredOptions(keyword, options, filter, property) {
-  var predicate = is["a" /* default */].function(filter) ? filter : utils_defaults.filter;
-  var array = [];
-
-  options.forEach(function (element) {
-    if (element.type === "option-group") {
-      var optgroup = extends_default()({}, element, {
-        children: getFilteredOptions(keyword, element.children, filter, property)
-      });
-
-      if (optgroup.children.length) {
-        array.push(optgroup);
-      }
-    } else if (element.type === "option") {
-      if (!predicate(keyword, element, property)) {
-        return;
-      }
-
-      var option = extends_default()({}, element);
-
-      array.push(option);
-    }
-  });
-
-  return array;
-};
-
-/**
-* 根据选中值及选项列表获取选中的选项列表（单选）
-* @param {Array} value 选中值
-* @param {Array} option 历史选中项
-* @param {Array} props 属性
-*/
-var utils_getSelectedOption = function getSelectedOption(value, option, props) {
-  var target = props.options.find(function (target) {
-    return (target.type === "option" || target.type === "keyword") && target.value === value;
-  });
-
-  if (target) {
-    return target;
-  }
-
-  if (option && option.value === value) {
-    return option;
-  }
-
-  if (is["a" /* default */].undefined(value) || is["a" /* default */].null(value)) {
-    return;
-  }
-
-  if (is["a" /* default */].string(value) && is["a" /* default */].falsy(value)) {
-    return;
-  }
-
+var select_menu_item_createProps = function createProps() {
   return {
-    type: "option",
-    value: value,
-    disabled: false,
-    children: value
+    classNamePrefix: prop_types["a" /* default */].string,
+    data: prop_types["a" /* default */].object.def({})
   };
 };
 
-/**
-* 根据选中值及选项列表获取选中的选项列表（多选）
-* @param {Array} value 选中值
-* @param {Array} options 历史选中项
-* @param {Array} props 属性
-*/
-var utils_getSelectedOptions = function getSelectedOptions(value, options, props) {
-  var array = [];
-
-  if (is["a" /* default */].array(value)) {
-    value.forEach(function (val) {
-      var option = void 0;
-
-      if (options && options.length > 0) {
-        option = options.find(function (target) {
-          return target.value === val;
-        });
-      }
-
-      var target = utils_getSelectedOption(val, option, props);
-
-      if (!target) {
-        return;
-      }
-
-      array.push(target);
-    });
-  }
-
-  return array;
-};
-
-/**
-* 根据选中值及选项列表获取组件内部状态值
-* @param {Array} value 选中值
-* @param {Array} options 历史选中项
-* @param {Array} props 属性
-*/
-var utils_getValue = function getValue(value, options, props) {
-  var getter = void 0;
-
-  if (props.multiple) {
-    getter = utils_getSelectedOptions;
-  } else {
-    getter = utils_getSelectedOption;
-  }
-
-  return getter(value, options, props);
-};
-
-/**
-* 默认导出指定接口
-*/
-/* harmony default export */ var src_utils = ({
-  isExisted: isExisted,
-  getOptions: utils_getOptions,
-  getFilteredOptions: utils_getFilteredOptions,
-  getValue: utils_getValue
-});
-// CONCATENATED MODULE: ./src/components/select/src/select-menu-item.js
-
-
-
-
-
-
-
-var VuiSelectMenuItem = {
+/* harmony default export */ var select_menu_item = ({
   name: "vui-select-menu-item",
   inject: {
     vuiSelect: {
       default: undefined
     }
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    data: prop_types["a" /* default */].object.def({})
-  },
+  props: select_menu_item_createProps(),
   computed: {
     actived: function actived() {
       var vuiSelect = this.vuiSelect,
@@ -16801,19 +16495,25 @@ var VuiSelectMenuItem = {
       [children]
     );
   }
+});
+// CONCATENATED MODULE: ./src/components/select/select-menu.js
+
+
+
+
+
+
+var select_menu_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].array]),
+    options: prop_types["a" /* default */].array.def([]),
+    multiple: prop_types["a" /* default */].bool.def(false),
+    visible: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var select_menu_item = (VuiSelectMenuItem);
-// CONCATENATED MODULE: ./src/components/select/src/select-menu.js
-
-
-
-
-
-
-
-
-var VuiSelectMenu = {
+/* harmony default export */ var select_menu = ({
   name: "vui-select-menu",
   inject: {
     vuiSelect: {
@@ -16830,13 +16530,7 @@ var VuiSelectMenu = {
     VuiSelectMenuItemGroup: select_menu_item_group,
     VuiSelectMenuItem: select_menu_item
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].array]),
-    options: prop_types["a" /* default */].array.def([]),
-    multiple: prop_types["a" /* default */].bool.def(false),
-    visible: prop_types["a" /* default */].bool.def(false)
-  },
+  props: select_menu_createProps(),
   data: function data() {
     return {
       pagination: {
@@ -17098,9 +16792,7 @@ var VuiSelectMenu = {
       )]
     );
   }
-};
-
-/* harmony default export */ var select_menu = (VuiSelectMenu);
+});
 // CONCATENATED MODULE: ./src/mixins/emitter.js
 function _dispatch(component, event, params) {
   var parent = this.$parent || this.$root;
@@ -17141,7 +16833,264 @@ function _broadcast(component, event, params) {
     }
   }
 });
-// CONCATENATED MODULE: ./src/components/select/src/select.js
+// CONCATENATED MODULE: ./src/components/select/utils.js
+
+
+
+/**
+* 默认配置
+*/
+var utils_defaults = {
+  filter: function filter(keyword, option, property) {
+    if (!keyword) {
+      return true;
+    }
+
+    var regexper = new RegExp(String(keyword).replace(/[|\\{}()[\]^$+*?.]/g, "\\$&"), "i");
+
+    if (property === "label" || property === "value") {
+      return regexper.test(option[property]);
+    } else if (property === "children") {
+      return regexper.test(utils_getTextFromChildren(option.children));
+    }
+  }
+};
+
+/**
+* 判断输入的关键词是否是一个已经存在的选项
+* @param {String} keyword 关键词
+* @param {Array} options 选项列表
+*/
+var isExisted = function isExisted(keyword, options) {
+  return options.some(function (option) {
+    return (option.type === "option" || option.type === "keyword") && (option.label === keyword || option.value === keyword || utils_getTextFromChildren(option.children) === keyword);
+  });
+};
+
+/**
+* 获取子组件的文本内容
+* @param {Array} children 子组件
+*/
+var utils_getTextFromChildren = function getTextFromChildren(children) {
+  var text = "";
+
+  if (!children || !children.length) {
+    return text;
+  }
+
+  if (is["a" /* default */].string(children)) {
+    return children;
+  }
+
+  children.forEach(function (node) {
+    if (!node) {
+      return;
+    }
+
+    if (node.text) {
+      text += node.text;
+    }
+
+    if (node.children && node.children.length) {
+      text += getTextFromChildren(node.children);
+    }
+  });
+
+  return text;
+};
+
+/**
+* 从 children 中解析获取 options 选项列表
+* @param {Array} children 子组件
+* @param {Boolean} parent 父级
+*/
+var utils_getOptions = function getOptions(children) {
+  var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var parent = arguments[2];
+
+  var options = [];
+
+  if (!is["a" /* default */].array(children)) {
+    return options;
+  }
+
+  children.forEach(function (node, index) {
+    if (!node) {
+      return;
+    }
+
+    var component = node.componentOptions;
+
+    if (!component || !component.Ctor) {
+      return;
+    }
+
+    var config = component.Ctor.options;
+    var props = component.propsData;
+
+    if (!config || !props) {
+      return;
+    }
+
+    var option = extends_default()({}, props, {
+      key: parent ? parent.key + "-" + index : "" + index,
+      level: level
+    });
+
+    if (parent && parent.disabled) {
+      option.disabled = parent.disabled;
+    }
+
+    if (option.disabled === undefined || option.disabled === null || option.disabled === false) {
+      option.disabled = false;
+    }
+
+    if (config.name === "vui-option-group") {
+      option.type = "option-group";
+      option.children = getOptions(component.children, level + 1, option);
+
+      options.push(option);
+      options.push.apply(options, option.children);
+    } else if (config.name === "vui-option") {
+      option.type = "option";
+      option.children = component.children;
+
+      options.push(option);
+    }
+  });
+
+  return options;
+};
+
+/**
+* 根据搜索关键字 keyword 筛选 options 选项选项
+* @param {String} keyword 搜索关键字
+* @param {Array} options 选项列表
+* @param {Function} filter 筛选函数
+* @param {String} property 筛选属性
+*/
+var utils_getFilteredOptions = function getFilteredOptions(keyword, options, filter, property) {
+  var predicate = is["a" /* default */].function(filter) ? filter : utils_defaults.filter;
+  var array = [];
+
+  options.forEach(function (element) {
+    if (element.type === "option-group") {
+      var optgroup = extends_default()({}, element, {
+        children: getFilteredOptions(keyword, element.children, filter, property)
+      });
+
+      if (optgroup.children.length) {
+        array.push(optgroup);
+      }
+    } else if (element.type === "option") {
+      if (!predicate(keyword, element, property)) {
+        return;
+      }
+
+      var option = extends_default()({}, element);
+
+      array.push(option);
+    }
+  });
+
+  return array;
+};
+
+/**
+* 根据选中值及选项列表获取选中的选项列表（单选）
+* @param {Array} value 选中值
+* @param {Array} option 历史选中项
+* @param {Array} props 属性
+*/
+var utils_getSelectedOption = function getSelectedOption(value, option, props) {
+  var target = props.options.find(function (target) {
+    return (target.type === "option" || target.type === "keyword") && target.value === value;
+  });
+
+  if (target) {
+    return target;
+  }
+
+  if (option && option.value === value) {
+    return option;
+  }
+
+  if (is["a" /* default */].undefined(value) || is["a" /* default */].null(value)) {
+    return;
+  }
+
+  if (is["a" /* default */].string(value) && is["a" /* default */].falsy(value)) {
+    return;
+  }
+
+  return {
+    type: "option",
+    value: value,
+    disabled: false,
+    children: value
+  };
+};
+
+/**
+* 根据选中值及选项列表获取选中的选项列表（多选）
+* @param {Array} value 选中值
+* @param {Array} options 历史选中项
+* @param {Array} props 属性
+*/
+var utils_getSelectedOptions = function getSelectedOptions(value, options, props) {
+  var array = [];
+
+  if (is["a" /* default */].array(value)) {
+    value.forEach(function (val) {
+      var option = void 0;
+
+      if (options && options.length > 0) {
+        option = options.find(function (target) {
+          return target.value === val;
+        });
+      }
+
+      var target = utils_getSelectedOption(val, option, props);
+
+      if (!target) {
+        return;
+      }
+
+      array.push(target);
+    });
+  }
+
+  return array;
+};
+
+/**
+* 根据选中值及选项列表获取组件内部状态值
+* @param {Array} value 选中值
+* @param {Array} options 历史选中项
+* @param {Array} props 属性
+*/
+var utils_getValue = function getValue(value, options, props) {
+  var getter = void 0;
+
+  if (props.multiple) {
+    getter = utils_getSelectedOptions;
+  } else {
+    getter = utils_getSelectedOption;
+  }
+
+  return getter(value, options, props);
+};
+
+/**
+* 默认导出指定接口
+*/
+/* harmony default export */ var select_utils = ({
+  isExisted: isExisted,
+  getOptions: utils_getOptions,
+  getFilteredOptions: utils_getFilteredOptions,
+  getValue: utils_getValue
+});
+// CONCATENATED MODULE: ./src/components/select/select.js
 
 
 
@@ -17193,7 +17142,7 @@ var select_createProps = function createProps() {
   };
 };
 
-var VuiSelect = {
+/* harmony default export */ var select_select = ({
   name: "vui-select",
   inject: {
     vuiForm: {
@@ -17233,7 +17182,7 @@ var VuiSelect = {
         actived: false,
         searching: false,
         keyword: "",
-        value: src_utils.getValue(props.value, undefined, props),
+        value: select_utils.getValue(props.value, undefined, props),
         options: [],
         activedEventType: "navigate",
         activedMenuItemIndex: 0,
@@ -17252,10 +17201,10 @@ var VuiSelect = {
   },
   watch: {
     value: function value(_value) {
-      this.state.value = src_utils.getValue(_value, this.state.value, this.$props);
+      this.state.value = select_utils.getValue(_value, this.state.value, this.$props);
     },
     options: function options(value) {
-      this.state.value = src_utils.getValue(this.value, this.state.value, this.$props);
+      this.state.value = select_utils.getValue(this.value, this.state.value, this.$props);
     },
     actived: function actived(value) {
       var _this = this;
@@ -17459,9 +17408,9 @@ var VuiSelect = {
         var options = [];
 
         if (searching) {
-          options = src_utils.getFilteredOptions(keyword, props.options, props.filter, props.filterOptionProp);
+          options = select_utils.getFilteredOptions(keyword, props.options, props.filter, props.filterOptionProp);
 
-          if (props.allowCreate && !src_utils.isExisted(keyword, props.options)) {
+          if (props.allowCreate && !select_utils.isExisted(keyword, props.options)) {
             options.unshift({
               type: "keyword",
               label: keyword,
@@ -17849,9 +17798,7 @@ var VuiSelect = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_select = (VuiSelect);
+});
 // CONCATENATED MODULE: ./src/components/select/index.js
 
 
@@ -17859,10 +17806,11 @@ var VuiSelect = {
 
 
 
-var VuiSelectWrapper = {
-  name: src_select.name,
+
+/* harmony default export */ var components_select = (withInstall({
+  name: select_select.name,
   components: {
-    VuiSelect: src_select
+    VuiSelect: select_select
   },
   model: {
     prop: "value",
@@ -17886,17 +17834,14 @@ var VuiSelectWrapper = {
     var attributes = {
       ref: "select",
       props: extends_default()({}, props, {
-        options: src_utils.getOptions(slots.default)
+        options: select_utils.getOptions(slots.default)
       }),
       on: listeners
     };
 
-    return h(src_select, attributes);
+    return h(select_select, attributes);
   }
-};
-
-
-/* harmony default export */ var components_select = (withInstall(VuiSelectWrapper));
+}));
 // CONCATENATED MODULE: ./src/components/option/src/option.js
 
 
@@ -17922,7 +17867,7 @@ src_option.install = function (Vue) {
 var babel_helper_vue_jsx_merge_props = __webpack_require__(17);
 var babel_helper_vue_jsx_merge_props_default = /*#__PURE__*/__webpack_require__.n(babel_helper_vue_jsx_merge_props);
 
-// CONCATENATED MODULE: ./src/components/input/src/input.js
+// CONCATENATED MODULE: ./src/components/input/input.js
 
 
 
@@ -17953,7 +17898,7 @@ var input_createProps = function createProps() {
   };
 };
 
-var VuiInput = {
+/* harmony default export */ var input_input = ({
   name: "vui-input",
   inject: {
     vuiForm: {
@@ -18361,15 +18306,13 @@ var VuiInput = {
       ), append]
     );
   }
-};
-
-/* harmony default export */ var src_input = (VuiInput);
+});
 // CONCATENATED MODULE: ./src/components/input/index.js
 
 
 
 
-/* harmony default export */ var components_input = (withInstall(src_input));
+/* harmony default export */ var components_input = (withInstall(input_input));
 // CONCATENATED MODULE: ./src/utils/range.js
 /**
 * 创建一个 start ~ end 范围内的数值数组（包含 start，但不包含 end）
@@ -18398,7 +18341,7 @@ function range(start, end, step) {
 
   return range;
 };
-// CONCATENATED MODULE: ./src/components/pagination/src/pagination.js
+// CONCATENATED MODULE: ./src/components/pagination/pagination.js
 
 
 
@@ -18428,7 +18371,7 @@ var pagination_createProps = function createProps() {
   };
 };
 
-var VuiPagination = {
+/* harmony default export */ var pagination_pagination = ({
   name: "vui-pagination",
   components: {
     VuiSelect: components_select,
@@ -18901,15 +18844,13 @@ var VuiPagination = {
       );
     }
   }
-};
-
-/* harmony default export */ var src_pagination = (VuiPagination);
+});
 // CONCATENATED MODULE: ./src/components/pagination/index.js
 
 
 
 
-/* harmony default export */ var components_pagination = (withInstall(src_pagination));
+/* harmony default export */ var components_pagination = (withInstall(pagination_pagination));
 // CONCATENATED MODULE: ./src/components/steps/src/steps.js
 
 
@@ -19202,7 +19143,7 @@ var utils_getStepsFromChildren = function getStepsFromChildren(parent, children)
 /**
 * 默认导出指定接口
 */
-/* harmony default export */ var steps_src_utils = ({
+/* harmony default export */ var src_utils = ({
   getStepsFromChildren: utils_getStepsFromChildren
 });
 // CONCATENATED MODULE: ./src/components/steps/index.js
@@ -19233,7 +19174,7 @@ var VuiStepsWrapper = {
 
     var attributes = {
       props: extends_default()({}, props, {
-        steps: steps_src_utils.getStepsFromChildren(props, slots.default)
+        steps: src_utils.getStepsFromChildren(props, slots.default)
       }),
       on: extends_default()({}, listeners)
     };
@@ -19269,14 +19210,21 @@ src_step.install = function (Vue) {
 };
 
 /* harmony default export */ var components_step = (src_step);
-// CONCATENATED MODULE: ./src/components/tabs/src/tabs-tab.js
+// CONCATENATED MODULE: ./src/components/tabs/tabs-tab.js
 
 
 
 
 
 
-var VuiTabsTab = {
+var tabs_tab_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    data: prop_types["a" /* default */].object.def({})
+  };
+};
+
+/* harmony default export */ var tabs_tab = ({
   name: "vui-tabs-tab",
   inject: {
     vuiTabs: {
@@ -19286,10 +19234,7 @@ var VuiTabsTab = {
   components: {
     VuiIcon: components_icon
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    data: prop_types["a" /* default */].object.def({})
-  },
+  props: tabs_tab_createProps(),
   methods: {
     handleClick: function handleClick(e) {
       var props = this.$props;
@@ -19380,26 +19325,28 @@ var VuiTabsTab = {
       ), btnClose]
     );
   }
+});
+// CONCATENATED MODULE: ./src/components/tabs/tabs-panel.js
+
+
+
+
+var tabs_panel_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    data: prop_types["a" /* default */].object.def({}),
+    destroyOnHide: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var tabs_tab = (VuiTabsTab);
-// CONCATENATED MODULE: ./src/components/tabs/src/tabs-panel.js
-
-
-
-
-var VuiTabsPanel = {
+/* harmony default export */ var tabs_panel = ({
   name: "vui-tabs-panel",
   inject: {
     vuiTabs: {
       default: undefined
     }
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    data: prop_types["a" /* default */].object.def({}),
-    destroyOnHide: prop_types["a" /* default */].bool.def(false)
-  },
+  props: tabs_panel_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -19431,10 +19378,8 @@ var VuiTabsPanel = {
       [content]
     );
   }
-};
-
-/* harmony default export */ var tabs_panel = (VuiTabsPanel);
-// CONCATENATED MODULE: ./src/components/tabs/src/tabs.js
+});
+// CONCATENATED MODULE: ./src/components/tabs/tabs.js
 
 
 
@@ -19443,22 +19388,8 @@ var VuiTabsPanel = {
 
 
 
-
-var VuiTabs = {
-  name: "vui-tabs",
-  provide: function provide() {
-    return {
-      vuiTabs: this
-    };
-  },
-
-  components: {
-    VuiResizeObserver: components_resize_observer,
-    VuiTabsTab: tabs_tab,
-    VuiTabsPanel: tabs_panel,
-    VuiIcon: components_icon
-  },
-  props: {
+var tabs_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["line", "card"]).def("line"),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
@@ -19470,7 +19401,24 @@ var VuiTabs = {
     destroyOnHide: prop_types["a" /* default */].bool.def(false),
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
+  };
+};
+
+/* harmony default export */ var tabs_tabs = ({
+  name: "vui-tabs",
+  provide: function provide() {
+    return {
+      vuiTabs: this
+    };
   },
+
+  components: {
+    VuiResizeObserver: components_resize_observer,
+    VuiIcon: components_icon,
+    VuiTabsTab: tabs_tab,
+    VuiTabsPanel: tabs_panel
+  },
+  props: tabs_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -19901,10 +19849,8 @@ var VuiTabs = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_tabs = (VuiTabs);
-// CONCATENATED MODULE: ./src/components/tabs/src/utils.js
+});
+// CONCATENATED MODULE: ./src/components/tabs/utils.js
 
 
 
@@ -20041,7 +19987,7 @@ var utils_getTabsFromChildren = function getTabsFromChildren(parent, children) {
 /**
 * 默认导出指定接口
 */
-/* harmony default export */ var tabs_src_utils = ({
+/* harmony default export */ var tabs_utils = ({
   getTabsFromChildren: utils_getTabsFromChildren
 });
 // CONCATENATED MODULE: ./src/components/tabs/index.js
@@ -20051,27 +19997,18 @@ var utils_getTabsFromChildren = function getTabsFromChildren(parent, children) {
 
 
 
-var VuiTabsWrapper = {
-  name: src_tabs.name,
+
+
+/* harmony default export */ var components_tabs = (withInstall({
+  name: tabs_tabs.name,
   components: {
-    VuiTabs: src_tabs
+    VuiTabs: tabs_tabs
   },
   model: {
     prop: "activeKey",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].oneOf(["line", "card"]).def("line"),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    activeKey: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    extra: prop_types["a" /* default */].any,
-    addable: prop_types["a" /* default */].bool.def(false),
-    closable: prop_types["a" /* default */].bool.def(false),
-    destroyOnHide: prop_types["a" /* default */].bool.def(false),
-    headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
-    bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
-  },
+  props: tabs_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -20079,7 +20016,7 @@ var VuiTabsWrapper = {
         props = this.$props;
 
 
-    var tabs = tabs_src_utils.getTabsFromChildren(props, slots.default);
+    var tabs = tabs_utils.getTabsFromChildren(props, slots.default);
     var activeKey = props.activeKey;
 
     if (!is["a" /* default */].effective(activeKey)) {
@@ -20101,15 +20038,9 @@ var VuiTabsWrapper = {
       on: extends_default()({}, listeners)
     };
 
-    return h(src_tabs, attributes);
+    return h(tabs_tabs, attributes);
   }
-};
-
-VuiTabsWrapper.install = function (Vue) {
-  Vue.component(VuiTabsWrapper.name, VuiTabsWrapper);
-};
-
-/* harmony default export */ var components_tabs = (VuiTabsWrapper);
+}));
 // CONCATENATED MODULE: ./src/components/tab-panel/src/tab-panel.js
 
 
@@ -20132,7 +20063,10 @@ tab_panel.install = function (Vue) {
 };
 
 /* harmony default export */ var components_tab_panel = (tab_panel);
-// CONCATENATED MODULE: ./src/components/cascader/src/utils.js
+// EXTERNAL MODULE: ./src/utils/clone.js
+var utils_clone = __webpack_require__(4);
+
+// CONCATENATED MODULE: ./src/components/cascader/utils.js
 
 /**
 * 获取选项键值属性
@@ -20208,13 +20142,13 @@ var utils_filter = function filter(keyword, option, property) {
 /**
 * 以默认导出的方式导出所有接口或数据
 */
-/* harmony default export */ var cascader_src_utils = ({
+/* harmony default export */ var cascader_utils = ({
   optionKeys: utils_optionKeys,
   getOptionKeys: utils_getOptionKeys,
   flatten: flatten,
   filter: utils_filter
 });
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-selection.js
+// CONCATENATED MODULE: ./src/components/cascader/cascader-selection.js
 
 
 
@@ -20223,6 +20157,23 @@ var utils_filter = function filter(keyword, option, property) {
 
 
 
+var cascader_selection_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    placeholder: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].array.def([]),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_utils.optionKeys),
+    formatter: prop_types["a" /* default */].func.def(function (labels, options) {
+      return labels.join(" / ");
+    }),
+    searchable: prop_types["a" /* default */].bool.def(false),
+    keyword: prop_types["a" /* default */].string,
+    clearable: prop_types["a" /* default */].bool.def(false),
+    hovered: prop_types["a" /* default */].bool.def(false),
+    focused: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
+};
 
 /* harmony default export */ var cascader_selection = ({
   name: "vui-cascader-selection",
@@ -20236,21 +20187,7 @@ var utils_filter = function filter(keyword, option, property) {
     VuiIcon: components_icon
   },
   mixins: [mixins_locale],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    placeholder: prop_types["a" /* default */].string,
-    value: prop_types["a" /* default */].array.def([]),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
-    formatter: prop_types["a" /* default */].func.def(function (labels, options) {
-      return labels.join(" / ");
-    }),
-    searchable: prop_types["a" /* default */].bool.def(false),
-    keyword: prop_types["a" /* default */].string,
-    clearable: prop_types["a" /* default */].bool.def(false),
-    hovered: prop_types["a" /* default */].bool.def(false),
-    focused: prop_types["a" /* default */].bool.def(false),
-    disabled: prop_types["a" /* default */].bool.def(false)
-  },
+  props: cascader_selection_createProps(),
   methods: {
     focus: function focus() {
       var references = this.$refs;
@@ -20524,7 +20461,7 @@ var utils_filter = function filter(keyword, option, property) {
     );
   }
 });
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-dropdown.js
+// CONCATENATED MODULE: ./src/components/cascader/cascader-dropdown.js
 
 
 
@@ -20534,7 +20471,23 @@ var utils_filter = function filter(keyword, option, property) {
 
 
 
-var VuiCascaderDropdown = {
+var cascader_dropdown_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    visible: prop_types["a" /* default */].bool.def(false),
+    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
+    autoWidth: prop_types["a" /* default */].bool.def(true),
+    animation: prop_types["a" /* default */].string.def("vui-cascader-dropdown-scale"),
+    getPopupReference: prop_types["a" /* default */].func.def(function () {
+      return null;
+    }),
+    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
+      return document.body;
+    })
+  };
+};
+
+/* harmony default export */ var cascader_dropdown = ({
   name: "vui-cascader-dropdown",
   provide: function provide() {
     return {
@@ -20549,19 +20502,7 @@ var VuiCascaderDropdown = {
   directives: {
     Portal: directives_portal
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    visible: prop_types["a" /* default */].bool.def(false),
-    placement: prop_types["a" /* default */].oneOf(["top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end"]).def("bottom-start"),
-    autoWidth: prop_types["a" /* default */].bool.def(true),
-    animation: prop_types["a" /* default */].string.def("vui-cascader-dropdown-scale"),
-    getPopupReference: prop_types["a" /* default */].func.def(function () {
-      return null;
-    }),
-    getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].func, prop_types["a" /* default */].bool]).def(function () {
-      return document.body;
-    })
-  },
+  props: cascader_dropdown_createProps(),
   watch: {
     autoWidth: function autoWidth(value) {
       var _this = this;
@@ -20721,25 +20662,27 @@ var VuiCascaderDropdown = {
       )]
     );
   }
+});
+// CONCATENATED MODULE: ./src/components/cascader/cascader-empty.js
+
+
+
+
+
+var cascader_empty_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    notFoundText: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var cascader_dropdown = (VuiCascaderDropdown);
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-empty.js
-
-
-
-
-
-var VuiCascaderEmpty = {
+/* harmony default export */ var cascader_empty = ({
   name: "vui-cascader-empty",
   components: {
     VuiEmpty: components_empty
   },
   mixins: [mixins_locale],
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    notFoundText: prop_types["a" /* default */].string
-  },
+  props: cascader_empty_createProps(),
   render: function render(h) {
     var props = this.$props,
         translate = this.t;
@@ -20763,10 +20706,45 @@ var VuiCascaderEmpty = {
       })]
     );
   }
+});
+// CONCATENATED MODULE: ./src/utils/scrollIntoView.js
+
+
+/**
+* @param {HTMLElement} view
+* @param {HTMLElement} target
+*/
+function scrollIntoView(view, target) {
+  if (is["a" /* default */].server) {
+    return;
+  }
+
+  if (!target) {
+    return view.scrollTop = 0;
+  }
+
+  var offsetParents = [];
+  var offsetParent = target.offsetParent;
+
+  while (offsetParent && view !== offsetParent && view.contains(offsetParent)) {
+    offsetParents.push(offsetParent);
+    offsetParent = offsetParent.offsetParent;
+  }
+
+  var top = target.offsetTop + offsetParents.reduce(function (prev, curr) {
+    return prev + curr.offsetTop;
+  }, 0);
+  var bottom = top + target.offsetHeight;
+  var viewRectTop = view.scrollTop;
+  var viewRectBottom = viewRectTop + view.clientHeight;
+
+  if (top < viewRectTop) {
+    view.scrollTop = top;
+  } else if (bottom > viewRectBottom) {
+    view.scrollTop = bottom - view.clientHeight;
+  }
 };
-
-/* harmony default export */ var cascader_empty = (VuiCascaderEmpty);
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-menu-item.js
+// CONCATENATED MODULE: ./src/components/cascader/cascader-menu-item.js
 
 
 
@@ -20774,6 +20752,15 @@ var VuiCascaderEmpty = {
 
 
 
+
+var cascader_menu_item_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    data: prop_types["a" /* default */].object.def({}),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_utils.optionKeys),
+    dangerouslyUseHTMLString: prop_types["a" /* default */].bool.def(false)
+  };
+};
 
 /* harmony default export */ var cascader_menu_item = ({
   name: "vui-cascader-menu-item",
@@ -20794,12 +20781,7 @@ var VuiCascaderEmpty = {
   components: {
     VuiIcon: components_icon
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    data: prop_types["a" /* default */].object.def({}),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
-    dangerouslyUseHTMLString: prop_types["a" /* default */].bool.def(false)
-  },
+  props: cascader_menu_item_createProps(),
   computed: {
     visible: function visible() {
       return this.vuiCascaderDropdown.visible;
@@ -20934,14 +20916,25 @@ var VuiCascaderEmpty = {
     );
   }
 });
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-menu.js
+// CONCATENATED MODULE: ./src/components/cascader/cascader-menu.js
 
 
 
 
 
+var cascader_menu_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    level: prop_types["a" /* default */].number.def(0),
+    value: prop_types["a" /* default */].object.def({}),
+    options: prop_types["a" /* default */].array.def([]),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_utils.optionKeys),
+    dangerouslyUseHTMLString: prop_types["a" /* default */].bool.def(false),
+    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click")
+  };
+};
 
-var VuiCascaderMenu = {
+/* harmony default export */ var cascader_menu = ({
   name: "vui-cascader-menu",
   inject: {
     vuiCascader: {
@@ -20963,15 +20956,7 @@ var VuiCascaderMenu = {
   components: {
     VuiCascaderMenuItem: cascader_menu_item
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    level: prop_types["a" /* default */].number.def(0),
-    value: prop_types["a" /* default */].object.def({}),
-    options: prop_types["a" /* default */].array.def([]),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
-    dangerouslyUseHTMLString: prop_types["a" /* default */].bool.def(false),
-    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click")
-  },
+  props: cascader_menu_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -21049,17 +21034,26 @@ var VuiCascaderMenu = {
       })]
     );
   }
+});
+// CONCATENATED MODULE: ./src/components/cascader/cascader-menu-list.js
+
+
+
+
+
+
+var cascader_menu_list_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_utils.optionKeys),
+    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click"),
+    changeOnSelect: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var cascader_menu = (VuiCascaderMenu);
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader-menu-list.js
-
-
-
-
-
-
-var VuiCascaderMenuList = {
+/* harmony default export */ var cascader_menu_list = ({
   name: "vui-cascader-menu-list",
   inject: {
     vuiCascader: {
@@ -21075,14 +21069,7 @@ var VuiCascaderMenuList = {
   components: {
     VuiCascaderMenu: cascader_menu
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    value: prop_types["a" /* default */].array.def([]),
-    options: prop_types["a" /* default */].array.def([]),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
-    expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click"),
-    changeOnSelect: prop_types["a" /* default */].bool.def(false)
-  },
+  props: cascader_menu_list_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -21219,10 +21206,8 @@ var VuiCascaderMenuList = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var cascader_menu_list = (VuiCascaderMenuList);
-// CONCATENATED MODULE: ./src/components/cascader/src/cascader.js
+});
+// CONCATENATED MODULE: ./src/components/cascader/cascader.js
 
 
 
@@ -21245,7 +21230,7 @@ var cascader_createProps = function createProps() {
     value: prop_types["a" /* default */].array.def([]),
     options: prop_types["a" /* default */].array.def([]),
     expandTrigger: prop_types["a" /* default */].oneOf(["click", "hover"]).def("click"),
-    optionKeys: prop_types["a" /* default */].object.def(cascader_src_utils.optionKeys),
+    optionKeys: prop_types["a" /* default */].object.def(cascader_utils.optionKeys),
     formatter: prop_types["a" /* default */].func.def(function (labels, options) {
       return labels.join(" / ");
     }),
@@ -21269,7 +21254,7 @@ var cascader_createProps = function createProps() {
   };
 };
 
-var VuiCascader = {
+/* harmony default export */ var cascader = ({
   name: "vui-cascader",
   inject: {
     vuiForm: {
@@ -21301,7 +21286,7 @@ var VuiCascader = {
   data: function data() {
     var props = this.$props;
 
-    var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+    var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
     var state = {
       hovered: false,
       focused: false,
@@ -21325,7 +21310,7 @@ var VuiCascader = {
     value: function value(_value) {
       var props = this.$props;
 
-      var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+      var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
 
       this.state.value = this.getValue({
         value: _value,
@@ -21336,7 +21321,7 @@ var VuiCascader = {
     options: function options(value) {
       var props = this.$props;
 
-      var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+      var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
 
       this.state.value = this.getValue({
         value: props.value,
@@ -21378,9 +21363,9 @@ var VuiCascader = {
       return result;
     },
     getFilteredOptions: function getFilteredOptions(state, props) {
-      var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
-      var options = cascader_src_utils.flatten(null, props.options, optionKeys);
-      var predicate = is["a" /* default */].function(props.filter) ? props.filter : cascader_src_utils.filter;
+      var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
+      var options = cascader_utils.flatten(null, props.options, optionKeys);
+      var predicate = is["a" /* default */].function(props.filter) ? props.filter : cascader_utils.filter;
       var list = [];
 
       options.forEach(function (option) {
@@ -21516,7 +21501,7 @@ var VuiCascader = {
 
       var props = this.$props;
 
-      var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+      var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
       var option = options[options.length - 1];
       var keyword = "";
       var value = options.map(function (option) {
@@ -21557,7 +21542,7 @@ var VuiCascader = {
 
       var props = this.$props;
 
-      var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+      var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
       var keyword = "";
       var value = data.path.map(function (option) {
         return option[optionKeys.value];
@@ -21642,7 +21627,7 @@ var VuiCascader = {
     }
 
     // optionKeys
-    var optionKeys = cascader_src_utils.getOptionKeys(props.optionKeys);
+    var optionKeys = cascader_utils.getOptionKeys(props.optionKeys);
 
     // options
     var options = [];
@@ -21762,16 +21747,14 @@ var VuiCascader = {
       )]
     );
   }
-};
-
-/* harmony default export */ var cascader = (VuiCascader);
+});
 // CONCATENATED MODULE: ./src/components/cascader/index.js
 
 
 
 
 /* harmony default export */ var components_cascader = (withInstall(cascader));
-// CONCATENATED MODULE: ./src/components/checkbox/src/checkbox.js
+// CONCATENATED MODULE: ./src/components/checkbox/checkbox.js
 
 
 
@@ -21779,26 +21762,8 @@ var VuiCascader = {
 
 
 
-var VuiCheckbox = {
-  name: "vui-checkbox",
-  inject: {
-    vuiForm: {
-      default: undefined
-    },
-    vuiCheckboxGroup: {
-      default: undefined
-    },
-    vuiMutexGroup: {
-      default: undefined
-    }
-  },
-  mixins: [emitter],
-  inheritAttrs: false,
-  model: {
-    prop: "checked",
-    event: "input"
-  },
-  props: {
+var checkbox_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     name: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].string,
@@ -21812,7 +21777,29 @@ var VuiCheckbox = {
     checkedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(true),
     uncheckedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
     validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+/* harmony default export */ var checkbox_checkbox = ({
+  name: "vui-checkbox",
+  inject: {
+    vuiForm: {
+      default: undefined
+    },
+    vuiCheckboxGroup: {
+      default: undefined
+    },
+    vuiChoiceGroup: {
+      default: undefined
+    }
   },
+  mixins: [emitter],
+  inheritAttrs: false,
+  model: {
+    prop: "checked",
+    event: "input"
+  },
+  props: checkbox_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -21828,11 +21815,7 @@ var VuiCheckbox = {
 
   watch: {
     checked: function checked(value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.checked === value) {
+      if (this.state.checked === value) {
         return;
       }
 
@@ -21850,7 +21833,8 @@ var VuiCheckbox = {
     },
     handleChange: function handleChange(e) {
       var vuiCheckboxGroup = this.vuiCheckboxGroup,
-          vuiMutexGroup = this.vuiMutexGroup,
+          vuiChoiceGroup = this.vuiChoiceGroup,
+          references = this.$refs,
           props = this.$props;
 
       var checked = e.target.checked;
@@ -21860,9 +21844,29 @@ var VuiCheckbox = {
       }
 
       if (vuiCheckboxGroup) {
-        vuiCheckboxGroup.handleChange(checked, props.value);
-      } else if (vuiMutexGroup) {
-        vuiMutexGroup.handleChange("checkbox", checked, props.value);
+        var beforeCheck = vuiCheckboxGroup.beforeSelect || vuiCheckboxGroup.beforeCheck;
+        var callback = function callback() {
+          return vuiCheckboxGroup.handleChange(checked, props.value);
+        };
+        var hook = true;
+
+        if (is["a" /* default */].function(beforeCheck)) {
+          hook = beforeCheck(props.value);
+        }
+
+        if (is["a" /* default */].boolean(hook) && hook === false) {
+          references.checkbox.checked = "";
+        } else if (is["a" /* default */].promise(hook)) {
+          hook.then(function () {
+            return callback();
+          }).catch(function () {
+            return references.checkbox.checked = "";
+          });
+        } else {
+          callback();
+        }
+      } else if (vuiChoiceGroup) {
+        vuiChoiceGroup.handleChange("checkbox", checked, props.value);
       } else {
         var value = checked ? props.checkedValue : props.uncheckedValue;
 
@@ -21882,7 +21886,7 @@ var VuiCheckbox = {
     var h = arguments[0];
     var vuiForm = this.vuiForm,
         vuiCheckboxGroup = this.vuiCheckboxGroup,
-        vuiMutexGroup = this.vuiMutexGroup,
+        vuiChoiceGroup = this.vuiChoiceGroup,
         slots = this.$slots,
         attrs = this.$attrs,
         props = this.$props,
@@ -21907,9 +21911,9 @@ var VuiCheckbox = {
     if (vuiCheckboxGroup) {
       type = vuiCheckboxGroup.type;
       name = vuiCheckboxGroup.name;
-    } else if (vuiMutexGroup) {
-      type = vuiMutexGroup.type;
-      name = vuiMutexGroup.name;
+    } else if (vuiChoiceGroup) {
+      type = vuiChoiceGroup.type;
+      name = vuiChoiceGroup.name;
     } else {
       type = props.type;
       name = props.name;
@@ -21922,8 +21926,8 @@ var VuiCheckbox = {
       size = props.size;
     } else if (vuiCheckboxGroup && vuiCheckboxGroup.size) {
       size = vuiCheckboxGroup.size;
-    } else if (vuiMutexGroup && vuiMutexGroup.size) {
-      size = vuiMutexGroup.size;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.size) {
+      size = vuiChoiceGroup.size;
     } else if (vuiForm && vuiForm.size) {
       size = vuiForm.size;
     } else {
@@ -21934,8 +21938,8 @@ var VuiCheckbox = {
       minWidth = props.minWidth;
     } else if (vuiCheckboxGroup && vuiCheckboxGroup.minWidth) {
       minWidth = vuiCheckboxGroup.minWidth;
-    } else if (vuiMutexGroup && vuiMutexGroup.minWidth) {
-      minWidth = vuiMutexGroup.minWidth;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.minWidth) {
+      minWidth = vuiChoiceGroup.minWidth;
     }
 
     focused = state.focused;
@@ -21943,8 +21947,8 @@ var VuiCheckbox = {
 
     if (vuiCheckboxGroup) {
       checked = vuiCheckboxGroup.state.value.indexOf(value) > -1;
-    } else if (vuiMutexGroup) {
-      checked = is["a" /* default */].array(vuiMutexGroup.state.value) && vuiMutexGroup.state.value.indexOf(value) > -1;
+    } else if (vuiChoiceGroup) {
+      checked = is["a" /* default */].array(vuiChoiceGroup.state.value) && vuiChoiceGroup.state.value.indexOf(value) > -1;
     } else {
       checked = state.checked === props.checkedValue;
     }
@@ -21953,8 +21957,8 @@ var VuiCheckbox = {
       disabled = vuiForm.disabled;
     } else if (vuiCheckboxGroup && vuiCheckboxGroup.disabled) {
       disabled = vuiCheckboxGroup.disabled;
-    } else if (vuiMutexGroup && vuiMutexGroup.disabled) {
-      disabled = vuiMutexGroup.disabled;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.disabled) {
+      disabled = vuiChoiceGroup.disabled;
     } else {
       disabled = props.disabled;
     }
@@ -21977,7 +21981,8 @@ var VuiCheckbox = {
     }
 
     // render
-    var checkboxInputProps = {
+    var attributes = {
+      ref: "checkbox",
       attrs: attrs,
       on: {
         focus: handleFocus,
@@ -21985,37 +21990,6 @@ var VuiCheckbox = {
         change: handleChange
       }
     };
-    var checkboxInput = [];
-
-    if (!type) {
-      checkboxInput.push(h(
-        "svg",
-        {
-          attrs: { xmlns: "http://www.w3.org/2000/svg", version: "1.1", viewBox: "0 0 1024 1024" }
-        },
-        [h("path", {
-          attrs: { d: "M0.020966 0l1023.958044 0 0 1024-1023.958044 0 0-1024Z" }
-        })]
-      ));
-
-      checkboxInput.push(h(
-        "svg",
-        {
-          attrs: { xmlns: "http://www.w3.org/2000/svg", version: "1.1", viewBox: "0 0 1248 1024" }
-        },
-        [h("path", {
-          attrs: { d: "M123.800257 460.153135l291.677674 232.393077 726.28329-669.078427s48.722384-44.483585 91.293444-9.727389c12.638284 10.392563 27.272086 39.993364-5.653359 86.388252L469.106727 988.380911s-58.120238 79.570536-127.131004-0.831161L14.711914 545.710226s-38.829006-59.865554 9.72861-95.701892c16.463333-11.973111 53.713011-30.763938 99.360954 10.14358z" }
-        })]
-      ));
-    }
-
-    checkboxInput.push(h("input", babel_helper_vue_jsx_merge_props_default()([{
-      attrs: { type: "checkbox", name: name, disabled: disabled },
-      domProps: {
-        "value": value,
-        "checked": checked
-      }
-    }, checkboxInputProps])));
 
     return h(
       "label",
@@ -22023,36 +21997,73 @@ var VuiCheckbox = {
       [h(
         "div",
         { "class": classes.elInput },
-        [checkboxInput]
-      ), label && h(
+        [!type ? h(
+          "svg",
+          {
+            attrs: { xmlns: "http://www.w3.org/2000/svg", version: "1.1", viewBox: "0 0 1024 1024" }
+          },
+          [h("path", {
+            attrs: { d: "M0.020966 0l1023.958044 0 0 1024-1023.958044 0 0-1024Z" }
+          })]
+        ) : null, !type ? h(
+          "svg",
+          {
+            attrs: { xmlns: "http://www.w3.org/2000/svg", version: "1.1", viewBox: "0 0 1248 1024" }
+          },
+          [h("path", {
+            attrs: { d: "M123.800257 460.153135l291.677674 232.393077 726.28329-669.078427s48.722384-44.483585 91.293444-9.727389c12.638284 10.392563 27.272086 39.993364-5.653359 86.388252L469.106727 988.380911s-58.120238 79.570536-127.131004-0.831161L14.711914 545.710226s-38.829006-59.865554 9.72861-95.701892c16.463333-11.973111 53.713011-30.763938 99.360954 10.14358z" }
+          })]
+        ) : null, h("input", babel_helper_vue_jsx_merge_props_default()([{
+          attrs: { type: "checkbox", name: name, disabled: disabled },
+          domProps: {
+            "value": value,
+            "checked": checked
+          }
+        }, attributes]))]
+      ), label ? h(
         "div",
         { "class": classes.elLabel },
         [label]
-      )]
+      ) : null]
     );
   }
-};
-
-/* harmony default export */ var src_checkbox = (VuiCheckbox);
+});
 // CONCATENATED MODULE: ./src/components/checkbox/index.js
 
 
-src_checkbox.install = function (Vue) {
-  Vue.component(src_checkbox.name, src_checkbox);
+
+
+/* harmony default export */ var components_checkbox = (withInstall(checkbox_checkbox));
+// CONCATENATED MODULE: ./src/components/checkbox/checkbox-group.js
+
+
+
+
+
+
+
+
+
+var checkbox_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    name: prop_types["a" /* default */].string.def(function () {
+      return guid();
+    }),
+    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+    type: prop_types["a" /* default */].string,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].array.def([]),
+    options: prop_types["a" /* default */].array.def([]),
+    beforeSelect: prop_types["a" /* default */].func,
+    beforeCheck: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
 };
 
-/* harmony default export */ var components_checkbox = (src_checkbox);
-// CONCATENATED MODULE: ./src/components/checkbox-group/src/checkbox-group.js
-
-
-
-
-
-
-
-
-
-var VuiCheckboxGroup = {
+/* harmony default export */ var checkbox_group = ({
   name: "vui-checkbox-group",
   inject: {
     vuiForm: {
@@ -22073,24 +22084,7 @@ var VuiCheckboxGroup = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    name: prop_types["a" /* default */].string.def(function () {
-      return guid();
-    }),
-    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
-    type: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].array.def(function () {
-      return [];
-    }),
-    options: prop_types["a" /* default */].array.def(function () {
-      return [];
-    }),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
+  props: checkbox_group_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -22105,11 +22099,7 @@ var VuiCheckboxGroup = {
 
   watch: {
     value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.value === _value) {
+      if (this.state.value === _value) {
         return;
       }
 
@@ -22143,8 +22133,7 @@ var VuiCheckboxGroup = {
 
     var h = arguments[0];
     var slots = this.$slots,
-        props = this.$props,
-        state = this.state;
+        props = this.$props;
 
     // class
 
@@ -22184,17 +22173,441 @@ var VuiCheckboxGroup = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var checkbox_group = (VuiCheckboxGroup);
+});
 // CONCATENATED MODULE: ./src/components/checkbox-group/index.js
 
 
-checkbox_group.install = function (Vue) {
-  Vue.component(checkbox_group.name, checkbox_group);
+
+
+/* harmony default export */ var components_checkbox_group = (withInstall(checkbox_group));
+// CONCATENATED MODULE: ./src/components/radio/radio.js
+
+
+
+
+
+
+
+var radio_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    name: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].string,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    label: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]),
+    checked: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    checkedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(true),
+    uncheckedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
 };
 
-/* harmony default export */ var components_checkbox_group = (checkbox_group);
+/* harmony default export */ var radio_radio = ({
+  name: "vui-radio",
+  inject: {
+    vuiForm: {
+      default: undefined
+    },
+    vuiRadioGroup: {
+      default: undefined
+    },
+    vuiChoiceGroup: {
+      default: undefined
+    }
+  },
+  mixins: [emitter],
+  inheritAttrs: false,
+  model: {
+    prop: "checked",
+    event: "input"
+  },
+  props: radio_createProps(),
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      focused: false,
+      checked: props.checked
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    checked: function checked(value) {
+      if (this.state.checked === value) {
+        return;
+      }
+
+      this.state.checked = value;
+    }
+  },
+  methods: {
+    handleFocus: function handleFocus(e) {
+      this.state.focused = true;
+      this.$emit("focus");
+    },
+    handleBlur: function handleBlur(e) {
+      this.state.focused = false;
+      this.$emit("blur");
+    },
+    handleChange: function handleChange(e) {
+      var vuiRadioGroup = this.vuiRadioGroup,
+          vuiChoiceGroup = this.vuiChoiceGroup,
+          references = this.$refs,
+          props = this.$props;
+
+      var checked = e.target.checked;
+
+      if (props.disabled) {
+        return;
+      }
+
+      if (vuiRadioGroup) {
+        var beforeCheck = vuiRadioGroup.beforeSelect || vuiRadioGroup.beforeCheck;
+        var callback = function callback() {
+          return vuiRadioGroup.handleChange(checked, props.value);
+        };
+        var hook = true;
+
+        if (is["a" /* default */].function(beforeCheck)) {
+          hook = beforeCheck(props.value);
+        }
+
+        if (is["a" /* default */].boolean(hook) && hook === false) {
+          references.radio.checked = "";
+        } else if (is["a" /* default */].promise(hook)) {
+          hook.then(function () {
+            return callback();
+          }).catch(function () {
+            return references.radio.checked = "";
+          });
+        } else {
+          callback();
+        }
+      } else if (vuiChoiceGroup) {
+        vuiChoiceGroup.handleChange("radio", checked, props.value);
+      } else {
+        var value = checked ? props.checkedValue : props.uncheckedValue;
+
+        this.state.checked = value;
+        this.$emit("input", value);
+        this.$emit('change', value);
+
+        if (props.validator) {
+          this.dispatch("vui-form-item", "change", value);
+        }
+      }
+    }
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var vuiForm = this.vuiForm,
+        vuiRadioGroup = this.vuiRadioGroup,
+        vuiChoiceGroup = this.vuiChoiceGroup,
+        slots = this.$slots,
+        attrs = this.$attrs,
+        props = this.$props,
+        state = this.state;
+    var handleFocus = this.handleFocus,
+        handleBlur = this.handleBlur,
+        handleChange = this.handleChange;
+
+    // props & state
+
+    var type = void 0,
+        name = void 0,
+        label = void 0,
+        value = void 0,
+        size = void 0,
+        minWidth = void 0,
+        focused = void 0,
+        checked = void 0,
+        disabled = void 0;
+
+    if (vuiRadioGroup) {
+      type = vuiRadioGroup.type;
+      name = vuiRadioGroup.name;
+    } else if (vuiChoiceGroup) {
+      type = vuiChoiceGroup.type;
+      name = vuiChoiceGroup.name;
+    } else {
+      type = props.type;
+      name = props.name;
+    }
+
+    label = slots.default || props.label;
+    value = props.value;
+
+    if (props.size) {
+      size = props.size;
+    } else if (vuiRadioGroup && vuiRadioGroup.size) {
+      size = vuiRadioGroup.size;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.size) {
+      size = vuiChoiceGroup.size;
+    } else if (vuiForm && vuiForm.size) {
+      size = vuiForm.size;
+    } else {
+      size = "medium";
+    }
+
+    if (props.minWidth) {
+      minWidth = props.minWidth;
+    } else if (vuiRadioGroup && vuiRadioGroup.minWidth) {
+      minWidth = vuiRadioGroup.minWidth;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.minWidth) {
+      minWidth = vuiChoiceGroup.minWidth;
+    }
+
+    focused = state.focused;
+
+    if (vuiRadioGroup) {
+      checked = value === vuiRadioGroup.state.value;
+    } else if (vuiChoiceGroup) {
+      checked = !is["a" /* default */].array(vuiChoiceGroup.state.value) && value === vuiChoiceGroup.state.value;
+    } else {
+      checked = state.checked === props.checkedValue;
+    }
+
+    if (vuiForm && vuiForm.disabled) {
+      disabled = vuiForm.disabled;
+    } else if (vuiRadioGroup && vuiRadioGroup.disabled) {
+      disabled = vuiRadioGroup.disabled;
+    } else if (vuiChoiceGroup && vuiChoiceGroup.disabled) {
+      disabled = vuiChoiceGroup.disabled;
+    } else {
+      disabled = props.disabled;
+    }
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, type === "button" ? "radio-button" : "radio");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-focused", focused), defineProperty_default()(_classes$el, classNamePrefix + "-checked", checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
+    classes.elInput = classNamePrefix + "-input";
+    classes.elLabel = classNamePrefix + "-label";
+
+    // style
+    var styles = {};
+
+    if (type === "button" && minWidth) {
+      styles.el = {
+        minWidth: is["a" /* default */].string(minWidth) ? minWidth : minWidth + "px"
+      };
+    }
+
+    // render
+    var attributes = {
+      ref: "radio",
+      attrs: attrs,
+      on: {
+        focus: handleFocus,
+        blur: handleBlur,
+        change: handleChange
+      }
+    };
+
+    return h(
+      "label",
+      { "class": classes.el, style: styles.el },
+      [h(
+        "div",
+        { "class": classes.elInput },
+        [h("input", babel_helper_vue_jsx_merge_props_default()([{
+          attrs: { type: "radio", name: name, disabled: disabled },
+          domProps: {
+            "value": value,
+            "checked": checked
+          }
+        }, attributes]))]
+      ), label ? h(
+        "div",
+        { "class": classes.elLabel },
+        [label]
+      ) : null]
+    );
+  }
+});
+// CONCATENATED MODULE: ./src/components/radio/index.js
+
+
+
+
+/* harmony default export */ var components_radio = (withInstall(radio_radio));
+// CONCATENATED MODULE: ./src/components/choice-group/choice-group.js
+
+
+
+
+
+
+
+
+
+
+var choice_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    name: prop_types["a" /* default */].string.def(function () {
+      return guid();
+    }),
+    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+    type: prop_types["a" /* default */].string,
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool, prop_types["a" /* default */].array]),
+    defaultValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool, prop_types["a" /* default */].array]),
+    options: prop_types["a" /* default */].array.def([]),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+/* harmony default export */ var choice_group = ({
+  name: "vui-choice-group",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
+  },
+  provide: function provide() {
+    return {
+      vuiChoiceGroup: this
+    };
+  },
+
+  components: {
+    VuiRadio: components_radio,
+    VuiCheckbox: components_checkbox
+  },
+  mixins: [emitter],
+  model: {
+    prop: "value",
+    event: "input"
+  },
+  props: choice_group_createProps(),
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      value: props.value
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    value: function value(_value) {
+      if (this.state.value === _value) {
+        return;
+      }
+
+      this.state.value = _value;
+    }
+  },
+  methods: {
+    handleChange: function handleChange(type, checked, value) {
+      var props = this.$props,
+          state = this.state;
+
+      var nextValue = is["a" /* default */].array(state.value) ? [].concat(toConsumableArray_default()(state.value)) : state.value;
+
+      if (type === "radio") {
+        nextValue = checked ? value : props.defaultValue;
+      } else if (type === "checkbox") {
+        if (checked) {
+          if (is["a" /* default */].array(nextValue)) {
+            nextValue.push(value);
+          } else {
+            nextValue = [value];
+          }
+        } else {
+          if (is["a" /* default */].array(nextValue)) {
+            nextValue.splice(nextValue.indexOf(value), 1);
+          } else {
+            nextValue = [];
+          }
+        }
+
+        if (nextValue.length === 0) {
+          nextValue = props.defaultValue;
+        }
+      }
+
+      this.state.value = nextValue;
+      this.$emit("input", nextValue);
+      this.$emit('change', nextValue);
+
+      if (props.validator) {
+        this.dispatch("vui-form-item", "change", nextValue);
+      }
+    }
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
+
+    // class
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "choice-group");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.layout, true), _classes$el);
+
+    // render
+    var children = void 0;
+
+    if (props.options && props.options.length > 0) {
+      children = props.options.map(function (option) {
+        if (!is["a" /* default */].object(option)) {
+          return;
+        }
+
+        if (option.type === "radio") {
+          return h(
+            components_radio,
+            { key: option.value, attrs: { value: option.value, disabled: option.disabled }
+            },
+            [option.label]
+          );
+        } else if (option.type === "checkbox") {
+          return h(
+            components_checkbox,
+            { key: option.value, attrs: { value: option.value, disabled: option.disabled }
+            },
+            [option.label]
+          );
+        }
+      });
+    } else {
+      children = slots.default;
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
+// CONCATENATED MODULE: ./src/components/choice-group/index.js
+
+
+
+
+/* harmony default export */ var components_choice_group = (withInstall(choice_group));
 // EXTERNAL MODULE: ./node_modules/vue2-datepicker/index.esm.js + 5 modules
 var index_esm = __webpack_require__(80);
 
@@ -22322,21 +22735,14 @@ datepicker.install = function (Vue) {
 };
 
 /* harmony default export */ var components_datepicker = (datepicker);
-// CONCATENATED MODULE: ./src/components/form/src/form.js
+// CONCATENATED MODULE: ./src/components/form/form.js
 
 
 
 
 
-var VuiForm = {
-  name: "vui-form",
-  provide: function provide() {
-    return {
-      vuiForm: this
-    };
-  },
-
-  props: {
+var form_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical", "inline"]).def("horizontal"),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
@@ -22349,7 +22755,18 @@ var VuiForm = {
     colon: prop_types["a" /* default */].bool.def(true),
     showMessage: prop_types["a" /* default */].bool.def(true),
     disabled: prop_types["a" /* default */].bool
+  };
+};
+
+/* harmony default export */ var form_form = ({
+  name: "vui-form",
+  provide: function provide() {
+    return {
+      vuiForm: this
+    };
   },
+
+  props: form_createProps(),
   data: function data() {
     var state = {
       fields: []
@@ -22542,27 +22959,27 @@ var VuiForm = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var src_form = (VuiForm);
+});
 // CONCATENATED MODULE: ./src/components/form/index.js
 
 
-src_form.install = function (Vue) {
-  Vue.component(src_form.name, src_form);
-};
 
-/* harmony default export */ var components_form = (src_form);
-// CONCATENATED MODULE: ./src/components/form/src/form-group.js
+
+/* harmony default export */ var components_form = (withInstall(form_form));
+// CONCATENATED MODULE: ./src/components/form/form-group.js
 
 
 
-var VuiFormGroup = {
-  name: "vui-form-group",
-  props: {
+var form_group_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string
-  },
+  };
+};
+
+/* harmony default export */ var form_group = ({
+  name: "vui-form-group",
+  props: form_group_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -22590,17 +23007,13 @@ var VuiFormGroup = {
       ), slots.default]
     );
   }
-};
-
-/* harmony default export */ var form_group = (VuiFormGroup);
+});
 // CONCATENATED MODULE: ./src/components/form-group/index.js
 
 
-form_group.install = function (Vue) {
-  Vue.component(form_group.name, form_group);
-};
 
-/* harmony default export */ var components_form_group = (form_group);
+
+/* harmony default export */ var components_form_group = (withInstall(form_group));
 // EXTERNAL MODULE: ./node_modules/async-validator/dist-web/index.js
 var dist_web = __webpack_require__(156);
 
@@ -22642,7 +23055,7 @@ function getTargetByPath(source) {
     value: target ? target[keys[i]] : null
   };
 };
-// CONCATENATED MODULE: ./src/components/form/src/form-item.js
+// CONCATENATED MODULE: ./src/components/form/form-item.js
 
 
 
@@ -22655,19 +23068,8 @@ function getTargetByPath(source) {
 
 
 
-var VuiFormItem = {
-  name: "vui-form-item",
-  inject: {
-    vuiForm: {
-      default: undefined
-    }
-  },
-  components: {
-    VuiIcon: components_icon,
-    VuiTooltip: components_tooltip
-  },
-  mixins: [mixins_locale],
-  props: {
+var form_item_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     label: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     labelFor: prop_types["a" /* default */].string,
@@ -22685,7 +23087,22 @@ var VuiFormItem = {
     message: prop_types["a" /* default */].string.def(""),
     showMessage: prop_types["a" /* default */].bool.def(true),
     animation: prop_types["a" /* default */].string.def("vui-form-item-control-message-fade")
+  };
+};
+
+/* harmony default export */ var form_item = ({
+  name: "vui-form-item",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
   },
+  components: {
+    VuiIcon: components_icon,
+    VuiTooltip: components_tooltip
+  },
+  mixins: [mixins_locale],
+  props: form_item_createProps(),
   data: function data() {
     var vuiForm = this.vuiForm,
         props = this.$props;
@@ -23070,23 +23487,28 @@ var VuiFormItem = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var form_item = (VuiFormItem);
+});
 // CONCATENATED MODULE: ./src/components/form-item/index.js
 
 
-form_item.install = function (Vue) {
-  Vue.component(form_item.name, form_item);
+
+
+/* harmony default export */ var components_form_item = (withInstall(form_item));
+// CONCATENATED MODULE: ./src/components/input/input-group.js
+
+
+
+
+var input_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    compact: prop_types["a" /* default */].bool.def(false),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_form_item = (form_item);
-// CONCATENATED MODULE: ./src/components/input-group/src/input-group.js
-
-
-
-
-var VuiInputGroup = {
+/* harmony default export */ var input_group = ({
   name: "vui-input-group",
   provide: function provide() {
     return {
@@ -23094,12 +23516,7 @@ var VuiInputGroup = {
     };
   },
 
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    compact: prop_types["a" /* default */].bool.def(false),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    disabled: prop_types["a" /* default */].bool.def(false)
-  },
+  props: input_group_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -23121,17 +23538,13 @@ var VuiInputGroup = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var input_group = (VuiInputGroup);
+});
 // CONCATENATED MODULE: ./src/components/input-group/index.js
 
 
-input_group.install = function (Vue) {
-  Vue.component(input_group.name, input_group);
-};
 
-/* harmony default export */ var components_input_group = (input_group);
+
+/* harmony default export */ var components_input_group = (withInstall(input_group));
 // CONCATENATED MODULE: ./src/directives/longpress.js
 
 
@@ -23793,272 +24206,7 @@ var VuiInputNumber = {
 
 
 /* harmony default export */ var components_input_number = (withInstall(input_number));
-// CONCATENATED MODULE: ./src/components/radio/src/radio.js
-
-
-
-
-
-
-
-var VuiRadio = {
-  name: "vui-radio",
-  inject: {
-    vuiForm: {
-      default: undefined
-    },
-    vuiRadioGroup: {
-      default: undefined
-    },
-    vuiMutexGroup: {
-      default: undefined
-    }
-  },
-  mixins: [emitter],
-  inheritAttrs: false,
-  model: {
-    prop: "checked",
-    event: "input"
-  },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    name: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    label: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]),
-    checked: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    checkedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(true),
-    uncheckedValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
-  data: function data() {
-    var props = this.$props;
-
-    var state = {
-      focused: false,
-      checked: props.checked
-    };
-
-    return {
-      state: state
-    };
-  },
-
-  watch: {
-    checked: function checked(value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.checked === value) {
-        return;
-      }
-
-      this.state.checked = value;
-    }
-  },
-  methods: {
-    handleFocus: function handleFocus(e) {
-      this.state.focused = true;
-      this.$emit("focus");
-    },
-    handleBlur: function handleBlur(e) {
-      this.state.focused = false;
-      this.$emit("blur");
-    },
-    handleChange: function handleChange(e) {
-      var vuiRadioGroup = this.vuiRadioGroup,
-          vuiMutexGroup = this.vuiMutexGroup,
-          references = this.$refs,
-          props = this.$props;
-
-
-      if (props.disabled) {
-        return;
-      }
-
-      if (vuiRadioGroup) {
-        var callback = function callback() {
-          vuiRadioGroup.handleChange(e.target.checked, props.value);
-        };
-
-        var hook = true;
-
-        if (is["a" /* default */].function(vuiRadioGroup.beforeSelect)) {
-          hook = vuiRadioGroup.beforeSelect(props.value);
-        }
-
-        if (is["a" /* default */].boolean(hook) && hook === false) {
-          references.input.checked = "";
-        } else if (is["a" /* default */].promise(hook)) {
-          hook.then(function () {
-            return callback();
-          }).catch(function (error) {
-            return references.input.checked = "";
-          });
-        } else {
-          callback();
-        }
-      } else if (vuiMutexGroup) {
-        vuiMutexGroup.handleChange("radio", e.target.checked, props.value);
-      } else {
-        var value = e.target.checked ? props.checkedValue : props.uncheckedValue;
-
-        this.state.checked = value;
-        this.$emit("input", value);
-        this.$emit('change', value);
-
-        if (props.validator) {
-          this.dispatch("vui-form-item", "change", value);
-        }
-      }
-    }
-  },
-  render: function render() {
-    var _classes$el;
-
-    var h = arguments[0];
-    var vuiForm = this.vuiForm,
-        vuiRadioGroup = this.vuiRadioGroup,
-        vuiMutexGroup = this.vuiMutexGroup,
-        slots = this.$slots,
-        attrs = this.$attrs,
-        props = this.$props,
-        state = this.state;
-    var handleFocus = this.handleFocus,
-        handleBlur = this.handleBlur,
-        handleChange = this.handleChange;
-
-    // props & state
-
-    var type = void 0,
-        name = void 0,
-        label = void 0,
-        value = void 0,
-        size = void 0,
-        minWidth = void 0,
-        focused = void 0,
-        checked = void 0,
-        disabled = void 0;
-
-    if (vuiRadioGroup) {
-      type = vuiRadioGroup.type;
-      name = vuiRadioGroup.name;
-    } else if (vuiMutexGroup) {
-      type = vuiMutexGroup.type;
-      name = vuiMutexGroup.name;
-    } else {
-      type = props.type;
-      name = props.name;
-    }
-
-    label = slots.default || props.label;
-    value = props.value;
-
-    if (props.size) {
-      size = props.size;
-    } else if (vuiRadioGroup && vuiRadioGroup.size) {
-      size = vuiRadioGroup.size;
-    } else if (vuiMutexGroup && vuiMutexGroup.size) {
-      size = vuiMutexGroup.size;
-    } else if (vuiForm && vuiForm.size) {
-      size = vuiForm.size;
-    } else {
-      size = "medium";
-    }
-
-    if (props.minWidth) {
-      minWidth = props.minWidth;
-    } else if (vuiRadioGroup && vuiRadioGroup.minWidth) {
-      minWidth = vuiRadioGroup.minWidth;
-    } else if (vuiMutexGroup && vuiMutexGroup.minWidth) {
-      minWidth = vuiMutexGroup.minWidth;
-    }
-
-    focused = state.focused;
-
-    if (vuiRadioGroup) {
-      checked = value === vuiRadioGroup.state.value;
-    } else if (vuiMutexGroup) {
-      checked = !is["a" /* default */].array(vuiMutexGroup.state.value) && value === vuiMutexGroup.state.value;
-    } else {
-      checked = state.checked === props.checkedValue;
-    }
-
-    if (vuiForm && vuiForm.disabled) {
-      disabled = vuiForm.disabled;
-    } else if (vuiRadioGroup && vuiRadioGroup.disabled) {
-      disabled = vuiRadioGroup.disabled;
-    } else if (vuiMutexGroup && vuiMutexGroup.disabled) {
-      disabled = vuiMutexGroup.disabled;
-    } else {
-      disabled = props.disabled;
-    }
-
-    // class
-    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, type === "button" ? "radio-button" : "radio");
-    var classes = {};
-
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-focused", focused), defineProperty_default()(_classes$el, classNamePrefix + "-checked", checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
-    classes.elInput = classNamePrefix + "-input";
-    classes.elLabel = classNamePrefix + "-label";
-
-    // style
-    var styles = {};
-
-    if (type === "button" && minWidth) {
-      styles.el = {
-        minWidth: is["a" /* default */].string(minWidth) ? minWidth : minWidth + "px"
-      };
-    }
-
-    // render
-    var radioInputProps = {
-      ref: "input",
-      attrs: attrs,
-      on: {
-        focus: handleFocus,
-        blur: handleBlur,
-        change: handleChange
-      }
-    };
-    var radioInput = h("input", babel_helper_vue_jsx_merge_props_default()([{
-      attrs: { type: "radio", name: name, disabled: disabled },
-      domProps: {
-        "value": value,
-        "checked": checked
-      }
-    }, radioInputProps]));
-
-    return h(
-      "label",
-      { "class": classes.el, style: styles.el },
-      [h(
-        "div",
-        { "class": classes.elInput },
-        [radioInput]
-      ), label && h(
-        "div",
-        { "class": classes.elLabel },
-        [label]
-      )]
-    );
-  }
-};
-
-/* harmony default export */ var src_radio = (VuiRadio);
-// CONCATENATED MODULE: ./src/components/radio/index.js
-
-
-src_radio.install = function (Vue) {
-  Vue.component(src_radio.name, src_radio);
-};
-
-/* harmony default export */ var components_radio = (src_radio);
-// CONCATENATED MODULE: ./src/components/mutex-group/src/mutex-group.js
+// CONCATENATED MODULE: ./src/components/radio/radio-group.js
 
 
 
@@ -24067,31 +24215,8 @@ src_radio.install = function (Vue) {
 
 
 
-
-
-var VuiMutexGroup = {
-  name: "vui-mutex-group",
-  inject: {
-    vuiForm: {
-      default: undefined
-    }
-  },
-  provide: function provide() {
-    return {
-      vuiMutexGroup: this
-    };
-  },
-
-  components: {
-    VuiRadio: components_radio,
-    VuiCheckbox: components_checkbox
-  },
-  mixins: [emitter],
-  model: {
-    prop: "value",
-    event: "input"
-  },
-  props: {
+var radio_group_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     name: prop_types["a" /* default */].string.def(function () {
       return guid();
@@ -24100,152 +24225,16 @@ var VuiMutexGroup = {
     type: prop_types["a" /* default */].string,
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool, prop_types["a" /* default */].array]),
-    defaultValue: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool, prop_types["a" /* default */].array]),
-    options: prop_types["a" /* default */].array.def(function () {
-      return [];
-    }),
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]),
+    options: prop_types["a" /* default */].array.def([]),
+    beforeSelect: prop_types["a" /* default */].func,
+    beforeCheck: prop_types["a" /* default */].func,
     disabled: prop_types["a" /* default */].bool.def(false),
     validator: prop_types["a" /* default */].bool.def(true)
-  },
-  data: function data() {
-    var props = this.$props;
-
-    var state = {
-      value: props.value
-    };
-
-    return {
-      state: state
-    };
-  },
-
-  watch: {
-    value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.value === _value) {
-        return;
-      }
-
-      this.state.value = _value;
-
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", _value);
-      }
-    }
-  },
-  methods: {
-    handleChange: function handleChange(type, checked, value) {
-      var props = this.$props,
-          state = this.state;
-
-      var nextValue = is["a" /* default */].array(state.value) ? [].concat(toConsumableArray_default()(state.value)) : state.value;
-
-      if (type === "radio") {
-        nextValue = checked ? value : props.defaultValue;
-      } else if (type === "checkbox") {
-        if (checked) {
-          if (is["a" /* default */].array(nextValue)) {
-            nextValue.push(value);
-          } else {
-            nextValue = [value];
-          }
-        } else {
-          if (is["a" /* default */].array(nextValue)) {
-            nextValue.splice(nextValue.indexOf(value), 1);
-          } else {
-            nextValue = [];
-          }
-        }
-
-        if (nextValue.length === 0) {
-          nextValue = props.defaultValue;
-        }
-      }
-
-      this.state.value = nextValue;
-      this.$emit("input", nextValue);
-      this.$emit('change', nextValue);
-
-      if (props.validator) {
-        this.dispatch("vui-form-item", "change", nextValue);
-      }
-    }
-  },
-  render: function render() {
-    var _classes$el;
-
-    var h = arguments[0];
-    var slots = this.$slots,
-        props = this.$props,
-        state = this.state;
-
-    // class
-
-    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "mutex-group");
-    var classes = {};
-
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.layout, true), _classes$el);
-
-    // render
-    var children = void 0;
-
-    if (props.options && props.options.length > 0) {
-      children = props.options.map(function (option, index) {
-        if (!is["a" /* default */].object(option)) {
-          return;
-        }
-
-        if (option.type === "radio") {
-          return h(
-            components_radio,
-            { key: is["a" /* default */].boolean(option.value) ? index : option.value, attrs: { value: option.value, disabled: option.disabled }
-            },
-            [option.label]
-          );
-        } else if (option.type === "checkbox") {
-          return h(
-            components_checkbox,
-            { key: option.value, attrs: { value: option.value, disabled: option.disabled }
-            },
-            [option.label]
-          );
-        }
-      });
-    } else {
-      children = slots.default;
-    }
-
-    return h(
-      "div",
-      { "class": classes.el },
-      [children]
-    );
-  }
+  };
 };
 
-/* harmony default export */ var mutex_group = (VuiMutexGroup);
-// CONCATENATED MODULE: ./src/components/mutex-group/index.js
-
-
-mutex_group.install = function (Vue) {
-  Vue.component(mutex_group.name, mutex_group);
-};
-
-/* harmony default export */ var components_mutex_group = (mutex_group);
-// CONCATENATED MODULE: ./src/components/radio-group/src/radio-group.js
-
-
-
-
-
-
-
-
-var VuiRadioGroup = {
+/* harmony default export */ var radio_group = ({
   name: "vui-radio-group",
   inject: {
     vuiForm: {
@@ -24266,23 +24255,7 @@ var VuiRadioGroup = {
     prop: "value",
     event: "input"
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    name: prop_types["a" /* default */].string.def(function () {
-      return guid();
-    }),
-    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
-    type: prop_types["a" /* default */].string,
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
-    minWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].bool]),
-    options: prop_types["a" /* default */].array.def(function () {
-      return [];
-    }),
-    disabled: prop_types["a" /* default */].bool.def(false),
-    beforeSelect: prop_types["a" /* default */].func,
-    validator: prop_types["a" /* default */].bool.def(true)
-  },
+  props: radio_group_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -24297,11 +24270,7 @@ var VuiRadioGroup = {
 
   watch: {
     value: function value(_value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.value === _value) {
+      if (this.state.value === _value) {
         return;
       }
 
@@ -24328,8 +24297,7 @@ var VuiRadioGroup = {
 
     var h = arguments[0];
     var slots = this.$slots,
-        props = this.$props,
-        state = this.state;
+        props = this.$props;
 
     // class
 
@@ -24342,18 +24310,18 @@ var VuiRadioGroup = {
     var children = void 0;
 
     if (props.options && props.options.length > 0) {
-      children = props.options.map(function (option, index) {
+      children = props.options.map(function (option) {
         if (is["a" /* default */].object(option)) {
           return h(
             components_radio,
-            { key: is["a" /* default */].boolean(option.value) ? index : option.value, attrs: { value: option.value, disabled: option.disabled }
+            { key: option.value, attrs: { value: option.value, disabled: option.disabled }
             },
             [option.label]
           );
-        } else {
+        } else if (is["a" /* default */].string(option) || is["a" /* default */].number(option)) {
           return h(
             components_radio,
-            { key: is["a" /* default */].boolean(option) ? index : option, attrs: { value: option }
+            { key: option, attrs: { value: option }
             },
             [option]
           );
@@ -24369,325 +24337,321 @@ var VuiRadioGroup = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var radio_group = (VuiRadioGroup);
+});
 // CONCATENATED MODULE: ./src/components/radio-group/index.js
 
 
-radio_group.install = function (Vue) {
-  Vue.component(radio_group.name, radio_group);
+
+
+/* harmony default export */ var components_radio_group = (withInstall(radio_group));
+// CONCATENATED MODULE: ./src/components/rate/rate-star.js
+
+
+
+
+
+
+
+var rate_star_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    index: prop_types["a" /* default */].number,
+    value: prop_types["a" /* default */].number,
+    character: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
+    tooltip: prop_types["a" /* default */].string,
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_radio_group = (radio_group);
-// CONCATENATED MODULE: ./src/components/rate/src/rate-star.js
+/* harmony default export */ var rate_star = ({
+  name: "vui-rate-star",
+  inject: {
+    vuiRate: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon: components_icon,
+    VuiTooltip: components_tooltip
+  },
+  props: rate_star_createProps(),
+  methods: {
+    handleMouseenter: function handleMouseenter(e, half) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.$emit("mouseenter", e, props.value, half);
+    },
+    handleClick: function handleClick(e, half) {
+      var props = this.$props;
+
+
+      if (props.disabled) {
+        return;
+      }
+
+      this.$emit("click", e, props.value, half);
+    }
+  },
+  render: function render() {
+    var _classes$el;
+
+    var h = arguments[0];
+    var vuiRate = this.vuiRate,
+        slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var vuiRateProps = vuiRate.$props,
+        vuiRateState = vuiRate.state;
+    var handleMouseenter = this.handleMouseenter,
+        handleClick = this.handleClick;
+
+    // vuiRateValue
+
+    var vuiRateValue = vuiRateState.mouseentered === undefined ? vuiRateState.value : vuiRateState.mouseentered;
+
+    // status
+    var status = void 0;
+
+    if (vuiRateProps.allowHalf && props.value === vuiRateValue + 0.5) {
+      status = "half";
+    } else if (vuiRateValue < props.value) {
+      status = "zero";
+    } else {
+      status = "full";
+    }
+
+    // character
+    var character = void 0;
+
+    if (slots.default) {
+      character = slots.default;
+    } else if (is["a" /* default */].string(props.character)) {
+      character = props.character;
+    } else if (is["a" /* default */].function(props.character)) {
+      character = props.character(props.index);
+    } else {
+      character = h(components_icon, {
+        attrs: { type: "star-filled" }
+      });
+    }
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "star");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + status, status), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+
+    // render
+    var halfStates = [1, 0];
+    var star = h(
+      "div",
+      { "class": classes.el },
+      [halfStates.map(function (halfState) {
+        var className = halfState ? classNamePrefix + "-first" : classNamePrefix + "-second";
+        var onMouseenter = function onMouseenter(e) {
+          return handleMouseenter(e, halfState);
+        };
+        var onClick = function onClick(e) {
+          return handleClick(e, halfState);
+        };
+
+        return h(
+          "div",
+          { "class": className, on: {
+              "mouseenter": onMouseenter,
+              "click": onClick
+            }
+          },
+          [character]
+        );
+      })]
+    );
+
+    if (props.tooltip) {
+      return h(
+        components_tooltip,
+        {
+          attrs: { content: props.tooltip }
+        },
+        [star]
+      );
+    }
+
+    return star;
+  }
+});
+// CONCATENATED MODULE: ./src/components/rate/rate.js
 
 
 
 
 
 
-
-var VuiRateStar = {
-	name: "vui-rate-star",
-	inject: {
-		vuiRate: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon: components_icon,
-		VuiTooltip: components_tooltip
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		index: prop_types["a" /* default */].number,
-		value: prop_types["a" /* default */].number,
-		character: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
-		tooltip: prop_types["a" /* default */].string,
-		disabled: prop_types["a" /* default */].bool.def(false)
-	},
-	methods: {
-		handleMouseenter: function handleMouseenter(e, half) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.$emit("mouseenter", e, props.value, half);
-		},
-		handleClick: function handleClick(e, half) {
-			var props = this.$props;
-
-
-			if (props.disabled) {
-				return;
-			}
-
-			this.$emit("click", e, props.value, half);
-		}
-	},
-	render: function render() {
-		var _classes$el;
-
-		var h = arguments[0];
-		var vuiRate = this.vuiRate,
-		    slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var vuiRateProps = vuiRate.$props,
-		    vuiRateState = vuiRate.state;
-		var handleMouseenter = this.handleMouseenter,
-		    handleClick = this.handleClick;
-
-		// vuiRateValue
-
-		var vuiRateValue = vuiRateState.mouseentered === undefined ? vuiRateState.value : vuiRateState.mouseentered;
-
-		// status
-		var status = void 0;
-
-		if (vuiRateProps.allowHalf && props.value === vuiRateValue + 0.5) {
-			status = "half";
-		} else if (vuiRateValue < props.value) {
-			status = "zero";
-		} else {
-			status = "full";
-		}
-
-		// character
-		var character = void 0;
-
-		if (slots.default) {
-			character = slots.default;
-		} else if (is["a" /* default */].string(props.character)) {
-			character = props.character;
-		} else if (is["a" /* default */].function(props.character)) {
-			character = props.character(props.index);
-		} else {
-			character = h(components_icon, {
-				attrs: { type: "star-filled" }
-			});
-		}
-
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "star");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + status, status), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-
-		// render
-		var halfStates = [1, 0];
-		var star = h(
-			"div",
-			{ "class": classes.el },
-			[halfStates.map(function (halfState) {
-				var className = halfState ? classNamePrefix + "-first" : classNamePrefix + "-second";
-				var onMouseenter = function onMouseenter(e) {
-					return handleMouseenter(e, halfState);
-				};
-				var onClick = function onClick(e) {
-					return handleClick(e, halfState);
-				};
-
-				return h(
-					"div",
-					{ "class": className, on: {
-							"mouseenter": onMouseenter,
-							"click": onClick
-						}
-					},
-					[character]
-				);
-			})]
-		);
-
-		if (props.tooltip) {
-			return h(
-				components_tooltip,
-				{
-					attrs: { content: props.tooltip }
-				},
-				[star]
-			);
-		}
-
-		return star;
-	}
+var rate_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].number.def(0),
+    count: prop_types["a" /* default */].number.def(5),
+    character: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
+    tooltips: prop_types["a" /* default */].array.def([]),
+    allowHalf: prop_types["a" /* default */].bool.def(false),
+    clearable: prop_types["a" /* default */].bool.def(true),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    validator: prop_types["a" /* default */].bool.def(true)
+  };
 };
 
-/* harmony default export */ var rate_star = (VuiRateStar);
-// CONCATENATED MODULE: ./src/components/rate/src/rate.js
+/* harmony default export */ var rate = ({
+  name: "vui-rate",
+  provide: function provide() {
+    return {
+      vuiRate: this
+    };
+  },
+
+  components: {
+    VuiRateStar: rate_star
+  },
+  mixins: [emitter],
+  model: {
+    prop: "value",
+    event: "input"
+  },
+  props: rate_createProps(),
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      value: props.value,
+      cleaned: undefined,
+      mouseentered: undefined
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    value: function value(_value) {
+      this.state.value = _value;
+    }
+  },
+  methods: {
+    getStarValue: function getStarValue(value, half) {
+      var props = this.$props;
 
 
+      if (props.allowHalf && half) {
+        return value - 0.5;
+      }
+
+      return value;
+    },
+    handleMouseenter: function handleMouseenter(e, value, half) {
+      var state = this.state;
 
 
+      value = this.getStarValue(value, half);
 
+      if (value === state.cleaned) {
+        return;
+      }
 
-var VuiRate = {
-	name: "vui-rate",
-	provide: function provide() {
-		return {
-			vuiRate: this
-		};
-	},
+      this.state.cleaned = undefined;
+      this.state.mouseentered = value;
+    },
+    handleMouseleave: function handleMouseleave() {
+      this.state.cleaned = undefined;
+      this.state.mouseentered = undefined;
+    },
+    handleClick: function handleClick(e, value, half) {
+      var props = this.$props,
+          state = this.state;
 
-	components: {
-		VuiRateStar: rate_star
-	},
-	mixins: [emitter],
-	model: {
-		prop: "value",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].number.def(0),
-		count: prop_types["a" /* default */].number.def(5),
-		character: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].func]),
-		tooltips: prop_types["a" /* default */].array.def([]),
-		allowHalf: prop_types["a" /* default */].bool.def(false),
-		clearable: prop_types["a" /* default */].bool.def(true),
-		disabled: prop_types["a" /* default */].bool.def(false),
-		validator: prop_types["a" /* default */].bool.def(true)
-	},
-	data: function data() {
-		var props = this.$props;
+      var maybeClean = false;
 
-		var state = {
-			value: props.value,
-			cleaned: undefined,
-			mouseentered: undefined
-		};
+      value = this.getStarValue(value, half);
 
-		return {
-			state: state
-		};
-	},
+      if (props.clearable) {
+        maybeClean = value === state.value;
+      }
 
-	watch: {
-		value: function value(_value) {
-			this.state.value = _value;
-		}
-	},
-	methods: {
-		getStarValue: function getStarValue(value, half) {
-			var props = this.$props;
+      this.state.value = maybeClean ? 0 : value;
+      this.state.cleaned = maybeClean ? value : undefined;
+      this.state.mouseentered = undefined;
+      this.$emit("input", this.state.value);
+      this.$emit("change", this.state.value);
 
+      if (props.validator) {
+        this.dispatch("vui-form-item", "change", this.state.value);
+      }
+    }
+  },
+  render: function render() {
+    var _classes$el;
 
-			if (props.allowHalf && half) {
-				return value - 0.5;
-			}
+    var h = arguments[0];
+    var slots = this.$slots,
+        props = this.$props;
+    var handleMouseleave = this.handleMouseleave;
 
-			return value;
-		},
-		handleMouseenter: function handleMouseenter(e, value, half) {
-			var state = this.state;
+    // class
 
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "rate");
+    var classes = {};
 
-			value = this.getStarValue(value, half);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
 
-			if (value === state.cleaned) {
-				return;
-			}
+    // render
+    var stars = [];
 
-			this.state.cleaned = undefined;
-			this.state.mouseentered = value;
-		},
-		handleMouseleave: function handleMouseleave() {
-			this.state.cleaned = undefined;
-			this.state.mouseentered = undefined;
-		},
-		handleClick: function handleClick(e, value, half) {
-			var props = this.$props,
-			    state = this.state;
+    for (var index = 0; index < props.count; index++) {
+      var attributes = {
+        ref: "star" + index,
+        key: index,
+        props: {
+          classNamePrefix: classNamePrefix,
+          index: index,
+          value: index + 1,
+          character: props.character,
+          tooltip: props.tooltips[index],
+          disabled: props.disabled
+        },
+        on: {
+          mouseenter: this.handleMouseenter,
+          click: this.handleClick
+        }
+      };
 
+      stars.push(h("li", [h(
+        rate_star,
+        attributes,
+        [slots.character]
+      )]));
+    }
 
-			value = this.getStarValue(value, half);
-
-			var maybeClean = false;
-
-			if (props.clearable) {
-				maybeClean = value === state.value;
-			}
-
-			this.state.value = maybeClean ? 0 : value;
-			this.state.cleaned = maybeClean ? value : undefined;
-			this.state.mouseentered = undefined;
-			this.$emit("input", this.state.value);
-			this.$emit("change", this.state.value);
-
-			if (props.validator) {
-				this.dispatch("vui-form-item", "change", this.state.value);
-			}
-		}
-	},
-	render: function render() {
-		var _classes$el;
-
-		var h = arguments[0];
-		var slots = this.$slots,
-		    props = this.$props,
-		    state = this.state;
-		var handleMouseleave = this.handleMouseleave;
-
-		// class
-
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "rate");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-
-		// render
-		var stars = [];
-
-		for (var index = 0; index < props.count; index++) {
-			var attributes = {
-				ref: "star" + index,
-				key: index,
-				props: {
-					classNamePrefix: classNamePrefix,
-					index: index,
-					value: index + 1,
-					character: props.character,
-					tooltip: props.tooltips[index],
-					disabled: props.disabled
-				},
-				on: {
-					mouseenter: this.handleMouseenter,
-					click: this.handleClick
-				}
-			};
-
-			stars.push(h("li", [h(
-				rate_star,
-				attributes,
-				[slots.character]
-			)]));
-		}
-
-		return h(
-			"ul",
-			{ "class": classes.el, on: {
-					"mouseleave": handleMouseleave
-				}
-			},
-			[stars]
-		);
-	}
-};
-
-/* harmony default export */ var rate = (VuiRate);
+    return h(
+      "ul",
+      { "class": classes.el, on: {
+          "mouseleave": handleMouseleave
+        }
+      },
+      [stars]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/rate/index.js
 
 
-rate.install = function (Vue) {
-	Vue.component(rate.name, rate);
-};
 
-/* harmony default export */ var components_rate = (rate);
+
+/* harmony default export */ var components_rate = (withInstall(rate));
 // CONCATENATED MODULE: ./src/components/option-group/src/option-group.js
 
 
@@ -25851,7 +25815,7 @@ function rgba2hex(value) {
   hex2rgba: hex2rgba,
   rgba2hex: rgba2hex
 });
-// CONCATENATED MODULE: ./src/components/switch/src/switch.js
+// CONCATENATED MODULE: ./src/components/switch/switch.js
 
 
 
@@ -25859,19 +25823,8 @@ function rgba2hex(value) {
 
 
 
-var VuiSwitch = {
-  name: "vui-switch",
-  inject: {
-    vuiForm: {
-      default: undefined
-    }
-  },
-  mixins: [emitter],
-  model: {
-    prop: "checked",
-    event: "input"
-  },
-  props: {
+var switch_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]),
     checked: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(false),
@@ -25885,13 +25838,29 @@ var VuiSwitch = {
     uncheckedText: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     beforeChange: prop_types["a" /* default */].func,
     validator: prop_types["a" /* default */].bool.def(true)
+  };
+};
+
+/* harmony default export */ var switch_switch = ({
+  name: "vui-switch",
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
   },
+  mixins: [emitter],
+  inheritAttrs: false,
+  model: {
+    prop: "checked",
+    event: "input"
+  },
+  props: switch_createProps(),
   data: function data() {
     var props = this.$props;
 
     var state = {
       focused: false,
-      checked: this.checked
+      checked: props.checked
     };
 
     return {
@@ -25901,11 +25870,7 @@ var VuiSwitch = {
 
   watch: {
     checked: function checked(value) {
-      var props = this.$props,
-          state = this.state;
-
-
-      if (state.checked === value) {
+      if (this.state.checked === value) {
         return;
       }
 
@@ -25917,7 +25882,7 @@ var VuiSwitch = {
       var props = this.$props;
 
 
-      if (props.disabled || props.loading) {
+      if (props.loading || props.disabled) {
         return;
       }
 
@@ -25928,7 +25893,7 @@ var VuiSwitch = {
       var props = this.$props;
 
 
-      if (props.disabled || props.loading) {
+      if (props.loading || props.disabled) {
         return;
       }
 
@@ -25942,7 +25907,7 @@ var VuiSwitch = {
           state = this.state;
 
 
-      if (props.disabled || props.loading) {
+      if (props.loading || props.disabled) {
         return;
       }
 
@@ -25967,7 +25932,7 @@ var VuiSwitch = {
       if (is["a" /* default */].promise(hook)) {
         hook.then(function () {
           return callback();
-        }).catch(function (error) {});
+        }).catch(function () {});
       } else if (is["a" /* default */].boolean(hook) && hook === false) {
         return;
       } else {
@@ -25999,6 +25964,9 @@ var VuiSwitch = {
       size = "medium";
     }
 
+    // loading
+    var loading = props.loading;
+
     // focused
     var focused = state.focused;
 
@@ -26014,14 +25982,11 @@ var VuiSwitch = {
       disabled = props.disabled;
     }
 
-    // loading
-    var loading = props.loading;
-
     // class
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "switch");
     var classes = {};
 
-    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-focused", focused), defineProperty_default()(_classes$el, classNamePrefix + "-checked", checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), defineProperty_default()(_classes$el, classNamePrefix + "-loading", loading), _classes$el);
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + size, size), defineProperty_default()(_classes$el, classNamePrefix + "-loading", loading), defineProperty_default()(_classes$el, classNamePrefix + "-focused", focused), defineProperty_default()(_classes$el, classNamePrefix + "-checked", checked), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
     classes.elInput = classNamePrefix + "-input";
     classes.elInputSpin = classNamePrefix + "-input-spin";
     classes.elLabel = classNamePrefix + "-label";
@@ -26061,7 +26026,7 @@ var VuiSwitch = {
         attrs: {
           type: "button",
 
-          disabled: disabled || loading
+          disabled: loading || disabled
         },
         "class": classes.el,
         style: styles.el, on: {
@@ -26073,7 +26038,7 @@ var VuiSwitch = {
       [h(
         "div",
         { "class": classes.elInput },
-        [h("div", { "class": classes.elInputSpin, style: styles.elInputSpin })]
+        [loading ? h("div", { "class": classes.elInputSpin, style: styles.elInputSpin }) : null]
       ), label !== undefined && h(
         "div",
         { "class": classes.elLabel },
@@ -26081,17 +26046,13 @@ var VuiSwitch = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_switch = (VuiSwitch);
+});
 // CONCATENATED MODULE: ./src/components/switch/index.js
 
 
-src_switch.install = function (Vue) {
-  Vue.component(src_switch.name, src_switch);
-};
 
-/* harmony default export */ var components_switch = (src_switch);
+
+/* harmony default export */ var components_switch = (withInstall(switch_switch));
 // CONCATENATED MODULE: ./src/utils/merge.js
 
 
@@ -26334,7 +26295,7 @@ function getTextareaSize(targetElement) {
     overflowY: overflowY
   };
 };
-// CONCATENATED MODULE: ./src/components/textarea/src/textarea.js
+// CONCATENATED MODULE: ./src/components/textarea/textarea.js
 
 
 
@@ -26364,7 +26325,7 @@ var textarea_createProps = function createProps() {
   };
 };
 
-var VuiTextarea = {
+/* harmony default export */ var textarea_textarea = ({
   name: "vui-textarea",
   inject: {
     vuiForm: {
@@ -26698,15 +26659,13 @@ var VuiTextarea = {
       [input, btnClear, statistic]
     );
   }
-};
-
-/* harmony default export */ var src_textarea = (VuiTextarea);
+});
 // CONCATENATED MODULE: ./src/components/textarea/index.js
 
 
 
 
-/* harmony default export */ var components_textarea = (withInstall(src_textarea));
+/* harmony default export */ var components_textarea = (withInstall(textarea_textarea));
 // CONCATENATED MODULE: ./src/utils/padStart.js
 function padStart(value, length, chars) {
   var string = String(value);
@@ -28417,7 +28376,7 @@ var VuiCascadeTransferSourceList = {
 var slicedToArray = __webpack_require__(81);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 
-// CONCATENATED MODULE: ./src/components/badge/src/badge.js
+// CONCATENATED MODULE: ./src/components/badge/badge.js
 
 
 
@@ -28425,9 +28384,8 @@ var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray);
 
 var badge_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
-var VuiBadge = {
-  name: "vui-badge",
-  props: {
+var badge_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("error"),
     status: prop_types["a" /* default */].oneOf(["default", "processing", "warning", "success", "error"]),
@@ -28437,7 +28395,12 @@ var VuiBadge = {
     text: prop_types["a" /* default */].string,
     dot: prop_types["a" /* default */].bool.def(false),
     offset: prop_types["a" /* default */].array
-  },
+  };
+};
+
+/* harmony default export */ var badge = ({
+  name: "vui-badge",
+  props: badge_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -28545,17 +28508,13 @@ var VuiBadge = {
       );
     }
   }
-};
-
-/* harmony default export */ var badge = (VuiBadge);
+});
 // CONCATENATED MODULE: ./src/components/badge/index.js
 
 
-badge.install = function (Vue) {
-  Vue.component(badge.name, badge);
-};
 
-/* harmony default export */ var components_badge = (badge);
+
+/* harmony default export */ var components_badge = (withInstall(badge));
 // CONCATENATED MODULE: ./src/components/cascade-transfer/src/cascade-transfer-empty.js
 
 
@@ -30076,99 +30035,6 @@ cascade_transfer.install = function (Vue) {
 };
 
 /* harmony default export */ var components_cascade_transfer = (cascade_transfer);
-// CONCATENATED MODULE: ./src/components/upload/src/request.js
-
-function request_getBody(xhr) {
-	var response = xhr.responseText || xhr.response;
-
-	if (!response) {
-		return response;
-	}
-
-	try {
-		return JSON.parse(response);
-	} catch (e) {
-		return response;
-	}
-}
-
-function getError(action, xhr) {
-	var message = void 0;
-
-	if (xhr.response) {
-		message = "" + (xhr.response.error || xhr.response);
-	} else if (xhr.responseText) {
-		message = "" + xhr.responseText;
-	} else {
-		message = "fail to post " + action + " " + xhr.status;
-	}
-
-	var error = new Error(message);
-
-	error.method = "post";
-	error.url = action;
-	error.status = xhr.status;
-
-	return error;
-}
-
-/* harmony default export */ var src_request = (function (options) {
-	if (typeof XMLHttpRequest === "undefined") {
-		return;
-	}
-
-	var xhr = new XMLHttpRequest();
-
-	if (xhr.upload) {
-		xhr.upload.onprogress = function (e) {
-			if (e.total > 0) {
-				e.percentage = e.loaded / e.total * 100;
-			} else {
-				e.percentage = 0;
-			}
-
-			options.onProgress(e);
-		};
-	}
-
-	var formData = new FormData();
-
-	if (options.data) {
-		keys_default()(options.data).forEach(function (key) {
-			formData.append(key, options.data[key]);
-		});
-	}
-
-	formData.append(options.name, options.file, options.file.name);
-
-	xhr.onload = function () {
-		if (xhr.status >= 200 && xhr.status < 300) {
-			options.onSuccess(request_getBody(xhr));
-		} else {
-			options.onError(getError(options.action, xhr));
-		}
-	};
-
-	xhr.onerror = function (e) {
-		options.onError(e);
-	};
-
-	xhr.open("post", options.action, true);
-
-	if (options.headers) {
-		keys_default()(options.headers).forEach(function (key) {
-			xhr.setRequestHeader(key, options.headers[key]);
-		});
-	}
-
-	if (options.withCredentials && "withCredentials" in xhr) {
-		xhr.withCredentials = true;
-	}
-
-	xhr.send(formData);
-
-	return xhr;
-});;
 // CONCATENATED MODULE: ./src/utils/getType.js
 var getType_objToString = Object.prototype.toString;
 
@@ -30179,367 +30045,415 @@ var getType_objToString = Object.prototype.toString;
 function getType(value) {
   return getType_objToString.call(value);
 };
-// CONCATENATED MODULE: ./src/components/upload/src/upload-trigger.js
+// CONCATENATED MODULE: ./src/components/upload/request.js
 
+var request_getBody = function getBody(xhr) {
+  var response = xhr.responseText || xhr.response;
 
+  if (!response) {
+    return response;
+  }
 
-
-
-
-var VuiUploadTrigger = {
-	name: "vui-upload-trigger",
-
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-upload"
-		},
-		draggable: {
-			type: Boolean,
-			default: false
-		},
-		multiple: {
-			type: Boolean,
-			default: false
-		},
-		accept: {
-			type: String,
-			default: undefined
-		},
-		list: {
-			type: Array,
-			default: function _default() {
-				return [];
-			}
-		},
-		request: {
-			type: Function,
-			default: src_request
-		},
-		action: {
-			type: String,
-			default: undefined,
-			required: true
-		},
-		headers: {
-			type: Object,
-			default: undefined
-		},
-		withCredentials: {
-			type: Boolean,
-			default: false
-		},
-		name: {
-			type: String,
-			default: "file"
-		},
-		data: {
-			type: [Object, Function],
-			default: undefined
-		},
-		autoUpload: {
-			type: Boolean,
-			default: true
-		},
-		beforeUpload: {
-			type: Function,
-			default: undefined
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
-	},
-
-	data: function data() {
-		return {
-			dragover: false,
-			xhrs: {}
-		};
-	},
-
-
-	methods: {
-		parseStreamToFile: function parseStreamToFile(stream, file) {
-			var type = getType(stream);
-
-			if (type !== "[object File]" && type !== "[object Blob]") {
-				return file;
-			} else {
-				if (type === "[object Blob]") {
-					stream = new File([stream], file.name, {
-						type: file.type
-					});
-				}
-
-				for (var property in file) {
-					if (file.hasOwnProperty(property)) {
-						stream[property] = file[property];
-					}
-				}
-
-				return stream;
-			}
-		},
-		upload: function upload(file) {
-			var _this = this;
-
-			var doUpload = function doUpload(file) {
-				var id = file.id;
-				var options = {
-					action: _this.action,
-					headers: _this.headers,
-					withCredentials: _this.withCredentials,
-					data: getType(_this.data) === "[object Function]" ? _this.data() : _this.data,
-					name: _this.name,
-					file: file,
-					onProgress: function onProgress(progress) {
-						_this.$emit("progress", progress, file);
-					},
-					onSuccess: function onSuccess(response) {
-						_this.$emit("success", response, file);
-						delete _this.xhrs[id];
-					},
-					onError: function onError(error) {
-						_this.$emit("error", error, file);
-						delete _this.xhrs[id];
-					}
-				};
-
-				var xhr = _this.request(options);
-
-				if (xhr && xhr.then) {
-					xhr.then(options.onSuccess, options.onError);
-				}
-
-				_this.xhrs[id] = xhr;
-			};
-
-			if (!this.beforeUpload) {
-				return doUpload(file);
-			}
-
-			var promise = this.beforeUpload(file, this.list);
-
-			if (promise && promise.then) {
-				var resolve = function resolve(stream) {
-					doUpload(_this.parseStreamToFile(stream, file));
-				};
-				var reject = function reject() {
-					_this.$emit("remove", file);
-				};
-
-				promise.then(resolve, reject);
-			} else if (promise !== false) {
-				doUpload(file);
-			} else {
-				this.$emit("remove", file);
-			}
-		},
-		abort: function abort(file) {
-			var xhrs = this.xhrs;
-
-			if (file) {
-				var id = file.id ? file.id : file;
-				var xhr = xhrs[id];
-
-				if (!xhr || !xhr.abort) {
-					return;
-				}
-
-				xhr.abort();
-				delete xhrs[id];
-			} else {
-				keys_default()(xhrs).forEach(function (id) {
-					var xhr = xhrs[id];
-
-					if (!xhr || !xhr.abort) {
-						return;
-					}
-
-					xhr.abort();
-					delete xhrs[id];
-				});
-			}
-		},
-		handleTriggerClick: function handleTriggerClick(e) {
-			this.$refs.input.click();
-		},
-		handleTriggerDragover: function handleTriggerDragover(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			this.dragover = true;
-		},
-		handleTriggerDrop: function handleTriggerDrop(e) {
-			var _this2 = this;
-
-			e.preventDefault();
-			e.stopPropagation();
-
-			this.dragover = false;
-
-			var files = e.dataTransfer.files;
-
-			if (!files) {
-				return;
-			}
-
-			files = Array.prototype.slice.call(files);
-
-			if (this.accept) {
-				files = files.filter(function (file) {
-					var name = file.name;
-					var extension = name.indexOf(".") > -1 ? "." + name.split(".").pop() : "";
-					var type = file.type;
-					var baseType = type.replace(/\/.*$/, "");
-
-					return _this2.accept.split(",").map(function (type) {
-						return type.trim();
-					}).filter(function (type) {
-						return type;
-					}).some(function (acceptedType) {
-						if (/\..+$/.test(acceptedType)) {
-							return extension === acceptedType;
-						}
-
-						if (/\/\*$/.test(acceptedType)) {
-							return baseType === acceptedType.replace(/\/\*$/, "");
-						}
-
-						if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
-							return type === acceptedType;
-						}
-
-						return false;
-					});
-				});
-			}
-
-			if (!this.multiple) {
-				files = files.slice(0, 1);
-			}
-
-			if (files.length === 0) {
-				return;
-			}
-
-			files.forEach(function (file) {
-				file.id = file.id || guid();
-
-				_this2.$emit("ready", file);
-				_this2.autoUpload && _this2.upload(file);
-			});
-		},
-		handleTriggerDragleave: function handleTriggerDragleave(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			this.dragover = false;
-		},
-		handleInputClick: function handleInputClick(e) {
-			e.stopPropagation();
-		},
-		handleInputChange: function handleInputChange(e) {
-			var _this3 = this;
-
-			var files = e.target.files;
-
-			if (!files) {
-				return;
-			}
-
-			files = Array.prototype.slice.call(files);
-
-			if (!this.multiple) {
-				files = files.slice(0, 1);
-			}
-
-			if (files.length === 0) {
-				return;
-			}
-
-			files.forEach(function (file) {
-				file.id = file.id || guid();
-
-				_this3.$emit("ready", file);
-				_this3.autoUpload && _this3.upload(file);
-			});
-
-			this.$refs.input.value = null;
-		}
-	},
-
-	render: function render(h) {
-		var _classes$el;
-
-		var $slots = this.$slots,
-		    classNamePrefix = this.classNamePrefix,
-		    draggable = this.draggable,
-		    multiple = this.multiple,
-		    accept = this.accept,
-		    dragover = this.dragover,
-		    disabled = this.disabled;
-		var handleTriggerClick = this.handleTriggerClick,
-		    handleTriggerDragover = this.handleTriggerDragover,
-		    handleTriggerDrop = this.handleTriggerDrop,
-		    handleTriggerDragleave = this.handleTriggerDragleave,
-		    handleInputClick = this.handleInputClick,
-		    handleInputChange = this.handleInputChange;
-
-		// classes
-
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, classNamePrefix + "-trigger", true), defineProperty_default()(_classes$el, classNamePrefix + "-trigger-dragover", dragover), _classes$el);
-		classes.main = classNamePrefix + "-trigger-main";
-
-		// props
-		var props = {};
-
-		props.el = {
-			class: classes.el
-		};
-		props.input = {
-			ref: "input",
-			attrs: {
-				type: "file",
-				disabled: disabled,
-				multiple: multiple,
-				accept: accept
-			}
-		};
-		props.main = {
-			class: classes.main
-		};
-
-		if (!disabled) {
-			props.el.on = {
-				click: handleTriggerClick,
-				dragover: handleTriggerDragover,
-				drop: handleTriggerDrop,
-				dragleave: handleTriggerDragleave
-			};
-			props.input.on = {
-				click: handleInputClick,
-				change: handleInputChange
-			};
-		}
-
-		// render
-		return h(
-			"div",
-			props.el,
-			[h("input", props.input), h(
-				"div",
-				props.main,
-				[$slots.default]
-			)]
-		);
-	}
+  try {
+    return JSON.parse(response);
+  } catch (e) {
+    return response;
+  }
 };
 
-/* harmony default export */ var upload_trigger = (VuiUploadTrigger);
+var getError = function getError(action, xhr) {
+  var message = void 0;
+
+  if (xhr.response) {
+    message = "" + (xhr.response.error || xhr.response);
+  } else if (xhr.responseText) {
+    message = "" + xhr.responseText;
+  } else {
+    message = "fail to post " + action + " " + xhr.status;
+  }
+
+  var error = new Error(message);
+
+  error.method = "post";
+  error.url = action;
+  error.status = xhr.status;
+
+  return error;
+};
+
+/* harmony default export */ var upload_request = (function (options) {
+  if (typeof XMLHttpRequest === "undefined") {
+    return;
+  }
+
+  var xhr = new XMLHttpRequest();
+
+  if (xhr.upload) {
+    xhr.upload.onprogress = function (e) {
+      if (e.total > 0) {
+        e.percentage = e.loaded / e.total * 100;
+      } else {
+        e.percentage = 0;
+      }
+
+      options.onProgress(e);
+    };
+  }
+
+  var data = new FormData();
+
+  if (options.data) {
+    keys_default()(options.data).forEach(function (key) {
+      data.append(key, options.data[key]);
+    });
+  }
+
+  data.append(options.name, options.file, options.file.name);
+
+  xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      options.onSuccess(request_getBody(xhr));
+    } else {
+      options.onError(getError(options.action, xhr));
+    }
+  };
+
+  xhr.onerror = function (e) {
+    options.onError(e);
+  };
+
+  xhr.open("post", options.action, true);
+
+  if (options.headers) {
+    keys_default()(options.headers).forEach(function (key) {
+      xhr.setRequestHeader(key, options.headers[key]);
+    });
+  }
+
+  if (options.withCredentials && "withCredentials" in xhr) {
+    xhr.withCredentials = true;
+  }
+
+  xhr.send(data);
+
+  return xhr;
+});
+// CONCATENATED MODULE: ./src/components/upload/upload-trigger.js
+
+
+
+
+
+
+
+
+var upload_trigger_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    draggable: prop_types["a" /* default */].bool.def(false),
+    multiple: prop_types["a" /* default */].bool.def(false),
+    accept: prop_types["a" /* default */].string,
+    list: prop_types["a" /* default */].array.def([]),
+    request: prop_types["a" /* default */].func.def(upload_request),
+    action: prop_types["a" /* default */].string,
+    headers: prop_types["a" /* default */].object,
+    withCredentials: prop_types["a" /* default */].bool.def(false),
+    name: prop_types["a" /* default */].string.def("file"),
+    data: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
+    autoUpload: prop_types["a" /* default */].bool.def(true),
+    beforeUpload: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var upload_trigger = ({
+  name: "vui-upload-trigger",
+  props: upload_trigger_createProps(),
+  data: function data() {
+    return {
+      state: {
+        dragover: false,
+        xhrs: {}
+      }
+    };
+  },
+
+  methods: {
+    streamToFile: function streamToFile(stream, file) {
+      var type = getType(stream);
+
+      if (type !== "[object File]" && type !== "[object Blob]") {
+        return file;
+      } else {
+        if (type === "[object Blob]") {
+          stream = new File([stream], file.name, {
+            type: file.type
+          });
+        }
+
+        for (var property in file) {
+          if (file.hasOwnProperty(property)) {
+            stream[property] = file[property];
+          }
+        }
+
+        return stream;
+      }
+    },
+    upload: function upload(file) {
+      var _this = this;
+
+      var props = this.$props;
+
+      var upload = function upload(file) {
+        var id = file.id;
+        var options = {
+          action: props.action,
+          headers: props.headers,
+          withCredentials: props.withCredentials,
+          data: getType(props.data) === "[object Function]" ? props.data() : props.data,
+          name: props.name,
+          file: file,
+          onProgress: function onProgress(progress) {
+            _this.$emit("progress", progress, file);
+          },
+          onSuccess: function onSuccess(response) {
+            _this.$emit("success", response, file);
+            delete _this.state.xhrs[id];
+          },
+          onError: function onError(error) {
+            _this.$emit("error", error, file);
+            delete _this.state.xhrs[id];
+          }
+        };
+
+        var xhr = props.request(options);
+
+        if (xhr && xhr.then) {
+          xhr.then(options.onSuccess, options.onError);
+        }
+
+        _this.state.xhrs[id] = xhr;
+      };
+
+      if (!props.beforeUpload) {
+        return upload(file);
+      }
+
+      var promise = props.beforeUpload(file, props.list);
+
+      if (promise && promise.then) {
+        promise.then(function (stream) {
+          return upload(_this.streamToFile(stream, file));
+        }, function () {
+          return _this.$emit("remove", file);
+        });
+      } else if (promise !== false) {
+        upload(file);
+      } else {
+        this.$emit("remove", file);
+      }
+    },
+    abort: function abort(file) {
+      var xhrs = this.state.xhrs;
+
+      if (file) {
+        var id = file.id ? file.id : file;
+        var xhr = xhrs[id];
+
+        if (!xhr || !xhr.abort) {
+          return;
+        }
+
+        xhr.abort();
+        delete xhrs[id];
+      } else {
+        keys_default()(xhrs).forEach(function (id) {
+          var xhr = xhrs[id];
+
+          if (!xhr || !xhr.abort) {
+            return;
+          }
+
+          xhr.abort();
+          delete xhrs[id];
+        });
+      }
+    },
+    handleTriggerClick: function handleTriggerClick(e) {
+      this.$refs.input.click();
+    },
+    handleTriggerDragover: function handleTriggerDragover(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.state.dragover = true;
+    },
+    handleTriggerDrop: function handleTriggerDrop(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.state.dragover = false;
+
+      var props = this.$props;
+
+      var files = e.dataTransfer.files;
+
+      if (!files) {
+        return;
+      }
+
+      files = Array.prototype.slice.call(files);
+
+      if (props.accept) {
+        files = files.filter(function (file) {
+          var name = file.name;
+          var extension = name.indexOf(".") > -1 ? "." + name.split(".").pop() : "";
+          var type = file.type;
+          var baseType = type.replace(/\/.*$/, "");
+
+          return props.accept.split(",").map(function (acceptedType) {
+            return acceptedType.trim();
+          }).filter(function (acceptedType) {
+            return acceptedType;
+          }).some(function (acceptedType) {
+            if (/\..+$/.test(acceptedType)) {
+              return extension === acceptedType;
+            }
+
+            if (/\/\*$/.test(acceptedType)) {
+              return baseType === acceptedType.replace(/\/\*$/, "");
+            }
+
+            if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
+              return type === acceptedType;
+            }
+
+            return false;
+          });
+        });
+      }
+
+      if (!props.multiple) {
+        files = files.slice(0, 1);
+      }
+
+      if (files.length === 0) {
+        return;
+      }
+
+      files.forEach(function (file) {
+        file.id = guid();
+
+        _this2.$emit("ready", file);
+
+        if (props.autoUpload) {
+          _this2.upload(file);
+        }
+      });
+    },
+    handleTriggerDragleave: function handleTriggerDragleave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.state.dragover = false;
+    },
+    handleInputClick: function handleInputClick(e) {
+      e.stopPropagation();
+    },
+    handleInputChange: function handleInputChange(e) {
+      var _this3 = this;
+
+      var props = this.$props;
+
+      var files = e.target.files;
+
+      if (!files) {
+        return;
+      }
+
+      files = Array.prototype.slice.call(files);
+
+      if (!props.multiple) {
+        files = files.slice(0, 1);
+      }
+
+      if (files.length === 0) {
+        return;
+      }
+
+      files.forEach(function (file) {
+        file.id = guid();
+
+        _this3.$emit("ready", file);
+
+        if (props.autoUpload) {
+          _this3.upload(file);
+        }
+      });
+
+      this.$refs.input.value = null;
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
+
+    var slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleTriggerClick = this.handleTriggerClick,
+        handleTriggerDragover = this.handleTriggerDragover,
+        handleTriggerDrop = this.handleTriggerDrop,
+        handleTriggerDragleave = this.handleTriggerDragleave,
+        handleInputClick = this.handleInputClick,
+        handleInputChange = this.handleInputChange;
+
+    // class
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "trigger");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-dragover", state.dragover), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+
+    // attributes
+    var attributes = {};
+
+    attributes.el = {
+      class: classes.el
+    };
+    attributes.elInput = {
+      ref: "input",
+      attrs: {
+        type: "file",
+        multiple: props.multiple,
+        accept: props.accept,
+        disabled: props.disabled
+      }
+    };
+
+    if (!props.disabled) {
+      attributes.el.on = {
+        click: handleTriggerClick,
+        dragover: handleTriggerDragover,
+        drop: handleTriggerDrop,
+        dragleave: handleTriggerDragleave
+      };
+      attributes.elInput.on = {
+        click: handleInputClick,
+        change: handleInputChange
+      };
+    }
+
+    // render
+    return h(
+      "div",
+      attributes.el,
+      [h("input", attributes.elInput), slots.default]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/utils/clamp.js
 /**
 * 返回限制在 lower 和 upper 之间的值
@@ -30550,13 +30464,30 @@ var VuiUploadTrigger = {
 function clamp(number, lower, upper) {
   return Math.min.call(null, Math.max.call(null, number, lower), upper);
 };
-// CONCATENATED MODULE: ./src/components/progress/src/progress.js
+// CONCATENATED MODULE: ./src/components/progress/progress.js
 
 
 
 
 
 
+var progress_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    type: prop_types["a" /* default */].oneOf(["line", "circle", "dashboard"]).def("line"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+    percentage: prop_types["a" /* default */].number.def(0),
+    status: prop_types["a" /* default */].oneOf(["normal", "active", "exception", "success"]).def("normal"),
+    trackColor: prop_types["a" /* default */].string,
+    strokeColor: prop_types["a" /* default */].string,
+    strokeWidth: prop_types["a" /* default */].number,
+    strokeLinecap: prop_types["a" /* default */].oneOf(["round", "square"]).def("round"),
+    width: prop_types["a" /* default */].number,
+    gapDegree: prop_types["a" /* default */].number.def(75),
+    formatter: prop_types["a" /* default */].func,
+    showInfo: prop_types["a" /* default */].bool.def(true)
+  };
+};
 
 var progress_defaults = {
   width: {
@@ -30571,26 +30502,12 @@ var progress_defaults = {
   }
 };
 
-var VuiProgress = {
+/* harmony default export */ var progress = ({
   name: "vui-progress",
   components: {
     VuiIcon: components_icon
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    type: prop_types["a" /* default */].oneOf(["line", "circle", "dashboard"]).def("line"),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
-    percentage: prop_types["a" /* default */].number.def(0),
-    status: prop_types["a" /* default */].oneOf(["normal", "active", "exception", "success"]).def("normal"),
-    trackColor: prop_types["a" /* default */].string,
-    strokeColor: prop_types["a" /* default */].string,
-    strokeWidth: prop_types["a" /* default */].number,
-    strokeLinecap: prop_types["a" /* default */].oneOf(["round", "square"]).def("round"),
-    width: prop_types["a" /* default */].number,
-    gapDegree: prop_types["a" /* default */].number.def(75),
-    formatter: prop_types["a" /* default */].func,
-    showInfo: prop_types["a" /* default */].bool.def(true)
-  },
+  props: progress_createProps(),
   render: function render(h) {
     var _classes$el;
 
@@ -30792,612 +30709,533 @@ var VuiProgress = {
       );
     }
   }
-};
-
-/* harmony default export */ var progress = (VuiProgress);
+});
 // CONCATENATED MODULE: ./src/components/progress/index.js
 
 
-progress.install = function (Vue) {
-  Vue.component(progress.name, progress);
+
+
+/* harmony default export */ var components_progress = (withInstall(progress));
+// CONCATENATED MODULE: ./src/components/upload/upload-list.js
+
+
+
+
+
+
+var upload_list_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    list: prop_types["a" /* default */].array.def([]),
+    listType: prop_types["a" /* default */].oneOf(["text", "picture", "picture-card"]).def("text"),
+    beforeRemove: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_progress = (progress);
-// CONCATENATED MODULE: ./src/components/upload/src/upload-list.js
+/* harmony default export */ var upload_list = ({
+  name: "vui-upload-list",
+  components: {
+    VuiIcon: components_icon,
+    VuiProgress: components_progress
+  },
+  props: upload_list_createProps(),
+  methods: {
+    handlePreview: function handlePreview(item) {
+      this.$emit("preview", item);
+    },
+    handleRemove: function handleRemove(item) {
+      var _this = this;
+
+      var props = this.$props;
+
+      var remove = function remove() {
+        _this.$emit("remove", item);
+      };
+
+      if (!props.beforeRemove) {
+        return remove();
+      }
+
+      var promise = props.beforeRemove(item, props.list);
+
+      if (promise && promise.then) {
+        promise.then(function () {
+          return remove();
+        }, function () {});
+      } else if (promise !== false) {
+        remove();
+      }
+    }
+  },
+  render: function render(h) {
+    var _classes$elItemAction, _classes$elItemAction2;
+
+    var props = this.$props;
+    var handlePreview = this.handlePreview,
+        handleRemove = this.handleRemove;
+
+    // class
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
+    var classes = {};
+
+    classes.el = "" + classNamePrefix;
+    classes.elItem = function (status) {
+      var _ref;
+
+      return _ref = {}, defineProperty_default()(_ref, classNamePrefix + "-item", true), defineProperty_default()(_ref, classNamePrefix + "-item-" + status, status), _ref;
+    };
+    classes.elItemThumbnail = classNamePrefix + "-item-thumbnail";
+    classes.elItemName = classNamePrefix + "-item-name";
+    classes.elItemPercentage = classNamePrefix + "-item-percentage";
+    classes.elItemActions = classNamePrefix + "-item-actions";
+    classes.elItemActionPreview = (_classes$elItemAction = {}, defineProperty_default()(_classes$elItemAction, classNamePrefix + "-item-action", true), defineProperty_default()(_classes$elItemAction, classNamePrefix + "-item-action-preview", true), _classes$elItemAction);
+    classes.elItemActionRemove = (_classes$elItemAction2 = {}, defineProperty_default()(_classes$elItemAction2, classNamePrefix + "-item-action", true), defineProperty_default()(_classes$elItemAction2, classNamePrefix + "-item-action-remove", true), _classes$elItemAction2);
+
+    // render
+    return h(
+      "ul",
+      { "class": classes.el },
+      [props.list.map(function (item) {
+        var children = [];
+
+        children.push(h(
+          "div",
+          { "class": classes.elItemThumbnail },
+          [props.listType === "text" ? h(components_icon, {
+            attrs: { type: item.status === "progress" ? "loading" : "attachment" }
+          }) : h("img", {
+            attrs: { src: item.url, alt: item.name }
+          })]
+        ));
+
+        if (props.listType !== "picture-card") {
+          children.push(h(
+            "div",
+            { "class": classes.elItemName },
+            [item.name]
+          ));
+        }
+
+        if (props.listType === "text" && !props.disabled) {
+          children.push(h(
+            "div",
+            { "class": classes.elItemActions },
+            [h(
+              "a",
+              {
+                attrs: { href: "javascript:;" },
+                "class": classes.elItemActionRemove, on: {
+                  "click": function click(e) {
+                    return handleRemove(item);
+                  }
+                }
+              },
+              [h(components_icon, {
+                attrs: { type: "dustbin" }
+              })]
+            )]
+          ));
+        } else if (props.listType === "picture" || props.listType === "picture-card") {
+          var actions = [];
+
+          actions.push(h(
+            "a",
+            {
+              attrs: { href: "javascript:;" },
+              "class": classes.elItemActionPreview, on: {
+                "click": function click(e) {
+                  return handlePreview(item);
+                }
+              }
+            },
+            [h(components_icon, {
+              attrs: { type: "eye" }
+            })]
+          ));
+
+          if (!props.disabled) {
+            actions.push(h(
+              "a",
+              {
+                attrs: { href: "javascript:;" },
+                "class": classes.elItemActionRemove, on: {
+                  "click": function click(e) {
+                    return handleRemove(item);
+                  }
+                }
+              },
+              [h(components_icon, {
+                attrs: { type: "dustbin" }
+              })]
+            ));
+          }
+
+          children.push(h(
+            "div",
+            { "class": classes.elItemActions },
+            [actions]
+          ));
+        }
+
+        if (item.status === "progress") {
+          children.push(h(
+            "div",
+            { "class": classes.elItemPercentage },
+            [h(components_progress, {
+              attrs: {
+                type: props.listType === "picture-card" ? "circle" : "line",
+                strokeWidth: 2,
+                width: 48,
+                percentage: item.percentage,
+                showInfo: false
+              }
+            })]
+          ));
+        }
+
+        return h(
+          "li",
+          { key: item.id, "class": classes.elItem(item.status) },
+          [children]
+        );
+      })]
+    );
+  }
+});
+// CONCATENATED MODULE: ./src/components/upload/upload.js
 
 
 
-var VuiUploadList = {
-	name: "vui-upload-list",
-
-	components: {
-		VuiIcon: components_icon,
-		VuiProgress: components_progress
-	},
-
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-upload"
-		},
-		list: {
-			type: Array,
-			default: function _default() {
-				return [];
-			}
-		},
-		listType: {
-			type: String,
-			default: "text",
-			validator: function validator(value) {
-				return ["text", "picture", "picture-card"].indexOf(value) > -1;
-			}
-		},
-		beforeRemove: {
-			type: Function,
-			default: undefined
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
-	},
-
-	methods: {
-		handlePreview: function handlePreview(item) {
-			this.$emit("preview", item);
-		},
-		handleRemove: function handleRemove(item) {
-			var _this = this;
-
-			var doRemove = function doRemove() {
-				_this.$emit("remove", item);
-			};
-
-			if (!this.beforeRemove) {
-				return doRemove();
-			}
-
-			var promise = this.beforeRemove(item, this.list);
-
-			if (promise && promise.then) {
-				var resolve = function resolve() {
-					doRemove();
-				};
-				var reject = function reject() {
-					// do nothing...
-				};
-
-				promise.then(resolve, reject);
-			} else if (promise !== false) {
-				doRemove();
-			} else {
-				// do nothing...
-			}
-		}
-	},
-
-	render: function render(h) {
-		var classNamePrefix = this.classNamePrefix,
-		    list = this.list,
-		    listType = this.listType,
-		    disabled = this.disabled,
-		    handlePreview = this.handlePreview,
-		    handleRemove = this.handleRemove;
 
 
-		return h(
-			"ul",
-			{ "class": classNamePrefix + "-list" },
-			[list.map(function (item) {
-				var children = [];
 
-				if (listType !== "text") {
-					children.push(h(
-						"a",
-						{
-							attrs: {
-								href: "javascript:;"
-							},
-							"class": classNamePrefix + "-item-thumbnail",
-							on: {
-								"click": function click(e) {
-									return handlePreview(item);
-								}
-							}
-						},
-						[h("img", {
-							attrs: { src: item.url, alt: item.name }
-						})]
-					));
-				}
 
-				if (listType !== "picture-card") {
-					var iconType = void 0;
-					var icon = void 0;
 
-					if (listType === "text") {
-						iconType = item.status === "progress" ? "loading" : "attachment";
-						icon = h(components_icon, {
-							attrs: { type: iconType }
-						});
-					}
-
-					children.push(h(
-						"div",
-						{ "class": classNamePrefix + "-item-name" },
-						[icon, item.name]
-					));
-				}
-
-				if (item.status === "progress") {
-					var progressType = listType === "picture-card" ? "circle" : "line";
-
-					children.push(h(components_progress, {
-						"class": classNamePrefix + "-item-percentage",
-						attrs: { type: progressType,
-							canvas: 50,
-							stroke: 2,
-							percentage: item.percentage,
-							showInfo: false
-						}
-					}));
-				}
-
-				if (listType === "text" && !disabled) {
-					children.push(h(
-						"div",
-						{ "class": classNamePrefix + "-item-actions" },
-						[h(components_icon, {
-							attrs: {
-								type: "dustbin"
-							},
-							"class": classNamePrefix + "-item-action " + classNamePrefix + "-item-action-remove",
-							on: {
-								"click": function click(e) {
-									return handleRemove(item);
-								}
-							}
-						})]
-					));
-				} else if (listType === "picture" || listType === "picture-card") {
-					var actions = [];
-
-					actions.push(h(components_icon, {
-						attrs: {
-							type: "eye"
-						},
-						"class": classNamePrefix + "-item-action " + classNamePrefix + "-item-action-preview",
-						on: {
-							"click": function click(e) {
-								return handlePreview(item);
-							}
-						}
-					}));
-
-					if (!disabled) {
-						actions.push(h(components_icon, {
-							attrs: {
-								type: "dustbin"
-							},
-							"class": classNamePrefix + "-item-action " + classNamePrefix + "-item-action-remove",
-							on: {
-								"click": function click(e) {
-									return handleRemove(item);
-								}
-							}
-						}));
-					}
-
-					children.push(h(
-						"div",
-						{ "class": classNamePrefix + "-item-actions" },
-						[actions]
-					));
-				}
-
-				return h(
-					"li",
-					{
-						key: item.id,
-						"class": classNamePrefix + "-item " + classNamePrefix + "-item-" + item.status
-					},
-					[children]
-				);
-			})]
-		);
-	}
+var upload_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    draggable: prop_types["a" /* default */].bool.def(false),
+    multiple: prop_types["a" /* default */].bool.def(false),
+    accept: prop_types["a" /* default */].string,
+    showList: prop_types["a" /* default */].bool.def(true),
+    list: prop_types["a" /* default */].array.def([]),
+    listType: prop_types["a" /* default */].oneOf(["text", "picture", "picture-card"]).def("text"),
+    request: prop_types["a" /* default */].func.def(upload_request),
+    action: prop_types["a" /* default */].string,
+    headers: prop_types["a" /* default */].object,
+    withCredentials: prop_types["a" /* default */].bool.def(false),
+    name: prop_types["a" /* default */].string.def("file"),
+    data: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
+    autoUpload: prop_types["a" /* default */].bool.def(true),
+    beforeUpload: prop_types["a" /* default */].func,
+    beforeRemove: prop_types["a" /* default */].func,
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var upload_list = (VuiUploadList);
-// CONCATENATED MODULE: ./src/components/upload/src/upload.js
+/* harmony default export */ var upload_upload = ({
+  name: "vui-upload",
+  provide: function provide() {
+    return {
+      vuiUpload: this
+    };
+  },
 
+  inject: {
+    vuiForm: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiUploadTrigger: upload_trigger,
+    VuiUploadList: upload_list
+  },
+  props: upload_createProps(),
+  data: function data() {
+    return {
+      state: {
+        list: []
+      }
+    };
+  },
 
+  watch: {
+    list: {
+      immediate: true,
+      handler: function handler(value) {
+        this.state.list = value.map(function (target) {
+          target.id = target.id || guid();
+          target.status = target.status || "success";
 
+          return target;
+        });
+      }
+    }
+  },
+  methods: {
+    getFile: function getFile(rawFile) {
+      var file = void 0;
 
+      this.state.list.every(function (target) {
+        file = target.id === rawFile.id ? target : undefined;
 
+        return !file;
+      });
 
-var VuiUpload = {
-	name: "vui-upload",
+      return file;
+    },
+    upload: function upload(file) {
+      var trigger = this.$refs.trigger;
 
-	provide: function provide() {
-		return {
-			vuiUpload: this
-		};
-	},
+      if (file) {
+        var bool = file.rawFile && file.status === "ready";
 
+        if (bool) {
+          trigger.upload(file.rawFile);
+        }
+      } else {
+        this.state.list.forEach(function (target) {
+          var bool = target.rawFile && target.status === "ready";
 
-	inject: {
-		vuiForm: {
-			default: undefined
-		}
-	},
+          if (bool) {
+            trigger.upload(target.rawFile);
+          }
+        });
+      }
+    },
+    abort: function abort(file) {
+      var trigger = this.$refs.trigger;
 
-	components: {
-		VuiUploadTrigger: upload_trigger,
-		VuiUploadList: upload_list
-	},
+      if (file) {
+        trigger.abort(file);
+      } else {
+        this.state.list.forEach(function (target) {
+          trigger.abort(target);
+        });
+      }
+    },
+    handleReady: function handleReady(rawFile) {
+      var props = this.$props;
 
-	props: {
-		classNamePrefix: {
-			type: String,
-			default: "vui-upload"
-		},
-		draggable: {
-			type: Boolean,
-			default: false
-		},
-		multiple: {
-			type: Boolean,
-			default: false
-		},
-		accept: {
-			type: String,
-			default: undefined
-		},
-		showList: {
-			type: Boolean,
-			default: true
-		},
-		list: {
-			type: Array,
-			default: function _default() {
-				return [];
-			}
-		},
-		listType: {
-			type: String,
-			default: "text",
-			validator: function validator(value) {
-				return ["text", "picture", "picture-card"].indexOf(value) > -1;
-			}
-		},
-		request: {
-			type: Function,
-			default: src_request
-		},
-		action: {
-			type: String,
-			default: undefined,
-			required: true
-		},
-		headers: {
-			type: Object,
-			default: undefined
-		},
-		withCredentials: {
-			type: Boolean,
-			default: false
-		},
-		name: {
-			type: String,
-			default: "file"
-		},
-		data: {
-			type: [Object, Function],
-			default: undefined
-		},
-		autoUpload: {
-			type: Boolean,
-			default: true
-		},
-		beforeUpload: {
-			type: Function,
-			default: undefined
-		},
-		beforeRemove: {
-			type: Function,
-			default: undefined
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		}
-	},
+      var file = {
+        rawFile: rawFile,
+        id: rawFile.id,
+        name: rawFile.name,
+        size: rawFile.size,
+        url: "",
+        status: "ready",
+        percentage: 0,
+        event: undefined,
+        response: undefined,
+        error: undefined
+      };
 
-	data: function data() {
-		return {
-			fileList: []
-		};
-	},
+      if (props.listType === "picture" || props.listType === "picture-card") {
+        try {
+          file.url = URL.createObjectURL(rawFile);
+        } catch (error) {
+          console.error("[Vui Design][Upload]: " + error.message);
+        }
+      }
 
+      this.state.list.push(file);
+      this.$emit("ready", file, this.state.list);
+      this.$emit("change", file, this.state.list);
+    },
+    handleProgress: function handleProgress(progress, rawFile) {
+      var file = this.getFile(rawFile);
 
-	watch: {
-		list: {
-			immediate: true,
-			handler: function handler(value) {
-				this.fileList = value.map(function (file) {
-					file.id = file.id || guid();
-					file.status = file.status || "success";
+      if (!file) {
+        return;
+      }
 
-					return file;
-				});
-			}
-		}
-	},
+      file.status = "progress";
+      file.percentage = progress.percentage;
+      file.progress = progress;
 
-	methods: {
-		getFile: function getFile(rawFile) {
-			var target = void 0;
+      this.$emit("progress", progress, file, this.state.list);
+      this.$emit("change", file, this.state.list);
+    },
+    handleSuccess: function handleSuccess(response, rawFile) {
+      var file = this.getFile(rawFile);
 
-			this.fileList.every(function (file) {
-				target = file.id === rawFile.id ? file : null;
+      if (!file) {
+        return;
+      }
 
-				return !target;
-			});
+      file.status = "success";
+      file.response = response;
 
-			return target;
-		},
-		upload: function upload(file) {
-			var trigger = this.$refs.trigger;
+      this.$emit("success", response, file, this.state.list);
+      this.$emit("change", file, this.state.list);
+    },
+    handleError: function handleError(error, rawFile) {
+      var file = this.getFile(rawFile);
 
-			if (file) {
-				var bool = file.rawFile && file.status === "ready";
+      if (!file) {
+        return;
+      }
 
-				if (bool) {
-					trigger.upload(file.rawFile);
-				}
-			} else {
-				this.fileList.forEach(function (item) {
-					var bool = item.rawFile && item.status === "ready";
+      file.status = "error";
+      file.error = error;
 
-					if (bool) {
-						trigger.upload(item.rawFile);
-					}
-				});
-			}
-		},
-		abort: function abort(file) {
-			var trigger = this.$refs.trigger;
+      this.$emit("error", error, file, this.state.list);
+      this.$emit("change", file, this.state.list);
+    },
+    handlePreview: function handlePreview(file) {
+      this.$emit("preview", file, this.state.list);
+    },
+    handleRemove: function handleRemove(file) {
+      this.abort(file);
+      this.state.list.splice(this.state.list.indexOf(file), 1);
 
-			if (file) {
-				trigger.abort(file);
-			} else {
-				this.fileList.forEach(function (item) {
-					trigger.abort(item);
-				});
-			}
-		},
-		handleReady: function handleReady(rawFile) {
-			var file = {
-				rawFile: rawFile,
-				id: rawFile.id,
-				name: rawFile.name,
-				size: rawFile.size,
-				url: "",
-				status: "ready",
-				percentage: 0,
-				event: undefined,
-				response: undefined,
-				error: undefined
-			};
+      this.$emit("remove", file, this.state.list);
+      this.$emit("change", file, this.state.list);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.state.list.forEach(function (file) {
+      if (file.url && file.url.indexOf("blob:") === 0) {
+        URL.revokeObjectURL(file.url);
+      }
+    });
+  },
+  render: function render(h) {
+    var _classes$el;
 
-			if (this.listType === "picture" || this.listType === "picture-card") {
-				try {
-					file.url = URL.createObjectURL(rawFile);
-				} catch (error) {
-					return console.error("[Vui Error][Upload]", error);
-				}
-			}
+    var vuiForm = this.vuiForm,
+        slots = this.$slots,
+        props = this.$props,
+        state = this.state;
+    var handleReady = this.handleReady,
+        handleProgress = this.handleProgress,
+        handleSuccess = this.handleSuccess,
+        handleError = this.handleError,
+        handlePreview = this.handlePreview,
+        handleRemove = this.handleRemove;
 
-			this.fileList.push(file);
-			this.$emit("ready", file, this.fileList);
-			this.$emit("change", file, this.fileList);
-		},
-		handleProgress: function handleProgress(progress, rawFile) {
-			var file = this.getFile(rawFile);
+    // disabled
 
-			if (!file) {
-				return;
-			}
+    var disabled = void 0;
 
-			file.status = "progress";
-			file.percentage = progress.percentage;
-			file.progress = progress;
+    if (vuiForm && vuiForm.disabled) {
+      disabled = vuiForm.disabled;
+    } else {
+      disabled = props.disabled;
+    }
 
-			this.$emit("progress", progress, file, this.fileList);
-			this.$emit("change", file, this.fileList);
-		},
-		handleSuccess: function handleSuccess(response, rawFile) {
-			var file = this.getFile(rawFile);
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "upload");
+    var classes = {};
 
-			if (!file) {
-				return;
-			}
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-draggable", props.draggable), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.listType, props.listType), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", disabled), _classes$el);
 
-			file.status = "success";
-			file.response = response;
+    // render
+    var children = [];
+    var childUploadTrigger = void 0;
+    var childUploadList = void 0;
 
-			this.$emit("success", response, file, this.fileList);
-			this.$emit("change", file, this.fileList);
-		},
-		handleError: function handleError(error, rawFile) {
-			var file = this.getFile(rawFile);
+    childUploadTrigger = h(
+      upload_trigger,
+      {
+        ref: "trigger",
+        directives: [{
+          name: "show",
+          value: slots.trigger || slots.default
+        }],
+        attrs: {
+          classNamePrefix: classNamePrefix,
+          draggable: props.draggable,
+          multiple: props.multiple,
+          accept: props.accept,
+          list: state.list,
+          request: props.request,
+          action: props.action,
+          headers: props.headers,
+          withCredentials: props.withCredentials,
+          name: props.name,
+          data: props.data,
+          autoUpload: props.autoUpload,
+          beforeUpload: props.beforeUpload,
+          disabled: disabled
+        },
+        on: {
+          "ready": handleReady,
+          "progress": handleProgress,
+          "success": handleSuccess,
+          "error": handleError,
+          "remove": handleRemove
+        }
+      },
+      [slots.trigger || slots.default]
+    );
 
-			if (!file) {
-				return;
-			}
+    if (props.showList && state.list.length > 0) {
+      childUploadList = h(upload_list, {
+        ref: "list",
+        attrs: { classNamePrefix: classNamePrefix,
+          list: state.list,
+          listType: props.listType,
+          beforeRemove: props.beforeRemove,
+          disabled: disabled
+        },
+        on: {
+          "preview": handlePreview,
+          "remove": handleRemove
+        }
+      });
+    }
 
-			file.status = "error";
-			file.error = error;
+    if (!props.draggable && props.listType === "picture-card") {
+      children.push(childUploadList);
+    }
 
-			this.$emit("error", error, file, this.fileList);
-			this.$emit("change", file, this.fileList);
-		},
-		handlePreview: function handlePreview(file) {
-			this.$emit("preview", file, this.fileList);
-		},
-		handleRemove: function handleRemove(file) {
-			this.abort(file);
-			this.fileList.splice(this.fileList.indexOf(file), 1);
-			this.$emit("remove", file, this.fileList);
-			this.$emit("change", file, this.fileList);
-		}
-	},
+    if (slots.trigger) {
+      children.push(childUploadTrigger);
+      children.push(slots.default);
+    } else {
+      children.push(childUploadTrigger);
+    }
 
-	beforeDestroy: function beforeDestroy() {
-		this.fileList.forEach(function (file) {
-			if (file.url && file.url.indexOf("blob:") === 0) {
-				URL.revokeObjectURL(file.url);
-			}
-		});
-	},
-	render: function render(h) {
-		var _classes;
+    if (props.listType === "text" || props.listType === "picture" || props.draggable && props.listType === "picture-card") {
+      children.push(childUploadList);
+    }
 
-		var vuiForm = this.vuiForm,
-		    $slots = this.$slots,
-		    classNamePrefix = this.classNamePrefix,
-		    draggable = this.draggable,
-		    multiple = this.multiple,
-		    accept = this.accept,
-		    showList = this.showList,
-		    fileList = this.fileList,
-		    listType = this.listType,
-		    request = this.request,
-		    action = this.action,
-		    headers = this.headers,
-		    withCredentials = this.withCredentials,
-		    name = this.name,
-		    data = this.data,
-		    autoUpload = this.autoUpload,
-		    beforeUpload = this.beforeUpload,
-		    beforeRemove = this.beforeRemove;
-		var handleReady = this.handleReady,
-		    handleProgress = this.handleProgress,
-		    handleSuccess = this.handleSuccess,
-		    handleError = this.handleError,
-		    handlePreview = this.handlePreview,
-		    handleRemove = this.handleRemove;
-
-		// disabled
-
-		var disabled = void 0;
-
-		if (vuiForm && vuiForm.disabled) {
-			disabled = vuiForm.disabled;
-		} else {
-			disabled = this.disabled;
-		}
-
-		// classes
-		var classes = (_classes = {}, defineProperty_default()(_classes, "" + classNamePrefix, true), defineProperty_default()(_classes, classNamePrefix + "-draggable", draggable), defineProperty_default()(_classes, classNamePrefix + "-" + listType, listType), defineProperty_default()(_classes, classNamePrefix + "-disabled", disabled), _classes);
-
-		// render
-		var children = [];
-		var childUploadTrigger = void 0;
-		var childUploadList = void 0;
-
-		childUploadTrigger = h(
-			upload_trigger,
-			{
-				ref: "trigger",
-				directives: [{
-					name: "show",
-					value: $slots.trigger || $slots.default
-				}],
-				attrs: {
-					draggable: draggable,
-					multiple: multiple,
-					accept: accept,
-					list: fileList,
-					request: request,
-					action: action,
-					headers: headers,
-					withCredentials: withCredentials,
-					name: name,
-					data: data,
-					autoUpload: autoUpload,
-					beforeUpload: beforeUpload,
-					disabled: disabled
-				},
-				on: {
-					"ready": handleReady,
-					"progress": handleProgress,
-					"success": handleSuccess,
-					"error": handleError,
-					"remove": handleRemove
-				}
-			},
-			[$slots.trigger || $slots.default]
-		);
-
-		if (showList && fileList.length > 0) {
-			childUploadList = h(upload_list, {
-				ref: "list",
-				attrs: { list: fileList,
-					listType: listType,
-					beforeRemove: beforeRemove,
-					disabled: disabled
-				},
-				on: {
-					"preview": handlePreview,
-					"remove": handleRemove
-				}
-			});
-		}
-
-		if (!draggable && listType === "picture-card") {
-			children.push(childUploadList);
-		}
-
-		if ($slots.trigger) {
-			children.push(childUploadTrigger);
-			children.push($slots.default);
-		} else {
-			children.push(childUploadTrigger);
-		}
-
-		if (listType === "text" || listType === "picture" || draggable && listType === "picture-card") {
-			children.push(childUploadList);
-		}
-
-		return h(
-			"div",
-			{ "class": classes },
-			[children]
-		);
-	}
-};
-
-/* harmony default export */ var src_upload = (VuiUpload);
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/upload/index.js
 
 
-src_upload.install = function (Vue) {
-	Vue.component(src_upload.name, src_upload);
+
+
+/* harmony default export */ var components_upload = (withInstall(upload_upload));
+// CONCATENATED MODULE: ./src/components/avatar/avatar-group.js
+
+
+
+
+
+
+
+var avatar_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    shape: prop_types["a" /* default */].oneOf(["circle", "square"]).def("circle"),
+    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(["small", "medium", "large"]), prop_types["a" /* default */].number]).def("medium"),
+    maxCount: prop_types["a" /* default */].number,
+    maxTooltipColor: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
+    maxTooltipPlacement: prop_types["a" /* default */].oneOf(["top", "bottom"]).def("top")
+  };
 };
 
-/* harmony default export */ var components_upload = (src_upload);
-// CONCATENATED MODULE: ./src/components/avatar-group/src/avatar-group.js
-
-
-
-
-
-
-
-var VuiAvatarGroup = {
+/* harmony default export */ var avatar_group = ({
   name: "vui-avatar-group",
   provide: function provide() {
     return {
@@ -31410,14 +31248,7 @@ var VuiAvatarGroup = {
     VuiAvatar: components_avatar,
     VuiSpace: components_space
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    shape: prop_types["a" /* default */].oneOf(["circle", "square"]).def("circle"),
-    size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(["small", "medium", "large"]), prop_types["a" /* default */].number]).def("medium"),
-    maxCount: prop_types["a" /* default */].number,
-    maxTooltipColor: prop_types["a" /* default */].oneOf(["light", "dark"]).def("light"),
-    maxTooltipPlacement: prop_types["a" /* default */].oneOf(["top", "bottom"]).def("top")
-  },
+  props: avatar_group_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -31481,19 +31312,14 @@ var VuiAvatarGroup = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var avatar_group = (VuiAvatarGroup);
+});
 // CONCATENATED MODULE: ./src/components/avatar-group/index.js
 
 
-avatar_group.install = function (Vue) {
-  Vue.component(avatar_group.name, avatar_group);
-};
 
-/* harmony default export */ var components_avatar_group = (avatar_group);
-// CONCATENATED MODULE: ./src/components/card/src/card.js
 
+/* harmony default export */ var components_avatar_group = (withInstall(avatar_group));
+// CONCATENATED MODULE: ./src/components/card/card.js
 
 
 
@@ -31504,14 +31330,8 @@ avatar_group.install = function (Vue) {
 
 var gridCardLoadingBlocks = [[20], [8, 16], [4, 18], [12, 8], [8, 8, 8]];
 
-var VuiCard = {
-  name: "vui-card",
-  components: {
-    VuiIcon: components_icon,
-    VuiRow: components_row,
-    VuiCol: components_col
-  },
-  props: {
+var card_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     icon: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
@@ -31523,31 +31343,25 @@ var VuiCard = {
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     loading: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var card = ({
+  name: "vui-card",
+  components: {
+    VuiIcon: components_icon,
+    VuiRow: components_row,
+    VuiCol: components_col
   },
+  props: card_createProps(),
   methods: {
     withCardGrids: function withCardGrids() {
       var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var tagName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "vui-card-grid";
 
-      var bool = false;
-
-      children.forEach(function (element) {
-        if (!element) {
-          return;
-        }
-
-        var options = element.componentOptions;
-
-        if (!options) {
-          return;
-        }
-
-        if (options && options.tag === tagName) {
-          bool = true;
-        }
+      return children.some(function (node) {
+        return node && node.componentOptions && node.componentOptions.tag === tagName;
       });
-
-      return bool;
     }
   },
   render: function render(h) {
@@ -31723,26 +31537,26 @@ var VuiCard = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var card = (VuiCard);
+});
 // CONCATENATED MODULE: ./src/components/card/index.js
 
 
-card.install = function (Vue) {
-  Vue.component(card.name, card);
+
+
+/* harmony default export */ var components_card = (withInstall(card));
+// CONCATENATED MODULE: ./src/components/card/card-grid.js
+
+
+
+var card_grid_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_card = (card);
-// CONCATENATED MODULE: ./src/components/card/src/card-grid.js
-
-
-
-var VuiCardGrid = {
+/* harmony default export */ var card_grid = ({
   name: "vui-card-grid",
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string
-  },
+  props: card_grid_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -31759,29 +31573,29 @@ var VuiCardGrid = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var card_grid = (VuiCardGrid);
+});
 // CONCATENATED MODULE: ./src/components/card-grid/index.js
 
 
-card_grid.install = function (Vue) {
-  Vue.component(card_grid.name, card_grid);
-};
 
-/* harmony default export */ var components_card_grid = (card_grid);
-// CONCATENATED MODULE: ./src/components/card/src/card-meta.js
+
+/* harmony default export */ var components_card_grid = (withInstall(card_grid));
+// CONCATENATED MODULE: ./src/components/card/card-meta.js
 
 
 
-var VuiCardMeta = {
-  name: "vui-card-meta",
-  props: {
+var card_meta_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     avatar: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  };
+};
+
+/* harmony default export */ var card_meta = ({
+  name: "vui-card-meta",
+  props: card_meta_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -31837,357 +31651,358 @@ var VuiCardMeta = {
       )]
     );
   }
-};
-
-/* harmony default export */ var card_meta = (VuiCardMeta);
+});
 // CONCATENATED MODULE: ./src/components/card-meta/index.js
 
 
-card_meta.install = function (Vue) {
-  Vue.component(card_meta.name, card_meta);
+
+
+/* harmony default export */ var components_card_meta = (withInstall(card_meta));
+// CONCATENATED MODULE: ./src/components/cell/cell.js
+
+
+
+
+
+
+
+var cell_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    icon: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    extra: prop_types["a" /* default */].string,
+    selected: prop_types["a" /* default */].bool.def(false),
+    disabled: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_card_meta = (card_meta);
-// CONCATENATED MODULE: ./src/components/cell/src/cell.js
+/* harmony default export */ var cell = ({
+  name: "vui-cell",
+  inject: {
+    vuiCellGroup: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon: components_icon
+  },
+  mixins: [mixins_link],
+  props: cell_createProps(),
+  methods: {
+    handleCellClick: function handleCellClick(e) {
+      this.$emit("click", e);
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
 
+    var slots = this.$slots,
+        props = this.$props,
+        attrs = this.$attrs,
+        listeners = this.$listeners;
+    var getNextRoute = this.getNextRoute;
+    var handleCellClick = this.handleCellClick,
+        handleLinkClick = this.handleLinkClick;
 
+    // icon
 
+    var icon = void 0;
 
+    if (slots.icon) {
+      icon = slots.icon;
+    } else if (props.icon) {
+      icon = h(components_icon, {
+        attrs: { type: props.icon }
+      });
+    }
 
+    // content
+    var content = slots.default || props.title;
 
+    // extra
+    var extra = slots.extra || props.extra;
 
-var VuiCell = {
-	name: "vui-cell",
-	inject: {
-		vuiCellGroup: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon: components_icon
-	},
-	mixins: [mixins_link],
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		icon: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].string,
-		extra: prop_types["a" /* default */].string,
-		selected: prop_types["a" /* default */].bool.def(false),
-		disabled: prop_types["a" /* default */].bool.def(false)
-	},
-	methods: {
-		handleCellClick: function handleCellClick(e) {
-			this.$emit("click", e);
-		}
-	},
-	render: function render(h) {
-		var _classes$el;
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cell");
+    var classes = {};
 
-		var slots = this.$slots,
-		    props = this.$props,
-		    attrs = this.$attrs,
-		    listeners = this.$listeners;
-		var getNextRoute = this.getNextRoute;
-		var handleCellClick = this.handleCellClick,
-		    handleLinkClick = this.handleLinkClick;
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-link", props.href || props.to), defineProperty_default()(_classes$el, classNamePrefix + "-selected", props.selected), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+    classes.elIcon = classNamePrefix + "-icon";
+    classes.elContent = classNamePrefix + "-content";
+    classes.elExtra = classNamePrefix + "-extra";
+    classes.elCheckmark = classNamePrefix + "-checkmark";
+    classes.elArrow = classNamePrefix + "-arrow";
 
-		// icon
+    // render
+    var children = [];
 
-		var icon = void 0;
+    if (icon) {
+      children.push(h(
+        "div",
+        { "class": classes.elIcon },
+        [icon]
+      ));
+    }
 
-		if (slots.icon) {
-			icon = slots.icon;
-		} else if (props.icon) {
-			icon = h(components_icon, {
-				attrs: { type: props.icon }
-			});
-		}
+    children.push(h(
+      "div",
+      { "class": classes.elContent },
+      [content]
+    ));
 
-		// content
-		var content = slots.default || props.title;
+    if (extra) {
+      children.push(h(
+        "div",
+        { "class": classes.elExtra },
+        [extra]
+      ));
+    }
 
-		// extra
-		var extra = slots.extra || props.extra;
+    if (props.selected) {
+      children.push(h(
+        "div",
+        { "class": classes.elCheckmark },
+        [h(components_icon, {
+          attrs: { type: "checkmark" }
+        })]
+      ));
+    } else if (props.href || props.to) {
+      children.push(h(
+        "div",
+        { "class": classes.elArrow },
+        [h(components_icon, {
+          attrs: { type: "chevron-right" }
+        })]
+      ));
+    }
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cell");
-		var classes = {};
+    var attributes = {
+      attrs: extends_default()({}, attrs),
+      class: classes.el,
+      on: extends_default()({}, listeners)
+    };
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-link", props.href || props.to), defineProperty_default()(_classes$el, classNamePrefix + "-selected", props.selected), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-		classes.elIcon = classNamePrefix + "-icon";
-		classes.elContent = classNamePrefix + "-content";
-		classes.elExtra = classNamePrefix + "-extra";
-		classes.elCheckmark = classNamePrefix + "-checkmark";
-		classes.elArrow = classNamePrefix + "-arrow";
+    if (!props.href && !props.to) {
+      attributes.on.click = handleCellClick;
 
-		// render
-		var children = [];
+      return h(
+        "div",
+        attributes,
+        [children]
+      );
+    } else {
+      if (props.href) {
+        attributes.attrs.href = props.href;
+      } else {
+        var route = getNextRoute();
 
-		if (icon) {
-			children.push(h(
-				"div",
-				{ "class": classes.elIcon },
-				[icon]
-			));
-		}
+        attributes.attrs.href = route.href;
+      }
 
-		children.push(h(
-			"div",
-			{ "class": classes.elContent },
-			[content]
-		));
+      attributes.attrs.target = props.target;
+      attributes.on.click = handleLinkClick;
 
-		if (extra) {
-			children.push(h(
-				"div",
-				{ "class": classes.elExtra },
-				[extra]
-			));
-		}
-
-		if (props.selected) {
-			children.push(h(
-				"div",
-				{ "class": classes.elCheckmark },
-				[h(components_icon, {
-					attrs: { type: "checkmark" }
-				})]
-			));
-		} else if (props.href || props.to) {
-			children.push(h(
-				"div",
-				{ "class": classes.elArrow },
-				[h(components_icon, {
-					attrs: { type: "chevron-right" }
-				})]
-			));
-		}
-
-		var attributes = {
-			attrs: extends_default()({}, attrs),
-			class: classes.el,
-			on: extends_default()({}, listeners)
-		};
-
-		if (!props.href && !props.to) {
-			attributes.on.click = handleCellClick;
-
-			return h(
-				"div",
-				attributes,
-				[children]
-			);
-		} else {
-			if (props.href) {
-				attributes.attrs.href = props.href;
-			} else {
-				var route = getNextRoute();
-
-				attributes.attrs.href = route.href;
-			}
-
-			attributes.attrs.target = props.target;
-			attributes.on.click = handleLinkClick;
-
-			return h(
-				"a",
-				attributes,
-				[children]
-			);
-		}
-	}
-};
-
-/* harmony default export */ var cell = (VuiCell);
+      return h(
+        "a",
+        attributes,
+        [children]
+      );
+    }
+  }
+});
 // CONCATENATED MODULE: ./src/components/cell/index.js
 
 
-cell.install = function (Vue) {
-	Vue.component(cell.name, cell);
+
+
+/* harmony default export */ var components_cell = (withInstall(cell));
+// CONCATENATED MODULE: ./src/components/cell/cell-group.js
+
+
+
+var cell_group_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].string,
+    description: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_cell = (cell);
-// CONCATENATED MODULE: ./src/components/cell/src/cell-group.js
+/* harmony default export */ var cell_group = ({
+  name: "vui-cell-group",
+  provide: function provide() {
+    return {
+      vuiCellGroup: this
+    };
+  },
 
+  props: cell_group_createProps(),
+  render: function render(h) {
+    var slots = this.$slots,
+        props = this.$props;
 
+    // title
 
-var VuiCellGroup = {
-	name: "vui-cell-group",
-	provide: function provide() {
-		return {
-			vuiCellGroup: this
-		};
-	},
+    var title = slots.title || props.title;
 
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		title: prop_types["a" /* default */].string,
-		description: prop_types["a" /* default */].string
-	},
-	render: function render(h) {
-		var slots = this.$slots,
-		    props = this.$props;
+    // description
+    var description = slots.description || props.description;
 
-		// class
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cell-group");
+    var classes = {};
 
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "cell-group");
-		var classes = {};
+    classes.el = "" + classNamePrefix;
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elDescription = classNamePrefix + "-description";
 
-		classes.el = "" + classNamePrefix;
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elDescription = classNamePrefix + "-description";
+    // render
+    var children = [];
 
-		// render
-		var children = [];
+    if (title) {
+      children.push(h(
+        "div",
+        { "class": classes.elTitle },
+        [title]
+      ));
+    }
 
-		if (props.title) {
-			children.push(h(
-				"div",
-				{ "class": classes.elTitle },
-				[props.title]
-			));
-		}
+    children.push(slots.default);
 
-		children.push(slots.default);
+    if (description) {
+      children.push(h(
+        "div",
+        { "class": classes.elDescription },
+        [description]
+      ));
+    }
 
-		if (props.description) {
-			children.push(h(
-				"div",
-				{ "class": classes.elDescription },
-				[props.description]
-			));
-		}
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
-};
-
-/* harmony default export */ var cell_group = (VuiCellGroup);
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/cell-group/index.js
 
 
-cell_group.install = function (Vue) {
-	Vue.component(cell_group.name, cell_group);
+
+
+/* harmony default export */ var components_cell_group = (withInstall(cell_group));
+// CONCATENATED MODULE: ./src/components/collapse/collapse.js
+
+
+
+
+
+
+var collapse_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].array]),
+    accordion: prop_types["a" /* default */].bool.def(false),
+    bordered: prop_types["a" /* default */].bool.def(true),
+    arrowAlign: prop_types["a" /* default */].oneOf(["left", "right"]).def("left"),
+    destroyInactivePanel: prop_types["a" /* default */].bool.def(false)
+  };
 };
 
-/* harmony default export */ var components_cell_group = (cell_group);
-// CONCATENATED MODULE: ./src/components/collapse/src/collapse.js
+/* harmony default export */ var collapse = ({
+  name: "vui-collapse",
+  provide: function provide() {
+    return {
+      vuiCollapse: this
+    };
+  },
+
+  model: {
+    prop: "value",
+    event: "input"
+  },
+  props: collapse_createProps(),
+  data: function data() {
+    var props = this.$props;
+
+    var state = {};
+
+    if (props.accordion) {
+      state.value = is["a" /* default */].array(props.value) ? undefined : props.value;
+    } else {
+      state.value = is["a" /* default */].array(props.value) ? props.value : [];
+    }
+
+    return {
+      state: state
+    };
+  },
+
+  watch: {
+    value: function value(_value) {
+      var props = this.$props;
 
 
+      if (props.accordion) {
+        this.state.value = is["a" /* default */].array(_value) ? undefined : _value;
+      } else {
+        this.state.value = is["a" /* default */].array(_value) ? _value : [];
+      }
+    }
+  },
+  methods: {
+    handleToggle: function handleToggle(value) {
+      var props = this.$props;
 
 
+      if (props.accordion) {
+        if (this.state.value === value) {
+          this.state.value = undefined;
+        } else {
+          this.state.value = value;
+        }
+      } else {
+        var index = this.state.value.indexOf(value);
 
+        if (index === -1) {
+          this.state.value.push(value);
+        } else {
+          this.state.value.splice(index, 1);
+        }
+      }
 
-var VuiCollapse = {
-	name: "vui-collapse",
-	provide: function provide() {
-		return {
-			vuiCollapse: this
-		};
-	},
+      this.$emit("input", Object(utils_clone["a" /* default */])(this.state.value));
+      this.$emit("change", Object(utils_clone["a" /* default */])(this.state.value));
+    }
+  },
+  render: function render(h) {
+    var _classes$el;
 
-	model: {
-		prop: "value",
-		event: "input"
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].array]),
-		accordion: prop_types["a" /* default */].bool.def(false),
-		bordered: prop_types["a" /* default */].bool.def(true),
-		arrowAlign: prop_types["a" /* default */].oneOf(["left", "right"]).def("left"),
-		destroyInactivePanel: prop_types["a" /* default */].bool.def(false)
-	},
-	data: function data() {
-		var props = this.$props;
+    var slots = this.$slots,
+        props = this.$props;
 
-		var state = {};
+    // class
 
-		if (props.accordion) {
-			state.value = is["a" /* default */].array(props.value) ? undefined : props.value;
-		} else {
-			state.value = is["a" /* default */].array(props.value) ? props.value : [];
-		}
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "collapse");
+    var classes = {};
 
-		return {
-			state: state
-		};
-	},
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), _classes$el);
 
-	watch: {
-		value: function value(_value) {
-			var props = this.$props;
-
-
-			if (props.accordion) {
-				this.state.value = is["a" /* default */].array(_value) ? undefined : _value;
-			} else {
-				this.state.value = is["a" /* default */].array(_value) ? _value : [];
-			}
-		}
-	},
-	methods: {
-		handleToggle: function handleToggle(panel) {
-			var props = this.$props;
-
-			var value = panel.value;
-
-			if (props.accordion) {
-				if (this.state.value === value) {
-					this.state.value = undefined;
-				} else {
-					this.state.value = value;
-				}
-			} else {
-				var index = this.state.value.indexOf(value);
-
-				if (index === -1) {
-					this.state.value.push(value);
-				} else {
-					this.state.value.splice(index, 1);
-				}
-			}
-
-			this.$emit("input", Object(utils_clone["a" /* default */])(this.state.value));
-			this.$emit("change", Object(utils_clone["a" /* default */])(this.state.value));
-		}
-	},
-	render: function render(h) {
-		var _classes$el;
-
-		var slots = this.$slots,
-		    props = this.$props;
-
-		// class
-
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "collapse");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered), _classes$el);
-
-		// render
-		return h(
-			"div",
-			{ "class": classes.el },
-			[slots.default]
-		);
-	}
-};
-
-/* harmony default export */ var collapse = (VuiCollapse);
+    // render
+    return h(
+      "div",
+      { "class": classes.el },
+      [slots.default]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/collapse/index.js
 
 
-collapse.install = function (Vue) {
-	Vue.component(collapse.name, collapse);
-};
 
-/* harmony default export */ var components_collapse = (collapse);
-// CONCATENATED MODULE: ./src/components/countdown/src/utils.js
+
+/* harmony default export */ var components_collapse = (withInstall(collapse));
+// CONCATENATED MODULE: ./src/components/countdown/utils.js
 
 
 
@@ -32258,20 +32073,19 @@ var utils_formatTimestamp = function formatTimestamp(duration, format) {
   });
 };
 
-/* harmony default export */ var countdown_src_utils = ({
+/* harmony default export */ var countdown_utils = ({
   now: utils_now,
   parser: parser,
   formatter: utils_formatter
 });
-// CONCATENATED MODULE: ./src/components/countdown/src/countdown.js
+// CONCATENATED MODULE: ./src/components/countdown/countdown.js
 
 
 
 
 
-var VuiCountdown = {
-  name: "vui-countdown",
-  props: {
+var countdown_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     extra: prop_types["a" /* default */].string,
@@ -32283,7 +32097,12 @@ var VuiCountdown = {
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
-  },
+  };
+};
+
+/* harmony default export */ var countdown = ({
+  name: "vui-countdown",
+  props: countdown_createProps(),
   data: function data() {
     var state = {
       value: undefined
@@ -32307,14 +32126,14 @@ var VuiCountdown = {
 
       window.clearInterval(this.countdown);
       this.countdown = window.setInterval(function () {
-        var current = countdown_src_utils.now();
-        var target = countdown_src_utils.parser(props.value);
+        var current = countdown_utils.now();
+        var target = countdown_utils.parser(props.value);
         var value = void 0;
 
         if (is["a" /* default */].function(props.formatter)) {
           value = props.formatter(current, target);
         } else {
-          value = countdown_src_utils.formatter(current, target, props.formatter);
+          value = countdown_utils.formatter(current, target, props.formatter);
         }
 
         _this.state.value = value;
@@ -32335,8 +32154,8 @@ var VuiCountdown = {
       window.clearInterval(this.countdown);
       this.countdown = undefined;
 
-      var current = countdown_src_utils.now();
-      var target = countdown_src_utils.parser(props.value);
+      var current = countdown_utils.now();
+      var target = countdown_utils.parser(props.value);
 
       if (target < current) {
         this.$emit("finish");
@@ -32435,270 +32254,260 @@ var VuiCountdown = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var countdown = (VuiCountdown);
+});
 // CONCATENATED MODULE: ./src/components/countdown/index.js
 
 
-countdown.install = function (Vue) {
-  Vue.component(countdown.name, countdown);
+
+
+/* harmony default export */ var components_countdown = (withInstall(countdown));
+// CONCATENATED MODULE: ./src/components/collapse/panel.js
+
+
+
+
+
+
+var panel_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(function () {
+      return guid();
+    }),
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    extra: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    showArrow: prop_types["a" /* default */].bool.def(true),
+    disabled: prop_types["a" /* default */].bool.def(false),
+    animation: prop_types["a" /* default */].string.def("vui-collapse-panel-collapse")
+  };
 };
 
-/* harmony default export */ var components_countdown = (countdown);
-// CONCATENATED MODULE: ./src/components/collapse/src/panel.js
+/* harmony default export */ var panel = ({
+  name: "vui-panel",
+  inject: {
+    vuiCollapse: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiIcon: components_icon
+  },
+  props: panel_createProps(),
+  methods: {
+    handleToggle: function handleToggle() {
+      var vuiCollapse = this.vuiCollapse,
+          props = this.$props;
 
 
+      if (!vuiCollapse || props.disabled) {
+        return;
+      }
 
+      vuiCollapse.handleToggle(props.value);
+    },
+    handleBeforeEnter: function handleBeforeEnter(el) {
+      // el.style.height = "0px";
+    },
+    handleEnter: function handleEnter(el) {
+      el.style.height = el.scrollHeight + "px";
+    },
+    handleAfterEnter: function handleAfterEnter(el) {
+      el.style.height = "";
+    },
+    handleBeforeLeave: function handleBeforeLeave(el) {
+      el.style.height = el.scrollHeight + "px";
+    },
+    handleLeave: function handleLeave(el) {
+      // el.style.height = "0px";
+    },
+    handleAfterLeave: function handleAfterLeave(el) {
+      el.style.height = "";
+    }
+  },
+  render: function render(h) {
+    var _classes$el, _classes$elArrow;
 
+    var vuiCollapse = this.vuiCollapse,
+        slots = this.$slots,
+        props = this.$props;
+    var vuiCollapseProps = vuiCollapse.$props,
+        vuiCollapseState = vuiCollapse.state;
+    var handleToggle = this.handleToggle,
+        handleBeforeEnter = this.handleBeforeEnter,
+        handleEnter = this.handleEnter,
+        handleAfterEnter = this.handleAfterEnter,
+        handleBeforeLeave = this.handleBeforeLeave,
+        handleLeave = this.handleLeave,
+        handleAfterLeave = this.handleAfterLeave;
 
+    // active
 
-var VuiPanel = {
-	name: "vui-panel",
-	inject: {
-		vuiCollapse: {
-			default: undefined
-		}
-	},
-	components: {
-		VuiIcon: components_icon
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(function () {
-			return guid();
-		}),
-		title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		extra: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-		showArrow: prop_types["a" /* default */].bool.def(true),
-		disabled: prop_types["a" /* default */].bool.def(false),
-		animation: prop_types["a" /* default */].string.def("vui-collapse-panel-collapse")
-	},
-	methods: {
-		handleToggle: function handleToggle() {
-			var vuiCollapse = this.vuiCollapse,
-			    props = this.$props;
+    var active = void 0;
 
+    if (vuiCollapseProps.accordion) {
+      active = props.value === vuiCollapseState.value;
+    } else {
+      active = vuiCollapseState.value.indexOf(props.value) > -1;
+    }
 
-			if (props.disabled) {
-				return;
-			}
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "collapse-panel");
+    var classes = {};
 
-			if (!vuiCollapse) {
-				return;
-			}
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-active", active), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
+    classes.elHeader = classNamePrefix + "-header";
+    classes.elArrow = (_classes$elArrow = {}, defineProperty_default()(_classes$elArrow, classNamePrefix + "-arrow", true), defineProperty_default()(_classes$elArrow, classNamePrefix + "-arrow-" + vuiCollapseProps.arrowAlign, true), _classes$elArrow);
+    classes.elTitle = classNamePrefix + "-title";
+    classes.elExtra = classNamePrefix + "-extra";
+    classes.elBodyWrapper = classNamePrefix + "-body-wrapper";
+    classes.elBody = classNamePrefix + "-body";
 
-			vuiCollapse.handleToggle(this);
-		},
-		handleBeforeEnter: function handleBeforeEnter(el) {
-			// el.style.height = "0px";
-		},
-		handleEnter: function handleEnter(el) {
-			el.style.height = el.scrollHeight + "px";
-		},
-		handleAfterEnter: function handleAfterEnter(el) {
-			el.style.height = "";
-		},
-		handleBeforeLeave: function handleBeforeLeave(el) {
-			el.style.height = el.scrollHeight + "px";
-		},
-		handleLeave: function handleLeave(el) {
-			// el.style.height = "0px";
-		},
-		handleAfterLeave: function handleAfterLeave(el) {
-			el.style.height = "";
-		}
-	},
-	render: function render(h) {
-		var _classes$el, _classes$elArrow;
+    // title
+    var title = slots.title || props.title;
 
-		var vuiCollapse = this.vuiCollapse,
-		    slots = this.$slots,
-		    props = this.$props;
-		var vuiCollapseProps = vuiCollapse.$props,
-		    vuiCollapseState = vuiCollapse.state;
-		var handleToggle = this.handleToggle,
-		    handleBeforeEnter = this.handleBeforeEnter,
-		    handleEnter = this.handleEnter,
-		    handleAfterEnter = this.handleAfterEnter,
-		    handleBeforeLeave = this.handleBeforeLeave,
-		    handleLeave = this.handleLeave,
-		    handleAfterLeave = this.handleAfterLeave;
+    // extra
+    var extra = slots.extra || props.extra;
 
-		// active
+    // arrow
+    var arrow = void 0;
 
-		var active = void 0;
+    if (props.showArrow) {
+      arrow = h(components_icon, {
+        attrs: { type: "chevron-right" }
+      });
+    }
 
-		if (vuiCollapseProps.accordion) {
-			active = props.value === vuiCollapseState.value;
-		} else {
-			active = vuiCollapseState.value.indexOf(props.value) > -1;
-		}
+    // content
+    var content = slots.default;
 
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "collapse-panel");
-		var classes = {};
+    // render
+    var children = [];
 
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-active", active), defineProperty_default()(_classes$el, classNamePrefix + "-disabled", props.disabled), _classes$el);
-		classes.elHeader = classNamePrefix + "-header";
-		classes.elArrow = (_classes$elArrow = {}, defineProperty_default()(_classes$elArrow, classNamePrefix + "-arrow", true), defineProperty_default()(_classes$elArrow, classNamePrefix + "-arrow-" + vuiCollapseProps.arrowAlign, true), _classes$elArrow);
-		classes.elTitle = classNamePrefix + "-title";
-		classes.elExtra = classNamePrefix + "-extra";
-		classes.elBodyWrapper = classNamePrefix + "-body-wrapper";
-		classes.elBody = classNamePrefix + "-body";
+    if (title || extra || arrow) {
+      var header = [];
 
-		// title
-		var title = slots.title || props.title;
+      if (arrow && vuiCollapseProps.arrowAlign === "left") {
+        header.push(h(
+          "div",
+          { "class": classes.elArrow },
+          [arrow]
+        ));
+      }
 
-		// extra
-		var extra = slots.extra || props.extra;
+      if (title) {
+        header.push(h(
+          "div",
+          { "class": classes.elTitle },
+          [title]
+        ));
+      }
 
-		// arrow
-		var arrow = void 0;
+      if (extra) {
+        header.push(h(
+          "div",
+          { "class": classes.elExtra },
+          [extra]
+        ));
+      }
 
-		if (props.showArrow) {
-			arrow = h(components_icon, {
-				attrs: { type: "chevron-right" }
-			});
-		}
+      if (arrow && vuiCollapseProps.arrowAlign === "right") {
+        header.push(h(
+          "div",
+          { "class": classes.elArrow },
+          [arrow]
+        ));
+      }
 
-		// content
-		var content = slots.default;
+      children.push(h(
+        "div",
+        { "class": classes.elHeader, on: {
+            "click": handleToggle
+          }
+        },
+        [header]
+      ));
+    }
 
-		// render
-		var children = [];
+    if (vuiCollapseProps.destroyInactivePanel) {
+      children.push(h(
+        "transition",
+        {
+          attrs: {
+            name: props.animation
+          },
+          on: {
+            "beforeEnter": handleBeforeEnter,
+            "enter": handleEnter,
+            "afterEnter": handleAfterEnter,
+            "beforeLeave": handleBeforeLeave,
+            "leave": handleLeave,
+            "afterLeave": handleAfterLeave
+          }
+        },
+        [active ? h(
+          "div",
+          { "class": classes.elBodyWrapper },
+          [h(
+            "div",
+            { "class": classes.elBody },
+            [content]
+          )]
+        ) : null]
+      ));
+    } else {
+      children.push(h(
+        "transition",
+        {
+          attrs: {
+            name: props.animation
+          },
+          on: {
+            "beforeEnter": handleBeforeEnter,
+            "enter": handleEnter,
+            "afterEnter": handleAfterEnter,
+            "beforeLeave": handleBeforeLeave,
+            "leave": handleLeave,
+            "afterLeave": handleAfterLeave
+          }
+        },
+        [h(
+          "div",
+          {
+            directives: [{
+              name: "show",
+              value: active
+            }],
+            "class": classes.elBodyWrapper },
+          [h(
+            "div",
+            { "class": classes.elBody },
+            [content]
+          )]
+        )]
+      ));
+    }
 
-		if (title || extra || arrow) {
-			var header = [];
-
-			if (arrow && vuiCollapseProps.arrowAlign === "left") {
-				header.push(h(
-					"div",
-					{ "class": classes.elArrow },
-					[arrow]
-				));
-			}
-
-			if (title) {
-				header.push(h(
-					"div",
-					{ "class": classes.elTitle },
-					[title]
-				));
-			}
-
-			if (extra) {
-				header.push(h(
-					"div",
-					{ "class": classes.elExtra },
-					[extra]
-				));
-			}
-
-			if (arrow && vuiCollapseProps.arrowAlign === "right") {
-				header.push(h(
-					"div",
-					{ "class": classes.elArrow },
-					[arrow]
-				));
-			}
-
-			children.push(h(
-				"div",
-				{ "class": classes.elHeader, on: {
-						"click": handleToggle
-					}
-				},
-				[header]
-			));
-		}
-
-		if (vuiCollapseProps.destroyInactivePanel) {
-			children.push(h(
-				"transition",
-				{
-					attrs: {
-						name: props.animation
-					},
-					on: {
-						"beforeEnter": handleBeforeEnter,
-						"enter": handleEnter,
-						"afterEnter": handleAfterEnter,
-						"beforeLeave": handleBeforeLeave,
-						"leave": handleLeave,
-						"afterLeave": handleAfterLeave
-					}
-				},
-				[active ? h(
-					"div",
-					{ "class": classes.elBodyWrapper },
-					[h(
-						"div",
-						{ "class": classes.elBody },
-						[content]
-					)]
-				) : null]
-			));
-		} else {
-			children.push(h(
-				"transition",
-				{
-					attrs: {
-						name: props.animation
-					},
-					on: {
-						"beforeEnter": handleBeforeEnter,
-						"enter": handleEnter,
-						"afterEnter": handleAfterEnter,
-						"beforeLeave": handleBeforeLeave,
-						"leave": handleLeave,
-						"afterLeave": handleAfterLeave
-					}
-				},
-				[h(
-					"div",
-					{
-						directives: [{
-							name: "show",
-							value: active
-						}],
-						"class": classes.elBodyWrapper },
-					[h(
-						"div",
-						{ "class": classes.elBody },
-						[content]
-					)]
-				)]
-			));
-		}
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
-};
-
-/* harmony default export */ var src_panel = (VuiPanel);
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/panel/index.js
 
 
-src_panel.install = function (Vue) {
-	Vue.component(src_panel.name, src_panel);
-};
 
-/* harmony default export */ var components_panel = (src_panel);
-// CONCATENATED MODULE: ./src/components/descriptions/src/descriptions.js
+
+/* harmony default export */ var components_panel = (withInstall(panel));
+// CONCATENATED MODULE: ./src/components/descriptions/descriptions.js
 
 
 
 
 
-
-var VuiDescriptions = {
-  name: "vui-descriptions",
-  props: {
+var descriptions_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
     layoutStyle: prop_types["a" /* default */].oneOf(["auto", "fixed"]),
@@ -32711,7 +32520,12 @@ var VuiDescriptions = {
     labelAlign: prop_types["a" /* default */].oneOf(["left", "center", "right"]),
     title: prop_types["a" /* default */].any,
     extra: prop_types["a" /* default */].any
-  },
+  };
+};
+
+/* harmony default export */ var descriptions = ({
+  name: "vui-descriptions",
+  props: descriptions_createProps(),
   methods: {
     getColumns: function getColumns() {
       var props = this.$props;
@@ -32989,10 +32803,8 @@ var VuiDescriptions = {
       )]
     );
   }
-};
-
-/* harmony default export */ var descriptions = (VuiDescriptions);
-// CONCATENATED MODULE: ./src/components/descriptions/src/utils.js
+});
+// CONCATENATED MODULE: ./src/components/descriptions/utils.js
 
 
 
@@ -33039,7 +32851,7 @@ var utils_getDataFromChildren = function getDataFromChildren(children) {
 /**
 * 默认导出指定接口
 */
-/* harmony default export */ var descriptions_src_utils = ({
+/* harmony default export */ var descriptions_utils = ({
   getDataFromChildren: utils_getDataFromChildren
 });
 // CONCATENATED MODULE: ./src/components/descriptions/index.js
@@ -33049,24 +32861,13 @@ var utils_getDataFromChildren = function getDataFromChildren(children) {
 
 
 
-var VuiDescriptionsWrapper = {
+
+/* harmony default export */ var components_descriptions = (withInstall({
   name: descriptions.name,
   components: {
     VuiDescriptions: descriptions
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
-    layoutStyle: prop_types["a" /* default */].oneOf(["auto", "fixed"]),
-    bordered: prop_types["a" /* default */].bool.def(false),
-    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
-    columns: prop_types["a" /* default */].number.def(3),
-    colon: prop_types["a" /* default */].bool,
-    labelWidth: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    labelAlign: prop_types["a" /* default */].oneOf(["left", "center", "right"]),
-    title: prop_types["a" /* default */].any,
-    extra: prop_types["a" /* default */].any
-  },
+  props: descriptions_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -33076,39 +32877,33 @@ var VuiDescriptionsWrapper = {
       props: extends_default()({}, props, {
         title: slots.title || props.title,
         extra: slots.extra || props.extra,
-        data: descriptions_src_utils.getDataFromChildren(slots.default)
+        data: descriptions_utils.getDataFromChildren(slots.default)
       })
     };
 
     return h(descriptions, attributes);
   }
-};
-
-VuiDescriptionsWrapper.install = function (Vue) {
-  Vue.component(VuiDescriptionsWrapper.name, VuiDescriptionsWrapper);
-};
-
-/* harmony default export */ var components_descriptions = (VuiDescriptionsWrapper);
-// CONCATENATED MODULE: ./src/components/description/src/description.js
+}));
+// CONCATENATED MODULE: ./src/components/descriptions/description.js
 
 
-var VuiDescription = {
-  name: "vui-description",
-  props: {
+var description_createProps = function createProps() {
+  return {
     label: prop_types["a" /* default */].string,
     span: prop_types["a" /* default */].number
-  }
+  };
 };
 
-/* harmony default export */ var src_description = (VuiDescription);
+/* harmony default export */ var descriptions_description = ({
+  name: "vui-description",
+  props: description_createProps()
+});
 // CONCATENATED MODULE: ./src/components/description/index.js
 
 
-src_description.install = function (Vue) {
-  Vue.component(src_description.name, src_description);
-};
 
-/* harmony default export */ var components_description = (src_description);
+
+/* harmony default export */ var components_description = (withInstall(descriptions_description));
 // CONCATENATED MODULE: ./src/utils/getTimestamp.js
 /**
 * 用于获取当前时刻的时间戳
@@ -33179,7 +32974,7 @@ src_description.install = function (Vue) {
 
   return throttled;
 });;
-// CONCATENATED MODULE: ./src/components/image/src/image.js
+// CONCATENATED MODULE: ./src/components/image/image.js
 
 
 
@@ -33191,291 +32986,293 @@ src_description.install = function (Vue) {
 
 
 var isSupportObjectFit = function isSupportObjectFit() {
-	return document.documentElement.style.objectFit !== undefined;
+  return document.documentElement.style.objectFit !== undefined;
 };
 
-var VuiImage = {
-	name: "vui-image",
-	mixins: [mixins_locale],
-	inheritAttrs: false,
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		src: prop_types["a" /* default */].string,
-		replacement: prop_types["a" /* default */].string,
-		filled: prop_types["a" /* default */].bool.def(false),
-		fit: prop_types["a" /* default */].oneOf(["fill", "contain", "cover", "none", "scale-down"]),
-		alt: prop_types["a" /* default */].string,
-		placeholder: prop_types["a" /* default */].string,
-		referrerPolicy: prop_types["a" /* default */].string,
-		lazyload: prop_types["a" /* default */].bool.def(false),
-		scrollContainer: prop_types["a" /* default */].any,
-		animation: prop_types["a" /* default */].string.def("vui-image-fade")
-	},
-	data: function data() {
-		var props = this.$props;
-
-		var state = {
-			loading: true,
-			error: false,
-			visibility: !props.lazyload,
-			imageWidth: 0,
-			imageHeight: 0
-		};
-
-		return {
-			state: state
-		};
-	},
-
-	computed: {
-		visibility: function visibility() {
-			return this.state.visibility;
-		}
-	},
-	watch: {
-		src: function src(value) {
-			this.state.visibility && this.loadImage();
-		},
-		visibility: function visibility(value) {
-			value && this.loadImage();
-		}
-	},
-	methods: {
-		getImageSrc: function getImageSrc(props) {
-			return props.src || props.replacement;
-		},
-		getImageStyle: function getImageStyle(fit) {
-			var el = this.$el,
-			    state = this.state;
-			var containerWidth = el.clientWidth,
-			    containerHeight = el.clientHeight;
-			var imageWidth = state.imageWidth,
-			    imageHeight = state.imageHeight;
-
-
-			if (!containerWidth || !containerHeight || !imageWidth || !imageHeight) {
-				return {};
-			}
-
-			var vertical = imageWidth / imageHeight < 1;
-
-			if (fit === "scale-down") {
-				var isSmaller = imageWidth < containerWidth && imageHeight < containerHeight;
-
-				fit = isSmaller ? "none" : "contain";
-			}
-
-			switch (fit) {
-				case "none":
-					return { width: "auto", height: "auto" };
-				case "contain":
-					return vertical ? { width: "auto" } : { height: "auto" };
-				case "cover":
-					return vertical ? { height: "auto" } : { width: "auto" };
-				default:
-					return {};
-			}
-		},
-		loadImage: function loadImage() {
-			var _this = this;
-
-			if (is["a" /* default */].server) {
-				return;
-			}
-
-			this.state.loading = true;
-			this.state.error = false;
-
-			var props = this.$props,
-			    attrs = this.$attrs;
-
-			var image = new Image();
-
-			image.onload = function (e) {
-				return _this.handleLoad(e, image);
-			};
-			image.onerror = function (e) {
-				return _this.handleError(e, image);
-			};
-
-			keys_default()(attrs).forEach(function (key) {
-				return image.setAttribute(key, attrs[key]);
-			});
-
-			image.src = this.getImageSrc(props);
-		},
-		addLazyloadListener: function addLazyloadListener() {
-			if (is["a" /* default */].server) {
-				return;
-			}
-
-			var el = this.$el,
-			    props = this.$props;
-
-			var scrollContainer = props.scrollContainer;
-			var container = null;
-
-			if (is["a" /* default */].string(scrollContainer)) {
-				container = document.querySelector(scrollContainer);
-			} else if (is["a" /* default */].element(scrollContainer)) {
-				container = scrollContainer;
-			} else if (is["a" /* default */].function(scrollContainer)) {
-				container = scrollContainer(el);
-			} else {
-				container = dom_getScrollContainer(el);
-			}
-
-			if (!container) {
-				return;
-			}
-
-			this.container = container;
-			this.lazyloadHandler = throttle(this.handleLazyload, 200);
-			this.handleLazyload();
-
-			on(container, "scroll", this.lazyloadHandler);
-		},
-		removeLazyloadListener: function removeLazyloadListener() {
-			var container = this.container,
-			    lazyloadHandler = this.lazyloadHandler;
-
-
-			if (is["a" /* default */].server || !container || !lazyloadHandler) {
-				return;
-			}
-
-			this.container = null;
-			this.lazyloadHandler = null;
-
-			off(container, "scroll", lazyloadHandler);
-		},
-		handleLazyload: function handleLazyload() {
-			var el = this.$el,
-			    container = this.container;
-
-
-			if (isInContainer(el, container)) {
-				this.state.visibility = true;
-				this.removeLazyloadListener();
-			}
-		},
-		handleLoad: function handleLoad(e, image) {
-			this.state.loading = false;
-			this.state.error = false;
-			this.state.imageWidth = image.width;
-			this.state.imageHeight = image.height;
-			this.$emit("load", e, image);
-		},
-		handleError: function handleError(e, image) {
-			this.state.loading = false;
-			this.state.error = true;
-			this.$emit("error", e, image);
-		}
-	},
-	mounted: function mounted() {
-		var props = this.$props;
-
-
-		if (props.lazyload) {
-			this.addLazyloadListener();
-		} else {
-			this.loadImage();
-		}
-	},
-	beforeDestroy: function beforeDestroy() {
-		var props = this.$props;
-
-
-		props.lazyload && this.removeLazyloadListener();
-	},
-	render: function render(h) {
-		var _classes$el, _classes$elImage;
-
-		var slots = this.$slots,
-		    props = this.$props,
-		    attrs = this.$attrs,
-		    state = this.state,
-		    listeners = this.$listeners,
-		    translate = this.t;
-
-		var center = !is["a" /* default */].server && !isSupportObjectFit() && props.fit !== "fill";
-		var viewable = is["a" /* default */].array(props.viewer) && props.viewer.length > 0;
-
-		// class
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "image");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-filled", props.filled), _classes$el);
-		classes.elPlaceholder = classNamePrefix + "-placeholder";
-		classes.elError = classNamePrefix + "-error";
-		classes.elImage = (_classes$elImage = {}, defineProperty_default()(_classes$elImage, classNamePrefix + "-image", true), defineProperty_default()(_classes$elImage, classNamePrefix + "-image-center", center), defineProperty_default()(_classes$elImage, classNamePrefix + "-image-viewable", viewable), _classes$elImage);
-
-		// style
-		var styles = {};
-
-		if (!is["a" /* default */].server && props.fit) {
-			if (isSupportObjectFit()) {
-				styles.elImage = {
-					objectFit: props.fit
-				};
-			} else {
-				styles.elImage = this.getImageStyle(props.fit);
-			}
-		}
-
-		// render
-		var children = [];
-
-		if (state.loading) {
-			children.push(h(
-				"div",
-				{ "class": classes.elPlaceholder },
-				[slots.placeholder || props.placeholder]
-			));
-		} else if (state.error) {
-			children.push(h(
-				"div",
-				{ "class": classes.elError },
-				[slots.error || props.alt || translate("vui.image.error")]
-			));
-		} else {
-			var attributes = {
-				class: classes.elImage,
-				style: styles.elImage,
-				attrs: extends_default()({}, attrs, {
-					src: this.getImageSrc(props),
-					alt: props.alt
-				}),
-				on: extends_default()({}, listeners)
-			};
-
-			children.push(h(
-				"transition",
-				{
-					attrs: { appear: true, name: props.animation }
-				},
-				[h("img", attributes)]
-			));
-		}
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+var image_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    src: prop_types["a" /* default */].string,
+    replacement: prop_types["a" /* default */].string,
+    filled: prop_types["a" /* default */].bool.def(false),
+    fit: prop_types["a" /* default */].oneOf(["fill", "contain", "cover", "none", "scale-down"]),
+    alt: prop_types["a" /* default */].string,
+    placeholder: prop_types["a" /* default */].string,
+    referrerPolicy: prop_types["a" /* default */].string,
+    lazyload: prop_types["a" /* default */].bool.def(false),
+    scrollContainer: prop_types["a" /* default */].any,
+    animation: prop_types["a" /* default */].string.def("vui-image-fade")
+  };
 };
 
-/* harmony default export */ var src_image = (VuiImage);
+/* harmony default export */ var image_image = ({
+  name: "vui-image",
+  mixins: [mixins_locale],
+  inheritAttrs: false,
+  props: image_createProps(),
+  data: function data() {
+    var props = this.$props;
+
+    var state = {
+      loading: true,
+      error: false,
+      visibility: !props.lazyload,
+      imageWidth: 0,
+      imageHeight: 0
+    };
+
+    return {
+      state: state
+    };
+  },
+
+  computed: {
+    visibility: function visibility() {
+      return this.state.visibility;
+    }
+  },
+  watch: {
+    src: function src(value) {
+      this.state.visibility && this.loadImage();
+    },
+    visibility: function visibility(value) {
+      value && this.loadImage();
+    }
+  },
+  methods: {
+    getImageSrc: function getImageSrc(props) {
+      return props.src || props.replacement;
+    },
+    getImageStyle: function getImageStyle(fit) {
+      var el = this.$el,
+          state = this.state;
+      var containerWidth = el.clientWidth,
+          containerHeight = el.clientHeight;
+      var imageWidth = state.imageWidth,
+          imageHeight = state.imageHeight;
+
+
+      if (!containerWidth || !containerHeight || !imageWidth || !imageHeight) {
+        return {};
+      }
+
+      var vertical = imageWidth / imageHeight < 1;
+
+      if (fit === "scale-down") {
+        var isSmaller = imageWidth < containerWidth && imageHeight < containerHeight;
+
+        fit = isSmaller ? "none" : "contain";
+      }
+
+      switch (fit) {
+        case "none":
+          return { width: "auto", height: "auto" };
+        case "contain":
+          return vertical ? { width: "auto" } : { height: "auto" };
+        case "cover":
+          return vertical ? { height: "auto" } : { width: "auto" };
+        default:
+          return {};
+      }
+    },
+    loadImage: function loadImage() {
+      var _this = this;
+
+      if (is["a" /* default */].server) {
+        return;
+      }
+
+      this.state.loading = true;
+      this.state.error = false;
+
+      var props = this.$props,
+          attrs = this.$attrs;
+
+      var image = new Image();
+
+      image.onload = function (e) {
+        return _this.handleLoad(e, image);
+      };
+      image.onerror = function (e) {
+        return _this.handleError(e, image);
+      };
+
+      keys_default()(attrs).forEach(function (key) {
+        return image.setAttribute(key, attrs[key]);
+      });
+
+      image.src = this.getImageSrc(props);
+    },
+    addLazyloadListener: function addLazyloadListener() {
+      if (is["a" /* default */].server) {
+        return;
+      }
+
+      var el = this.$el,
+          props = this.$props;
+
+      var scrollContainer = props.scrollContainer;
+      var container = null;
+
+      if (is["a" /* default */].string(scrollContainer)) {
+        container = document.querySelector(scrollContainer);
+      } else if (is["a" /* default */].element(scrollContainer)) {
+        container = scrollContainer;
+      } else if (is["a" /* default */].function(scrollContainer)) {
+        container = scrollContainer(el);
+      } else {
+        container = dom_getScrollContainer(el);
+      }
+
+      if (!container) {
+        return;
+      }
+
+      this.container = container;
+      this.lazyloadHandler = throttle(this.handleLazyload, 200);
+      this.handleLazyload();
+
+      on(container, "scroll", this.lazyloadHandler);
+    },
+    removeLazyloadListener: function removeLazyloadListener() {
+      var container = this.container,
+          lazyloadHandler = this.lazyloadHandler;
+
+
+      if (is["a" /* default */].server || !container || !lazyloadHandler) {
+        return;
+      }
+
+      this.container = null;
+      this.lazyloadHandler = null;
+
+      off(container, "scroll", lazyloadHandler);
+    },
+    handleLazyload: function handleLazyload() {
+      var el = this.$el,
+          container = this.container;
+
+
+      if (isInContainer(el, container)) {
+        this.state.visibility = true;
+        this.removeLazyloadListener();
+      }
+    },
+    handleLoad: function handleLoad(e, image) {
+      this.state.loading = false;
+      this.state.error = false;
+      this.state.imageWidth = image.width;
+      this.state.imageHeight = image.height;
+      this.$emit("load", e, image);
+    },
+    handleError: function handleError(e, image) {
+      this.state.loading = false;
+      this.state.error = true;
+      this.$emit("error", e, image);
+    }
+  },
+  mounted: function mounted() {
+    var props = this.$props;
+
+
+    if (props.lazyload) {
+      this.addLazyloadListener();
+    } else {
+      this.loadImage();
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    var props = this.$props;
+
+
+    if (props.lazyload) {
+      this.removeLazyloadListener();
+    }
+  },
+  render: function render(h) {
+    var _classes$el, _classes$elImage;
+
+    var slots = this.$slots,
+        props = this.$props,
+        attrs = this.$attrs,
+        state = this.state,
+        listeners = this.$listeners,
+        translate = this.t;
+
+    var center = !is["a" /* default */].server && !isSupportObjectFit() && props.fit !== "fill";
+    var viewable = is["a" /* default */].array(props.viewer) && props.viewer.length > 0;
+
+    // class
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "image");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-filled", props.filled), _classes$el);
+    classes.elPlaceholder = classNamePrefix + "-placeholder";
+    classes.elError = classNamePrefix + "-error";
+    classes.elImage = (_classes$elImage = {}, defineProperty_default()(_classes$elImage, classNamePrefix + "-image", true), defineProperty_default()(_classes$elImage, classNamePrefix + "-image-center", center), defineProperty_default()(_classes$elImage, classNamePrefix + "-image-viewable", viewable), _classes$elImage);
+
+    // style
+    var styles = {};
+
+    if (!is["a" /* default */].server && props.fit) {
+      if (isSupportObjectFit()) {
+        styles.elImage = {
+          objectFit: props.fit
+        };
+      } else {
+        styles.elImage = this.getImageStyle(props.fit);
+      }
+    }
+
+    // render
+    var children = [];
+
+    if (state.loading) {
+      children.push(h(
+        "div",
+        { "class": classes.elPlaceholder },
+        [slots.placeholder || props.placeholder]
+      ));
+    } else if (state.error) {
+      children.push(h(
+        "div",
+        { "class": classes.elError },
+        [slots.error || props.alt || translate("vui.image.error")]
+      ));
+    } else {
+      var attributes = {
+        class: classes.elImage,
+        style: styles.elImage,
+        attrs: extends_default()({}, attrs, {
+          src: this.getImageSrc(props),
+          alt: props.alt
+        }),
+        on: extends_default()({}, listeners)
+      };
+
+      children.push(h(
+        "transition",
+        {
+          attrs: { appear: true, name: props.animation }
+        },
+        [h("img", attributes)]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/image/index.js
 
 
-src_image.install = function (Vue) {
-	Vue.component(src_image.name, src_image);
-};
 
-/* harmony default export */ var components_image = (src_image);
-// CONCATENATED MODULE: ./src/components/list/src/list.js
+
+/* harmony default export */ var components_image = (withInstall(image_image));
+// CONCATENATED MODULE: ./src/components/list/list.js
 
 
 
@@ -33483,148 +33280,152 @@ src_image.install = function (Vue) {
 
 
 var gridType = {
-	gutter: prop_types["a" /* default */].number,
-	column: prop_types["a" /* default */].oneOf([1, 2, 3, 4, 6, 8, 12, 24])
+  gutter: prop_types["a" /* default */].number,
+  column: prop_types["a" /* default */].oneOf([1, 2, 3, 4, 6, 8, 12, 24])
 };
 
-var VuiList = {
-	name: "vui-list",
-	provide: function provide() {
-		return {
-			vuiList: this
-		};
-	},
-
-	components: {
-		VuiRow: components_row,
-		VuiCol: components_col
-	},
-	props: {
-		classNamePrefix: prop_types["a" /* default */].string,
-		header: prop_types["a" /* default */].string,
-		footer: prop_types["a" /* default */].string,
-		layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
-		size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
-		bordered: prop_types["a" /* default */].bool.def(false),
-		split: prop_types["a" /* default */].bool.def(true),
-		grid: prop_types["a" /* default */].shape(gridType),
-		data: prop_types["a" /* default */].array
-	},
-	render: function render(h) {
-		var _classes$el;
-
-		var slots = this.$slots,
-		    scopedSlots = this.$scopedSlots,
-		    props = this.$props;
-
-		// class
-
-		var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
-		var classes = {};
-
-		classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.layout, props.layout), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered && !props.grid), defineProperty_default()(_classes$el, classNamePrefix + "-split", props.split), defineProperty_default()(_classes$el, classNamePrefix + "-grid", props.grid), _classes$el);
-		classes.elHeader = classNamePrefix + "-header";
-		classes.elBody = classNamePrefix + "-body";
-		classes.elMore = classNamePrefix + "-more";
-		classes.elFooter = classNamePrefix + "-footer";
-
-		// render
-		var children = [];
-
-		if (slots.header || props.header) {
-			children.push(h(
-				"div",
-				{ "class": classes.elHeader },
-				[slots.header || props.header]
-			));
-		}
-
-		if (props.grid && props.data && props.data.length > 0) {
-			var gutter = props.grid.gutter || 16;
-			var column = props.grid.column || 4;
-			var span = Math.round(24 / column);
-			var cols = [];
-
-			props.data.forEach(function (item, index) {
-				var scopedSlot = scopedSlots.item;
-				var content = scopedSlot && scopedSlot(item, index);
-				var style = {
-					marginTop: index < column ? "0px" : gutter + "px"
-				};
-
-				cols.push(h(
-					components_col,
-					{
-						attrs: { span: span },
-						style: style },
-					[content]
-				));
-			});
-
-			children.push(h(
-				"div",
-				{ "class": classes.elBody },
-				[h(
-					components_row,
-					{
-						attrs: { gutter: gutter }
-					},
-					[cols]
-				)]
-			));
-		} else {
-			children.push(h(
-				"div",
-				{ "class": classes.elBody },
-				[slots.default, slots.more && h(
-					"div",
-					{ "class": classes.elMore },
-					[slots.more]
-				)]
-			));
-		}
-
-		if (slots.footer || props.footer) {
-			children.push(h(
-				"div",
-				{ "class": classes.elFooter },
-				[slots.footer || props.footer]
-			));
-		}
-
-		return h(
-			"div",
-			{ "class": classes.el },
-			[children]
-		);
-	}
+var list_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    header: prop_types["a" /* default */].string,
+    footer: prop_types["a" /* default */].string,
+    layout: prop_types["a" /* default */].oneOf(["horizontal", "vertical"]).def("horizontal"),
+    size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium"),
+    bordered: prop_types["a" /* default */].bool.def(false),
+    split: prop_types["a" /* default */].bool.def(true),
+    grid: prop_types["a" /* default */].shape(gridType),
+    data: prop_types["a" /* default */].array
+  };
 };
 
-/* harmony default export */ var src_list = (VuiList);
+/* harmony default export */ var list_list = ({
+  name: "vui-list",
+  provide: function provide() {
+    return {
+      vuiList: this
+    };
+  },
+
+  components: {
+    VuiRow: components_row,
+    VuiCol: components_col
+  },
+  props: list_createProps(),
+  render: function render(h) {
+    var _classes$el;
+
+    var slots = this.$slots,
+        scopedSlots = this.$scopedSlots,
+        props = this.$props;
+
+    // class
+
+    var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "list");
+    var classes = {};
+
+    classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.layout, props.layout), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), defineProperty_default()(_classes$el, classNamePrefix + "-bordered", props.bordered && !props.grid), defineProperty_default()(_classes$el, classNamePrefix + "-split", props.split), defineProperty_default()(_classes$el, classNamePrefix + "-grid", props.grid), _classes$el);
+    classes.elHeader = classNamePrefix + "-header";
+    classes.elBody = classNamePrefix + "-body";
+    classes.elMore = classNamePrefix + "-more";
+    classes.elFooter = classNamePrefix + "-footer";
+
+    // render
+    var children = [];
+
+    if (slots.header || props.header) {
+      children.push(h(
+        "div",
+        { "class": classes.elHeader },
+        [slots.header || props.header]
+      ));
+    }
+
+    if (props.grid && props.data && props.data.length > 0) {
+      var gutter = props.grid.gutter || 16;
+      var column = props.grid.column || 4;
+      var span = Math.round(24 / column);
+      var cols = [];
+
+      props.data.forEach(function (item, index) {
+        var scopedSlot = scopedSlots.item;
+        var content = scopedSlot && scopedSlot(item, index);
+        var style = {
+          marginTop: index < column ? "0px" : gutter + "px"
+        };
+
+        cols.push(h(
+          components_col,
+          {
+            attrs: { span: span },
+            style: style },
+          [content]
+        ));
+      });
+
+      children.push(h(
+        "div",
+        { "class": classes.elBody },
+        [h(
+          components_row,
+          {
+            attrs: { gutter: gutter }
+          },
+          [cols]
+        )]
+      ));
+    } else {
+      children.push(h(
+        "div",
+        { "class": classes.elBody },
+        [slots.default, slots.more && h(
+          "div",
+          { "class": classes.elMore },
+          [slots.more]
+        )]
+      ));
+    }
+
+    if (slots.footer || props.footer) {
+      children.push(h(
+        "div",
+        { "class": classes.elFooter },
+        [slots.footer || props.footer]
+      ));
+    }
+
+    return h(
+      "div",
+      { "class": classes.el },
+      [children]
+    );
+  }
+});
 // CONCATENATED MODULE: ./src/components/list/index.js
 
 
-src_list.install = function (Vue) {
-  Vue.component(src_list.name, src_list);
+
+
+/* harmony default export */ var components_list = (withInstall(list_list));
+// CONCATENATED MODULE: ./src/components/list/list-item.js
+
+
+
+
+
+var list_item_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_list = (src_list);
-// CONCATENATED MODULE: ./src/components/list/src/list-item.js
-
-
-
-
-
-var VuiListItem = {
+/* harmony default export */ var list_item = ({
   name: "vui-list-item",
   inject: {
     vuiList: {
       default: undefined
     }
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string
-  },
+  props: list_item_createProps(),
   render: function render(h) {
     var vuiList = this.vuiList,
         slots = this.$slots,
@@ -33698,34 +33499,34 @@ var VuiListItem = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var list_item = (VuiListItem);
+});
 // CONCATENATED MODULE: ./src/components/list-item/index.js
 
 
-list_item.install = function (Vue) {
-  Vue.component(list_item.name, list_item);
-};
 
-/* harmony default export */ var components_list_item = (list_item);
-// CONCATENATED MODULE: ./src/components/list/src/list-item-meta.js
+
+/* harmony default export */ var components_list_item = (withInstall(list_item));
+// CONCATENATED MODULE: ./src/components/list/list-item-meta.js
 
 
 
 
 
-var VuiListItemMeta = {
-  name: "vui-list-item-meta",
-  components: {
-    VuiAvatar: components_avatar
-  },
-  props: {
+var list_item_meta_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     avatar: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     description: prop_types["a" /* default */].string
+  };
+};
+
+/* harmony default export */ var list_item_meta = ({
+  name: "vui-list-item-meta",
+  components: {
+    VuiAvatar: components_avatar
   },
+  props: list_item_meta_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -33783,18 +33584,14 @@ var VuiListItemMeta = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var list_item_meta = (VuiListItemMeta);
+});
 // CONCATENATED MODULE: ./src/components/list-item-meta/index.js
 
 
-list_item_meta.install = function (Vue) {
-  Vue.component(list_item_meta.name, list_item_meta);
-};
 
-/* harmony default export */ var components_list_item_meta = (list_item_meta);
-// CONCATENATED MODULE: ./src/components/popover/src/popover.js
+
+/* harmony default export */ var components_list_item_meta = (withInstall(list_item_meta));
+// CONCATENATED MODULE: ./src/components/popover/popover.js
 
 
 
@@ -33805,21 +33602,8 @@ list_item_meta.install = function (Vue) {
 
 
 
-var VuiPopover = {
-  name: "vui-popover",
-  components: {
-    VuiLazyRender: components_lazy_render,
-    VuiResizeObserver: components_resize_observer
-  },
-  directives: {
-    Portal: directives_portal,
-    Outclick: outclick
-  },
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var popover_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     trigger: prop_types["a" /* default */].oneOf(["hover", "focus", "click", "always"]).def("hover"),
     visible: prop_types["a" /* default */].bool.def(false),
@@ -33835,7 +33619,24 @@ var VuiPopover = {
     }),
     beforeOpen: prop_types["a" /* default */].func,
     beforeClose: prop_types["a" /* default */].func
+  };
+};
+
+/* harmony default export */ var popover = ({
+  name: "vui-popover",
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiResizeObserver: components_resize_observer
   },
+  directives: {
+    Portal: directives_portal,
+    Outclick: outclick
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: popover_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -34155,29 +33956,24 @@ var VuiPopover = {
       )]
     );
   }
-};
-
-/* harmony default export */ var popover = (VuiPopover);
+});
 // CONCATENATED MODULE: ./src/components/popover/index.js
 
 
-popover.install = function (Vue) {
-  Vue.component(popover.name, popover);
-};
 
-/* harmony default export */ var components_popover = (popover);
+
+/* harmony default export */ var components_popover = (withInstall(popover));
 // EXTERNAL MODULE: ./node_modules/arale-qrcode/index.js
 var arale_qrcode = __webpack_require__(166);
 var arale_qrcode_default = /*#__PURE__*/__webpack_require__.n(arale_qrcode);
 
-// CONCATENATED MODULE: ./src/components/qrcode/src/qrcode.js
+// CONCATENATED MODULE: ./src/components/qrcode/qrcode.js
 
 
 
 
-var VuiQrcode = {
-  name: "vui-qrcode",
-  props: {
+var qrcode_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     tag: prop_types["a" /* default */].oneOf(["canvas", "svg", "table"]).def("canvas"),
@@ -34188,7 +33984,12 @@ var VuiQrcode = {
     pdground: prop_types["a" /* default */].string.def("#000000"),
     image: prop_types["a" /* default */].string,
     imageSize: prop_types["a" /* default */].number.def(40)
-  },
+  };
+};
+
+/* harmony default export */ var qrcode_qrcode = ({
+  name: "vui-qrcode",
+  props: qrcode_createProps(),
   data: function data() {
     return {
       qrcode: null
@@ -34277,17 +34078,13 @@ var VuiQrcode = {
     // render
     return h("div", { "class": classes.el, style: styles.el });
   }
-};
-
-/* harmony default export */ var src_qrcode = (VuiQrcode);
+});
 // CONCATENATED MODULE: ./src/components/qrcode/index.js
 
 
-src_qrcode.install = function (Vue) {
-  Vue.component(src_qrcode.name, src_qrcode);
-};
 
-/* harmony default export */ var components_qrcode = (src_qrcode);
+
+/* harmony default export */ var components_qrcode = (withInstall(qrcode_qrcode));
 // CONCATENATED MODULE: ./src/utils/padEnd.js
 function padEnd(value, length, chars) {
   var string = String(value);
@@ -34426,22 +34223,26 @@ src_ratio.install = function (Vue) {
 };
 
 /* harmony default export */ var components_ratio = (src_ratio);
-// CONCATENATED MODULE: ./src/components/ribbon/src/ribbon.js
+// CONCATENATED MODULE: ./src/components/ribbon/ribbon.js
 
 
 
 
 var ribbon_colors = ["blue", "cyan", "geekblue", "gold", "green", "lime", "magenta", "orange", "pink", "purple", "red", "volcano", "yellow"];
 
-var VuiRibbon = {
-  name: "vui-ribbon",
-  props: {
+var ribbon_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     placement: prop_types["a" /* default */].oneOf(["start", "end"]).def("end"),
     type: prop_types["a" /* default */].oneOf(["default", "primary", "info", "warning", "success", "error"]).def("primary"),
     color: prop_types["a" /* default */].string,
     text: prop_types["a" /* default */].string
-  },
+  };
+};
+
+/* harmony default export */ var ribbon = ({
+  name: "vui-ribbon",
+  props: ribbon_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -34502,26 +34303,21 @@ var VuiRibbon = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var ribbon = (VuiRibbon);
+});
 // CONCATENATED MODULE: ./src/components/ribbon/index.js
 
 
-ribbon.install = function (Vue) {
-  Vue.component(ribbon.name, ribbon);
-};
 
-/* harmony default export */ var components_ribbon = (ribbon);
-// CONCATENATED MODULE: ./src/components/statistic/src/statistic.js
+
+/* harmony default export */ var components_ribbon = (withInstall(ribbon));
+// CONCATENATED MODULE: ./src/components/statistic/statistic.js
 
 
 
 
 
-var VuiStatistic = {
-  name: "vui-statistic",
-  props: {
+var statistic_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].string,
     extra: prop_types["a" /* default */].string,
@@ -34535,7 +34331,12 @@ var VuiStatistic = {
     headerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     bodyStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object]),
     footerStyle: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object])
-  },
+  };
+};
+
+/* harmony default export */ var statistic_statistic = ({
+  name: "vui-statistic",
+  props: statistic_createProps(),
   render: function render(h) {
     var slots = this.$slots,
         props = this.$props;
@@ -34661,17 +34462,13 @@ var VuiStatistic = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var src_statistic = (VuiStatistic);
+});
 // CONCATENATED MODULE: ./src/components/statistic/index.js
 
 
-src_statistic.install = function (Vue) {
-  Vue.component(src_statistic.name, src_statistic);
-};
 
-/* harmony default export */ var components_statistic = (src_statistic);
+
+/* harmony default export */ var components_statistic = (withInstall(statistic_statistic));
 // CONCATENATED MODULE: ./src/components/table/src/table-filter.js
 
 
@@ -37508,23 +37305,27 @@ var VuiTable = {
 
 
 /* harmony default export */ var components_table = (withInstall(table));
-// CONCATENATED MODULE: ./src/components/time/src/time.js
+// CONCATENATED MODULE: ./src/components/time/time.js
 
 
 
 
 
 
-var VuiTime = {
-  name: "vui-time",
-  mixins: [mixins_locale],
-  props: {
+var time_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["relative", "date", "datetime"]).def("relative"),
     time: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].date]),
     value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number, prop_types["a" /* default */].date]),
     interval: prop_types["a" /* default */].number.def(60)
-  },
+  };
+};
+
+/* harmony default export */ var time = ({
+  name: "vui-time",
+  mixins: [mixins_locale],
+  props: time_createProps(),
   data: function data() {
     var state = {
       value: ""
@@ -37698,29 +37499,29 @@ var VuiTime = {
       [state.value]
     );
   }
-};
-
-/* harmony default export */ var time = (VuiTime);
+});
 // CONCATENATED MODULE: ./src/components/time/index.js
 
 
-time.install = function (Vue) {
-  Vue.component(time.name, time);
-};
 
-/* harmony default export */ var components_time = (time);
-// CONCATENATED MODULE: ./src/components/timeline/src/timeline.js
+
+/* harmony default export */ var components_time = (withInstall(time));
+// CONCATENATED MODULE: ./src/components/timeline/timeline.js
 
 
 
 
-var VuiTimeline = {
-  name: "vui-timeline",
-  props: {
+var timeline_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     mode: prop_types["a" /* default */].oneOf(["left", "alternate", "right"]).def("left"),
     pending: prop_types["a" /* default */].bool.def(false)
-  },
+  };
+};
+
+/* harmony default export */ var timeline = ({
+  name: "vui-timeline",
+  props: timeline_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -37741,30 +37542,30 @@ var VuiTimeline = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var timeline = (VuiTimeline);
+});
 // CONCATENATED MODULE: ./src/components/timeline/index.js
 
 
-timeline.install = function (Vue) {
-  Vue.component(timeline.name, timeline);
-};
 
-/* harmony default export */ var components_timeline = (timeline);
-// CONCATENATED MODULE: ./src/components/timeline/src/timeline-item.js
+
+/* harmony default export */ var components_timeline = (withInstall(timeline));
+// CONCATENATED MODULE: ./src/components/timeline/timeline-item.js
 
 
 
 
 var timeline_item_colors = ["gray", "blue", "yellow", "green", "red"];
 
-var VuiTimelineItem = {
-  name: "vui-timeline-item",
-  props: {
+var timeline_item_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     color: prop_types["a" /* default */].string.def("blue")
-  },
+  };
+};
+
+/* harmony default export */ var timeline_item = ({
+  name: "vui-timeline-item",
+  props: timeline_item_createProps(),
   render: function render() {
     var _classes$header;
 
@@ -37811,17 +37612,13 @@ var VuiTimelineItem = {
       )]
     );
   }
-};
-
-/* harmony default export */ var timeline_item = (VuiTimelineItem);
+});
 // CONCATENATED MODULE: ./src/components/timeline-item/index.js
 
 
-timeline_item.install = function (Vue) {
-  Vue.component(timeline_item.name, timeline_item);
-};
 
-/* harmony default export */ var components_timeline_item = (timeline_item);
+
+/* harmony default export */ var components_timeline_item = (withInstall(timeline_item));
 // CONCATENATED MODULE: ./src/components/tree/src/tree-node.js
 
 
@@ -38259,7 +38056,7 @@ var VuiTree = {
 		getDerivedStateFromProps: function getDerivedStateFromProps(props) {
 			var data = utils_getDerivedDataFromProps(props.data);
 			var expendedKeys = Object(utils_clone["a" /* default */])(props.expendedKeys);
-			var checkedKeys = utils_getDerivedCheckedKeysFromProps(props.data, props.checkedKeys);
+			var checkedKeys = Object(utils_clone["a" /* default */])(props.checkedKeys);
 			var selectedKeys = Object(utils_clone["a" /* default */])(props.selectedKeys);
 
 			return {
@@ -38288,6 +38085,8 @@ var VuiTree = {
 			var checkedKeys = utils_getDerivedCheckedKeysFromProps(state.checkedKeys, node, checked);
 
 			this.state.checkedKeys = checkedKeys;
+
+			this.$emit("check", Object(utils_clone["a" /* default */])(this.state.checkedKeys));
 			/*
    let { state } = this;
    let checkedKeys = clone(state.checkedKeys);
@@ -38332,6 +38131,8 @@ var VuiTree = {
 					this.state.selectedKeys = [node.key];
 				}
 			}
+
+			this.$emit("select", Object(utils_clone["a" /* default */])(this.state.selectedKeys));
 		}
 	},
 
@@ -38374,16 +38175,15 @@ tree.install = function (Vue) {
 };
 
 /* harmony default export */ var components_tree = (tree);
-// CONCATENATED MODULE: ./src/components/watermark/src/watermark.js
+// CONCATENATED MODULE: ./src/components/watermark/watermark.js
 
 
 
 
 
 
-var VuiWatermark = {
-  name: "vui-watermark",
-  props: {
+var watermark_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     text: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     color: prop_types["a" /* default */].string.def("rgba(0, 0, 0, 0.15)"),
@@ -38393,7 +38193,12 @@ var VuiWatermark = {
     height: prop_types["a" /* default */].number.def(120),
     rotate: prop_types["a" /* default */].number.def(-20),
     rows: prop_types["a" /* default */].number.def(20)
-  },
+  };
+};
+
+/* harmony default export */ var watermark = ({
+  name: "vui-watermark",
+  props: watermark_createProps(),
   data: function data() {
     var state = {
       id: "vui-watermark-" + guid(),
@@ -38516,18 +38321,14 @@ var VuiWatermark = {
       [slots.default]
     );
   }
-};
-
-/* harmony default export */ var watermark = (VuiWatermark);
+});
 // CONCATENATED MODULE: ./src/components/watermark/index.js
 
 
-watermark.install = function (Vue) {
-  Vue.component(watermark.name, watermark);
-};
 
-/* harmony default export */ var components_watermark = (watermark);
-// CONCATENATED MODULE: ./src/components/alert/src/alert.js
+
+/* harmony default export */ var components_watermark = (withInstall(watermark));
+// CONCATENATED MODULE: ./src/components/alert/alert.js
 
 
 
@@ -38540,12 +38341,8 @@ var mapIconTypes = {
   error: "crossmark-circle"
 };
 
-var VuiAlert = {
-  name: "vui-alert",
-  components: {
-    VuiIcon: components_icon
-  },
-  props: {
+var alert_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error"]).def("info"),
     icon: prop_types["a" /* default */].string,
@@ -38556,7 +38353,15 @@ var VuiAlert = {
     closable: prop_types["a" /* default */].bool.def(false),
     closeText: prop_types["a" /* default */].string,
     animation: prop_types["a" /* default */].string.def("vui-alert-slide-up")
+  };
+};
+
+/* harmony default export */ var alert_alert = ({
+  name: "vui-alert",
+  components: {
+    VuiIcon: components_icon
   },
+  props: alert_createProps(),
   data: function data() {
     var state = {
       closing: false,
@@ -38687,17 +38492,13 @@ var VuiAlert = {
       );
     }
   }
-};
-
-/* harmony default export */ var src_alert = (VuiAlert);
+});
 // CONCATENATED MODULE: ./src/components/alert/index.js
 
 
-src_alert.install = function (Vue) {
-  Vue.component(src_alert.name, src_alert);
-};
 
-/* harmony default export */ var components_alert = (src_alert);
+
+/* harmony default export */ var components_alert = (withInstall(alert_alert));
 // EXTERNAL MODULE: ./node_modules/babel-runtime/core-js/promise.js
 var core_js_promise = __webpack_require__(82);
 var promise_default = /*#__PURE__*/__webpack_require__.n(core_js_promise);
@@ -38800,7 +38601,7 @@ function addScrollbarEffect(container) {
     };
   }
 };
-// CONCATENATED MODULE: ./src/components/drawer/src/drawer.js
+// CONCATENATED MODULE: ./src/components/drawer/drawer.js
 
 
 
@@ -38820,33 +38621,8 @@ function addScrollbarEffect(container) {
 
 
 
-var VuiDrawer = {
-  name: "vui-drawer",
-  provide: function provide() {
-    return {
-      vuiDrawer: this
-    };
-  },
-
-  inject: {
-    vuiDrawer: {
-      default: undefined
-    }
-  },
-  components: {
-    VuiLazyRender: components_lazy_render,
-    VuiIcon: components_icon,
-    VuiButton: components_button
-  },
-  directives: {
-    Portal: directives_portal
-  },
-  mixins: [mixins_locale],
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var drawer_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
     title: prop_types["a" /* default */].string,
@@ -38877,7 +38653,36 @@ var VuiDrawer = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var drawer_drawer = ({
+  name: "vui-drawer",
+  provide: function provide() {
+    return {
+      vuiDrawer: this
+    };
   },
+
+  inject: {
+    vuiDrawer: {
+      default: undefined
+    }
+  },
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiIcon: components_icon,
+    VuiButton: components_button
+  },
+  directives: {
+    Portal: directives_portal
+  },
+  mixins: [mixins_locale],
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: drawer_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -39294,18 +39099,14 @@ var VuiDrawer = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_drawer = (VuiDrawer);
+});
 // CONCATENATED MODULE: ./src/components/drawer/index.js
 
 
-src_drawer.install = function (Vue) {
-  Vue.component(src_drawer.name, src_drawer);
-};
 
-/* harmony default export */ var components_drawer = (src_drawer);
-// CONCATENATED MODULE: ./src/components/message/src/message.js
+
+/* harmony default export */ var components_drawer = (withInstall(drawer_drawer));
+// CONCATENATED MODULE: ./src/components/message/message.js
 
 
 
@@ -39314,19 +39115,8 @@ src_drawer.install = function (Vue) {
 
 
 
-var VuiMessage = {
-  name: "vui-message",
-  components: {
-    VuiIcon: components_icon
-  },
-  directives: {
-    Portal: directives_portal
-  },
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var message_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error", "loading"]).def("info"),
     content: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
@@ -39340,7 +39130,22 @@ var VuiMessage = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var message_message = ({
+  name: "vui-message",
+  components: {
+    VuiIcon: components_icon
   },
+  directives: {
+    Portal: directives_portal
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: message_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -39527,9 +39332,7 @@ var VuiMessage = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_message = (VuiMessage);
+});
 // CONCATENATED MODULE: ./src/utils/createChainedFunction.js
 /**
 * 创建链接函数
@@ -39560,9 +39363,7 @@ function createChainedFunction() {
 
 
 
-/**
-* 默认配置
-*/
+
 var message_defaults = {
   top: 24,
   duration: 3,
@@ -39571,9 +39372,6 @@ var message_defaults = {
   }
 };
 
-/**
-* 存储已打开的 Message，用于更新 top 属性
-*/
 var storage = {
   value: [],
   addItem: function addItem(item) {
@@ -39606,10 +39404,6 @@ var storage = {
   }
 };
 
-/**
-* 创建 Message 实例
-* @param {Object} options 
-*/
 var message_createMessageInstance = function createMessageInstance(options) {
   // 创建 Message 挂载的 html 根节点
   var container = options.getPopupContainer();
@@ -39631,7 +39425,7 @@ var message_createMessageInstance = function createMessageInstance(options) {
   return new external___root___Vue___commonjs___vue___commonjs2___vue___amd___vue___default.a({
     el: el,
     components: {
-      VuiMessage: src_message
+      VuiMessage: message_message
     },
     data: function data() {
       return extends_default()({}, options, {
@@ -39753,16 +39547,12 @@ var message_createMessageInstance = function createMessageInstance(options) {
         }
       };
 
-      return h(src_message, attrs);
+      return h(message_message, attrs);
     }
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Object} options
-*/
-src_message.open = function (options, type) {
+message_message.open = function (options, type) {
   if (is["a" /* default */].server) {
     return;
   }
@@ -39803,56 +39593,29 @@ src_message.open = function (options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {String/Object} options 
-*/
-src_message.info = function (options) {
-  return src_message.open(options, "info");
+message_message.info = function (options) {
+  return message_message.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {String/Object} options 
-*/
-src_message.warning = function (options) {
-  return src_message.open(options, "warning");
+message_message.warning = function (options) {
+  return message_message.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {String/Object} options 
-*/
-src_message.success = function (options) {
-  return src_message.open(options, "success");
+message_message.success = function (options) {
+  return message_message.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {String/Object} options 
-*/
-src_message.error = function (options) {
-  return src_message.open(options, "error");
+message_message.error = function (options) {
+  return message_message.open(options, "error");
 };
 
-/**
-* 对外提供 loading 接口
-* @param {String/Object} options 
-*/
-src_message.loading = function (options) {
-  return src_message.open(options, "loading");
+message_message.loading = function (options) {
+  return message_message.open(options, "loading");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-src_message.install = function (Vue) {
-  Vue.component(src_message.name, src_message);
-};
 
-/* harmony default export */ var components_message = (src_message);
-// CONCATENATED MODULE: ./src/components/modal/src/modal.js
+/* harmony default export */ var components_message = (withInstall(message_message));
+// CONCATENATED MODULE: ./src/components/modal/modal.js
 
 
 
@@ -39870,22 +39633,8 @@ src_message.install = function (Vue) {
 
 
 
-var VuiModal = {
-  name: "vui-modal",
-  components: {
-    VuiLazyRender: components_lazy_render,
-    VuiIcon: components_icon,
-    VuiButton: components_button
-  },
-  directives: {
-    Portal: directives_portal
-  },
-  mixins: [mixins_locale],
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var modal_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
     showNotice: prop_types["a" /* default */].bool.def(false),
@@ -39917,7 +39666,25 @@ var VuiModal = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var modal = ({
+  name: "vui-modal",
+  components: {
+    VuiLazyRender: components_lazy_render,
+    VuiIcon: components_icon,
+    VuiButton: components_button
   },
+  directives: {
+    Portal: directives_portal
+  },
+  mixins: [mixins_locale],
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: modal_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -40298,9 +40065,7 @@ var VuiModal = {
       )]
     );
   }
-};
-
-/* harmony default export */ var modal = (VuiModal);
+});
 // CONCATENATED MODULE: ./src/components/modal/index.js
 
 
@@ -40311,9 +40076,7 @@ var VuiModal = {
 
 
 
-/**
-* 默认配置
-*/
+
 var modal_defaults = {
   width: 360,
   autofocusButton: "ok",
@@ -40322,10 +40085,6 @@ var modal_defaults = {
   }
 };
 
-/**
-* 创建 Modal 实例
-* @param {Object} options 
-*/
 var modal_createModalInstance = function createModalInstance(options) {
   // 创建 Modal 挂载的 html 根节点
   var container = options.getPopupContainer();
@@ -40502,10 +40261,6 @@ var modal_createModalInstance = function createModalInstance(options) {
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Function/Object} options 
-*/
 modal.open = function (options, type) {
   if (is["a" /* default */].server || !is["a" /* default */].json(options)) {
     return;
@@ -40547,56 +40302,29 @@ modal.open = function (options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {Object} options 
-*/
 modal.info = function (options) {
   return modal.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {Object} options 
-*/
 modal.warning = function (options) {
   return modal.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {Object} options 
-*/
 modal.success = function (options) {
   return modal.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {Object} options 
-*/
 modal.error = function (options) {
   return modal.open(options, "error");
 };
 
-/**
-* 对外提供 confirm 接口
-* @param {Object} options 
-*/
 modal.confirm = function (options) {
   return modal.open(options, "confirm");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-modal.install = function (Vue) {
-  Vue.component(modal.name, modal);
-};
 
-/* harmony default export */ var components_modal = (modal);
-// CONCATENATED MODULE: ./src/components/notice/src/notice.js
+/* harmony default export */ var components_modal = (withInstall(modal));
+// CONCATENATED MODULE: ./src/components/notice/notice.js
 
 
 
@@ -40605,19 +40333,8 @@ modal.install = function (Vue) {
 
 
 
-var VuiNotice = {
-  name: "vui-notice",
-  components: {
-    VuiIcon: components_icon
-  },
-  directives: {
-    Portal: directives_portal
-  },
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var notice_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     type: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error"]).def("info"),
     title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].object, prop_types["a" /* default */].func]),
@@ -40633,7 +40350,22 @@ var VuiNotice = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var notice = ({
+  name: "vui-notice",
+  components: {
+    VuiIcon: components_icon
   },
+  directives: {
+    Portal: directives_portal
+  },
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: notice_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -40845,9 +40577,7 @@ var VuiNotice = {
       )]
     );
   }
-};
-
-/* harmony default export */ var notice = (VuiNotice);
+});
 // CONCATENATED MODULE: ./src/components/notice/index.js
 
 
@@ -40855,9 +40585,7 @@ var VuiNotice = {
 
 
 
-/**
- * 默认配置
- */
+
 var placements = ["top-left", "top-right", "bottom-left", "bottom-right"];
 var notice_defaults = {
   placement: placements[1],
@@ -40869,9 +40597,6 @@ var notice_defaults = {
   }
 };
 
-/**
-* 存储已打开的 Notice，用于更新 top 或 bottom 属性
-*/
 var notice_storage = {
   value: {},
   addItem: function addItem(placement, item) {
@@ -40913,10 +40638,6 @@ placements.forEach(function (placement) {
   return notice_storage.value[placement] = [];
 });
 
-/**
-* 创建 Notice 实例
-* @param {Object} options 
-*/
 var notice_createNoticeInstance = function createNoticeInstance(options) {
   // 创建 Notice 挂载的 html 根节点
   var container = options.getPopupContainer();
@@ -41073,10 +40794,6 @@ var notice_createNoticeInstance = function createNoticeInstance(options) {
   });
 };
 
-/**
-* 对外提供 open 接口
-* @param {String/Function/Object} options 
-*/
 notice.open = function (options, type) {
   if (is["a" /* default */].server) {
     return;
@@ -41119,48 +40836,25 @@ notice.open = function (options, type) {
   return instance;
 };
 
-/**
-* 对外提供 info 接口
-* @param {String/Function/Object} options 
-*/
 notice.info = function (options) {
   return notice.open(options, "info");
 };
 
-/**
-* 对外提供 warning 接口
-* @param {String/Function/Object} options 
-*/
 notice.warning = function (options) {
   return notice.open(options, "warning");
 };
 
-/**
-* 对外提供 success 接口
-* @param {String/Function/Object} options 
-*/
 notice.success = function (options) {
   return notice.open(options, "success");
 };
 
-/**
-* 对外提供 error 接口
-* @param {String/Function/Object} options 
-*/
 notice.error = function (options) {
   return notice.open(options, "error");
 };
 
-/**
-* 对外提供 install 接口，用于全局注册
-* @param {Function} Vue 
-*/
-notice.install = function (Vue) {
-  Vue.component(notice.name, notice);
-};
 
-/* harmony default export */ var components_notice = (notice);
-// CONCATENATED MODULE: ./src/components/popconfirm/src/popconfirm.js
+/* harmony default export */ var components_notice = (withInstall(notice));
+// CONCATENATED MODULE: ./src/components/popconfirm/popconfirm.js
 
 
 
@@ -41168,20 +40862,8 @@ notice.install = function (Vue) {
 
 
 
-
-var VuiPopconfirm = {
-  name: "vui-popconfirm",
-  components: {
-    VuiPopover: components_popover,
-    VuiIcon: components_icon,
-    VuiButton: components_button
-  },
-  mixins: [mixins_locale],
-  model: {
-    prop: "visible",
-    event: "input"
-  },
-  props: {
+var popconfirm_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
     disabled: prop_types["a" /* default */].bool.def(false),
@@ -41198,7 +40880,22 @@ var VuiPopconfirm = {
     getPopupContainer: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].string, prop_types["a" /* default */].element, prop_types["a" /* default */].func]).def(function () {
       return document.body;
     })
+  };
+};
+
+/* harmony default export */ var popconfirm = ({
+  name: "vui-popconfirm",
+  components: {
+    VuiPopover: components_popover,
+    VuiIcon: components_icon,
+    VuiButton: components_button
   },
+  mixins: [mixins_locale],
+  model: {
+    prop: "visible",
+    event: "input"
+  },
+  props: popconfirm_createProps(),
   data: function data() {
     var props = this.$props;
 
@@ -41339,27 +41036,27 @@ var VuiPopconfirm = {
       )]
     );
   }
-};
-
-/* harmony default export */ var popconfirm = (VuiPopconfirm);
+});
 // CONCATENATED MODULE: ./src/components/popconfirm/index.js
 
 
-popconfirm.install = function (Vue) {
-  Vue.component(popconfirm.name, popconfirm);
-};
-
-/* harmony default export */ var components_popconfirm = (popconfirm);
-// CONCATENATED MODULE: ./src/components/result/src/result-exception.js
 
 
-var VuiResultException = {
-  name: "vui-result-exception",
-  props: {
+/* harmony default export */ var components_popconfirm = (withInstall(popconfirm));
+// CONCATENATED MODULE: ./src/components/result/result-exception.js
+
+
+var result_exception_createProps = function createProps() {
+  return {
     status: prop_types["a" /* default */].oneOf(["comingsoon", "403", "404", "500"]),
     width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     height: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  };
+};
+
+/* harmony default export */ var result_exception = ({
+  name: "vui-result-exception",
+  props: result_exception_createProps(),
   render: function render() {
     var h = arguments[0];
     var props = this.$props;
@@ -41639,10 +41336,8 @@ var VuiResultException = {
       );
     }
   }
-};
-
-/* harmony default export */ var result_exception = (VuiResultException);
-// CONCATENATED MODULE: ./src/components/result/src/result.js
+});
+// CONCATENATED MODULE: ./src/components/result/result.js
 
 
 
@@ -41656,20 +41351,24 @@ var result_mapIconTypes = {
   error: "crossmark-circle-filled"
 };
 
-var VuiResult = {
-  name: "vui-result",
-  components: {
-    VuiIcon: components_icon,
-    VuiResultException: result_exception
-  },
-  props: {
+var result_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     status: prop_types["a" /* default */].oneOf(["info", "warning", "success", "error", "comingsoon", "403", "404", "500"]).def("info"),
     icon: prop_types["a" /* default */].string,
     title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     description: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
     extra: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
+  };
+};
+
+/* harmony default export */ var result_result = ({
+  name: "vui-result",
+  components: {
+    VuiIcon: components_icon,
+    VuiResultException: result_exception
   },
+  props: result_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -41749,18 +41448,14 @@ var VuiResult = {
       )]
     );
   }
-};
-
-/* harmony default export */ var src_result = (VuiResult);
+});
 // CONCATENATED MODULE: ./src/components/result/index.js
 
 
-src_result.install = function (Vue) {
-  Vue.component(src_result.name, src_result);
-};
 
-/* harmony default export */ var components_result = (src_result);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-avatar.js
+
+/* harmony default export */ var components_result = (withInstall(result_result));
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-avatar.js
 
 
 
@@ -41768,14 +41463,18 @@ src_result.install = function (Vue) {
 var skeleton_avatar_shapes = ["circle", "square"];
 var skeleton_avatar_sizes = ["small", "medium", "large"];
 
-var VuiSkeletonAvatar = {
-  name: "vui-skeleton-avatar",
-  props: {
+var skeleton_avatar_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false),
     shape: prop_types["a" /* default */].oneOf(skeleton_avatar_shapes).def("circle"),
     size: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].oneOf(skeleton_avatar_sizes), prop_types["a" /* default */].number]).def("medium")
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_avatar = ({
+  name: "vui-skeleton-avatar",
+  props: skeleton_avatar_createProps(),
   render: function render() {
     var _classes$el;
 
@@ -41784,11 +41483,13 @@ var VuiSkeletonAvatar = {
 
     var isPresetSize = skeleton_avatar_sizes.indexOf(props.size) > -1;
 
+    // class
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-avatar");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.shape, props.shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size && isPresetSize), _classes$el);
 
+    // style
     var styles = {};
 
     if (props.size && !isPresetSize) {
@@ -41798,48 +41499,52 @@ var VuiSkeletonAvatar = {
       };
     }
 
+    // render
     return h("div", { "class": classes.el, style: styles.el });
   }
-};
-
-/* harmony default export */ var skeleton_avatar = (VuiSkeletonAvatar);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-title.js
+});
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-title.js
 
 
 
 
 
-var VuiSkeletonTitle = {
-  name: "vui-skeleton-title",
-  props: {
+var skeleton_title_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false),
     width: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number])
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_title = ({
+  name: "vui-skeleton-title",
+  props: skeleton_title_createProps(),
   render: function render() {
     var _classes$el;
 
     var h = arguments[0];
     var props = this.$props;
 
+    // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-title");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
 
+    // style
     var styles = {};
 
     styles.el = {
       width: is["a" /* default */].number(props.width) ? props.width + "px" : props.width
     };
 
+    // render
     return h("div", { "class": classes.el, style: styles.el });
   }
-};
-
-/* harmony default export */ var skeleton_title = (VuiSkeletonTitle);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-paragraph.js
+});
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-paragraph.js
 
 
 
@@ -41847,14 +41552,19 @@ var VuiSkeletonTitle = {
 
 
 var widthProp = prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]);
-var VuiSkeletonParagraph = {
-  name: "vui-skeleton-paragraph",
-  props: {
+
+var skeleton_paragraph_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false),
     rows: prop_types["a" /* default */].number,
     width: prop_types["a" /* default */].oneOfType([widthProp, prop_types["a" /* default */].arrayOf(widthProp)])
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_paragraph = ({
+  name: "vui-skeleton-paragraph",
+  props: skeleton_paragraph_createProps(),
   methods: {
     getWidthProperty: function getWidthProperty(index) {
       var props = this.$props;
@@ -41878,12 +41588,14 @@ var VuiSkeletonParagraph = {
     var h = arguments[0];
     var props = this.$props;
 
+    // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-paragraph");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
 
+    // render
     var rows = range(0, props.rows).map(function (row, index) {
       var width = _this.getWidthProperty(index);
       var style = {
@@ -41899,10 +41611,8 @@ var VuiSkeletonParagraph = {
       [rows]
     );
   }
-};
-
-/* harmony default export */ var skeleton_paragraph = (VuiSkeletonParagraph);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton.js
+});
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton.js
 
 
 
@@ -41963,21 +41673,25 @@ function getParagraphBasicProps(props) {
   return basicProps;
 }
 
-var VuiSkeleton = {
-  name: "vui-skeleton",
-  components: {
-    VuiSkeletonAvatar: skeleton_avatar,
-    VuiSkeletonTitle: skeleton_title,
-    VuiSkeletonParagraph: skeleton_paragraph
-  },
-  props: {
+var skeleton_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     loading: prop_types["a" /* default */].bool,
     animated: prop_types["a" /* default */].bool.def(false),
     avatar: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(false),
     title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(true),
     paragraph: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].bool, prop_types["a" /* default */].object]).def(true)
+  };
+};
+
+/* harmony default export */ var skeleton = ({
+  name: "vui-skeleton",
+  components: {
+    VuiSkeletonAvatar: skeleton_avatar,
+    VuiSkeletonTitle: skeleton_title,
+    VuiSkeletonParagraph: skeleton_paragraph
   },
+  props: skeleton_createProps(),
   render: function render() {
     var h = arguments[0];
     var slots = this.$slots,
@@ -42052,141 +41766,141 @@ var VuiSkeleton = {
       [children]
     );
   }
-};
-
-/* harmony default export */ var skeleton = (VuiSkeleton);
+});
 // CONCATENATED MODULE: ./src/components/skeleton/index.js
 
 
-skeleton.install = function (Vue) {
-  Vue.component(skeleton.name, skeleton);
-};
 
-/* harmony default export */ var components_skeleton = (skeleton);
+
+/* harmony default export */ var components_skeleton = (withInstall(skeleton));
 // CONCATENATED MODULE: ./src/components/skeleton-avatar/index.js
 
 
-skeleton_avatar.install = function (Vue) {
-  Vue.component(skeleton_avatar.name, skeleton_avatar);
-};
 
-/* harmony default export */ var components_skeleton_avatar = (skeleton_avatar);
+
+/* harmony default export */ var components_skeleton_avatar = (withInstall(skeleton_avatar));
 // CONCATENATED MODULE: ./src/components/skeleton-title/index.js
 
 
-skeleton_title.install = function (Vue) {
-  Vue.component(skeleton_title.name, skeleton_title);
-};
 
-/* harmony default export */ var components_skeleton_title = (skeleton_title);
+
+/* harmony default export */ var components_skeleton_title = (withInstall(skeleton_title));
 // CONCATENATED MODULE: ./src/components/skeleton-paragraph/index.js
 
 
-skeleton_paragraph.install = function (Vue) {
-  Vue.component(skeleton_paragraph.name, skeleton_paragraph);
-};
 
-/* harmony default export */ var components_skeleton_paragraph = (skeleton_paragraph);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-input.js
+
+/* harmony default export */ var components_skeleton_paragraph = (withInstall(skeleton_paragraph));
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-input.js
 
 
 
 
-var VuiSkeletonInput = {
-  name: "vui-skeleton-input",
-  props: {
+var skeleton_input_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false),
     block: prop_types["a" /* default */].bool.def(false),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium")
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_input = ({
+  name: "vui-skeleton-input",
+  props: skeleton_input_createProps(),
   render: function render() {
     var _classes$el;
 
     var h = arguments[0];
     var props = this.$props;
 
+    // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-input");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), _classes$el);
 
+    // render
     return h("div", { "class": classes.el });
   }
-};
-
-/* harmony default export */ var skeleton_input = (VuiSkeletonInput);
+});
 // CONCATENATED MODULE: ./src/components/skeleton-input/index.js
 
 
-skeleton_input.install = function (Vue) {
-  Vue.component(skeleton_input.name, skeleton_input);
-};
 
-/* harmony default export */ var components_skeleton_input = (skeleton_input);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-button.js
+
+/* harmony default export */ var components_skeleton_input = (withInstall(skeleton_input));
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-button.js
 
 
 
 
-var VuiSkeletonButton = {
-  name: "vui-skeleton-button",
-  props: {
+var skeleton_button_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false),
     block: prop_types["a" /* default */].bool.def(false),
     shape: prop_types["a" /* default */].oneOf(["default", "round", "circle"]).def("default"),
     size: prop_types["a" /* default */].oneOf(["small", "medium", "large"]).def("medium")
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_button = ({
+  name: "vui-skeleton-button",
+  props: skeleton_button_createProps(),
   render: function render() {
     var _classes$el;
 
     var h = arguments[0];
     var props = this.$props;
 
+    // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-button");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), defineProperty_default()(_classes$el, classNamePrefix + "-block", props.block), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.shape, props.shape), defineProperty_default()(_classes$el, classNamePrefix + "-" + props.size, props.size), _classes$el);
 
+    // render
     return h("div", { "class": classes.el });
   }
-};
-
-/* harmony default export */ var skeleton_button = (VuiSkeletonButton);
+});
 // CONCATENATED MODULE: ./src/components/skeleton-button/index.js
 
 
-skeleton_button.install = function (Vue) {
-  Vue.component(skeleton_button.name, skeleton_button);
-};
 
-/* harmony default export */ var components_skeleton_button = (skeleton_button);
-// CONCATENATED MODULE: ./src/components/skeleton/src/skeleton-image.js
+
+/* harmony default export */ var components_skeleton_button = (withInstall(skeleton_button));
+// CONCATENATED MODULE: ./src/components/skeleton/skeleton-image.js
 
 
 
 
-var VuiSkeletonImage = {
-  name: "vui-skeleton-image",
-  props: {
+var skeleton_image_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     animated: prop_types["a" /* default */].bool.def(false)
-  },
+  };
+};
+
+/* harmony default export */ var skeleton_image = ({
+  name: "vui-skeleton-image",
+  props: skeleton_image_createProps(),
   render: function render() {
     var _classes$el;
 
     var h = arguments[0];
     var props = this.$props;
 
+    // class
 
     var classNamePrefix = getClassNamePrefix(props.classNamePrefix, "skeleton-image");
     var classes = {};
 
     classes.el = (_classes$el = {}, defineProperty_default()(_classes$el, "" + classNamePrefix, true), defineProperty_default()(_classes$el, classNamePrefix + "-animated", props.animated), _classes$el);
 
+    // render
     return h(
       "div",
       { "class": classes.el },
@@ -42201,17 +41915,13 @@ var VuiSkeletonImage = {
       )]
     );
   }
-};
-
-/* harmony default export */ var skeleton_image = (VuiSkeletonImage);
+});
 // CONCATENATED MODULE: ./src/components/skeleton-image/index.js
 
 
-skeleton_image.install = function (Vue) {
-  Vue.component(skeleton_image.name, skeleton_image);
-};
 
-/* harmony default export */ var components_skeleton_image = (skeleton_image);
+
+/* harmony default export */ var components_skeleton_image = (withInstall(skeleton_image));
 // CONCATENATED MODULE: ./src/utils/getScroll.js
 
 
@@ -42286,7 +41996,7 @@ function scrollTo_scrollTo(element) {
 
   scroll(from, to, step);
 };
-// CONCATENATED MODULE: ./src/components/anchor/src/anchor.js
+// CONCATENATED MODULE: ./src/components/anchor/anchor.js
 
 
 
@@ -42299,18 +42009,8 @@ function scrollTo_scrollTo(element) {
 
 var sharpMatcherRegx = /#([^#]+)$/;
 
-var VuiAnchor = {
-  name: "vui-anchor",
-  provide: function provide() {
-    return {
-      vuiAnchor: this
-    };
-  },
-
-  components: {
-    VuiAffix: components_affix
-  },
-  props: {
+var anchor_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     affix: prop_types["a" /* default */].bool.def(true),
     showInkInStatic: prop_types["a" /* default */].bool.def(false),
@@ -42323,7 +42023,21 @@ var VuiAnchor = {
     offsetTop: prop_types["a" /* default */].number,
     offsetBottom: prop_types["a" /* default */].number,
     preventDefault: prop_types["a" /* default */].bool.def(false)
+  };
+};
+
+/* harmony default export */ var anchor_anchor = ({
+  name: "vui-anchor",
+  provide: function provide() {
+    return {
+      vuiAnchor: this
+    };
   },
+
+  components: {
+    VuiAffix: components_affix
+  },
+  props: anchor_createProps(),
   data: function data() {
     var state = {
       links: [],
@@ -42580,36 +42294,36 @@ var VuiAnchor = {
       return anchor;
     }
   }
-};
-
-/* harmony default export */ var src_anchor = (VuiAnchor);
+});
 // CONCATENATED MODULE: ./src/components/anchor/index.js
 
 
-src_anchor.install = function (Vue) {
-  Vue.component(src_anchor.name, src_anchor);
+
+
+/* harmony default export */ var components_anchor = (withInstall(anchor_anchor));
+// CONCATENATED MODULE: ./src/components/anchor/anchor-link.js
+
+
+
+
+
+var anchor_link_createProps = function createProps() {
+  return {
+    classNamePrefix: prop_types["a" /* default */].string,
+    href: prop_types["a" /* default */].string,
+    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
+    target: prop_types["a" /* default */].string
+  };
 };
 
-/* harmony default export */ var components_anchor = (src_anchor);
-// CONCATENATED MODULE: ./src/components/anchor/src/anchor-link.js
-
-
-
-
-
-var VuiAnchorLink = {
+/* harmony default export */ var anchor_link = ({
   name: "vui-anchor-link",
   inject: {
     vuiAnchor: {
       default: undefined
     }
   },
-  props: {
-    classNamePrefix: prop_types["a" /* default */].string,
-    href: prop_types["a" /* default */].string,
-    title: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]),
-    target: prop_types["a" /* default */].string
-  },
+  props: anchor_link_createProps(),
   watch: {
     href: function href(value, oldValue) {
       var vuiAnchor = this.vuiAnchor;
@@ -42686,18 +42400,14 @@ var VuiAnchorLink = {
       ), slots.default]
     );
   }
-};
-
-/* harmony default export */ var anchor_link = (VuiAnchorLink);
+});
 // CONCATENATED MODULE: ./src/components/anchor-link/index.js
 
 
-anchor_link.install = function (Vue) {
-  Vue.component(anchor_link.name, anchor_link);
-};
 
-/* harmony default export */ var components_anchor_link = (anchor_link);
-// CONCATENATED MODULE: ./src/components/authorizer/src/utils.js
+
+/* harmony default export */ var components_anchor_link = (withInstall(anchor_link));
+// CONCATENATED MODULE: ./src/components/authorizer/utils.js
 
 
 
@@ -42712,43 +42422,43 @@ var utils_authorizer = function authorizer(authorize, value, attrs) {
   return callback(value, attrs);
 };
 
-/* harmony default export */ var authorizer_src_utils = ({
+/* harmony default export */ var authorizer_utils = ({
   authorizer: utils_authorizer
 });
-// CONCATENATED MODULE: ./src/components/authorizer/src/authorizer.js
+// CONCATENATED MODULE: ./src/components/authorizer/authorizer.js
 
 
 
-var VuiAuthorizer = {
-  name: "vui-authorizer",
-  functional: true,
-  props: {
+var authorizer_createProps = function createProps() {
+  return {
     authorize: prop_types["a" /* default */].func,
     value: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].array])
-  },
+  };
+};
+
+/* harmony default export */ var authorizer_authorizer = ({
+  name: "vui-authorizer",
+  functional: true,
+  props: authorizer_createProps(),
   render: function render(h, context) {
     var props = context.props,
         scopedSlots = context.scopedSlots;
     var attrs = context.data.attrs;
 
-    var isAllowed = authorizer_src_utils.authorizer(props.authorize, props.value, attrs);
+    var isAllowed = authorizer_utils.authorizer(props.authorize, props.value, attrs);
     var scopedSlotKey = isAllowed ? "default" : "replacement";
     var scopedSlot = scopedSlots[scopedSlotKey];
 
     return scopedSlot ? scopedSlot() : null;
   }
-};
-
-/* harmony default export */ var src_authorizer = (VuiAuthorizer);
+});
 // CONCATENATED MODULE: ./src/components/authorizer/index.js
 
 
-src_authorizer.install = function (Vue) {
-  Vue.component(src_authorizer.name, src_authorizer);
-};
 
-/* harmony default export */ var components_authorizer = (src_authorizer);
-// CONCATENATED MODULE: ./src/components/backtop/src/backtop.js
+
+/* harmony default export */ var components_authorizer = (withInstall(authorizer_authorizer));
+// CONCATENATED MODULE: ./src/components/backtop/backtop.js
 
 
 
@@ -42756,9 +42466,8 @@ src_authorizer.install = function (Vue) {
 
 
 
-var VuiBacktop = {
-  name: "vui-backtop",
-  props: {
+var backtop_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     threshold: prop_types["a" /* default */].number.def(400),
     right: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(40),
@@ -42766,7 +42475,12 @@ var VuiBacktop = {
     duration: prop_types["a" /* default */].oneOfType([prop_types["a" /* default */].string, prop_types["a" /* default */].number]).def(500),
     scrollContainer: prop_types["a" /* default */].any,
     animation: prop_types["a" /* default */].string.def("vui-backtop-fade")
-  },
+  };
+};
+
+/* harmony default export */ var backtop = ({
+  name: "vui-backtop",
+  props: backtop_createProps(),
   data: function data() {
     var state = {
       visibility: false
@@ -42931,29 +42645,29 @@ var VuiBacktop = {
       [btnBacktop]
     );
   }
-};
-
-/* harmony default export */ var backtop = (VuiBacktop);
+});
 // CONCATENATED MODULE: ./src/components/backtop/index.js
 
 
-backtop.install = function (Vue) {
-  Vue.component(backtop.name, backtop);
-};
 
-/* harmony default export */ var components_backtop = (backtop);
-// CONCATENATED MODULE: ./src/components/collapser/src/collapser.js
+
+/* harmony default export */ var components_backtop = (withInstall(backtop));
+// CONCATENATED MODULE: ./src/components/collapser/collapser.js
 
 
 
 
-var VuiCollapser = {
-  name: "vui-collapser",
-  props: {
+var collapser_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     visible: prop_types["a" /* default */].bool.def(false),
     animation: prop_types["a" /* default */].string.def("vui-collapser")
-  },
+  };
+};
+
+/* harmony default export */ var collapser = ({
+  name: "vui-collapser",
+  props: collapser_createProps(),
   methods: {
     handleBeforeEnter: function handleBeforeEnter(el) {
       el.style.height = "0px";
@@ -43019,17 +42733,13 @@ var VuiCollapser = {
       )]
     );
   }
-};
-
-/* harmony default export */ var collapser = (VuiCollapser);
+});
 // CONCATENATED MODULE: ./src/components/collapser/index.js
 
 
-collapser.install = function (Vue) {
-  Vue.component(collapser.name, collapser);
-};
 
-/* harmony default export */ var components_collapser = (collapser);
+
+/* harmony default export */ var components_collapser = (withInstall(collapser));
 // CONCATENATED MODULE: ./src/utils/fullscreen.js
 // 是否支持全屏
 var isSupport = function isSupport() {
@@ -43102,18 +42812,22 @@ var removeEventListener = function removeEventListener(callback) {
   addEventListener: fullscreen_addEventListener,
   removeEventListener: removeEventListener
 });
-// CONCATENATED MODULE: ./src/components/fullscreen/src/fullscreen.js
+// CONCATENATED MODULE: ./src/components/fullscreen/fullscreen.js
 
 
 
 
 
-/* harmony default export */ var src_fullscreen = ({
-  name: "vui-fullscreen",
-  props: {
+var fullscreen_createProps = function createProps() {
+  return {
     classNamePrefix: prop_types["a" /* default */].string,
     value: prop_types["a" /* default */].bool.def(false)
-  },
+  };
+};
+
+/* harmony default export */ var fullscreen_fullscreen = ({
+  name: "vui-fullscreen",
+  props: fullscreen_createProps(),
   data: function data() {
     var state = {
       status: false
@@ -43222,11 +42936,9 @@ var removeEventListener = function removeEventListener(callback) {
 // CONCATENATED MODULE: ./src/components/fullscreen/index.js
 
 
-src_fullscreen.install = function (Vue) {
-  Vue.component(src_fullscreen.name, src_fullscreen);
-};
 
-/* harmony default export */ var components_fullscreen = (src_fullscreen);
+
+/* harmony default export */ var components_fullscreen = (withInstall(fullscreen_fullscreen));
 // CONCATENATED MODULE: ./src/utils/queue.js
 var pending = [];
 
@@ -43245,7 +42957,7 @@ function queue(fn) {
     queue_next();
   }
 };
-// CONCATENATED MODULE: ./src/components/loading/src/loading.js
+// CONCATENATED MODULE: ./src/components/loading/loading.js
 
 
 
@@ -43427,11 +43139,11 @@ VuiLoading.remove = function () {
   elLoading && elLoading.parentNode && elLoading.parentNode.removeChild(elLoading);
 };
 
-/* harmony default export */ var src_loading = (VuiLoading);
+/* harmony default export */ var loading_loading = (VuiLoading);
 // CONCATENATED MODULE: ./src/components/loading/index.js
 
 
-/* harmony default export */ var components_loading = (src_loading);
+/* harmony default export */ var components_loading = (loading_loading);
 // CONCATENATED MODULE: ./src/index.js
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Icon", function() { return components_icon; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Button", function() { return components_button; });
@@ -43477,7 +43189,7 @@ VuiLoading.remove = function () {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Input", function() { return components_input; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InputGroup", function() { return components_input_group; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "InputNumber", function() { return components_input_number; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "MutexGroup", function() { return components_mutex_group; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ChoiceGroup", function() { return components_choice_group; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Radio", function() { return components_radio; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "RadioGroup", function() { return components_radio_group; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Rate", function() { return components_rate; });
@@ -43686,7 +43398,7 @@ components_divider, components_row, components_col, components_layout, component
 // Navigation
 components_affix, components_breadcrumb, components_breadcrumb_item, components_dropdown, components_dropdown_button, components_dropdown_menu, components_dropdown_submenu, components_dropdown_menu_item, components_dropdown_menu_item_group, components_dropdown_menu_divider, components_menu, components_submenu, components_menu_item, components_menu_item_group, components_menu_divider, components_page_header, components_pagination, components_steps, components_step, components_tabs, components_tab_panel,
 // Data Entry
-components_cascader, components_checkbox, components_checkbox_group, components_datepicker, components_form, components_form_group, components_form_item, components_input, components_input_group, components_input_number, components_mutex_group, components_radio, components_radio_group, components_rate, components_select, components_option, components_option_group, components_slider, components_switch, components_textarea, components_timeroutine, components_transfer, components_cascade_transfer, components_upload,
+components_cascader, components_checkbox, components_checkbox_group, components_datepicker, components_form, components_form_group, components_form_item, components_input, components_input_group, components_input_number, components_choice_group, components_radio, components_radio_group, components_rate, components_select, components_option, components_option_group, components_slider, components_switch, components_textarea, components_timeroutine, components_transfer, components_cascade_transfer, components_upload,
 // Data Display
 components_avatar, components_avatar_group, components_badge, components_card, components_card_grid, components_card_meta, components_cell, components_cell_group, components_collapse, components_countdown, components_panel, components_descriptions, components_description, components_empty, components_image, components_list, components_list_item, components_list_item_meta, components_popover, components_qrcode, components_ratio, components_ribbon, components_statistic, components_table, components_tag, components_time, components_timeline, components_timeline_item, components_tooltip, components_tree, components_watermark,
 // Feedback
@@ -43739,7 +43451,7 @@ if (typeof window !== "undefined" && window.Vue) {
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"vui-design","version":"1.10.16","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 80 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:locale":"webpack --config build/build-locale.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist":"npm run dist:style && npm run dist:locale && npm run dist:dev && npm run dist:prod","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-loader":"^0.5.5","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","style-loader":"^0.20.2","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
+module.exports = {"name":"vui-design","version":"1.10.17","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 80 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:locale":"webpack --config build/build-locale.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist":"npm run dist:style && npm run dist:locale && npm run dist:dev && npm run dist:prod","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-loader":"^0.5.5","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","style-loader":"^0.20.2","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
 
 /***/ }),
 /* 89 */

@@ -1,5 +1,5 @@
-import VuiInput from "./src/input";
+import VuiInput from "./input";
 import withInstall from "../../utils/withInstall";
 
-export { createProps } from "./src/input";
+export { createProps } from "./input";
 export default withInstall(VuiInput);

@@ -1,7 +1,5 @@
-import VuiPanel from "../collapse/src/panel";
+import VuiPanel from "../collapse/panel";
+import withInstall from "../../utils/withInstall";
 
-VuiPanel.install = function(Vue) {
-	Vue.component(VuiPanel.name, VuiPanel);
-};
-
-export default VuiPanel;
+export { createProps } from "../collapse/panel";
+export default withInstall(VuiPanel);

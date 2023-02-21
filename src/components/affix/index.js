@@ -1,7 +1,5 @@
-import VuiAffix from "./src/affix";
+import VuiAffix from "./affix";
+import withInstall from "../../utils/withInstall";
 
-VuiAffix.install = function(Vue) {
-  Vue.component(VuiAffix.name, VuiAffix);
-};
-
-export default VuiAffix;
+export { createProps } from "./affix";
+export default withInstall(VuiAffix);

@@ -1,7 +1,5 @@
-import VuiTooltip from "./src/tooltip";
+import VuiTooltip from "./tooltip";
+import withInstall from "../../utils/withInstall";
 
-VuiTooltip.install = function(Vue) {
-  Vue.component(VuiTooltip.name, VuiTooltip);
-};
-
-export default VuiTooltip;
+export { createProps } from "./tooltip";
+export default withInstall(VuiTooltip);
