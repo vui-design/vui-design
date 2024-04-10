@@ -37,7 +37,6 @@ export default {
         pageSize: 8,
         averageSize: 34,
         range: [0, 16],
-        pageable: true,
         preventScrolling: false
       }
     };
@@ -62,28 +61,72 @@ export default {
   },
   methods: {
     getPageList() {
+      // 
       const { vuiSelect, $props: props, pagination } = this;
       const { state: vuiSelectState } = vuiSelect;
-      const pageable = props.options.length > (pagination.pageSize * 2);
 
-      if (pageable) {
+      // 
+      const paddingTop = parseInt(getStyle(this.$refs.wrapper, "paddingTop"));
+      const itemRectTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
+      const itemRectBottom = itemRectTop + pagination.averageSize;
+      const viewRectTop = this.$refs.wrapper.scrollTop;
+      const viewRectBottom = viewRectTop + this.$refs.wrapper.clientHeight;
+      let scrollTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
+
+      if (itemRectTop < viewRectTop) {
+        scrollTop = itemRectTop - paddingTop;
+      }
+      else if (itemRectBottom > viewRectBottom) {
+        scrollTop = itemRectBottom - this.$refs.wrapper.clientHeight + paddingTop;
+      }
+      else {
+        scrollTop = this.$refs.wrapper.scrollTop;
+      }
+
+      // 
+      const reserve = pagination.pageSize / 2;
+      const scrollSize = scrollTop < paddingTop ? 0 : (scrollTop - paddingTop);
+      let startIndex = Math.floor(scrollSize / pagination.averageSize);
+      let endIndex = 0;
+
+      if (startIndex < reserve) {
+        startIndex = 0;
+      }
+      else {
+        startIndex = startIndex - reserve;
+      }
+
+      let options = props.options.slice(startIndex, props.options.length);
+
+      if (options.length < pagination.pageSize * 2) {
+        startIndex = props.options.length - pagination.pageSize * 2;
+        endIndex = props.options.length;
+      }
+      else {
+        endIndex = startIndex + pagination.pageSize * 2;
+      }
+
+      // 
+      if (vuiSelectState.activedEventType === "navigate") {
+        if ((itemRectTop < viewRectTop) || (itemRectBottom > viewRectBottom)) {
+          this.$refs.wrapper.scrollTop = scrollTop;
+        }
+      }
+
+      // 
+      this.pagination.range = [startIndex, endIndex];
+      this.pagination.preventScrolling = true;
+    },
+    handleScroll(e) {
+      const { $props: props, pagination } = this;
+
+      if (pagination.preventScrolling) {
+        this.pagination.preventScrolling = false;
+      }
+      else {
         // 
-        const paddingTop = parseInt(getStyle(this.$refs.wrapper, "paddingTop"));
-        const itemRectTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
-        const itemRectBottom = itemRectTop + pagination.averageSize;
-        const viewRectTop = this.$refs.wrapper.scrollTop;
-        const viewRectBottom = viewRectTop + this.$refs.wrapper.clientHeight;
-        let scrollTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
-
-        if (itemRectTop < viewRectTop) {
-          scrollTop = itemRectTop - paddingTop;
-        }
-        else if (itemRectBottom > viewRectBottom) {
-          scrollTop = itemRectBottom - this.$refs.wrapper.clientHeight + paddingTop;
-        }
-        else {
-          scrollTop = this.$refs.wrapper.scrollTop;
-        }
+        const paddingTop = parseInt(getStyle(e.target, "paddingTop"));
+        let scrollTop = e.target.scrollTop;
 
         // 
         const reserve = pagination.pageSize / 2;
@@ -109,97 +152,8 @@ export default {
         }
 
         // 
-        if (vuiSelectState.activedEventType === "navigate") {
-          if ((itemRectTop < viewRectTop) || (itemRectBottom > viewRectBottom)) {
-            this.$refs.wrapper.scrollTop = scrollTop;
-          }
-        }
-
-        // 
         this.pagination.range = [startIndex, endIndex];
-        this.pagination.pageable = pageable;
-        this.pagination.preventScrolling = true;
-      }
-      else {
-        // 
-        const paddingTop = parseInt(getStyle(this.$refs.wrapper, "paddingTop"));
-        const itemRectTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
-        const itemRectBottom = itemRectTop + pagination.averageSize;
-        const viewRectTop = this.$refs.wrapper.scrollTop;
-        const viewRectBottom = viewRectTop + this.$refs.wrapper.clientHeight;
-        let scrollTop = vuiSelectState.activedMenuItemIndex * pagination.averageSize + paddingTop;
-
-        if (itemRectTop < viewRectTop) {
-          scrollTop = itemRectTop - paddingTop;
-        }
-        else if (itemRectBottom > viewRectBottom) {
-          scrollTop = itemRectBottom - this.$refs.wrapper.clientHeight + paddingTop;
-        }
-        else {
-          scrollTop = this.$refs.wrapper.scrollTop;
-        }
-
-        // 
-        if (vuiSelectState.activedEventType === "navigate") {
-          if ((itemRectTop < viewRectTop) || (itemRectBottom > viewRectBottom)) {
-            this.$refs.wrapper.scrollTop = scrollTop;
-          }
-        }
-
-        // 
-        this.pagination.range = [0, 0];
-        this.pagination.pageable = pageable;
         this.pagination.preventScrolling = false;
-      }
-    },
-    handleScroll(e) {
-      const { $props: props, pagination } = this;
-
-      if (pagination.preventScrolling) {
-        this.pagination.preventScrolling = false;
-      }
-      else {
-        const pageable = props.options.length > (pagination.pageSize * 2);
-
-        if (pageable) {
-          // 
-          const paddingTop = parseInt(getStyle(e.target, "paddingTop"));
-          let scrollTop = e.target.scrollTop;
-
-          // 
-          const reserve = pagination.pageSize / 2;
-          const scrollSize = scrollTop < paddingTop ? 0 : (scrollTop - paddingTop);
-          let startIndex = Math.floor(scrollSize / pagination.averageSize);
-          let endIndex = 0;
-
-          if (startIndex < reserve) {
-            startIndex = 0;
-          }
-          else {
-            startIndex = startIndex - reserve;
-          }
-
-          let options = props.options.slice(startIndex, props.options.length);
-
-          if (options.length < pagination.pageSize * 2) {
-            startIndex = props.options.length - pagination.pageSize * 2;
-            endIndex = props.options.length;
-          }
-          else {
-            endIndex = startIndex + pagination.pageSize * 2;
-          }
-
-          // 
-          this.pagination.range = [startIndex, endIndex];
-          this.pagination.pageable = pageable;
-          this.pagination.preventScrolling = false;
-        }
-        else {
-          // 
-          this.pagination.range = [0, 0];
-          this.pagination.pageable = pageable;
-          this.pagination.preventScrolling = false;
-        }
       }
     },
     handleActiveMenuItem(option) {
@@ -234,7 +188,7 @@ export default {
   render(h) {
     const { $props: props, state, pagination } = this;
     const { handleScroll, handleActiveMenuItem, handleClickMenuItem } = this;
-    const options = pagination.pageable ? props.options.slice(pagination.range[0], pagination.range[1]) : props.options;
+    const options = props.options.slice(pagination.range[0], pagination.range[1]);
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "menu");
@@ -246,12 +200,10 @@ export default {
     // style
     let styles = {};
 
-    if (pagination.pageable) {
-      styles.el = {
-        height: (props.options.length * pagination.averageSize) + "px",
-        paddingTop: (pagination.range[0] * pagination.averageSize) + "px"
-      };
-    }
+    styles.el = {
+      height: (props.options.length * pagination.averageSize) + "px",
+      paddingTop: (pagination.range[0] * pagination.averageSize) + "px"
+    };
 
     // render
     return (
