@@ -99,7 +99,7 @@ export default {
       let options = props.options.slice(startIndex, props.options.length);
 
       if (options.length < pagination.pageSize * 2) {
-        startIndex = props.options.length - pagination.pageSize * 2;
+        startIndex = Math.max(props.options.length - pagination.pageSize * 2, 0);
         endIndex = props.options.length;
       }
       else {
@@ -144,7 +144,7 @@ export default {
         let options = props.options.slice(startIndex, props.options.length);
 
         if (options.length < pagination.pageSize * 2) {
-          startIndex = props.options.length - pagination.pageSize * 2;
+          startIndex = Math.max(props.options.length - pagination.pageSize * 2, 0);
           endIndex = props.options.length;
         }
         else {
