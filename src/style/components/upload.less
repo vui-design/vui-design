@@ -17,6 +17,10 @@
 
     }
 
+    &:focus {
+
+    }
+
     &-disabled {
       cursor:not-allowed;
       pointer-events:none;
@@ -131,6 +135,10 @@
     }
 
     &:hover {
+
+    }
+
+    &:focus {
 
     }
 
@@ -279,6 +287,10 @@
       border-color:@primary-color;
     }
 
+    &:focus {
+      border-color:@primary-color;
+    }
+
     &-disabled {
       cursor:not-allowed;
       pointer-events:none;
@@ -413,6 +425,11 @@
       background-color:shade(@component-background-color, 2%);
     }
 
+    &:focus {
+      border-color:@primary-color;
+      background-color:shade(@component-background-color, 2%);
+    }
+
     &-dragover {
       border-color:@primary-color;
       background-color:~`colorPalette("@{primary-color}", 1) `;
@@ -435,6 +452,11 @@
     text-align:center;
 
     &:hover {
+      border-color:@primary-color;
+      background-color:shade(@component-background-color, 2%);
+    }
+
+    &:focus {
       border-color:@primary-color;
       background-color:shade(@component-background-color, 2%);
     }
@@ -463,6 +485,11 @@
     text-align:center;
 
     &:hover {
+      border-color:@primary-color;
+      background-color:shade(@component-background-color, 2%);
+    }
+
+    &:focus {
       border-color:@primary-color;
       background-color:shade(@component-background-color, 2%);
     }

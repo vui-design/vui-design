@@ -8,6 +8,7 @@ export const createProps = () => {
   return {
     classNamePrefix: PropTypes.string,
     draggable: PropTypes.bool.def(false),
+    uploadPastedFiles: PropTypes.bool.def(false),
     multiple: PropTypes.bool.def(false),
     accept: PropTypes.string,
     list: PropTypes.array.def([]),
@@ -206,6 +207,59 @@ export default {
 
       this.state.dragover = false;
     },
+    handleTriggerPaste(e) {
+      const { $props: props } = this;
+      let files = e.clipboardData.files;
+
+      if (!props.uploadPastedFiles || !files) {
+        return;
+      }
+
+      files = Array.prototype.slice.call(files);
+
+      if (props.accept) {
+        files = files.filter(file => {
+          const name = file.name;
+          const extension = name.indexOf(".") > -1 ? ("." + name.split(".").pop()) : "";
+          const type = file.type;
+          const baseType = type.replace(/\/.*$/, "");
+
+          return props.accept.split(",").map(acceptedType => acceptedType.trim()).filter(acceptedType => acceptedType).some(acceptedType => {
+            if (/\..+$/.test(acceptedType)) {
+              return extension === acceptedType;
+            }
+
+            if (/\/\*$/.test(acceptedType)) {
+              return baseType === acceptedType.replace(/\/\*$/, "");
+            }
+
+            if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
+              return type === acceptedType;
+            }
+
+            return false;
+          });
+        });
+      }
+
+      if (!props.multiple) {
+        files = files.slice(0, 1);
+      }
+
+      if (files.length === 0) {
+        return;
+      }
+
+      files.forEach(file => {
+        file.id = guid();
+
+        this.$emit("ready", file);
+
+        if (props.autoUpload) {
+          this.upload(file);
+        }
+      });
+    },
     handleInputClick(e) {
       e.stopPropagation();
     },
@@ -242,7 +296,7 @@ export default {
   },
   render(h) {
     const { $slots: slots, $props: props, state } = this;
-    const { handleTriggerClick, handleTriggerDragover, handleTriggerDrop, handleTriggerDragleave, handleInputClick, handleInputChange } = this;
+    const { handleTriggerClick, handleTriggerDragover, handleTriggerDrop, handleTriggerDragleave, handleTriggerPaste, handleInputClick, handleInputChange } = this;
 
     // class
     const classNamePrefix = getClassNamePrefix(props.classNamePrefix, "trigger");
@@ -258,7 +312,10 @@ export default {
     let attributes = {};
 
     attributes.el = {
-      class: classes.el
+      class: classes.el,
+      attrs: {
+        tabIndex: 0
+      }
     };
     attributes.elInput = {
       ref: "input",
@@ -275,7 +332,8 @@ export default {
         click: handleTriggerClick,
         dragover: handleTriggerDragover,
         drop: handleTriggerDrop,
-        dragleave: handleTriggerDragleave
+        dragleave: handleTriggerDragleave,
+        paste: handleTriggerPaste
       };
       attributes.elInput.on = {
         click: handleInputClick,

@@ -9,6 +9,7 @@ export const createProps = () => {
   return {
     classNamePrefix: PropTypes.string,
     draggable: PropTypes.bool.def(false),
+    uploadPastedFiles: PropTypes.bool.def(false),
     multiple: PropTypes.bool.def(false),
     accept: PropTypes.string,
     showList: PropTypes.bool.def(true),
@@ -230,6 +231,7 @@ export default {
         v-show={slots.trigger || slots.default}
         classNamePrefix={classNamePrefix}
         draggable={props.draggable}
+        uploadPastedFiles={props.uploadPastedFiles}
         multiple={props.multiple}
         accept={props.accept}
         list={state.list}

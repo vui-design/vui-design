@@ -8875,53 +8875,53 @@ var cached = undefined;
 * @param {Boolean} useCache 是否使用缓存，即每次调用不会重新计算滚动条的尺寸，而是直接返回首次调用计算得到的值
 */
 function getScrollbarSize() {
-    var useCache = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+  var useCache = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
-    if (is["a" /* default */].server) {
-        return 0;
+  if (is["a" /* default */].server) {
+    return 0;
+  }
+
+  if (!useCache || cached === undefined) {
+    var inner = document.createElement("div");
+    var innerStyle = inner.style;
+
+    innerStyle.width = "100%";
+    innerStyle.height = "200px";
+
+    var outer = document.createElement("div");
+    var outerStyle = outer.style;
+
+    outerStyle.position = "absolute";
+    outerStyle.top = 0;
+    outerStyle.left = 0;
+    outerStyle.pointerEvents = "none";
+    outerStyle.width = "100px";
+    outerStyle.height = "100px";
+    outerStyle.visibility = "hidden";
+
+    outer.appendChild(inner);
+    document.body.appendChild(outer);
+
+    // 设置子元素超出部分隐藏
+    outerStyle.overflow = "hidden";
+
+    var width1 = inner.offsetWidth;
+
+    // 设置子元素超出部分滚动
+    outer.style.overflow = "scroll";
+
+    var width2 = inner.offsetWidth;
+
+    if (width1 === width2) {
+      width2 = outer.clientWidth;
     }
 
-    if (!useCache || cached === undefined) {
-        var inner = document.createElement("div");
-        var innerStyle = inner.style;
+    document.body.removeChild(outer);
 
-        innerStyle.width = "100%";
-        innerStyle.height = "200px";
+    cached = width1 - width2;
+  }
 
-        var outer = document.createElement("div");
-        var outerStyle = outer.style;
-
-        outerStyle.position = "absolute";
-        outerStyle.top = 0;
-        outerStyle.left = 0;
-        outerStyle.pointerEvents = "none";
-        outerStyle.width = "100px";
-        outerStyle.height = "100px";
-        outerStyle.visibility = "hidden";
-
-        outer.appendChild(inner);
-        document.body.appendChild(outer);
-
-        // 设置子元素超出部分隐藏
-        outerStyle.overflow = "hidden";
-
-        var width1 = inner.offsetWidth;
-
-        // 设置子元素超出部分滚动
-        outer.style.overflow = "scroll";
-
-        var width2 = inner.offsetWidth;
-
-        if (width1 === width2) {
-            width2 = outer.clientWidth;
-        }
-
-        document.body.removeChild(outer);
-
-        cached = width1 - width2;
-    }
-
-    return cached;
+  return cached;
 };
 // CONCATENATED MODULE: ./src/components/sider/sider.js
 
@@ -30107,6 +30107,7 @@ var upload_trigger_createProps = function createProps() {
   return {
     classNamePrefix: prop_types["a" /* default */].string,
     draggable: prop_types["a" /* default */].bool.def(false),
+    uploadPastedFiles: prop_types["a" /* default */].bool.def(false),
     multiple: prop_types["a" /* default */].bool.def(false),
     accept: prop_types["a" /* default */].string,
     list: prop_types["a" /* default */].array.def([]),
@@ -30316,11 +30317,71 @@ var upload_trigger_createProps = function createProps() {
 
       this.state.dragover = false;
     },
+    handleTriggerPaste: function handleTriggerPaste(e) {
+      var _this3 = this;
+
+      var props = this.$props;
+
+      var files = e.clipboardData.files;
+
+      if (!props.uploadPastedFiles || !files) {
+        return;
+      }
+
+      files = Array.prototype.slice.call(files);
+
+      if (props.accept) {
+        files = files.filter(function (file) {
+          var name = file.name;
+          var extension = name.indexOf(".") > -1 ? "." + name.split(".").pop() : "";
+          var type = file.type;
+          var baseType = type.replace(/\/.*$/, "");
+
+          return props.accept.split(",").map(function (acceptedType) {
+            return acceptedType.trim();
+          }).filter(function (acceptedType) {
+            return acceptedType;
+          }).some(function (acceptedType) {
+            if (/\..+$/.test(acceptedType)) {
+              return extension === acceptedType;
+            }
+
+            if (/\/\*$/.test(acceptedType)) {
+              return baseType === acceptedType.replace(/\/\*$/, "");
+            }
+
+            if (/^[^\/]+\/[^\/]+$/.test(acceptedType)) {
+              return type === acceptedType;
+            }
+
+            return false;
+          });
+        });
+      }
+
+      if (!props.multiple) {
+        files = files.slice(0, 1);
+      }
+
+      if (files.length === 0) {
+        return;
+      }
+
+      files.forEach(function (file) {
+        file.id = guid();
+
+        _this3.$emit("ready", file);
+
+        if (props.autoUpload) {
+          _this3.upload(file);
+        }
+      });
+    },
     handleInputClick: function handleInputClick(e) {
       e.stopPropagation();
     },
     handleInputChange: function handleInputChange(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       var props = this.$props;
 
@@ -30343,10 +30404,10 @@ var upload_trigger_createProps = function createProps() {
       files.forEach(function (file) {
         file.id = guid();
 
-        _this3.$emit("ready", file);
+        _this4.$emit("ready", file);
 
         if (props.autoUpload) {
-          _this3.upload(file);
+          _this4.upload(file);
         }
       });
 
@@ -30363,6 +30424,7 @@ var upload_trigger_createProps = function createProps() {
         handleTriggerDragover = this.handleTriggerDragover,
         handleTriggerDrop = this.handleTriggerDrop,
         handleTriggerDragleave = this.handleTriggerDragleave,
+        handleTriggerPaste = this.handleTriggerPaste,
         handleInputClick = this.handleInputClick,
         handleInputChange = this.handleInputChange;
 
@@ -30377,7 +30439,10 @@ var upload_trigger_createProps = function createProps() {
     var attributes = {};
 
     attributes.el = {
-      class: classes.el
+      class: classes.el,
+      attrs: {
+        tabIndex: 0
+      }
     };
     attributes.elInput = {
       ref: "input",
@@ -30394,7 +30459,8 @@ var upload_trigger_createProps = function createProps() {
         click: handleTriggerClick,
         dragover: handleTriggerDragover,
         drop: handleTriggerDrop,
-        dragleave: handleTriggerDragleave
+        dragleave: handleTriggerDragleave,
+        paste: handleTriggerPaste
       };
       attributes.elInput.on = {
         click: handleInputClick,
@@ -30873,6 +30939,7 @@ var upload_createProps = function createProps() {
   return {
     classNamePrefix: prop_types["a" /* default */].string,
     draggable: prop_types["a" /* default */].bool.def(false),
+    uploadPastedFiles: prop_types["a" /* default */].bool.def(false),
     multiple: prop_types["a" /* default */].bool.def(false),
     accept: prop_types["a" /* default */].string,
     showList: prop_types["a" /* default */].bool.def(true),
@@ -31104,6 +31171,7 @@ var upload_createProps = function createProps() {
         attrs: {
           classNamePrefix: classNamePrefix,
           draggable: props.draggable,
+          uploadPastedFiles: props.uploadPastedFiles,
           multiple: props.multiple,
           accept: props.accept,
           list: state.list,
@@ -38048,7 +38116,7 @@ var VuiTree = {
    let checkedKeys = clone(state.checkedKeys);
    let toggleCheckedKey = (target, checked) => {
    	let index = checkedKeys.indexOf(target.key);
-   			if (checked) {
+   		if (checked) {
    		if (index == -1) {
    			checkedKeys.push(target.key);
    		}
@@ -38058,14 +38126,14 @@ var VuiTree = {
    			checkedKeys.splice(index, 1);
    		}
    	}
-   			if (target.children && target.children.length) {
+   		if (target.children && target.children.length) {
    		target.children.forEach(child => {
    			toggleCheckedKey(child, checked);
    		});
    	}
    };
-   		toggleCheckedKey(node, checked);
-   		this.state.checkedKeys = checkedKeys;
+   	toggleCheckedKey(node, checked);
+   	this.state.checkedKeys = checkedKeys;
    */
 		},
 		handleNodeSelect: function handleNodeSelect(node) {
@@ -43407,7 +43475,7 @@ if (typeof window !== "undefined" && window.Vue) {
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"vui-design","version":"1.10.19","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 80 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:locale":"webpack --config build/build-locale.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist":"npm run dist:style && npm run dist:locale && npm run dist:dev && npm run dist:prod","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-loader":"^0.5.5","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","style-loader":"^0.20.2","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
+module.exports = {"name":"vui-design","version":"1.10.20","title":"Vui Design","description":"A high quality UI Toolkit based on Vue.js","author":"kiwi <vui.design@aliyun.com>","main":"dist/vui-design.js","homepage":"https://vui-design.github.io/vui-design-doc/","keywords":["vui-design","vui-design-pro","vue","vue.js","component","components","ui","framework"],"repository":{"type":"git","url":"https://github.com/vui-design/vui-design"},"license":"MIT","scripts":{"dev":"webpack-dev-server --content-base test/ --open --inline --hot --compress --history-api-fallback --port 80 --config build/webpack.dev.config.js","dist:style":"gulp --gulpfile build/build-style.js","dist:locale":"webpack --config build/build-locale.js","dist:dev":"webpack --config build/webpack.dist.dev.config.js","dist:prod":"webpack --config build/webpack.dist.prod.config.js","dist":"npm run dist:style && npm run dist:locale && npm run dist:dev && npm run dist:prod","prepare":"npm run dist"},"dependencies":{"arale-qrcode":"^3.0.5","async-validator":"^3.2.4","resize-observer-polyfill":"^1.5.1","vue":"^2.6.11","vue-i18n":"^8.17.3","vue-router":"^3.1.6","vue2-datepicker":"^3.9.1","vuex":"^3.3.0"},"devDependencies":{"autoprefixer":"^7.1.2","babel-core":"^6.22.1","babel-helper-vue-jsx-merge-props":"^2.0.3","babel-loader":"^7.1.1","babel-plugin-syntax-jsx":"^6.18.0","babel-plugin-transform-class-properties":"^6.24.1","babel-plugin-transform-object-assign":"^6.22.0","babel-plugin-transform-object-rest-spread":"^6.26.0","babel-plugin-transform-runtime":"^6.22.0","babel-plugin-transform-vue-jsx":"^3.5.0","babel-preset-env":"^1.3.2","babel-preset-stage-2":"^6.22.0","chalk":"^2.0.1","compression-webpack-plugin":"^1.1.12","copy-webpack-plugin":"^4.0.1","css-loader":"^0.28.0","extract-text-webpack-plugin":"^3.0.0","file-loader":"^1.1.4","friendly-errors-webpack-plugin":"^1.6.1","gulp":"^3.9.1","gulp-autoprefixer":"^5.0.0","gulp-clean-css":"^3.10.0","gulp-less":"^4.0.1","gulp-rename":"^1.4.0","html-loader":"^0.5.5","html-webpack-plugin":"^2.30.1","less":"^3.10.3","less-loader":"^5.0.0","node-notifier":"^5.1.2","optimize-css-assets-webpack-plugin":"^3.2.0","ora":"^1.2.0","portfinder":"^1.0.13","postcss-import":"^11.0.0","postcss-loader":"^2.0.8","postcss-url":"^7.2.1","rimraf":"^2.6.0","semver":"^5.3.0","shelljs":"^0.7.6","style-loader":"^0.20.2","uglifyjs-webpack-plugin":"^1.1.1","url-loader":"^0.5.8","vue-loader":"^13.3.0","vue-style-loader":"^3.0.1","vue-template-compiler":"^2.6.11","webpack":"^3.6.0","webpack-bundle-analyzer":"^2.9.0","webpack-dev-server":"^2.9.1","webpack-merge":"^4.1.0"},"engines":{"node":">= 6.0.0","npm":">= 3.0.0"},"browserslist":["> 1%","last 2 versions","not ie <= 8"]}
 
 /***/ }),
 /* 89 */
